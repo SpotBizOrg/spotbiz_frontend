@@ -14,13 +14,13 @@ function Guided() {
         <div className="flex flex-col justify-start items-center pt-28 px-20 ">
 
           {/**plate can be used to place contents */}
-            <Plate/>
+            {/* <Plate/>
             <div className="p-5"></div>
             <Plate/>
             <div className="p-5"></div>
             <Plate/>
             <div className="p-5"></div>
-            <Plate/>
+            <Plate/> */}
         </div>
     </Container>
     
