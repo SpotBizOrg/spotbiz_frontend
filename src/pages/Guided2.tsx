@@ -7,21 +7,21 @@ import Businesssidebar from "../components/Businesssidebar";
 function Guided2() {
   return (
     <Container>
-        <Businesssidebar/>
-        <div className="flex-1 flex flex-col">
             <Businessnavbar/>
-            <div className="flex felx-row items-center">
-              <div className='w-1/6 bg-gray-100'>
-                  this is another div
+            <Businesssidebar selectedTile="Dashboard"/>
+            <div className="flex flex-col mt-20 px-16 sm:ml-64">
+                <p>hello world</p>
+                <Plate2>
+                    hello world
+                </Plate2>
+                <Plate2>
+                    hello world
+                </Plate2>
+                <Plate2>
+                    hello world
+                </Plate2>
               </div>
-              <div className="flex flex-col w-5/6 h-screen items-center justify-center">
-                  <Plate/>
-                  <div className="p-5"></div>
-                  <Plate2/>
-              </div>
-            </div>
             
-        </div>
     </Container>
   );
 }

@@ -9,7 +9,23 @@ import Adminnavbar from "../components/Adminnavbar";
 function Guided2() {
   return (
     <Container>
-        <Adminsidebar/>
+      <Adminnavbar/>
+      <Adminsidebar selectedTile="Dashboard"/>
+
+      <div className="flex flex-col mt-20 px-16 sm:ml-64">
+                <p>hello world</p>
+                <Plate2>
+                    hello world
+                </Plate2>
+                <Plate2>
+                    hello world
+                </Plate2>
+                <Plate2>
+                    hello world
+                </Plate2>
+                </div>
+
+        {/* <Adminsidebar/>
         <div className="flex-1 flex flex-col">
             <Adminnavbar/>
             <div className="flex felx-row  items-center pt-28 px-20">
@@ -29,7 +45,7 @@ function Guided2() {
               </div>
             </div>
             
-        </div>
+        </div> */}
     </Container>
   );
 }

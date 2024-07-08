@@ -2,6 +2,7 @@
 export default {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
+    "./node_modules/flowbite/**/*.js"
   ],
   theme: {
     fontFamily: {
@@ -11,10 +12,11 @@ export default {
       blue: '#bfdbfe',
       bluedark: "#0D3B66",
       bluegray: '#ebf3fa',
-      yellow: '#FAF0CA',
+      bgyellow: '#FAF0CA',
       black: '#000000',
       white: '#FFFFFF',
       gray: {
+        50: '#f9fafb',
         100: '#f3f4f6',
         200: '#e5e7eb',
         300: '#d1d5db',
@@ -30,7 +32,7 @@ export default {
       heading: '70px',
       subheading: '40px',
       subsubheading: '30px',
-      body: '12px',
+      bodyfont: '12px',
       bodysmall: '14px',
       bodymedium: '16px',
       bodylarge: '20px',
@@ -44,6 +46,8 @@ export default {
     
     extend: {},
   },
-  plugins: [],
+  plugins: [
+    require('flowbite/plugin')
+],
 }
 

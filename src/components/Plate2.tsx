@@ -1,7 +1,14 @@
-function Plate2() {
+interface Plate2Props {
+    children: React.ReactNode ;
+  
+  
+}
+
+
+function Plate2({children}:Plate2Props) {
     return (
-      <div className="flex text-center justify-center bg-white w-5/6 h-2/6 rounded border border-gray-200 p-4">
-        <p>hi hi</p>
+      <div className="flex flex-col text-center justify-start bg-white w-full h-80 rounded-lg border border-gray-200 p-4">
+        {children}
       </div>
     );
   }
