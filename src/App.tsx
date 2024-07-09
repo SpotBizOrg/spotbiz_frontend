@@ -7,7 +7,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Guided2 from './pages/Guided2';
 import Guided3 from './pages/Guided3';
 import AdminVerify from './pages/BusinessVerify';
-import Test from './pages/Test';
+
 
 function App() {
  
@@ -17,7 +17,6 @@ function App() {
 	<BrowserRouter>
 		<Routes>
 			<Route path="/" element={<Guided />} />
-			<Route path="/test" element={<Test />} />
 			<Route path="/guided" element={<Guided2 />} />
 			<Route path="/guided3" element={<Guided3 />} />
 			<Route path="/admin_verify" element={<AdminVerify />} />
