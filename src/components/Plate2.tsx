@@ -1,7 +1,6 @@
 interface Plate2Props {
   children: React.ReactNode ;
-
-
+  
 }
 
 
