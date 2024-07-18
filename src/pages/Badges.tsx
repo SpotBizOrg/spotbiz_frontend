@@ -96,15 +96,15 @@ function Badges() {
       <Adminsidebar selectedTile="Badges" />
 
       <div className="px-12 sm:ml-64 mt-20">
-        <div className="w-fit mb-10 border-b-gray-900">
+        <div className="w-fit mb-10 ">
           <h1 className="text-subsubheading text-bluedark">Business Badges</h1>
         </div>
 
-        <div className="container mx-auto p-4">
+        <div className=" mx-auto p-4">
           {/* Current Badge Section */}
           <section
             id="current-badge"
-            className="mb-8 bg-white p-6 rounded-lg shadow-lg text-center"
+            className="mb-8 bg-white p-6 rounded-lg  text-center border border-gray-200"
           >
             <h2 className="text-2xl font-bold mb-4 text-gray-800">
               Current Badge of Excellence
@@ -139,7 +139,7 @@ function Badges() {
           {/* Past Badges Section */}
           <section
             id="past-badges"
-            className="bg-white p-6 rounded-lg shadow-lg text-center"
+            className="bg-white p-6 rounded-lg border border-gray-200 text-center"
           >
             <h2 className="text-2xl font-bold mb-4 text-gray-800">
               Past Badges

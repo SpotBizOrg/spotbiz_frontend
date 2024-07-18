@@ -55,6 +55,9 @@ function App() {
         <Route path="/signup-business" element={<SignupFormBusiness />} />
         <Route path="/signup-customer" element={<SignupFormCustomer />} />
         <Route path="/signup-in-process" element={<SignupInProgress />} />
+        <Route path="/customer_reviews" element={<CustomerReview />} />
+        <Route path="/business_reviews" element={<BusinessReviews />} />
+        <Route path="/badges" element={<Badges />} />
         {/* <Route path="/header" element={<Header />}/> */}
       </Routes>
     </BrowserRouter>

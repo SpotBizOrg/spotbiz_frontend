@@ -4,7 +4,7 @@ interface Plate2Props {
 
 function Plate2({ children }: Plate2Props) {
   return (
-    <div className="flex flex-col text-center justify-start bg-white w-full h-80 rounded-lg border border-gray-200 p-4">
+    <div className="flex flex-col text-center justify-start bg-white w-full h-auto rounded-lg border border-gray-200 p-4">
       {children}
     </div>
   );

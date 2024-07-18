@@ -1,11 +1,11 @@
 function Rating() {
   return (
-    <div className="md:grid md:grid-cols-2 gap-x-6">
-      <div className="flex flex-col items-center justify-center p-4 bg-gray-100 dark:bg-gray-800 rounded-md">
+    <div className="md:grid md:grid-cols-2 gap-x-10">
+      <div className="flex flex-col items-center justify-between p-4 bg-gray-100 dark:bg-gray-800 rounded-md ">
         <div className="text-subsubheading font-bold text-gray-900 dark:text-white mb-2">
           4.0
         </div>
-        <div className="flex items-center mb-2">
+        <div className="flex justify-between items-center mb-2">
           {[...Array(4)].map((_, index) => (
             <svg
               key={index}
@@ -32,7 +32,7 @@ function Rating() {
           1,745 ratings
         </p>
       </div>
-      <div>
+      <div className="md:col-end-3">
         {[
           { stars: "5 star", percentage: 70 },
           { stars: "4 star", percentage: 17 },

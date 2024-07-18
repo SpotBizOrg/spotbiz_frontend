@@ -20,18 +20,13 @@ export function AddReviewModal() {
         popup
         onClose={closeModal}
         initialFocus={titleInputRef}
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          background: "rgba(17, 24, 39, 0.5)",
-        }}
+        className="flex justify-center items-center bg-gray-900 bg-opacity-50"
       >
-        <div style={{ width: "400px" }}>
+        <div className="bg-white dark:bg-gray-800 w-full max-w-md p-6 rounded-lg">
           <Modal.Header>
-            {/* <h3 className="text-xl font-medium text-gray-900 dark:text-white p-6">
+            <h3 className="text-xl font-medium text-gray-900 dark:text-white">
               Add a Review
-            </h3> */}
+            </h3>
           </Modal.Header>
           <Modal.Body>
             <div className="space-y-6">
@@ -58,11 +53,11 @@ export function AddReviewModal() {
                   required
                 ></textarea>
               </div>
-              <div className="w-full">
-                <Button
-                  onClick={closeModal}
-                  className="px-4 py-2 font-semibold text-white bg-bluedark rounded hover:bg-black focus:outline-none focus:ring-2 focus:ring-gray-100 focus:ring-offset-2"
-                >
+              <div className="w-full flex justify-between">
+                <Button onClick={closeModal} className="bg-bluedark">
+                  Cancel
+                </Button>
+                <Button onClick={closeModal} className="bg-bluedark">
                   Submit
                 </Button>
               </div>

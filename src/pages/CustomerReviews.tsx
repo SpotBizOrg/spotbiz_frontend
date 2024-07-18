@@ -27,7 +27,7 @@ function Reviews() {
     <Container>
       <Customernavbar />
 
-      <div className="px-12 sm:ml-20 mt-20">
+      <div className="px-12 sm mt-20">
         <div className="flex justify-between items-center mb-10 border-b-gray-900">
           <h1 className="text-subsubheading text-bluedark">User Reviews</h1>
           <AddReviewModal />

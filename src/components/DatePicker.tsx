@@ -32,7 +32,7 @@ const YearMonthSelector: React.FC<YearMonthSelectorProps> = ({
   return (
     <div
       style={{ minWidth: "500px", width: "512px" }}
-      className="bg-white shadow-xl overflow-hidden rounded-lg mx-auto mt-8 text-gray-900 font-semibold text-center"
+      className="bg-white  overflow-hidden rounded-lg mx-auto mt-8 text-gray-900 font-semibold text-center"
     >
       <div className="flex items-center justify-around px-4 py-6">
         <button
