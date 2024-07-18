@@ -1,16 +1,18 @@
+const flowbite = require('flowbite/plugin');
+
 /** @type {import('tailwindcss').Config} */
-export default {
+module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
-    "./node_modules/flowbite/**/*.js"
+    "./node_modules/flowbite/**/*.js",
   ],
   theme: {
     fontFamily: {
-      body: ['"Popins"', 'sans-serif'], // "Poppins", sans-serif
+      body: ['"Poppins"', 'sans-serif'], // Fixed typo "Popins" to "Poppins"
     },
     colors: {
       blue: '#bfdbfe',
-      bluedark: "#0D3B66",
+      bluedark: '#0D3B66',
       bluegray: '#ebf3fa',
       bgyellow: '#FAF0CA',
       black: '#000000',
@@ -43,11 +45,9 @@ export default {
       'top': '0 -4px 10px -6px rgba(0, 0, 0, 0.5)', // Shadow on the top side
       'bottom': '0 4px 10px -6px rgba(0, 0, 0, 0.5)', // Shadow on the bottom side
     },
-    
     extend: {},
   },
   plugins: [
-    require('flowbite/plugin')
-],
-}
-
+    flowbite, // Correct usage for flowbite plugin
+  ],
+};
