@@ -9,6 +9,7 @@ import Guided3 from "./pages/Guided3";
 import AdminVerify from "./pages/BusinessVerify";
 import BusinessReviews from "./pages/BusinessReviews";
 import CustomerReview from "./pages/CustomerReviews";
+import Badges from "./pages/Badges";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
         <Route path="/admin_verify" element={<AdminVerify />} />
         <Route path="/business_reviews" element={<BusinessReviews />} />
         <Route path="/customer_reviews" element={<CustomerReview />} />
+        <Route path="/badges" element={<Badges />} />
       </Routes>
     </BrowserRouter>
   );

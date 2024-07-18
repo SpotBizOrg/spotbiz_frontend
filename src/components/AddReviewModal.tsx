@@ -1,6 +1,5 @@
 import { Button, Label, Modal, TextInput } from "flowbite-react";
 import { useRef, useState } from "react";
-import Button2 from "./Button";
 
 export function AddReviewModal() {
   const [openModal, setOpenModal] = useState(false);
@@ -12,10 +11,7 @@ export function AddReviewModal() {
 
   return (
     <>
-      <Button
-        onClick={() => setOpenModal(true)}
-        className="px-4 py-2 font-semibold text-white bg-bluedark rounded hover:bg-black focus:outline-none focus:ring-2 focus:ring-gray-100 focus:ring-offset-2"
-      >
+      <Button onClick={() => setOpenModal(true)} className="bg-bluedark">
         Add Review
       </Button>
       <Modal
