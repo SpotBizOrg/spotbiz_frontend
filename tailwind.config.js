@@ -59,6 +59,7 @@ export default {
         'top': '0 -4px 10px -6px rgba(0, 0, 0, 0.5)',
         'bottom': '0 4px 10px -6px rgba(0, 0, 0, 0.5)',
       },
+      
     },
   },
   variants: {
