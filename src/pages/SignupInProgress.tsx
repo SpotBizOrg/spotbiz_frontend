@@ -3,7 +3,7 @@ import logo from '../assets/logo.png';
 
 const SignupInProgress: React.FC = () => {
   return (
-    <div className="flex h-screen bg-primary items-center justify-center">
+    <div className="flex h-screen bg-primary items-center justify-center font-body">
       <div className="m-auto bg-white rounded-lg shadow-lg w-full max-w-3xl p-16 text-left">
         <img src={logo} alt="SpotBiz" className="h-16 mx-auto mb-8" />
         <h2 className="text-3xl font-bold mb-6 text-primary">Sign-Up in Progress</h2>
