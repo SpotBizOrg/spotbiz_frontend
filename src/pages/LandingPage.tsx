@@ -8,7 +8,7 @@ import ContactUs from "../components/ContactUs";
 
 const Home: React.FC = () => {
     return(
-        <div className="font-Poppins">
+        <div className="font-body">
             <Header />
 	  <Categories />
 	  <HowToFindShop />
