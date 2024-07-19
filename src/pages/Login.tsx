@@ -8,11 +8,11 @@ const LoginPage: React.FC = () => {
 
   const handleLogin = () => {
     // Add your login logic here
-    navigate('/customerhome'); 
+    navigate('/customerhome');
   };
 
   return (
-    <div className="flex h-screen bg-primary items-center justify-center">
+    <div className="flex h-screen bg-primary items-center justify-center font-body">
       <div className="bg-customWhite rounded-lg shadow-lg w-full max-w-5xl flex overflow-hidden">
         <div className="w-1/2 flex items-center justify-center p-4">
           <img
@@ -28,13 +28,14 @@ const LoginPage: React.FC = () => {
               <label className="block text-gray-700 text-sm mb-2" htmlFor="email">
                 Email
               </label>
-              <div className="flex items-center shadow appearance-none border rounded w-full py-2 px-3 bg-secondary text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+              <div className="flex items-center rounded w-full py-2 px-3 bg-secondary text-gray-700 leading-tight">
                 <FaEnvelope className="mr-2" />
                 <input
                   id="email"
                   type="email"
-                  className="bg-transparent flex-1 focus:outline-none"
+                  className="bg-transparent flex-1 focus:outline-none border-0"
                   placeholder="example@gmail.com"
+                  style={{ boxShadow: 'none' }}
                 />
               </div>
             </div>
@@ -42,19 +43,20 @@ const LoginPage: React.FC = () => {
               <label className="block text-gray-700 text-sm mb-2" htmlFor="password">
                 Password
               </label>
-              <div className="flex items-center shadow appearance-none border rounded w-full py-2 px-3 bg-secondary text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+              <div className="flex items-center rounded w-full py-2 px-3 bg-secondary text-gray-700 leading-tight">
                 <FaLock className="mr-2" />
                 <input
                   id="password"
                   type="password"
-                  className="bg-transparent flex-1 focus:outline-none"
+                  className="bg-transparent flex-1 focus:outline-none border-0"
                   placeholder="******"
+                  style={{ boxShadow: 'none' }}
                 />
               </div>
             </div>
             <div className="flex items-center justify-between mb-6">
               <button
-                className="bg-bluedark hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
+                className="bg-bluedark hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none w-full"
                 type="button"
                 onClick={handleLogin}
               >
@@ -74,6 +76,6 @@ const LoginPage: React.FC = () => {
       </div>
     </div>
   );
-}
+};
 
 export default LoginPage;
