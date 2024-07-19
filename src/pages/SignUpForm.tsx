@@ -4,7 +4,7 @@ import Customer from '../assets/signup-image.png';
 
 const SignUpFormCustomer: React.FC = () => {
   return (
-    <div className="flex h-screen bg-primary items-center justify-center">
+    <div className="flex h-screen bg-primary items-center justify-center font-body">
       <div className="bg-white rounded-lg shadow-lg w-full max-w-5xl flex overflow-hidden">
         <div className="w-1/2 flex items-center justify-center p-4">
           <img src={Customer} alt="Signup" className="w-full h-full object-cover rounded-lg"/>
@@ -19,6 +19,7 @@ const SignUpFormCustomer: React.FC = () => {
                 id="name"
                 type="text"
                 placeholder="Name"
+                style={{ boxShadow: 'none' }}
               />
             </div>
             <div className="flex items-center bg-gray-200 rounded px-3 py-2">
@@ -28,6 +29,7 @@ const SignUpFormCustomer: React.FC = () => {
                 id="email"
                 type="email"
                 placeholder="Email"
+                style={{ boxShadow: 'none' }}
               />
             </div>
             <div className="flex items-center bg-gray-200 rounded px-3 py-2">
@@ -37,6 +39,7 @@ const SignUpFormCustomer: React.FC = () => {
                 id="phone"
                 type="text"
                 placeholder="Phone No"
+                style={{ boxShadow: 'none' }}
               />
             </div>
             <div className="flex items-center bg-gray-200 rounded px-3 py-2">
@@ -46,6 +49,7 @@ const SignUpFormCustomer: React.FC = () => {
                 id="password"
                 type="password"
                 placeholder="Password"
+                style={{ boxShadow: 'none' }}
               />
             </div>
             <div className="mt-12">
