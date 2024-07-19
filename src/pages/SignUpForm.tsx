@@ -48,11 +48,8 @@ const SignUpFormCustomer: React.FC = () => {
                 placeholder="Password"
               />
             </div>
-            <div className="flex items-center justify-center mt-20">
-              <button
-                className="bg-custom-blue hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full"
-                type="button"
-              >
+            <div className="mt-12">
+              <button className="w-full bg-primary text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">
                 Sign Up
               </button>
             </div>
