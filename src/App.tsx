@@ -5,44 +5,30 @@ import Nousernavbar from './components/Nousernavbar'
 import Customernavbar from './components/Customernavbar'
 import Businessnavbarsidebar from './components/Businessnavbarsidebar';
 import Adminnavbarsidebar from './components/Adminnavbarsidebar';
-import Header from './components/Header';
-import Categories from './components/Categories';
-import HowToFindShop from './components/HowToFindShop';
-import HowToRegisterBusiness from './components/HowToRegisterBusiness';
-import Recommendations from './components/Recommendations';
-import ContactUs from './components/ContactUs';
-import Login from './components/Login';
+import Home from './pages/LandingPage'
+import Login from './pages/Login';
 import Registration from './components/Regitration';
-import SignupFormBusiness from './components/SignupFormBusiness';
-import SignupFormCustomer from './components/SignUpForm';
-import SignupInProgress from './components/SignupInProgress';
+import SignupFormBusiness from './pages/SignupFormBusiness';
+import SignupFormCustomer from './pages/SignUpForm';
+import SignupInProgress from './pages/SignupInProgress';
 import Banned from './components/Banned';
-import CustomerHome from './components/CustomerHome';
+import CustomerHome from './pages/CustomerHome';
 import Guided from './pages/Guided'
+// import LatestBusinesses from './components/Latetsusiness';
+import AdminDashboard from './pages/AdminDashboard';
+import Chart from './components/PerformanceChart';
 import './App.css'
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Guided2 from './pages/Guided2';
 import Guided3 from './pages/Guided3';
 import AdminVerify from './pages/BusinessVerify';
+import AdminTagsReviews from './pages/AdminTags&Reviews';
+import BusinessReviews from "./pages/BusinessReviews";
+import CustomerReview from "./pages/CustomerReviews";
+import Badges from "./pages/Badges";
 // import Header from './components/Header';
 
-
-const Home = () => (
-	<div className="font-sans">
-	  <Header />
-	  <Categories />
-	  <HowToFindShop />
-	  <HowToRegisterBusiness />
-	  <Recommendations />
-	  <ContactUs />
-	</div>
-  );
-
-
-
 function App() {
- 
-
   return (
 
 	<BrowserRouter>
@@ -59,6 +45,12 @@ function App() {
 			<Route path="/signup-business" element={<SignupFormBusiness/>}/>
 			<Route path="/signup-customer" element={<SignupFormCustomer/>}/>
 			<Route path="/signup-in-process" element={<SignupInProgress/>}/>
+			<Route path="/chart" element={<Chart/>}/>
+			<Route path="/admin" element={<AdminDashboard/>}/>
+			<Route path="/admintags" element={<AdminTagsReviews/>}/>
+      <Route path="/customer_reviews" element={<CustomerReview />} />
+      <Route path="/business_reviews" element={<BusinessReviews />} />
+      <Route path="/badges" element={<Badges />} />
 			{/* <Route path="/header" element={<Header />}/> */}
 	
 		</Routes>
@@ -68,4 +60,4 @@ function App() {
   )
 }
 
-export default App
+export default App;

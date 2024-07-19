@@ -69,7 +69,7 @@ const SignupFormBusiness: React.FC = () => {
   };
 
   return (
-    <div className="flex h-screen bg-primary items-center justify-center">
+    <div className="flex h-screen bg-primary items-center justify-center font-body">
       <div className="bg-customWhite rounded-lg shadow-lg w-full max-w-5xl flex overflow-hidden">
         <div className="w-1/2 flex items-center justify-center p-4">
           <img src={Profile} alt="Profile" className="w-full h-full object-cover rounded-lg" />
@@ -79,11 +79,11 @@ const SignupFormBusiness: React.FC = () => {
           <form className="space-y-6" onSubmit={handleSubmit}>
             <div className="flex items-center border border-gray-300 rounded py-2 px-3 bg-gray-100">
               <FaUser className="mr-3 text-gray-500" />
-              <input className="appearance-none bg-transparent border-none w-full text-gray-700 leading-tight focus:outline-none" type="text" placeholder="Your Name" aria-label="Full name" required />
+              <input className="appearance-none bg-transparent border-none w-full text-gray-700 leading-tight focus:outline-none" type="text" placeholder="Your Name" style={{boxShadow: 'none' }} aria-label="Full name" required />
             </div>
             <div className="flex items-center border border-gray-300 rounded py-2 px-3 bg-gray-100">
               <FaEnvelope className="mr-3 text-gray-500" />
-              <input className="appearance-none bg-transparent border-none w-full text-gray-700 leading-tight focus:outline-none" type="email" placeholder="Your Email" aria-label="Email" required />
+              <input className="appearance-none bg-transparent border-none w-full text-gray-700 leading-tight focus:outline-none" type="email" placeholder="Your Email"  style={{boxShadow: 'none' }} aria-label="Email" required />
             </div>
             <div className="flex items-center border border-gray-300 rounded py-2 px-3 bg-gray-100">
               <FaPhone className="mr-3 text-gray-500" />
@@ -91,6 +91,7 @@ const SignupFormBusiness: React.FC = () => {
                 className="appearance-none bg-transparent border-none w-full text-gray-700 leading-tight focus:outline-none"
                 type="text"
                 placeholder="Phone Number"
+                style={{ boxShadow: 'none' }}
                 aria-label="Phone Number"
                 value={phoneNumber}
                 onChange={handlePhoneNumberChange}
@@ -104,6 +105,7 @@ const SignupFormBusiness: React.FC = () => {
                 className="appearance-none bg-transparent border-none w-full text-gray-700 leading-tight focus:outline-none"
                 type="password"
                 placeholder="Password"
+                style={{ boxShadow: 'none' }}
                 aria-label="Password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -122,11 +124,11 @@ const SignupFormBusiness: React.FC = () => {
             )}
             <div className="flex items-center border border-gray-300 rounded py-2 px-3 bg-gray-100">
               <FaBriefcase className="mr-3 text-gray-500" />
-              <input className="appearance-none bg-transparent border-none w-full text-gray-700 leading-tight focus:outline-none" type="text" placeholder="Business Name" aria-label="Business Name" required />
+              <input className="appearance-none bg-transparent border-none w-full text-gray-700 leading-tight focus:outline-none" type="text" placeholder="Business Name" aria-label="Business Name" style={{boxShadow: 'none' }} required />
             </div>
             <div className="flex items-center border border-gray-300 rounded py-2 px-3 bg-gray-100">
               <FaRegIdBadge className="mr-3 text-gray-500" />
-              <input className="appearance-none bg-transparent border-none w-full text-gray-700 leading-tight focus:outline-none" type="text" placeholder="Business Registration No" aria-label="Business Registration No" required />
+              <input className="appearance-none bg-transparent border-none w-full text-gray-700 leading-tight focus:outline-none" type="text" placeholder="Business Registration No" style={{boxShadow: 'none' }} aria-label="Business Registration No" required />
             </div>
             <div className="mt-12">
               <button className="w-full bg-primary text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit">

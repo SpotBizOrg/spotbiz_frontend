@@ -1,4 +1,5 @@
 /** @type {import('tailwindcss').Config} */
+
 export default {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
@@ -8,6 +9,7 @@ export default {
     extend: {
       borderRadius: {
         'custom': '22px',
+        'custom2': '10px',
       },
       fontFamily: {
         body: ['"Poppins"', 'sans-serif'],
@@ -24,6 +26,9 @@ export default {
         customYellow: '#FAF0CA',
         customYellow2 : '#FFFAE7',
         customWhite : "#F5FBFF",
+        customBlue: '#B1D7EE',
+        customBlue2: '#E8F0F5',
+        customBlue3: '#015B8C',
         black: '#000000',
         white: '#FFFFFF',
         gray: {

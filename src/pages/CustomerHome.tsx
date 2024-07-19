@@ -2,7 +2,7 @@ import React from 'react';
 import Customernavbar from '../components/Customernavbar';
 import { FaSearch, FaPencilAlt, FaHotel, FaLaptop, FaAppleAlt, FaLightbulb } from 'react-icons/fa';
 import HomeImage from '../assets/Background.png';
-import RecommendationBox from '../components/RecommendationBox'; 
+import RecommendationBox from '../components/RecommendationBox';
 
 const CustomerHome: React.FC = () => {
   return (
@@ -19,14 +19,15 @@ const CustomerHome: React.FC = () => {
             <input
               type="text"
               placeholder="What are you looking for"
-              className="w-full bg-transparent focus:outline-none"
+              className="w-full bg-transparent focus:outline-none border-0 ring-0 focus:ring-0"
             />
           </div>
+
         </div>
       </header>
       <main className="flex-grow p-8">
         <section className="text-center mb-12">
-          <div className="flex justify-center space-x-20"> 
+          <div className="flex justify-center space-x-20">
             <div className="flex flex-col items-center">
               <div className="bg-yellow-400 p-4 rounded-full">
                 <FaPencilAlt className="w-12 h-12 text-gray-800" />
