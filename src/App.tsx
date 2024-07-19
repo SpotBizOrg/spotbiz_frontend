@@ -23,16 +23,12 @@ import Guided2 from './pages/Guided2';
 import Guided3 from './pages/Guided3';
 import AdminVerify from './pages/BusinessVerify';
 import AdminTagsReviews from './pages/AdminTags&Reviews';
+import BusinessReviews from "./pages/BusinessReviews";
+import CustomerReview from "./pages/CustomerReviews";
+import Badges from "./pages/Badges";
 // import Header from './components/Header';
 
-
-
-
-
-
 function App() {
- 
-
   return (
 
 	<BrowserRouter>
@@ -52,6 +48,9 @@ function App() {
 			<Route path="/chart" element={<Chart/>}/>
 			<Route path="/admin" element={<AdminDashboard/>}/>
 			<Route path="/admintags" element={<AdminTagsReviews/>}/>
+      <Route path="/customer_reviews" element={<CustomerReview />} />
+      <Route path="/business_reviews" element={<BusinessReviews />} />
+      <Route path="/badges" element={<Badges />} />
 			{/* <Route path="/header" element={<Header />}/> */}
 	
 		</Routes>
@@ -61,4 +60,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
