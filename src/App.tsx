@@ -24,6 +24,7 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Guided2 from './pages/Guided2';
 import Guided3 from './pages/Guided3';
 import AdminVerify from './pages/BusinessVerify';
+import Packages from './pages/BusinessPackages';
 // import Header from './components/Header';
 
 
@@ -59,6 +60,7 @@ function App() {
 			<Route path="/signup-business" element={<SignupFormBusiness/>}/>
 			<Route path="/signup-customer" element={<SignupFormCustomer/>}/>
 			<Route path="/signup-in-process" element={<SignupInProgress/>}/>
+			<Route path="/packages" element={<Packages />} />
 			{/* <Route path="/header" element={<Header />}/> */}
 	
 		</Routes>
