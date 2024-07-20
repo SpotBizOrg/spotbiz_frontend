@@ -3,7 +3,7 @@ import registerImage from '../assets/register.png'; // Ensure you have this imag
 
 const HowToRegisterBusiness = () => {
   return (
-    <div className="container mx-auto my-8 p-8 bg-yellow-400 rounded-lg shadow flex flex-col md:flex-row items-center">
+    <div className="container mx-auto my-8 p-8 bg-blue9 rounded-lg shadow flex flex-col md:flex-row items-center">
       <div className="flex-shrink-0 mb-4 md:mb-0 md:mr-8">
         <img src={registerImage} alt="How to register your business" className="h-32 w-32"/>
       </div>
