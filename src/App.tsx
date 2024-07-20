@@ -22,14 +22,11 @@ import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Guided2 from './pages/Guided2';
 import Guided3 from './pages/Guided3';
 import AdminVerify from './pages/BusinessVerify';
-<<<<<<< HEAD
 import Packages from './pages/BusinessPackages';
-=======
 import AdminTagsReviews from './pages/AdminTags&Reviews';
 import BusinessReviews from "./pages/BusinessReviews";
 import CustomerReview from "./pages/CustomerReviews";
 import Badges from "./pages/Badges";
->>>>>>> 7e959a796df00a833e741fad9bd66a83dd82b65a
 // import Header from './components/Header';
 
 function App() {
@@ -49,16 +46,13 @@ function App() {
 			<Route path="/signup-business" element={<SignupFormBusiness/>}/>
 			<Route path="/signup-customer" element={<SignupFormCustomer/>}/>
 			<Route path="/signup-in-process" element={<SignupInProgress/>}/>
-<<<<<<< HEAD
 			<Route path="/packages" element={<Packages />} />
-=======
 			<Route path="/chart" element={<Chart/>}/>
 			<Route path="/admin" element={<AdminDashboard/>}/>
 			<Route path="/admintags" element={<AdminTagsReviews/>}/>
       <Route path="/customer_reviews" element={<CustomerReview />} />
       <Route path="/business_reviews" element={<BusinessReviews />} />
       <Route path="/badges" element={<Badges />} />
->>>>>>> 7e959a796df00a833e741fad9bd66a83dd82b65a
 			{/* <Route path="/header" element={<Header />}/> */}
 	
 		</Routes>
