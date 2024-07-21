@@ -3,7 +3,7 @@ import shopImage from '../assets/shop.png'; // Ensure you have this image in the
 
 const HowToFindShop = () => {
   return (
-    <div className="container mx-auto my-8 p-8 bg-yellow-100 rounded-lg shadow flex flex-col md:flex-row items-center">
+    <div className="container mx-auto my-8 p-8 bg-blue10 rounded-lg shadow flex flex-col md:flex-row items-center">
       <div className="flex-1 mb-4 md:mb-0">
         <h2 className="text-xl font-semibold mb-4">How to Find a Shop and their offers at SpotBizz ?</h2>
         <ul className="list-disc list-inside space-y-2 text-lg">

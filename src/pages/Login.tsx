@@ -1,18 +1,25 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaEnvelope, FaLock } from 'react-icons/fa';
 import login from '../assets/LoginPage.png';
+import SuccessMessage from "../components/SuccessMessage";
+
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const handleLogin = () => {
-    // Add your login logic here
-    navigate('/customerhome');
+    // Add login logic here
+    setShowSuccessMessage(true);
+    setTimeout(() => {
+      navigate('/customerhome');
+    }, 3000); // Navigate after 3 seconds
   };
 
   return (
     <div className="flex h-screen bg-primary items-center justify-center font-body">
+      {showSuccessMessage && <SuccessMessage onClose={() => setShowSuccessMessage(false)} />}
       <div className="bg-customWhite rounded-lg shadow-lg w-full max-w-5xl flex overflow-hidden">
         <div className="w-1/2 flex items-center justify-center p-4">
           <img
@@ -79,3 +86,7 @@ const LoginPage: React.FC = () => {
 };
 
 export default LoginPage;
+
+
+
+// import SuccessMessage from "../components/SuccessMessage";
