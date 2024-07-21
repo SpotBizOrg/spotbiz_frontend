@@ -17,8 +17,9 @@ import CustomerReview from "./pages/CustomerReviews";
 import Badges from "./pages/Badges";
 import CustomerProfile from './pages/CustomerProfile';
 import AdminDashboard from './pages/AdminDashboard';
+import AdminPackages from './pages/AdminPackages'; // Import the new AdminPackages page
 import Chart from './components/PerformanceChart';
-import SearchResults from './pages/SearchResults'; // Import the new SearchResults page
+import SearchResults from './pages/SearchResults';
 import './App.css';
 
 function App() {
@@ -43,7 +44,8 @@ function App() {
         <Route path="/business_reviews" element={<BusinessReviews />} />
         <Route path="/badges" element={<Badges />} />
         <Route path="/profile" element={<CustomerProfile />} />
-        <Route path="/search" element={<SearchResults />} /> {/* Add this line */}
+        <Route path="/search" element={<SearchResults />} />
+        <Route path="/admin_packages" element={<AdminPackages />} /> {/* Add this line */}
       </Routes>
     </BrowserRouter>
   );
