@@ -2,6 +2,7 @@ import { useState } from 'react';
 import Adminnavbar from '../components/Adminnavbar';
 import Adminsidebar from '../components/Adminsidebar';
 import PackageCard from '../components/PackageCard';
+import Modal from '../components/modal';
 
 interface Package {
   id: number;
@@ -43,11 +44,32 @@ const initialPackagesData: Package[] = [
 
 export default function AdminPackages() {
   const [isMonthly, setIsMonthly] = useState(true);
-  const [packagesData] = useState(initialPackagesData);
+  const [packagesData, setPackagesData] = useState(initialPackagesData);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
 
-  const handleEdit = (id: number) => {
-    // Handle the edit logic here
-    console.log(`Edit package with id: ${id}`);
+  const handleEdit = (pkg: Package) => {
+    setSelectedPackage(pkg);
+    setIsModalOpen(true);
+  };
+
+  const handleModalClose = () => {
+    setIsModalOpen(false);
+    setSelectedPackage(null);
+  };
+
+  const handleUpdate = () => {
+    // Implement update logic here
+    console.log('Package updated:', selectedPackage);
+    setIsModalOpen(false);
+    setSelectedPackage(null);
+  };
+
+  const handleSave = () => {
+    // Implement save logic here
+    console.log('Package saved:', selectedPackage);
+    setIsModalOpen(false);
+    setSelectedPackage(null);
   };
 
   return (
@@ -89,13 +111,55 @@ export default function AdminPackages() {
                   features={pkg.features}
                   buttonText={pkg.buttonText}
                   isPopular={pkg.isPopular}
-                  onClick={() => handleEdit(pkg.id)} // Add click handler
+                  onClick={() => handleEdit(pkg)} // Add click handler
                 />
               ))}
             </div>
           </div>
         </div>
       </div>
+      <Modal isOpen={isModalOpen} onClose={handleModalClose} onUpdate={handleUpdate}>
+        {selectedPackage && (
+          <div>
+            <h3 className="text-xl font-bold mb-4">Edit Package: {selectedPackage.title}</h3>
+            <form>
+              <div className="mb-4">
+                <label className="block text-gray-700">Title</label>
+                <input
+                  type="text"
+                  value={selectedPackage.title}
+                  className="w-full p-2 border border-gray-300 rounded mt-2"
+                  onChange={(e) =>
+                    setSelectedPackage({ ...selectedPackage, title: e.target.value })
+                  }
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Description</label>
+                <textarea
+                  value={selectedPackage.description}
+                  className="w-full p-2 border border-gray-300 rounded mt-2"
+                  onChange={(e) =>
+                    setSelectedPackage({ ...selectedPackage, description: e.target.value })
+                  }
+                />
+              </div>
+              <div className="mb-4">
+                <label className="block text-gray-700">Price</label>
+                <input
+                  type="number"
+                  value={selectedPackage.monthlyPrice}
+                  className="w-full p-2 border border-gray-300 rounded mt-2"
+                  onChange={(e) =>
+                    setSelectedPackage({ ...selectedPackage, monthlyPrice: parseInt(e.target.value, 10) })
+                  }
+                />
+              </div>
+              
+            </form>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }
