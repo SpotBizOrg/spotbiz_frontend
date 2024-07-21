@@ -1,6 +1,7 @@
-/** @type {import('tailwindcss').Config} */
+const flowbite = require("flowbite-react/tailwind");
 
-export default {
+/** @type {import('tailwindcss').Config} */
+module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
     "./node_modules/flowbite/**/*.js"
@@ -75,7 +76,6 @@ export default {
         'top': '0 -4px 10px -6px rgba(0, 0, 0, 0.5)',
         'bottom': '0 4px 10px -6px rgba(0, 0, 0, 0.5)',
       },
-      
     },
   },
   variants: {
@@ -86,6 +86,7 @@ export default {
     },
   },
   plugins: [
-    require('flowbite/plugin')
+    require('flowbite/plugin'),
+    flowbite.plugin(),
   ],
 };
