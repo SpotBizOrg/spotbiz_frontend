@@ -21,6 +21,7 @@ export default {
           500: '#ecc94b',
         },
         blue: '#bfdbfe',
+        sapphireblue: "#0f52ba",
         bluedark: "#0D3B66",
         bluegray: '#ebf3fa',
         customYellow: '#FAF0CA',
