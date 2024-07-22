@@ -75,15 +75,15 @@ export default function AdminPackages() {
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col">
       <Adminnavbar />
-      <div className="flex flex-1 mt-12">
+      <div className="flex flex-1 mt-6">
         <div className="flex-none w-64">
           <Adminsidebar selectedTile={''} />
         </div>
         <div className="flex-1 px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
           <div className="max-w-7xl mx-auto">
             <div className="text-center">
-              <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Update Subscription Packages</h2>
-              <p className="mt-6 text-lg leading-8 text-gray-600">
+              <h2 className="text-2xl font-bold tracking-tight  text-gray-900 sm:text-3xl">Update Subscription Packages</h2>
+              <p className="mt-5 text-lg leading-8 text-gray-600">
                 Edit the details of the packages to provide the best features for engaging your audience, creating customer loyalty, and driving sales.
               </p>
               <div className="flex justify-center mt-8">
@@ -101,7 +101,7 @@ export default function AdminPackages() {
                 </button>
               </div>
             </div>
-            <div className="mt-16 grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-8 grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               {packagesData.map((pkg) => (
                 <PackageCard
                   key={pkg.id}
@@ -121,10 +121,10 @@ export default function AdminPackages() {
       <Modal isOpen={isModalOpen} onClose={handleModalClose} onUpdate={handleUpdate}>
         {selectedPackage && (
           <div>
-            <h3 className="text-xl font-bold mb-4">Edit Package: {selectedPackage.title}</h3>
+            <h3 className="text-xl font-bold mb-4 text-center">Edit Package: {selectedPackage.title}</h3>
             <form>
               <div className="mb-4">
-                <label className="block text-gray-700">Title</label>
+                <label className="block text-gray-700">package Title</label>
                 <input
                   type="text"
                   value={selectedPackage.title}
@@ -135,7 +135,7 @@ export default function AdminPackages() {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700">Description</label>
+                <label className="block text-gray-700">Package Description</label>
                 <textarea
                   value={selectedPackage.description}
                   className="w-full p-2 border border-gray-300 rounded mt-2"
@@ -145,7 +145,7 @@ export default function AdminPackages() {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700">Price</label>
+                <label className="block text-gray-700">Price ($)</label>
                 <input
                   type="number"
                   value={selectedPackage.monthlyPrice}
