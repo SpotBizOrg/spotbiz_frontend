@@ -51,6 +51,7 @@ function App() {
       <Route path="/customer_reviews" element={<CustomerReview />} />
       <Route path="/business_reviews" element={<BusinessReviews />} />
       <Route path="/badges" element={<Badges />} />
+      <Route path="/nouser" element={<Nousernavbar />} />
 			{/* <Route path="/header" element={<Header />}/> */}
 	
 		</Routes>
