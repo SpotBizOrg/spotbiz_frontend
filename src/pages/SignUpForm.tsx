@@ -101,7 +101,7 @@ const SignUpFormCustomer: React.FC = () => {
           />
         </div>
         <div className="w-1/2 p-8 flex flex-col justify-center">
-          <h2 className="text-3xl font-bold mb-10 text-center">
+          <h2 className="text-3xl font-bold mb-10 text-center text-primary">
             Create Your Account
           </h2>
           <form className="space-y-4" onSubmit={handleSubmit}>
