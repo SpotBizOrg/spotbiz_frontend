@@ -16,6 +16,7 @@ import BusinessReviews from "./pages/BusinessReviews";
 import CustomerReview from "./pages/CustomerReviews";
 import Badges from "./pages/Badges";
 import CustomerProfile from './pages/CustomerProfile';
+import BusinessProfile from './pages/BusinessProfile';
 import AdminDashboard from './pages/AdminDashboard';
 import AdminPackages from './pages/AdminPackages'; // Import the new AdminPackages page
 import Chart from './components/PerformanceChart';
@@ -43,7 +44,8 @@ function App() {
         <Route path="/customer_reviews" element={<CustomerReview />} />
         <Route path="/business_reviews" element={<BusinessReviews />} />
         <Route path="/badges" element={<Badges />} />
-        <Route path="/profile" element={<CustomerProfile />} />
+        <Route path="/cus_profile" element={<CustomerProfile />} />
+        <Route path="/bus_profile" element={<BusinessProfile />} />
         <Route path="/search" element={<SearchResults />} />
         <Route path="/admin_packages" element={<AdminPackages />} /> {/* Add this line */}
       </Routes>
