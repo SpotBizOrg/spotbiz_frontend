@@ -9,7 +9,9 @@ import CategoryPills from '../components/CategoryPills';
 import { Button } from 'flowbite-react';
 import NearMeBtn from '../components/NearMeBtn';
 import { SearchPagination } from '../components/SearchPagePagination';
-
+import { Rating, RatingStar } from "flowbite-react";
+import { Badge } from "flowbite-react";
+import LocationOnIcon from '@mui/icons-material/LocationOn';
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
 };
@@ -40,7 +42,7 @@ const SearchResults: React.FC = () => {
       {/* <div className="pt-20 p-10">  */}
       <div className="flex flex-col justify-start px-20 mt-20 pt-5 w-full">
           <div className="w-full"> 
-            <div className='flex flex-row'>
+            <div className='flex flex-row justify-center'>
               <CategoryPills/>
             </div>
             <h1 className="text-3xl font-bold mb-1 pt-4">Search for "{query}"</h1>
@@ -73,15 +75,37 @@ const SearchResults: React.FC = () => {
                 />
               </div>
             </div>
-            <div className="grid grid-cols-5 gap-8">
+            <div className="grid grid-cols-4 gap-8 mb-10">
               <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200 flex flex-col items-center ">
                 <img src="https://abansgroup.com/wp-content/uploads/2022/05/Brand%20Finance%20ranking%20Large.png" alt="Abans" className="mb-4 rounded w-full" />
-                <div className="bg-gray-100 p-4 w-full text-center rounded-b-lg">
-                  <h2 className="text-xl font-bold text-gray-900">Abans - Panadura</h2>
-                  <p className="text-gray-700">672, Galle Road, Panadura</p>
-                  <p className="text-gray-700">0777456722</p>
-                  <p className="text-blue-500">www.abans.com</p>
+                <div className='flex flex-col divide-y w-full'>
+                <div className="flex flex-col gap-3  p-4 rounded-b-lg">
+                  <p className='text-xl font-semibold'>Abans - Colombo</p>
+                  <Rating>
+                    <RatingStar className='text-yellow-500' />
+                    <p className="ml-2 text-lg font-bold text-gray-900 dark:text-white">4.95</p>
+                  </Rating>
+                  <div className='flex flex-row gap-1 truncate'>
+                    <Badge className='bg-blue text-gray-800'>Computer</Badge>
+                    <Badge className='bg-blue text-gray-800'>AC</Badge>
+                    <Badge className='bg-blue text-gray-800'>Laptop</Badge>
+                    <Badge className='bg-blue text-gray-800'>Kitchen items</Badge>
+
+                  </div>
+                  <div className='text-wrap text-sm text-gray-800 mt-4 truncate'>
+                  <p>Dealers in all kinds of Laptops, electronic items and accessories</p>
+
+                  </div>
+                  <div className='flex flex-row gap-1 items-center mt-4'>
+                    <LocationOnIcon className='text-gray-800'/>
+                    <p className="text-gray-700">672, Galle Road, Colombo</p>
+                  </div>
                 </div>
+                <div className='p-4 flex justify-end text-red-600 text-sm font-semibold'>
+                  <p>Closed Now</p>
+                </div>
+                </div>
+                
               </div>
               <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200 flex flex-col items-center">
                 <img src="https://findit-resources.s3.us-east-2.amazonaws.com/account/profilePictures/1623042343123.jpg" alt="Dealz" className="mb-4 rounded w-full" />
