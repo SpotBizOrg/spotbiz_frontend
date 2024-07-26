@@ -53,7 +53,7 @@ interface PackageCardProps {
 
 const PackageCard: React.FC<PackageCardProps> = ({ title, description, price, features, buttonText, isPopular = false, onClick }) => {
   return (
-    <div className={`flex flex-col p-10 bg-white border-2 rounded-2xl shadow-md transition transform hover:scale-105 duration-300  ${isPopular ? 'border-primary' : 'border-gray-200'}`}>
+    <div className={`flex flex-col p-8 bg-white border-2 rounded-2xl shadow-md transition transform hover:scale-105 duration-300  ${isPopular ? 'border-primary' : 'border-gray-200'}`}>
       {isPopular && <div className="text-sm font-semibold text-primary">Current Plan</div>}
       <h3 className="mt-2 text-2xl font-bold text-gray-900">{title}</h3>
       <p className="mt-4 text-base text-gray-500">{description}</p>

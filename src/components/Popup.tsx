@@ -67,13 +67,13 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
 
   return (
     <div className="fixed font-body inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50 overflow-auto">
-      <div className="bg-white p-8 rounded-md shadow-lg w-5/6">
+      <div className="bg-white p-8 rounded-md shadow-lg w-11/12">
         <div className="flex justify-end">
           <button onClick={onClose} className="text-xl font-bold">&times;</button>
         </div>
         <div className="mt-2">
           <p className="text-subsubheading ">Subscription Plans</p>
-          <div className="mt-16 grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
+          <div className="mt-8 grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
             {packagesData.map((pkg) => (
               <PackageCard
                 key={pkg.id}
