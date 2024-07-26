@@ -21,7 +21,12 @@ import AdminDashboard from './pages/AdminDashboard';
 import AdminPackages from './pages/AdminPackages';
 import Chart from './components/PerformanceChart';
 import SearchResults from './pages/SearchResults';
+<<<<<<< HEAD
 import BusinessDashboard from './pages/BusinessDashboard';
+=======
+import CustomerGame from './pages/CustomerGame';
+import ManageGames from './pages/ManageGames';
+>>>>>>> c377714e098b978617de3c26c4e62df546de6101
 import './App.css';
 
 function App() {
@@ -48,8 +53,14 @@ function App() {
         <Route path="/cus_profile" element={<CustomerProfile />} />
         <Route path="/bus_profile" element={<BusinessProfile />} />
         <Route path="/search" element={<SearchResults />} />
+<<<<<<< HEAD
         <Route path="/admin_packages" element={<AdminPackages />} />
         <Route path="/bus_dashboard" element={<BusinessDashboard />} />
+=======
+        <Route path="/admin_packages" element={<AdminPackages />} /> {/* Add this line */}
+        <Route path="/customer_game" element={<CustomerGame />} /> 
+        <Route path="/manage_games" element={<ManageGames />} /> 
+>>>>>>> c377714e098b978617de3c26c4e62df546de6101
       </Routes>
     </BrowserRouter>
   );
