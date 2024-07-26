@@ -45,7 +45,7 @@ interface PackageCardProps {
   title: string;
   description: string;
   price: string;
-  features: { [key: string]: string | number };
+  features: { [key: string]: string | number | string[] };
   buttonText: string;
   isPopular?: boolean;
   onClick?: () => void; // Make onClick optional
