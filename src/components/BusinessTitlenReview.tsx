@@ -5,10 +5,10 @@ const BusinessTitlenReview: React.FC = () => {
   return (
     <div className="p-4 flex justify-between items-center mb-4">
       <div>
-        <h1 className="text-3xl font-bold text-bluedark">Abans</h1>
+        <h1 className="text-subheading font-bold text-bluedark">Abans</h1>
         <div className="flex items-center text-gray-800">
           <FaMapMarkerAlt className="mr-1" />
-          <p>Colombo, Gampaha, Galle</p>
+          <p>Colombo 7</p>
         </div>
       </div>
       <div className="text-right">
