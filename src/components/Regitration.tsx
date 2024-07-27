@@ -20,7 +20,7 @@ const Registration: React.FC = () => {
                 to="/signup-customer"
                 className="bg-primary text-white py-4 px-8 rounded-2xl shadow-lg hover:bg-blue-400 text-center text-lg font-semibold"
               >
-                I want to search for the services available in SpotBiz
+               I want to find and access services on SpotBiz
               </Link>
             </div>
           </div>

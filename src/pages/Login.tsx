@@ -1,18 +1,51 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { FaEnvelope, FaLock } from 'react-icons/fa';
 import login from '../assets/LoginPage.png';
+import SuccessMessage from "../components/SuccessMessage";
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [formError, setFormError] = useState('');
+  const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const handleLogin = () => {
-    // Add your login logic here
-    navigate('/customerhome');
+    if (validateForm()) {
+      setShowSuccessMessage(true);
+      setTimeout(() => {
+        navigate('/customerhome');
+      }, 3000); // Navigate after 3 seconds
+    }
+  };
+
+  const validateForm = (): boolean => {
+    if (!email) {
+      setFormError('Email is required');
+      return false;
+    }
+    if (!validateEmail(email)) {
+      setFormError('Invalid email address');
+      return false;
+    }
+    if (!password) {
+      setFormError('Password is required');
+      return false;
+    }
+    setFormError('');
+    return true;
+  };
+
+  const validateEmail = (email: string): boolean => {
+    // Simple email validation regex
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
   };
 
   return (
     <div className="flex h-screen bg-primary items-center justify-center font-body">
+      {showSuccessMessage && <SuccessMessage onClose={() => setShowSuccessMessage(false)} />}
       <div className="bg-customWhite rounded-lg shadow-lg w-full max-w-5xl flex overflow-hidden">
         <div className="w-1/2 flex items-center justify-center p-4">
           <img
@@ -23,7 +56,7 @@ const LoginPage: React.FC = () => {
         </div>
         <div className="w-1/2 flex flex-col justify-center p-8">
           <h2 className="text-3xl font-bold mb-8 text-center">Welcome Back!</h2>
-          <form>
+          <form onSubmit={(e) => { e.preventDefault(); handleLogin(); }}>
             <div className="mb-4">
               <label className="block text-gray-700 text-sm mb-2" htmlFor="email">
                 Email
@@ -33,12 +66,17 @@ const LoginPage: React.FC = () => {
                 <input
                   id="email"
                   type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   className="bg-transparent flex-1 focus:outline-none border-0"
                   placeholder="example@gmail.com"
                   style={{ boxShadow: 'none' }}
                 />
               </div>
             </div>
+            {formError === 'Email is required' || formError === 'Invalid email address' ? (
+              <p className="text-sm text-red-500">{formError}</p>
+            ) : null}
             <div className="mb-6">
               <label className="block text-gray-700 text-sm mb-2" htmlFor="password">
                 Password
@@ -48,12 +86,15 @@ const LoginPage: React.FC = () => {
                 <input
                   id="password"
                   type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
                   className="bg-transparent flex-1 focus:outline-none border-0"
                   placeholder="******"
                   style={{ boxShadow: 'none' }}
                 />
               </div>
             </div>
+            {formError === 'Password is required' && <p className="text-sm text-red-500">{formError}</p>}
             <div className="flex items-center justify-between mb-6">
               <button
                 className="bg-bluedark hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none w-full"
