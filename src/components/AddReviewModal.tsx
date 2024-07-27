@@ -19,7 +19,11 @@ export function AddReviewModal() {
         popup
         onClose={closeModal}
         initialFocus={titleInputRef}
-        className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50"
+        theme={{
+          content: {
+            base: "bg-white w-3/4 rounded-lg", // Added rounded-lg here
+          },
+        }}
       >
         <div className="relative w-full max-w-2xl bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6">
           <div className="flex items-center justify-between border-b border-gray-200 dark:border-gray-600 pb-2 mb-4">
