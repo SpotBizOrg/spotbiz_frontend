@@ -28,8 +28,9 @@ import CustomerProfile from "./pages/CustomerProfile2";
 import BusinessProfile from "./pages/BusinessProfile2";
 import ManageCoupons from './pages/ManageCoupons';
 import AdvertisementsPage from './components/BusinessAd';
-import BusinessPage from './pages/BusinessList';
+import BusinessList from './pages/BusinessList';
 import AdminPage from './pages/AdminPage'; 
+import BusinessPage from './pages/BusinessPage'; 
 import "./App.css";
 
 function App() {
@@ -56,6 +57,7 @@ function App() {
         <Route path="/advertisements" element={<AdvertisementsPage />} />
         <Route path="/business" element={<BusinessPage />} />
         <Route path="/admin/customers" element={<AdminPage />} /> 
+        <Route path="/admin/businesses" element={<BusinessList />} /> 
         <Route path="/Business_profile" element={<BusinessProfile />} />{" "}
         <Route path="/Customer_profile" element={<CustomerProfile />} />
         <Route path="/cus_profile" element={<CustomerProfile1 />} />
