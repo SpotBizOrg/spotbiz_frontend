@@ -9,42 +9,68 @@ interface Package {
   title: string;
   description: string;
   monthlyPrice: number;
-  features: string[];
+  features: { [key: string]: string | number };
   buttonText: string;
   isPopular?: boolean;
 }
 
-const initialPackagesData: Package[] = [
+const packagesData: Package[] = [
   {
     id: 1,
-    title: 'Freelancer',
-    description: 'The essentials to provide your best work for clients.',
-    monthlyPrice: 15,
-    features: ['5 products', 'Up to 1,000 subscribers', 'Basic analytics', '48-hour support response time'],
-    buttonText: 'Edit plan',
+    title: 'Free',
+    description: 'Get started with basic features for small businesses.',
+    monthlyPrice: 0,
+    features: {
+      'Advertisements & promotions per week': 1,
+      'Display business details to customer': '❌',
+      'Profile analytics': '❌',
+      'Interact with customers': '❌'
+    },
+    buttonText: 'Edit Package',
   },
   {
     id: 2,
-    title: 'Startup',
-    description: 'A plan that scales with your rapidly growing business.',
-    monthlyPrice: 30,
-    features: ['25 products', 'Up to 10,000 subscribers', 'Advanced analytics', '24-hour support response time', 'Marketing automations'],
-    buttonText: 'Edit plan',
+    title: 'Standard',
+    description: 'A suitable plan for growing businesses with essential features.',
+    monthlyPrice: 300,
+    features: {
+      'Advertisements & promotions per week': 3,
+      'Display business details to customer': 'Only basic details',
+      'Profile analytics': '❌',
+      'Interact with customers': '✅'
+    },
+    buttonText: 'Edit Package',
     isPopular: true,
   },
   {
     id: 3,
-    title: 'Enterprise',
-    description: 'Dedicated support and infrastructure for your company.',
-    monthlyPrice: 60,
-    features: ['Unlimited products', 'Unlimited subscribers', 'Advanced analytics', '1-hour support response time', 'Marketing automations', 'Custom reporting tools'],
-    buttonText: 'Edit plan',
+    title: 'Moderate',
+    description: 'Comprehensive plan including advanced features and extended support.',
+    monthlyPrice: 500,
+    features: {
+      'Advertisements & promotions per week': 5,
+      'Display business details to customer': 'All excluding business hours',
+      'Profile analytics': 'Only reviews',
+      'Interact with customers': '✅'
+    },
+    buttonText: 'Edit Package',
+  },
+  {
+    id: 4,
+    title: 'Premium',
+    description: 'The ultimate plan for businesses needing full access and premium support.',
+    monthlyPrice: 1000,
+    features: {
+      'Advertisements & promotions per week': 7,
+      'Display business details to customer': 'All',
+      'Profile analytics': 'Visit count and reviews',
+      'Interact with customers': '✅'
+    },
+    buttonText: 'Edit Package',
   },
 ];
 
 export default function AdminPackages() {
-  const [isMonthly, setIsMonthly] = useState(true);
-  const [packagesData, setPackagesData] = useState(initialPackagesData);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
 
@@ -65,11 +91,9 @@ export default function AdminPackages() {
     setSelectedPackage(null);
   };
 
-  const handleSave = () => {
-    // Implement save logic here
-    console.log('Package saved:', selectedPackage);
-    setIsModalOpen(false);
-    setSelectedPackage(null);
+  const handleAddPackage = () => {
+    // Logic to handle adding a new package
+    console.log('Add Package clicked');
   };
 
   return (
@@ -79,39 +103,28 @@ export default function AdminPackages() {
         <div className="flex-none w-64">
           <Adminsidebar selectedTile={''} />
         </div>
-        <div className="flex-1 px-4 sm:px-6 lg:px-8 py-8 sm:py-12">
+        <div className="flex-1 px-2 sm:px-4 lg:px-6 py-4 sm:py-6">
           <div className="max-w-7xl mx-auto">
-            <div className="text-center">
-              <h2 className="text-2xl font-bold tracking-tight  text-gray-900 sm:text-3xl">Update Subscription Packages</h2>
-              <p className="mt-5 text-lg leading-8 text-gray-600">
-                Edit the details of the packages to provide the best features for engaging your audience, creating customer loyalty, and driving sales.
-              </p>
-              <div className="flex justify-center mt-8">
-                <button
-                  onClick={() => setIsMonthly(true)}
-                  className={`px-4 py-2 font-semibold text-sm ${isMonthly ? 'text-white bg-purple-600' : 'text-gray-700 bg-gray-200'} rounded-l-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500`}
-                >
-                  Monthly
-                </button>
-                <button
-                  onClick={() => setIsMonthly(false)}
-                  className={`px-4 py-2 font-semibold text-sm ${!isMonthly ? 'text-white bg-purple-600' : 'text-gray-700 bg-gray-200'} rounded-r-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-purple-500`}
-                >
-                  Annually
-                </button>
-              </div>
+            <div className="flex justify-between items-center mt-12">
+              <h2 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-2xl ">Update Subscription Packages</h2>
+              <button
+                onClick={handleAddPackage}
+                className="px-6 py-2 mr-9 bg-blue1 text-white rounded-lg hover:bg-bluedark"
+              >
+                Add Package
+              </button>
             </div>
-            <div className="mt-8 grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            <div className="mt-9 grid gap-4 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
               {packagesData.map((pkg) => (
                 <PackageCard
                   key={pkg.id}
                   title={pkg.title}
                   description={pkg.description}
-                  price={isMonthly ? `$${pkg.monthlyPrice}/month` : `$${pkg.monthlyPrice * 12}/year`}
+                  price={`Rs. ${pkg.monthlyPrice}`}
                   features={pkg.features}
-                  buttonText={pkg.buttonText}
+                  buttonText="Edit Package"
                   isPopular={pkg.isPopular}
-                  onClick={() => handleEdit(pkg)} // Add click handler
+                  onClick={() => handleEdit(pkg)}
                 />
               ))}
             </div>
@@ -121,14 +134,14 @@ export default function AdminPackages() {
       <Modal isOpen={isModalOpen} onClose={handleModalClose} onUpdate={handleUpdate}>
         {selectedPackage && (
           <div>
-            <h3 className="text-xl font-bold mb-4 text-center">Edit Package: {selectedPackage.title}</h3>
+            <h3 className="text-2xl font-bold mb-6">Edit Package: {selectedPackage.title}</h3>
             <form>
               <div className="mb-4">
-                <label className="block text-gray-700">package Title</label>
+                <label className="block text-gray-700">Package Title</label>
                 <input
                   type="text"
                   value={selectedPackage.title}
-                  className="w-full p-2 border border-gray-300 rounded mt-2"
+                  className="w-full p-3 border border-gray-300 rounded mt-2"
                   onChange={(e) =>
                     setSelectedPackage({ ...selectedPackage, title: e.target.value })
                   }
@@ -145,7 +158,7 @@ export default function AdminPackages() {
                 />
               </div>
               <div className="mb-4">
-                <label className="block text-gray-700">Price ($)</label>
+                <label className="block text-gray-700">Price (Rs.)</label>
                 <input
                   type="number"
                   value={selectedPackage.monthlyPrice}
@@ -155,7 +168,6 @@ export default function AdminPackages() {
                   }
                 />
               </div>
-              
             </form>
           </div>
         )}
