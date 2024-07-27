@@ -52,15 +52,9 @@ function App() {
         <Route path="/search" element={<SearchResults />} />
         <Route path="/admin_packages" element={<AdminPackages />} />
         <Route path="/bus_dashboard" element={<BusinessDashboard />} />
-<<<<<<< HEAD
-        {/* <Route path="/admin_packages" element={<AdminPackages />} /> Add this line */}
-        <Route path="/customer_game" element={<CustomerGame />} /> 
-        <Route path="/manage_games" element={<ManageGames />} /> 
-=======
         <Route path="/customer_game" element={<CustomerGame />} /> 
         <Route path="/manage_games" element={<ManageGames />} /> 
         <Route path = "/banned" element={<Banned/>}/>
->>>>>>> 3472f7d4e7675c7265c60fed8718d81d7787562c
       </Routes>
     </BrowserRouter>
   );
