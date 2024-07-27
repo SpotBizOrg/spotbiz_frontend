@@ -24,6 +24,8 @@ import SearchResults from './pages/SearchResults';
 import BusinessDashboard from './pages/BusinessDashboard';
 import CustomerGame from './pages/CustomerGame';
 import ManageGames from './pages/ManageGames';
+import CustomerProfile from "./pages/CustomerProfile2";
+import BusinessProfile from "./pages/BusinessProfile2";
 import './App.css';
 
 function App() {
@@ -47,6 +49,8 @@ function App() {
         <Route path="/customer_reviews" element={<CustomerReview />} />
         <Route path="/business_reviews" element={<BusinessReviews />} />
         <Route path="/badges" element={<Badges />} />
+        <Route path="/Business_profile" element={<BusinessProfile />} />{" "}
+        <Route path="/Customer_profile" element={<CustomerProfile />} />
         <Route path="/cus_profile" element={<CustomerProfile />} />
         <Route path="/bus_profile" element={<BusinessProfile />} />
         <Route path="/search" element={<SearchResults />} />
