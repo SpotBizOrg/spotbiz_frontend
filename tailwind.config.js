@@ -1,6 +1,9 @@
-/** @type {import('tailwindcss').Config} */
+const flowbite = require("flowbite-react/tailwind");
+const colors = require('tailwindcss/colors');
 
-export default {
+
+/** @type {import('tailwindcss').Config} */
+module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
     "./node_modules/flowbite/**/*.js"
@@ -10,6 +13,7 @@ export default {
       borderRadius: {
         'custom': '22px',
         'custom2': '10px',
+        'custom3': '5px',
       },
       fontFamily: {
         body: ['"Poppins"', 'sans-serif'],
@@ -21,6 +25,7 @@ export default {
           500: '#ecc94b',
         },
         blue: '#bfdbfe',
+        sapphireblue: "#0f52ba",
         bluedark: "#0D3B66",
         bluegray: '#ebf3fa',
         customYellow: '#FAF0CA',
@@ -44,6 +49,16 @@ export default {
         },
         primary: '#0D3B66',
         secondary: '#D9D9D9',
+        blue1 : '#0E47A1',
+        blue2:'#1564C0',
+        blue3:'#1976D3',
+        blue4:'#1D89E4',
+        blue5:'#2196F3',
+        blue6:'#42A5F6',
+        blue7:'#64B5F6',  
+        blue8:'#90CAF8',
+        blue9:'#BBDEFA',
+        blue10:'#E4F2FD',
       },
       spacing: {
         96: '24rem',
@@ -64,7 +79,6 @@ export default {
         'top': '0 -4px 10px -6px rgba(0, 0, 0, 0.5)',
         'bottom': '0 4px 10px -6px rgba(0, 0, 0, 0.5)',
       },
-      
     },
   },
   variants: {
@@ -75,6 +89,7 @@ export default {
     },
   },
   plugins: [
-    require('flowbite/plugin')
+    require('flowbite/plugin'),
+    flowbite.plugin(),
   ],
 };
