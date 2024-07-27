@@ -27,26 +27,21 @@ const SignupFormBusiness: React.FC = () => {
 
     if (!name) {
       errors.name = "*Please fill this field";
-    }
-    if (!email) {
+    } else if (!email) {
       errors.email = "*Please fill this field";
     } else if (!validateEmail(email)) {
       errors.email = "Invalid email address";
-    }
-    if (!phone) {
+    } else if (!phone) {
       errors.phone = "*Please fill this field";
     } else if (!validatePhone(phone)) {
       errors.phone = "Phone number must be exactly 10 digits";
-    }
-    if (!password) {
+    } else if (!password) {
       errors.password = "*Please fill this field";
     } else if (!validatePassword(password)) {
       errors.password = passwordError;
-    }
-    if (!businessName) {
+    } else if (!businessName) {
       errors.businessName = "*Please fill this field";
-    }
-    if (!businessRegNo) {
+    } else if (!businessRegNo) {
       errors.businessRegNo = "*Please fill this field";
     }
 

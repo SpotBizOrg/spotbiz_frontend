@@ -24,26 +24,33 @@ const SignUpFormCustomer: React.FC = () => {
     const errors: { [key: string]: string } = {};
 
     if (!name) {
-      errors.name = "*Please fill this field";
+      setFormErrors({ name: "*Please fill this field" });
+      return false;
     }
     if (!email) {
-      errors.email = "*Please fill this field";
+      setFormErrors({ email: "*Please fill this field" });
+      return false;
     } else if (!validateEmail(email)) {
-      errors.email = "Invalid email address";
+      setFormErrors({ email: "Invalid email address" });
+      return false;
     }
     if (!phone) {
-      errors.phone = "*Please fill this field";
+      setFormErrors({ phone: "*Please fill this field" });
+      return false;
     } else if (!validatePhone(phone)) {
-      errors.phone = "Phone number must be 10 digits";
+      setFormErrors({ phone: "Phone number must be 10 digits" });
+      return false;
     }
     if (!password) {
-      errors.password = "*Please fill this field";
+      setFormErrors({ password: "*Please fill this field" });
+      return false;
     } else if (!validatePassword(password)) {
-      errors.password = passwordError;
+      setFormErrors({ password: passwordError });
+      return false;
     }
 
-    setFormErrors(errors);
-    return Object.keys(errors).length === 0;
+    setFormErrors({});
+    return true;
   };
 
   const validateEmail = (email: string): boolean => {
@@ -136,7 +143,7 @@ const SignUpFormCustomer: React.FC = () => {
               <input
                 className="bg-gray-200 appearance-none border-0 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
                 id="phone"
-                type="text" 
+                type="text"
                 placeholder="Phone Number"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
