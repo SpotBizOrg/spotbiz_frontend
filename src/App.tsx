@@ -25,7 +25,8 @@ import SearchResults from './pages/SearchResults';
 import CustomerGame from './pages/CustomerGame';
 import ManageGames from './pages/ManageGames';
 import AdvertisementsPage from './components/BusinessAd';
-import BusinessPage from './pages/BusinessPage'; // Import the BusinessPage component
+import BusinessPage from './pages/BusinessList';
+import AdminPage from './pages/AdminPage'; // Import the AdminPage component
 
 import './App.css';
 
@@ -57,7 +58,8 @@ function App() {
         <Route path="/customer_game" element={<CustomerGame />} />
         <Route path="/manage_games" element={<ManageGames />} />
         <Route path="/advertisements" element={<AdvertisementsPage />} />
-        <Route path="/business" element={<BusinessPage />} /> {/* Add this line */}
+        <Route path="/business" element={<BusinessPage />} />
+        <Route path="/admin/customers" element={<AdminPage />} /> {/* Add this line */}
       </Routes>
     </BrowserRouter>
   );
