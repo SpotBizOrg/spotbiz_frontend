@@ -1,10 +1,13 @@
-// src/components/PackageCard.tsx
 import React from 'react';
 
-const PackageCard: React.FC = () => {
+interface PkgCardProps {
+  onUpgradeClick: () => void;
+}
+
+const PkgCard: React.FC<PkgCardProps> = ({ onUpgradeClick }) => {
   return (
     <div className="bg-white p-6 rounded-lg shadow-lg w-full md:w-3/4 mx-auto mt-3">
-      <h2 className="text-lg font-semibold mt-1 mb-5 pl-3 ">Current Package</h2>
+      <h2 className="text-lg font-semibold mt-1 mb-5 pl-3">Current Package</h2>
       <div className="text-xl font-bold text-center mb-1">Standard</div>
       <div className="text-3xl font-bold text-center mb-4">
         Rs.300
@@ -17,7 +20,10 @@ const PackageCard: React.FC = () => {
         <li>Interact with customers</li>
       </ul>
       <div className="flex justify-center">
-        <button className="bg-green-500 text-white py-2 px-4 rounded-full">
+        <button
+          className="bg-green-500 text-white py-2 px-4 rounded-full"
+          onClick={onUpgradeClick} // Call the onUpgradeClick function when the button is clicked
+        >
           Upgrade the Package
         </button>
       </div>
@@ -25,4 +31,4 @@ const PackageCard: React.FC = () => {
   );
 };
 
-export default PackageCard;
+export default PkgCard;
