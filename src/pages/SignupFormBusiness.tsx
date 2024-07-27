@@ -76,18 +76,18 @@ const SignupFormBusiness: React.FC = () => {
     } else if (!validatePhone(phoneNo)) {
       toast.error("Phone number must be exactly 10 digits");
       return false;
-    } else if (!password) {
-      toast.error("Password can not be empty");
-      return false;
-    } else if(!validatePassword(password)){
-      return false;
     } else if (!businessName) {
       toast.error("Business name can not be empty");
       return false;
     } else if (!businessRegNo) {
       toast.error("Registration number can not be empty");
       return false;
-    }
+    }else if (!password) {
+      toast.error("Password can not be empty");
+      return false;
+    } else if(!validatePassword(password)){
+      return false;
+    } 
     return true;
   };
 
@@ -172,18 +172,6 @@ const SignupFormBusiness: React.FC = () => {
               />
             </div>
             <div className="flex items-center bg-gray-200 rounded px-3 py-2">
-              <FaLock className="text-gray-500 mr-2" />
-              <input
-                className="bg-gray-200 appearance-none border-0 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
-                type="password"
-                placeholder="Password"
-                style={{ boxShadow: "none" }}
-                aria-label="Password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            <div className="flex items-center bg-gray-200 rounded px-3 py-2">
               <FaBriefcase className="text-gray-500 mr-2" />
               <input
                 className="bg-gray-200 appearance-none border-0 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
@@ -205,6 +193,18 @@ const SignupFormBusiness: React.FC = () => {
                 value={businessRegNo}
                 onChange={(e) => setBusinessRegNo(e.target.value)}
                 style={{ boxShadow: "none" }}
+              />
+            </div>
+            <div className="flex items-center bg-gray-200 rounded px-3 py-2">
+              <FaLock className="text-gray-500 mr-2" />
+              <input
+                className="bg-gray-200 appearance-none border-0 rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none"
+                type="password"
+                placeholder="Password"
+                style={{ boxShadow: "none" }}
+                aria-label="Password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
             <div className="mt-12">

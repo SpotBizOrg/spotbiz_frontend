@@ -13,7 +13,7 @@ const games = [
   {
     image: Tag234Players,
     title: 'Tag 2 3 4 Players',
-    Developer: 'Jet Games',
+    developer: 'Jet Games',
     description: 'Hello',
     visits: '11M',
     usage: 1,
@@ -23,7 +23,7 @@ const games = [
   {
     image: KittyScrambleWordStacks,
     title: 'Kitty Scramble: Word Stacks',
-    Developer: 'Clever Apps',
+    developer: 'Clever Apps',
     description: 'Hello',
     visits: '11M',
     usage: 1,
@@ -32,7 +32,7 @@ const games = [
   {
     image: CuttheRope,
     title: 'Cut the Rope',
-    Developer: 'Famobi',
+    developer: 'Famobi',
     description: 'Hello',
     visits: '11M',
     usage: 1,
@@ -41,7 +41,7 @@ const games = [
   {
     image: CupsWaterSortPuzzle,
     title: 'Cups - Water Sort Puzzle',
-    Developer: 'Blury Studio',
+    developer: 'Blury Studio',
     description: 'Hello',
     visits: '11M',
     usage: 1,
@@ -50,7 +50,7 @@ const games = [
   {
     image: SortParking,
     title: 'Sort Parking',
-    Developer: 'Synk',
+    developer: 'Synk',
     description: 'Hello',
     visits: '11M',
     usage: 1,
@@ -59,7 +59,7 @@ const games = [
   {
     image: DropMergetheNumbers,
     title: 'Drop & Merge the Numbers',
-    Developer: 'GMR Bros',
+    developer: 'GMR Bros',
     description: 'Hello',
     visits: '11M',
     usage: 1,
@@ -68,7 +68,7 @@ const games = [
   {
     image: SortParking,
     title: 'Sort Parking',
-    Developer: 'Synk',
+    developer: 'Synk',
     description: 'Hello',
     visits: '11M',
     usage: 1,
@@ -77,7 +77,7 @@ const games = [
   {
     image: DropMergetheNumbers,
     title: 'Drop & Merge the Numbers',
-    Developer: 'GMR Bros',
+    developer: 'GMR Bros',
     description: 'Hello',
     visits: '11M',
     usage: 1,
@@ -86,7 +86,7 @@ const games = [
   {
     image: Tag234Players,
     title: 'Tag 2 3 4 Players',
-    Developer: 'Jet Games',
+    developer: 'Jet Games',
     description: 'Hello',
     visits: '11M',
     usage: 1,
@@ -96,7 +96,7 @@ const games = [
   {
     image: CuttheRope,
     title: 'Cut the Rope',
-    Developer: 'Famobi',
+    developer: 'Famobi',
     description: 'Hello',
     visits: '11M',
     usage: 1,
@@ -105,7 +105,7 @@ const games = [
   {
     image: CupsWaterSortPuzzle,
     title: 'Cups - Water Sort Puzzle',
-    Developer: 'Blury Studio',
+    developer: 'Blury Studio',
     description: 'Hello',
     visits: '11M',
     usage: 1,
@@ -114,7 +114,7 @@ const games = [
   {
     image: CupsWaterSortPuzzle,
     title: 'Cups - Water Sort Puzzle',
-    Developer: 'Blury Studio',
+    developer: 'Blury Studio',
     description: 'Hello',
     visits: '11M',
     usage: 1,
@@ -123,7 +123,7 @@ const games = [
   {
     image: DropMergetheNumbers,
     title: 'Drop & Merge the Numbers',
-    Developer: 'GMR Bros',
+    developer: 'GMR Bros',
     description: 'Hello',
     visits: '11M',
     usage: 1,
