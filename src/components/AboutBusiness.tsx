@@ -1,6 +1,6 @@
 const AboutBusiness:React.FC = () => {
     return(
-        <div className="bg-white p-4 rounded-md shadow-md mb-10 border border-gray-300">
+        <div className="bg-white p-4 rounded-md shadow-md mb-5 border border-gray-300">
             <div className="p-2 border border-gray-400 rounded text-center">
                 <p className="font-bold text-bluedark text-bodymedium">About Us</p>
             </div>

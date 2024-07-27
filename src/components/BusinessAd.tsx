@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FaFacebook, FaInstagram, FaWhatsapp } from 'react-icons/fa';
+import { Modal, Button } from 'flowbite-react'; // Importing Modal and Button from Flowbite
 import Businessnavbar from '../components/Businessnavbar';
 import Businesssidebar from '../components/Businesssidebar';
 import profilePic from '../assets/profile.png';
@@ -10,6 +11,7 @@ import ad3 from '../assets/ad3.png';
 import ad4 from '../assets/add4.jpeg';
 import ad5 from '../assets/ad5.jpeg';
 import ad6 from '../assets/ad6.jpg';
+import Container from './Container';
 
 interface Advertisement {
   img: string;
@@ -58,89 +60,92 @@ const BusinessAd: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <div className="flex">
-        <div className="w-1/5">
-          <Businesssidebar selectedTile={''} />
+    <Container>
+      <Businessnavbar />
+      <Businesssidebar selectedTile=""/>
+      <div className="px-12 sm:ml-64 mt-20">
+        <div className="w-fit mb-10 border-b-gray-900">
+          <h1 className="text-subsubheading text-bluedark">My Advertisements and Promotions</h1>
         </div>
-        <div className="w-4/5 flex flex-col">
-          <Businessnavbar />
-          <div className="flex items-center justify-center flex-grow p-20">
-            <img src={abans} alt="Abans Logo" className="h-20" />
-          </div>
+        
+        <div className="grid grid-cols-3 gap-4">
+          {advertisements.slice(0, 3).map((ad, index) => (
+            <div
+              key={index}
+              className="bg-white p-5 rounded-md shadow-md mb-5 border border-gray-300 cursor-pointer"
+              onClick={() => openPopup(ad.img, ad)}
+            >
+              <img
+                src={ad.img}
+                alt="Ad"
+                className="w-full h-auto object-cover rounded-lg mb-5 transform transition-transform duration-300 hover:scale-105"
+              />
+              <p className='text-bodylarge'>{ad.details}</p>
+              <p className="mt-2 text-bodysmall text-gray-600"><b>Posted on:</b> {ad.date}</p>
+            </div>
+          ))}
+        </div>
 
-          <main className="flex-grow p-20">
-            {popupOpen && (
-              <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-                <div className="bg-white p-4 rounded shadow-lg max-w-3/4">
-                  <button onClick={closePopup} className="float-right text-red-500">X</button>
-                  <img src={selectedImage!} alt="Ad" className="w-full h-auto object-cover rounded mb-4 max-h-96" />
-                  <p className="text-lg font-semibold mb-2">{selectedImageDetails?.description}</p>
-                  <p className="text-sm text-gray-600 mb-2">Promotion Validity: {selectedImageDetails?.startDate} - {selectedImageDetails?.endDate}</p>
+        <div className="grid grid-cols-3 gap-4">
+          {advertisements.slice(3).map((ad, index) => (
+            <div
+              key={index}
+              className="bg-white p-5 rounded-md shadow-md mb-5 border border-gray-300 cursor-pointer"
+              onClick={() => openPopup(ad.img, ad)}
+            >
+              <img
+                src={ad.img}
+                alt="Ad"
+                className="w-full h-auto object-cover rounded-lg mb-5 transform transition-transform duration-300 hover:scale-105"
+              />
+              <p className='text-bodylarge'>{ad.details}</p>
+              <p className="mt-2 text-bodysmall text-gray-600"><b>Posted on:</b> {ad.date}</p>
+            </div>
+          ))}
+        </div>
 
-                  <div className="bg-gray-100 rounded-lg p-4 mb-4">
-                    <div className="flex justify-between mb-2">
-                      <div>
-                        <p className="font-semibold">Start Date:</p>
-                        <p>{selectedImageDetails?.startDate}</p>
-                      </div>
-                      <div>
-                        <p className="font-semibold">End Date:</p>
-                        <p>{selectedImageDetails?.endDate}</p>
-                      </div>
+        <Modal dismissible show={popupOpen} onClose={closePopup}>
+          <Modal.Header>Advertisement Details</Modal.Header>
+          <Modal.Body>
+            <div className="space-y-6">
+              <img src={selectedImage!} alt="Ad" className="w-full h-auto object-cover rounded mb-4" />
+              <div className="flex justify-between">
+                <div>
+                  <p className="text-lg font-semibold">{selectedImageDetails?.description}</p>
+                  <p className="text-sm text-gray-600">Posted on: {selectedImageDetails?.date}</p>
+                </div>
+                <div className="bg-gray-100 rounded-lg p-4 mb-4">
+                  <div className="flex justify-between mb-2">
+                    <div>
+                      <p className="font-semibold">Start Date:</p>
+                      <p>{selectedImageDetails?.startDate}</p>
                     </div>
-                    <div className="flex justify-between">
-                      <div>
-                        <p className="font-semibold">Branch Name:</p>
-                        <p>{selectedImageDetails?.branch}</p>
-                      </div>
-                      <div>
-                        <p className="font-semibold">Contact No:</p>
-                        <p>{selectedImageDetails?.contact}</p>
-                      </div>
+                    <div>
+                      <p className="font-semibold">End Date:</p>
+                      <p>{selectedImageDetails?.endDate}</p>
                     </div>
                   </div>
-
-                  {renderSocialIcons()}
+                  <div className="flex justify-between">
+                    <div>
+                      <p className="font-semibold">Branch Name:</p>
+                      <p>{selectedImageDetails?.branch}</p>
+                    </div>
+                    <div>
+                      <p className="font-semibold">Contact No:</p>
+                      <p>{selectedImageDetails?.contact}</p>
+                    </div>
+                  </div>
                 </div>
               </div>
-            )}
-
-            <h1 className="text-2xl font-bold mb-10 bg-yellow-200 p-4 rounded-lg w-100">Latest Promotions</h1>
-            <div className="grid grid-cols-3 gap-4">
-              {advertisements.slice(0, 3).map((ad, index) => (
-                <div key={index} className="bg-yellow-50 shadow-md rounded p-4">
-                  <img src={ad.img} alt="Ad" className="w-full h-auto object-cover rounded-lg" />
-                  <p className="mt-2 text-gray-600">Posted on: {ad.date}</p>
-                  <button
-                    onClick={() => openPopup(ad.img, ad)}
-                    className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
-                  >
-                    See More
-                  </button>
-                </div>
-              ))}
+              {renderSocialIcons()}
             </div>
-
-            <h2 className="text-xl font-bold mt-8 mb-4 bg-yellow-200 p-4 rounded-lg w-100">Old Promotions</h2>
-            <div className="grid grid-cols-3 gap-4">
-              {advertisements.slice(3).map((ad, index) => (
-                <div key={index} className="bg-yellow-50 shadow-md rounded p-4">
-                  <img src={ad.img} alt="Ad" className="w-full h-auto object-cover rounded-lg" />
-                  <p className="mt-2 text-gray-600">Posted on: {ad.date}</p>
-                  <button
-                    onClick={() => openPopup(ad.img, ad)}
-                    className="mt-2 bg-blue-500 text-white px-4 py-2 rounded"
-                  >
-                    See More
-                  </button>
-                </div>
-              ))}
-            </div>
-          </main>
-        </div>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button onClick={closePopup}>Close</Button>
+          </Modal.Footer>
+        </Modal>
       </div>
-    </div>
+    </Container>
   );
 };
 
