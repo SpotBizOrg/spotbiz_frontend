@@ -4,7 +4,8 @@ import Categories from "../components/Categories";
 import HowToFindShop from "../components/HowToFindShop";
 import HowToRegisterBusiness from "../components/HowToRegisterBusiness";
 import Recommendations from "../components/Recommendations";
-import ContactUs from "../components/ContactUs";
+// import ContactUs from "../components/ContactUs";
+import Footer from "../components/Footer";
 
 const Home: React.FC = () => {
     return(
@@ -17,7 +18,9 @@ const Home: React.FC = () => {
 	  <HowToFindShop />
 	  <HowToRegisterBusiness />
 	  <Recommendations />
-	  <ContactUs />
+	  {/* <ContactUs /> */}
+      <Footer />
+      
         </div>
     );
 };
