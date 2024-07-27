@@ -42,11 +42,12 @@ const SearchResults: React.FC = () => {
       {/* <div className="pt-20 p-10">  */}
       <div className="flex flex-col justify-start px-20 mt-20 pt-5 w-full">
           <div className="w-full"> 
+            
+            <h1 className="text-3xl font-bold mb-1 pt-4">Search for "{query}"</h1>
+            <p className="text-gray-700 mb-6 pt-1">500 Search results</p>
             <div className='flex flex-row justify-center'>
               <CategoryPills/>
             </div>
-            <h1 className="text-3xl font-bold mb-1 pt-4">Search for "{query}"</h1>
-            <p className="text-gray-700 mb-6 pt-1">500 Search results</p>
             {/* <div className="flex items-center mb-10">
               <span className="text-gray-700 font-bold mr-20">Filter by:</span>
               <button className="bg-yellow-200 text-gray-700 px-8 py-1 rounded-full flex items-center mr-10">

@@ -17,7 +17,7 @@ const CategoryPills = () => {
       {categories.map((category) => (
         <div
           key={category.name}
-          className={`flex border p-5 rounded-full items-center mr-4 cursor-pointer hover:border-gray-800 
+          className={`flex border p-4 rounded-full items-center mr-4 cursor-pointer hover:border-gray-800 
             ${activeCategory === category.name ? 'border-blue1 bg-blue-100' : 'border-gray-400'}`}
           onClick={() => setActiveCategory(category.name)}
         >
