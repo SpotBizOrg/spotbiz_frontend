@@ -18,9 +18,10 @@ import Badges from "./pages/Badges";
 import CustomerProfile from './pages/CustomerProfile';
 import BusinessProfile from './pages/BusinessProfile';
 import AdminDashboard from './pages/AdminDashboard';
-import AdminPackages from './pages/AdminPackages'; // Import the new AdminPackages page
+import AdminPackages from './pages/AdminPackages';
 import Chart from './components/PerformanceChart';
 import SearchResults from './pages/SearchResults';
+import BusinessDashboard from './pages/BusinessDashboard';
 import CustomerGame from './pages/CustomerGame';
 import ManageGames from './pages/ManageGames';
 import './App.css';
@@ -49,10 +50,11 @@ function App() {
         <Route path="/cus_profile" element={<CustomerProfile />} />
         <Route path="/bus_profile" element={<BusinessProfile />} />
         <Route path="/search" element={<SearchResults />} />
-        <Route path="/admin_packages" element={<AdminPackages />} /> {/* Add this line */}
-          <Route path = "/banned" element={<Banned/>}/>
-        <Route path="/customer_game" element={<CustomerGame />} />
-        <Route path="/manage_games" element={<ManageGames />} />
+        <Route path="/admin_packages" element={<AdminPackages />} />
+        <Route path="/bus_dashboard" element={<BusinessDashboard />} />
+        <Route path="/customer_game" element={<CustomerGame />} /> 
+        <Route path="/manage_games" element={<ManageGames />} /> 
+        <Route path = "/banned" element={<Banned/>}/>
       </Routes>
     </BrowserRouter>
   );
