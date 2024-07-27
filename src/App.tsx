@@ -50,8 +50,9 @@ function App() {
         <Route path="/bus_profile" element={<BusinessProfile />} />
         <Route path="/search" element={<SearchResults />} />
         <Route path="/admin_packages" element={<AdminPackages />} /> {/* Add this line */}
-        <Route path="/customer_game" element={<CustomerGame />} /> 
-        <Route path="/manage_games" element={<ManageGames />} /> 
+          <Route path = "/banned" element={<Banned/>}/>
+        <Route path="/customer_game" element={<CustomerGame />} />
+        <Route path="/manage_games" element={<ManageGames />} />
       </Routes>
     </BrowserRouter>
   );

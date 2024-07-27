@@ -11,6 +11,9 @@ const Home: React.FC = () => {
         <div className="font-body">
             <Header />
 	  <Categories />
+      <div className="text-center">
+      <p className="mt-6 text-gray-500 italic">Discover latest offers and win vouchers in Sri Lankan shops being at your comfort zones</p>
+      </div>
 	  <HowToFindShop />
 	  <HowToRegisterBusiness />
 	  <Recommendations />

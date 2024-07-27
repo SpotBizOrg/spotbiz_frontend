@@ -10,8 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.0",
+    "@emotion/styled": "^11.13.0",
     "@headlessui/react": "^2.1.0",
-    "@heroicons/react": "^2.1.5",
+    "@heroicons/react": "^2.1.4",
+    "@mui/icons-material": "^5.16.4",
+    "@mui/material": "^5.16.4",
     "boxicons": "^2.1.4",
     "chart.js": "^4.4.3",
     "flowbite": "^2.4.1",
