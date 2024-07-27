@@ -26,6 +26,7 @@ import CustomerGame from "./pages/CustomerGame";
 import ManageGames from "./pages/ManageGames";
 import CustomerProfile from "./pages/CustomerProfile2";
 import BusinessProfile from "./pages/BusinessProfile2";
+import ManageCoupons from './pages/ManageCoupons';
 import "./App.css";
 
 function App() {
@@ -53,7 +54,8 @@ function App() {
         <Route path="/Customer_profile" element={<CustomerProfile />} />
         <Route path="/cus_profile" element={<CustomerProfile1 />} />
         <Route path="/bus_profile" element={<BusinessProfile1 />} />
-        <Route path="/search" element={<SearchResults />} />
+        <Route path="/search" element={<SearchResults />} /> 
+        <Route path="/manage_coupons" element={<ManageCoupons />} /> 
         <Route path="/admin_packages" element={<AdminPackages />} />
         <Route path="/bus_dashboard" element={<BusinessDashboard />} />
         <Route path="/customer_game" element={<CustomerGame />} />
