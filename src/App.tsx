@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Home from "./pages/LandingPage";
 import Login from "./pages/Login";
 import Registration from "./components/Regitration";
@@ -35,7 +35,6 @@ import "./App.css";
 
 function App() {
   return (
-    <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/customerhome" element={<CustomerHome />} />
@@ -70,7 +69,6 @@ function App() {
         <Route path="/manage_games" element={<ManageGames />} />
         <Route path="/banned" element={<Banned />} />
       </Routes>
-    </BrowserRouter>
   );
 }
 
