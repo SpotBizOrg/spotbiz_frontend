@@ -119,6 +119,7 @@ const AboutMe: React.FC = () => {
             </div>
             <div className="flex justify-end gap-4">
               <Button
+                className="text-white bg-bluedark hover:bg-bluedark/90 focus:ring-4 focus:outline-none focus:ring-bluedark/50 font-medium rounded-lg inline-flex items-center transition duration-200"
                 onClick={() => {
                   // Handle save logic here
                   setIsModalOpen(false);

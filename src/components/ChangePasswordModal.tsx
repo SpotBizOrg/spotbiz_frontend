@@ -110,8 +110,15 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
           </div>
         </div>
         <div className="flex justify-end gap-4 mt-6">
-          <Button onClick={onClose}>Cancel</Button>
-          <Button onClick={onClose}>Save</Button>
+          <Button onClick={onClose} color={"gray"}>
+            Cancel
+          </Button>
+          <Button
+            onClick={onClose}
+            className="text-white bg-bluedark hover:bg-bluedark/90 focus:ring-4 focus:outline-none focus:ring-bluedark/50 font-medium rounded-lg inline-flex items-center transition duration-200"
+          >
+            Save
+          </Button>
         </div>
       </Modal.Body>
     </Modal>
