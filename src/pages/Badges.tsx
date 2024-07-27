@@ -176,8 +176,8 @@ function Badges() {
               display: "flex",
               justifyContent: "center",
               alignItems: "center",
-              background: "rgba(17, 24, 39, 0.5)",
             }}
+            className="fixed flex  bg-gray-900 bg-opacity-50"
           >
             <Modal.Header>Create New Badge</Modal.Header>
             <Modal.Body>

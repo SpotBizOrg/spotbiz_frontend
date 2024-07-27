@@ -74,13 +74,13 @@ const BusinessTables: React.FC = () => {
         <div>
           <button
             onClick={() => handleChange('reported')}
-            className={`px-4 py-2 rounded-full ${selectedTable === 'reported' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+            className={`px-4 py-2 rounded-full ${selectedTable === 'reported' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-800'}`}
           >
             Reported
           </button>
           <button
             onClick={() => handleChange('appealed')}
-            className={`px-4 py-2 ml-2 rounded-full ${selectedTable === 'appealed' ? 'bg-blue-500 text-white' : 'bg-gray-200 text-gray-800'}`}
+            className={`px-4 py-2 ml-2 rounded-full ${selectedTable === 'appealed' ? 'bg-primary text-white' : 'bg-gray-200 text-gray-800'}`}
           >
             Appeals
           </button>

@@ -28,7 +28,7 @@ function Reviews() {
       <Customernavbar />
 
       <div className="px-12 sm mt-20">
-        <div className="flex justify-between items-center mb-10 border-b-gray-900">
+        <div className="flex justify-between items-center mb-10 border-b-gray-900 w-full">
           <h1 className="text-subsubheading text-bluedark">User Reviews</h1>
           <AddReviewModal />
         </div>
