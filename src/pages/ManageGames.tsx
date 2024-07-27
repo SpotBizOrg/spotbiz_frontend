@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Adminnavbar from "../components/Adminnavbar";
 import Adminsidebar from "../components/Adminsidebar";
 import Container from "../components/Container";
@@ -123,6 +123,24 @@ function ManageGames() {
       usage: 0,
       url: 'https://www.crazygames.com/embed/drop-merge-the-numbers'
     },
+    {
+      image: SortParking,
+      title: 'Sort Parking',
+      Developer: 'Synk',
+      description: 'Hello',
+      visits: '11M',
+      usage: 0,
+      url: 'https://www.crazygames.com/embed/sort-parking'
+    },
+    {
+      image: DropMergetheNumbers,
+      title: 'Drop & Merge the Numbers',
+      Developer: 'GMR Bros',
+      description: 'Hello',
+      visits: '11M',
+      usage: 0,
+      url: 'https://www.crazygames.com/embed/drop-merge-the-numbers'
+    },
   ];
 
   const seasonalGames = games.filter((game, index) => index % 3 === 0);
@@ -148,35 +166,38 @@ function ManageGames() {
       <Adminsidebar selectedTile="Games" />
 
       <div className="px-12 sm:ml-64 mt-20">
-        <div className="flex items-center justify-between w-full mb-10 border-b border-gray-300">
-          <div className="flex space-x-4">
+        <div className="w-fit mb-5 border-b-gray-900">
+          <h1 className="text-subsubheading text-bluedark">Games</h1>
+        </div>
+        <div className="flex items-center justify-between w-full mb-5 border-b border-gray-300">
+          <div className="flex space-x-6">
             <button
-              className={`px-4 py-2 rounded focus:outline-none ${activeTab === 'seasonal' ? 'bg-black text-white' : 'bg-transparent text-blue-500 hover:bg-white'}`}
+              className={`px-0 py-2 pb-[calc(0.5rem - 4px)] rounded focus:outline-none ${activeTab === 'seasonal' ? 'text-black border-b-4 border-black' : 'bg-transparent text-blue-500 border-b-4 border-transparent hover:border-b-4 hover:border-gray-300'}`}
               onClick={() => setActiveTab('seasonal')}
             >
               Seasonal Games
             </button>
             <button
-              className={`px-4 py-2 rounded focus:outline-none ${activeTab === 'normal' ? 'bg-black text-white' : 'bg-transparent text-blue-500 hover:bg-white'}`}
+              className={`px-0 py-2 pb-[calc(0.5rem - 4px)] rounded focus:outline-none ${activeTab === 'normal' ? 'text-black border-b-4 border-black' : 'bg-transparent text-blue-500 border-b-4 border-transparent hover:border-b-4 hover:border-gray-300'}`}
               onClick={() => setActiveTab('normal')}
             >
               Normal Games
             </button>
             <button
-              className={`px-4 py-2 rounded focus:outline-none ${activeTab === 'business' ? 'bg-black text-white' : 'bg-transparent text-blue-500 hover:bg-white'}`}
+              className={`px-0 py-2 pb-[calc(0.5rem - 4px)] rounded focus:outline-none ${activeTab === 'business' ? 'text-black border-b-4 border-black' : 'bg-transparent text-blue-500 border-b-4 border-transparent hover:border-b-4 hover:border-gray-300'}`}
               onClick={() => setActiveTab('business')}
             >
               Business Games
             </button>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 mb-1">
               <div className="relative w-full max-w-xs">
                 <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none p-0">
                   <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                     <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                   </svg>
                 </div>
-                <input type="text" id="simple-search" className="bg-gray-50 border p-1 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for games..." required />
+                <input type="text" id="simple-search" className="bg-gray-50 border p-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for games..." required />
               </div>
               <button type="submit" className="p-2 text-sm font-medium text-white bg-bluedark rounded-lg border border-bluedark hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                 <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
@@ -188,15 +209,15 @@ function ManageGames() {
         </div>
 
         <div className="flex flex-col">
-          <div className="flex flex-row mt-4 w-full overflow-x-auto overflow-y-hidden h-full space-x-4 scrollbar-hide">
+          <div className="flex flex-row w-full overflow-x-auto overflow-y-hidden h-full space-x-4 scrollbar-hide">
             {getDisplayedGames().map((game, index) => (
-              <div key={index} className="min-w-[280px] max-w-[280px]">
+              <div key={index} className="min-w-[270px] max-w-[270px]">
                 <GameCard {...game} />
               </div>
             ))}
           </div>
 
-          <div className="relative flex items-center justify-center w-[1140px] h-[94px] mt-8 border-2 border-dashed border-gray-400 rounded-lg bg-white/50 backdrop-blur-md hover:bg-white/80 hover:border-gray-600 transition-all duration-300 ease-in-out">
+          <div className="relative flex items-center justify-center w-[1130px] h-[94px] mt-5 border-2 border-dashed border-gray-400 rounded-lg bg-white/50 backdrop-blur-md hover:bg-white/80 hover:border-gray-600 transition-all duration-300 ease-in-out">
             <FaPlus className="text-4xl text-gray-500" />
           </div>
         </div>
