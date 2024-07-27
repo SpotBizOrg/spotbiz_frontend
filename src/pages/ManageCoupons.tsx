@@ -290,10 +290,20 @@ function ManageCoupons() {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button color="gray" onClick={handleAddCoupon}>Add Coupon</Button>
-          <Button color="gray" onClick={() => setShowForm(false)}>
+          <button
+            type="button"
+            className="p-2 text-sm font-medium text-white bg-bluedark rounded-lg border border-bluedark hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300"
+            onClick={handleAddCoupon}
+          >
+            Add Coupon
+          </button>
+          <button
+            type="button"
+            className="p-2 text-sm font-medium text-white bg-gray-500 rounded-lg border border-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300"
+            onClick={() => setShowForm(false)}
+          >
             Cancel
-          </Button>
+          </button>
         </Modal.Footer>
       </Modal>
 
@@ -334,10 +344,20 @@ function ManageCoupons() {
           )}
         </Modal.Body>
         <Modal.Footer>
-          <Button color="gray" onClick={handleEditCoupon}>Save Changes</Button>
-          <Button color="gray" onClick={() => setShowEditForm(false)}>
+          <button
+            type="button"
+            className="p-2 text-sm font-medium text-white bg-bluedark rounded-lg border border-bluedark hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300"
+            onClick={handleEditCoupon}
+          >
+            Save Changes
+          </button>
+          <button
+            type="button"
+            className="p-2 text-sm font-medium text-white bg-gray-500 rounded-lg border border-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300"
+            onClick={() => setShowForm(false)}
+          >
             Cancel
-          </Button>
+          </button>
         </Modal.Footer>
       </Modal>
 

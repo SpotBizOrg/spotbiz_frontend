@@ -42,12 +42,68 @@ const LoginPage: React.FC = () => {
   
       const data = await response.json();
   
-      if (data.status === 'APPROVED' && data.role === 'CUSTOMER') {
+      if (data.status === 'APPROVED') {
         localSave(data);
         toast.success("Login successful!");
-        setTimeout(() => {
-          navigate('/customerhome');
-        }, 1000);
+        if(data.role === 'CUSTOMER'){
+          setTimeout(() => {
+            navigate('/customerhome');
+          }, 1000);
+        } else if(data.role === 'BUSINESS_OWNER'){
+          setTimeout(() => {
+            navigate('/bus_dashboard');
+          }, 1000);
+        } else if(data.role === 'ADMIN'){
+          setTimeout(() => {
+            navigate('/admin');
+          }, 1000);
+        } else{
+          setTimeout(() => {
+            navigate('/login');
+          }, 1000);
+        } 
+      } else if (data.status === 'PENDING') {
+        if(data.role === 'CUSTOMER'){
+          setTimeout(() => {
+            navigate('/customerhome');
+          }, 1000);
+        } else if(data.role === 'BUSINESS_OWNER'){
+          setTimeout(() => {
+            navigate('/bus_dashboard');
+          }, 1000);
+        } else{
+          setTimeout(() => {
+            navigate('/login');
+          }, 1000);
+        } 
+      } else if (data.status === 'BANNED') {
+        if(data.role === 'CUSTOMER'){
+          setTimeout(() => {
+            navigate('/customerhome');
+          }, 1000);
+        } else if(data.role === 'BUSINESS_OWNER'){
+          setTimeout(() => {
+            navigate('/bus_dashboard');
+          }, 1000);
+        } else{
+          setTimeout(() => {
+            navigate('/login');
+          }, 1000);
+        } 
+      } else if (data.status === 'DELETED') {
+        if(data.role === 'CUSTOMER'){
+          setTimeout(() => {
+            navigate('/customerhome');
+          }, 1000);
+        } else if(data.role === 'BUSINESS_OWNER'){
+          setTimeout(() => {
+            navigate('/bus_dashboard');
+          }, 1000);
+        } else{
+          setTimeout(() => {
+            navigate('/login');
+          }, 1000);
+        } 
       } else {
         toast.error('Login not approved or incorrect role');
       }

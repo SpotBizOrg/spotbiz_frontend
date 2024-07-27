@@ -24,6 +24,7 @@ import SearchResults from "./pages/SearchResults";
 import BusinessDashboard from "./pages/BusinessDashboard";
 import CustomerGame from "./pages/CustomerGame";
 import ManageGames from "./pages/ManageGames";
+import ManageGamesBusiness from "./pages/ManageGamesBusiness";
 import CustomerProfile from "./pages/CustomerProfile2";
 import BusinessProfile from "./pages/BusinessProfile2";
 import ManageCoupons from './pages/ManageCoupons';
@@ -67,6 +68,7 @@ function App() {
         <Route path="/bus_dashboard" element={<BusinessDashboard />} />
         <Route path="/customer_game" element={<CustomerGame />} />
         <Route path="/manage_games" element={<ManageGames />} />
+        <Route path="/manage_games_business" element={<ManageGamesBusiness />} />
         <Route path="/banned" element={<Banned />} />
       </Routes>
   );
