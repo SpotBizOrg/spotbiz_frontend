@@ -1,3 +1,4 @@
+// src/App.tsx
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from './pages/LandingPage';
 import Login from './pages/Login';
@@ -24,7 +25,7 @@ import SearchResults from './pages/SearchResults';
 import CustomerGame from './pages/CustomerGame';
 import ManageGames from './pages/ManageGames';
 import AdvertisementsPage from './components/BusinessAd';
-import AdminPage from './pages/AdminPage'; // Import the AdminPage component
+import BusinessPage from './pages/BusinessPage'; // Import the BusinessPage component
 
 import './App.css';
 
@@ -56,7 +57,7 @@ function App() {
         <Route path="/customer_game" element={<CustomerGame />} />
         <Route path="/manage_games" element={<ManageGames />} />
         <Route path="/advertisements" element={<AdvertisementsPage />} />
-        <Route path="/admin/customers" element={<AdminPage />} /> {/* Add this line */}
+        <Route path="/business" element={<BusinessPage />} /> {/* Add this line */}
       </Routes>
     </BrowserRouter>
   );
