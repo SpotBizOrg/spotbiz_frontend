@@ -6,8 +6,8 @@ import KittyScrambleWordStacks from '../assets/game_banner/KittyScrambleWordStac
 import SortParking from '../assets/game_banner/SortParking.jpg';
 import CuttheRope from '../assets/game_banner/CuttheRope.jpg';
 import CupsWaterSortPuzzle from '../assets/game_banner/CupsWaterSortPuzzle.jpg';
-import Adminnavbar from "../components/Adminnavbar";
 import { useState } from "react";
+import Customernavbar2 from "../components/Customernavbar2";
 
 const games = [
   {
@@ -151,7 +151,7 @@ function CustomerGame() {
   };
   return (
     <Container>
-      <Adminnavbar />
+      <Customernavbar2 />
       <div className="flex flex-col justify-startpt-20 px-16 mt-12 py-4">
         <div className="flex items-center mb-6">
           <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="User" className="rounded-full w-36 h-36 mr-2" />
