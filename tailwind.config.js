@@ -10,6 +10,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      scrollbar: {
+        hide: 'scrollbar-width: none; -ms-overflow-style: none;',
+      },
       borderRadius: {
         'custom': '22px',
         'custom2': '10px',
