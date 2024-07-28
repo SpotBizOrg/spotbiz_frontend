@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Adminnavbar from "../components/Adminnavbar";
 import Adminsidebar from "../components/Adminsidebar";
 import PerformanceChart from "../components/PerformanceChart";
@@ -9,6 +9,10 @@ import Container from "../components/Container";
 // import Categories from '../components/CategoryTag';
 
 const AdminDashboard: React.FC = () => {
+  useEffect(()=>{
+    document.title = "SpotBiz | Dashboard | Admin";
+  },[]);
+
   return (
     <Container>
       <Adminnavbar />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Businessnavbar from "../components/Businessnavbar";
 import Businesssidebar from "../components/Businesssidebar";
 import { Button, Card, Modal } from "flowbite-react";
@@ -15,6 +15,10 @@ import { Tab, Tabs } from "../components/CustomTabs";
 import { FaSquareXTwitter } from "react-icons/fa6";
 
 const BusinessProfile: React.FC = () => {
+  useEffect(()=>{
+    document.title = "SpotBiz | Profile | Business";
+  },[]);
+
   const [selectedAvatar, setSelectedAvatar] = useState(
     "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
   );
@@ -94,7 +98,7 @@ const BusinessProfile: React.FC = () => {
       <Businessnavbar />
       <div className="flex flex-1 mt-16">
         <div className="flex-none w-64">
-          <Businesssidebar selectedTile="profile" />
+          <Businesssidebar selectedTile="Profile" />
         </div>
         <div className="flex flex-1">
           <div className="w-11/12 rounded-lg transform duration-200 ease-in-out mx-auto mt-6">

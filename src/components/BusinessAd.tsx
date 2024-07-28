@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FaFacebook, FaInstagram, FaWhatsapp } from 'react-icons/fa';
 import Businessnavbar from '../components/Businessnavbar';
 import Businesssidebar from '../components/Businesssidebar';
@@ -23,6 +23,10 @@ interface Advertisement {
 }
 
 const BusinessAd: React.FC = () => {
+  useEffect(()=>{
+    document.title = "SpotBiz | Ads & Promos | Business";
+  },[]);
+  
   const [popupOpen, setPopupOpen] = useState(false);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [selectedImageDetails, setSelectedImageDetails] = useState<Advertisement | null>(null);
@@ -61,7 +65,7 @@ const BusinessAd: React.FC = () => {
     <div className="min-h-screen flex flex-col">
       <div className="flex">
         <div className="w-1/5">
-          <Businesssidebar selectedTile={''} />
+          <Businesssidebar selectedTile={'Ads & Promos'} />
         </div>
         <div className="w-4/5 flex flex-col">
           <Businessnavbar />

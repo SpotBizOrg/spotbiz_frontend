@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Adminnavbar from '../components/Adminnavbar';
 import Adminsidebar from '../components/Adminsidebar';
 // import PerformanceChart from '../components/PerformanceChart';
@@ -9,6 +9,9 @@ import Categories from '../components/CategoryTag';
 import Container from '../components/Container';
 
 const AdminTagsReviews: React.FC = () => {
+  useEffect(()=>{
+    document.title = "SpotBiz | Categories & Tags | Admin";
+  },[]);
   return (
    <Container>
     {/* <div className="flex min-h-screen bg-gray-100 font-body"> */}
