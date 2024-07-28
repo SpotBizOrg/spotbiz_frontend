@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import Customernavbar from "../components/Customernavbar";
 import {
   FaSearch,
@@ -17,9 +17,9 @@ const CustomerHome: React.FC = () => {
   const [query, setQuery] = useState("");
 
   const handleSearch = () => {
-    // Implement the search functionality here
     console.log("Searching for:", query);
   };
+
   return (
     <div className="flex flex-col min-h-screen bg-white font-body">
       <Customernavbar />
@@ -32,12 +32,13 @@ const CustomerHome: React.FC = () => {
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4">
           <h1 className="text-3xl md:text-5xl font-semibold">
-          Find what you need, Where you need it!
+            Find what you need, Where you need it!
           </h1>
-          <p className="text-xl md:text-2xl font-medium mt-4 ">
-          Search for local Businesses tailored to your preferences
+          <p className="text-xl md:text-2xl font-medium mt-4">
+            Search for local Businesses tailored to your preferences
           </p>
-          <div className="relative w-full">
+          <div className="flex items-center mt-8 w-full max-w-2xl">
+            <div className="relative w-full">
               <input
                 type="text"
                 placeholder="What are you looking for"
@@ -51,6 +52,7 @@ const CustomerHome: React.FC = () => {
                 onClick={handleSearch}
               />
             </div>
+          </div>
         </div>
       </header>
       <main className="flex-grow p-8">
@@ -113,5 +115,3 @@ const CustomerHome: React.FC = () => {
 };
 
 export default CustomerHome;
-
-// flex justify-center space-x-20
