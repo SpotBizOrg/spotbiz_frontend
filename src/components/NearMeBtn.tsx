@@ -11,7 +11,7 @@ const NearMeBtn = () => {
     <div
       onClick={handleClick}
       className={`flex p-2 text-bodysmall rounded-md border px-4 cursor-pointer ${
-        isActive ? 'bg-blue1 text-white border-blue-500' : 'bg-white text-black border-gray-300'
+        isActive ? 'bg-gray-900 text-white border-blue-500' : 'bg-white text-gray-700 border-gray-300'
       }`}
     >
       Near Me

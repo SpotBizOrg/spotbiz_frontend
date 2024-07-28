@@ -1,4 +1,5 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Modal, TextInput, Label } from "flowbite-react";
 import Adminnavbar from "../components/Adminnavbar";
 import Adminsidebar from "../components/Adminsidebar";
 import Container from "../components/Container";
@@ -12,13 +13,26 @@ import CuttheRope from '../assets/game_banner/CuttheRope.jpg';
 import CupsWaterSortPuzzle from '../assets/game_banner/CupsWaterSortPuzzle.jpg';
 
 function ManageGames() {
+  useEffect(()=>{
+    document.title = "SpotBiz | Games | Admin";
+  },[]);
+  
   const [activeTab, setActiveTab] = useState('seasonal');
+  const [showForm, setShowForm] = useState(false);
+  const [newGame, setNewGame] = useState({
+    image: '',
+    title: '',
+    developer: '',
+    description: '',
+    url: ''
+  });
+  const [imagePreview, setImagePreview] = useState<string>('');
 
   const games = [
     {
       image: Tag234Players,
       title: 'Tag 2 3 4 Players',
-      Developer: 'Jet Games',
+      developer: 'Jet Games',
       description: 'Hello',
       visits: '11M',
       usage: 0,
@@ -27,7 +41,7 @@ function ManageGames() {
     {
       image: KittyScrambleWordStacks,
       title: 'Kitty Scramble: Word Stacks',
-      Developer: 'Clever Apps',
+      developer: 'Clever Apps',
       description: 'Hello',
       visits: '11M',
       usage: 0,
@@ -36,7 +50,7 @@ function ManageGames() {
     {
       image: CuttheRope,
       title: 'Cut the Rope',
-      Developer: 'Famobi',
+      developer: 'Famobi',
       description: 'Hello',
       visits: '11M',
       usage: 0,
@@ -45,7 +59,7 @@ function ManageGames() {
     {
       image: CupsWaterSortPuzzle,
       title: 'Cups - Water Sort Puzzle',
-      Developer: 'Blury Studio',
+      developer: 'Blury Studio',
       description: 'Hello',
       visits: '11M',
       usage: 0,
@@ -54,7 +68,7 @@ function ManageGames() {
     {
       image: SortParking,
       title: 'Sort Parking',
-      Developer: 'Synk',
+      developer: 'Synk',
       description: 'Hello',
       visits: '11M',
       usage: 0,
@@ -63,7 +77,7 @@ function ManageGames() {
     {
       image: DropMergetheNumbers,
       title: 'Drop & Merge the Numbers',
-      Developer: 'GMR Bros',
+      developer: 'GMR Bros',
       description: 'Hello',
       visits: '11M',
       usage: 0,
@@ -72,7 +86,7 @@ function ManageGames() {
     {
       image: Tag234Players,
       title: 'Tag 2 3 4 Players',
-      Developer: 'Jet Games',
+      developer: 'Jet Games',
       description: 'Hello',
       visits: '11M',
       usage: 0,
@@ -81,7 +95,7 @@ function ManageGames() {
     {
       image: KittyScrambleWordStacks,
       title: 'Kitty Scramble: Word Stacks',
-      Developer: 'Clever Apps',
+      developer: 'Clever Apps',
       description: 'Hello',
       visits: '11M',
       usage: 0,
@@ -90,7 +104,7 @@ function ManageGames() {
     {
       image: CuttheRope,
       title: 'Cut the Rope',
-      Developer: 'Famobi',
+      developer: 'Famobi',
       description: 'Hello',
       visits: '11M',
       usage: 0,
@@ -99,7 +113,7 @@ function ManageGames() {
     {
       image: CupsWaterSortPuzzle,
       title: 'Cups - Water Sort Puzzle',
-      Developer: 'Blury Studio',
+      developer: 'Blury Studio',
       description: 'Hello',
       visits: '11M',
       usage: 0,
@@ -108,7 +122,7 @@ function ManageGames() {
     {
       image: SortParking,
       title: 'Sort Parking',
-      Developer: 'Synk',
+      developer: 'Synk',
       description: 'Hello',
       visits: '11M',
       usage: 0,
@@ -117,7 +131,7 @@ function ManageGames() {
     {
       image: DropMergetheNumbers,
       title: 'Drop & Merge the Numbers',
-      Developer: 'GMR Bros',
+      developer: 'GMR Bros',
       description: 'Hello',
       visits: '11M',
       usage: 0,
@@ -126,7 +140,7 @@ function ManageGames() {
     {
       image: SortParking,
       title: 'Sort Parking',
-      Developer: 'Synk',
+      developer: 'Synk',
       description: 'Hello',
       visits: '11M',
       usage: 0,
@@ -135,7 +149,7 @@ function ManageGames() {
     {
       image: DropMergetheNumbers,
       title: 'Drop & Merge the Numbers',
-      Developer: 'GMR Bros',
+      developer: 'GMR Bros',
       description: 'Hello',
       visits: '11M',
       usage: 0,
@@ -143,9 +157,9 @@ function ManageGames() {
     },
   ];
 
-  const seasonalGames = games.filter((game, index) => index % 3 === 0);
-  const normalGames = games.filter((game, index) => index % 3 === 1);
-  const businessGames = games.filter((game, index) => index % 3 === 2);
+  const seasonalGames = games.filter((_, index) => index % 3 === 0);
+  const normalGames = games.filter((_, index) => index % 3 === 1);
+  const businessGames = games.filter((_, index) => index % 3 === 2);
 
   const getDisplayedGames = () => {
     switch (activeTab) {
@@ -157,6 +171,33 @@ function ManageGames() {
         return businessGames;
       default:
         return [];
+    }
+  };
+
+  const handleAddGame = () => {
+    console.log('New Game:', newGame);
+    setShowForm(false);
+    setNewGame({
+      image: '',
+      title: '',
+      developer: '',
+      description: '',
+      url: ''
+    });
+    setImagePreview('');
+  };
+
+  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        if (reader.result) {
+          setImagePreview(reader.result as string);
+          setNewGame({ ...newGame, image: reader.result as string });
+        }
+      };
+      reader.readAsDataURL(file);
     }
   };
 
@@ -191,21 +232,21 @@ function ManageGames() {
             </button>
           </div>
           <div className="flex items-center space-x-2 mb-1">
-              <div className="relative w-full max-w-xs">
-                <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none p-0">
-                  <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                    <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                  </svg>
-                </div>
-                <input type="text" id="simple-search" className="bg-gray-50 border p-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for games..." required />
-              </div>
-              <button type="submit" className="p-2 text-sm font-medium text-white bg-bluedark rounded-lg border border-bluedark hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+            <div className="relative w-full max-w-xs">
+              <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none p-0">
                 <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                   <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                 </svg>
-                <span className="sr-only">Search</span>
-              </button>
+              </div>
+              <input type="text" id="simple-search" className="bg-gray-50 border p-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for games..." required />
             </div>
+            <button type="submit" className="p-2 text-sm font-medium text-white bg-bluedark rounded-lg border border-bluedark hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+              <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+              </svg>
+              <span className="sr-only">Search</span>
+            </button>
+          </div>
         </div>
 
         <div className="flex flex-col">
@@ -217,10 +258,58 @@ function ManageGames() {
             ))}
           </div>
 
-          <div className="relative flex items-center justify-center w-[1130px] h-[94px] mt-5 border-2 border-dashed border-gray-400 rounded-lg bg-white/50 backdrop-blur-md hover:bg-white/80 hover:border-gray-600 transition-all duration-300 ease-in-out">
-            <FaPlus className="text-4xl text-gray-500" />
+          <div 
+            className="relative flex items-center justify-center w-[1130px] h-[94px] mt-5 border-2 border-dashed border-gray-400 rounded-lg bg-white/50 backdrop-blur-md hover:bg-white/80 hover:border-gray-600 transition-all duration-300 cursor-pointer"
+            onClick={() => setShowForm(true)}
+          >
+            <FaPlus className="text-3xl text-gray-500" />
           </div>
         </div>
+
+        <Modal show={showForm} onClose={() => setShowForm(false)} size="lg">
+          <Modal.Header>Add New Game</Modal.Header>
+          <Modal.Body>
+            <form>
+              <div className="mb-6">
+                <Label htmlFor="game-title" value="Game Title" />
+                <TextInput id="game-title" type="text" placeholder="Enter game title" value={newGame.title} onChange={(e) => setNewGame({ ...newGame, title: e.target.value })} />
+              </div>
+              <div className="mb-6">
+                <Label htmlFor="game-developer" value="Game Developer" />
+                <TextInput id="game-developer" type="text" placeholder="Enter game developer" value={newGame.developer} onChange={(e) => setNewGame({ ...newGame, developer: e.target.value })} />
+              </div>
+              <div className="mb-6">
+                <Label htmlFor="game-description" value="Description" />
+                <TextInput id="game-description" type="text" placeholder="Enter game description" value={newGame.description} onChange={(e) => setNewGame({ ...newGame, description: e.target.value })} />
+              </div>
+              <div className="mb-6">
+                <Label htmlFor="game-url" value="Game URL" />
+                <TextInput id="game-url" type="text" placeholder="Enter game URL" value={newGame.url} onChange={(e) => setNewGame({ ...newGame, url: e.target.value })} />
+              </div>
+              <div className="mb-6">
+                <Label htmlFor="game-image" value="Game Image" className='mr-4'/>
+                <input type="file" id="game-image" accept="image/*" onChange={handleImageUpload} className='mr-4'/>
+                {imagePreview && <img src={imagePreview} alt="Image Preview" className="mt-2 max-w-[200px]"/>}
+              </div>
+            </form>
+          </Modal.Body>
+          <Modal.Footer>
+          <button
+            type="button"
+            className="p-2 text-sm font-medium text-white bg-bluedark rounded-lg border border-bluedark hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300"
+            onClick={handleAddGame}
+          >
+            Add Game
+          </button>
+          <button
+            type="button"
+            className="p-2 text-sm font-medium text-white bg-gray-500 rounded-lg border border-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300"
+            onClick={() => setShowForm(false)}
+          >
+            Cancel
+          </button>
+        </Modal.Footer>
+        </Modal>
       </div>
     </Container>
   );

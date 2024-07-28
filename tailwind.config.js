@@ -10,6 +10,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      scrollbar: {
+        hide: 'scrollbar-width: none; -ms-overflow-style: none;',
+      },
       borderRadius: {
         'custom': '22px',
         'custom2': '10px',
@@ -59,6 +62,7 @@ module.exports = {
         blue8:'#90CAF8',
         blue9:'#BBDEFA',
         blue10:'#E4F2FD',
+        blue11:'#F0F8FE',
       },
       spacing: {
         96: '24rem',

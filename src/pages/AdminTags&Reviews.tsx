@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Adminnavbar from '../components/Adminnavbar';
 import Adminsidebar from '../components/Adminsidebar';
 // import PerformanceChart from '../components/PerformanceChart';
 // import LatestBusiness from '../components/LatetBusiness';
 // import BusinessTables from '../components/BusinessTables';
-import ReportedReviews from '../components/ReportedReviews';
+// import ReportedReviews from '../components/ReportedReviews';
 import Categories from '../components/CategoryTag';
 import Container from '../components/Container';
 
 const AdminTagsReviews: React.FC = () => {
+  useEffect(()=>{
+    document.title = "SpotBiz | Categories & Tags | Admin";
+  },[]);
   return (
    <Container>
     {/* <div className="flex min-h-screen bg-gray-100 font-body"> */}
@@ -21,9 +24,9 @@ const AdminTagsReviews: React.FC = () => {
           {/* <div className="mt-8">
             <BusinessTables />
           </div> */}
-          <div className="mt-8">
+          {/* <div className="mt-8">
             <ReportedReviews />
-          </div>
+          </div> */}
           <div className="mt-8">
             <Categories />
           </div>
