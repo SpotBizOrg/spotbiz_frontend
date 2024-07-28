@@ -28,6 +28,7 @@ import ManageGamesBusiness from "./pages/ManageGamesBusiness";
 import CustomerProfile from "./pages/CustomerProfile2";
 import BusinessProfile from "./pages/BusinessProfile2";
 import ManageCoupons from './pages/ManageCoupons';
+import Reports from "./pages/Reports&Appeals";
 import AdvertisementsPage from './components/BusinessAd';
 import BusinessList from './pages/BusinessList';
 import AdminPage from './pages/AdminPage'; 
@@ -70,6 +71,7 @@ function App() {
         <Route path="/manage_games" element={<ManageGames />} />
         <Route path="/manage_games_business" element={<ManageGamesBusiness />} />
         <Route path="/banned" element={<Banned />} />
+        <Route path="/reports" element={<Reports />} />
       </Routes>
   );
 }
