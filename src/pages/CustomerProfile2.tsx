@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Customernavbar from "../components/Customernavbar";
 import { FaCamera } from "react-icons/fa";
 import Tabs from "../components/ProfileTabs";
 import ProfileContent from "../components/ProfileContent";
 import AvatarModal from "../components/AvatarModal"; // Ensure the correct import
+import Customernavbar2 from "../components/Customernavbar2";
 
 const CustomerProfile: React.FC = () => {
   const [activeTab, setActiveTab] = useState("About Me");
@@ -13,6 +14,10 @@ const CustomerProfile: React.FC = () => {
   const [tempAvatar, setTempAvatar] = useState(selectedAvatar); // State for temp avatar selection
   const [showAvatarModal, setShowAvatarModal] = useState(false);
 
+  useEffect(() => {
+    document.title = "SpotBiz | My Profile";
+  }, []);
+  
   const avatars = [
     "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
     "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
@@ -28,7 +33,7 @@ const CustomerProfile: React.FC = () => {
 
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col">
-      <Customernavbar />
+      <Customernavbar2 />
       <div className="w-11/12 bg-white shadow-lg rounded-lg transform duration-200 ease-in-out mx-auto mt-6">
         <div
           className="h-64 relative overflow-hidden rounded-t-lg bg-bluedark"
