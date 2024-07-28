@@ -16,6 +16,7 @@ const CustomerProfile: React.FC = () => {
   useEffect(() => {
     document.title = "SpotBiz | My Profile";
   }, []);
+
   
   const avatars = [
     "https://flowbite.com/docs/images/people/profile-picture-1.jpg",

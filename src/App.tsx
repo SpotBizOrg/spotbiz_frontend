@@ -65,8 +65,8 @@ function App() {
         <Route path="/business" element={<BusinessPage />} />
         <Route path="/admin/customers" element={<AdminPage />} /> 
         <Route path="/admin/businesses" element={<BusinessList />} /> 
-        <Route path="/Business_profile" element={<BusinessProfile />} />{" "}
-        <Route path="/Customer_profile" element={<CustomerProfile />} />
+        <Route path="/business_profile" element={<BusinessProfile />} />{" "}
+        <Route path="/customer_profile" element={<CustomerProfile />} />
         <Route path="/cus_profile" element={<CustomerProfile1 />} />
         <Route path="/bus_profile" element={<BusinessProfile1 />} />
         <Route path="/search" element={<SearchResults />} /> 
