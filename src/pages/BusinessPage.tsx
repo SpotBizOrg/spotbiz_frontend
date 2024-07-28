@@ -9,12 +9,13 @@ import AboutBusiness from '../components/AboutBusiness';
 import BusinessLocation from '../components/Location';
 import Column2 from '../components/Column2';
 import OpeningHrs from '../components/OpeningHrs';
+import Footer from '../components/Footer';
 
 const BusinessPage: React.FC = () => {
   return (
     <Container>
       <Customernavbar />
-      <div className="px-12 sm mt-20">
+      <div className="px-12 sm mt-20 mb-20">
         <div className='w-fullflex flex-col'>
           <BusinessTitlenReview/>
           <div className='w-full flex flex-row justify-start'>
@@ -33,6 +34,7 @@ const BusinessPage: React.FC = () => {
           </div>
         </div>
       </div>
+      <Footer />
       
       {/* <Business /> */}
     </Container>
