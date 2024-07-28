@@ -29,7 +29,7 @@ const CustomerProfile: React.FC = () => {
   return (
     <div className="bg-gray-100 min-h-screen flex flex-col">
       <Customernavbar />
-      <div className="w-11/12 bg-white shadow-lg rounded-lg transform duration-200 ease-in-out mx-auto mt-6">
+      <div className="w-full bg-white shadow-lg rounded-lg transform duration-200 ease-in-out mx-auto mt-6">
         <div
           className="h-64 relative overflow-hidden rounded-t-lg bg-bluedark"
           style={{

@@ -26,8 +26,7 @@ const AboutMe: React.FC = () => {
           <div className="flex space-x-2">
             <Button
               style={{
-                fontSize: "0.75rem" /* Smaller font size */,
-                padding: "0.25rem 0.5rem" /* Smaller padding */,
+                height: "35px" /* Slightly smaller font size */,
               }}
               className="text-white bg-bluedark hover:bg-bluedark/90 focus:ring-4 focus:outline-none focus:ring-bluedark/50 font-medium rounded-lg inline-flex items-center transition duration-200"
               onClick={() => setIsModalOpen(true)}
@@ -41,14 +40,13 @@ const AboutMe: React.FC = () => {
 
             <Button
               style={{
-                fontSize: "0.875rem" /* Slightly smaller font size */,
-                padding: "0.5rem 1rem" /* Slightly smaller padding */,
+                height: "35px" /* Slightly smaller font size */,
               }}
-              className="text-white bg-bluedark hover:bg-bluedark/90 focus:ring-4 focus:outline-none focus:ring-bluedark/50 font-medium rounded-lg inline-flex items-center transition duration-200"
+              className="text-white bg-bluedark hover:bg-bluedark/90 focus:ring-4 focus:outline-none focus:ring-bluedark/50 text-xs rounded-lg inline-flex items-center transition duration-200"
               onClick={() => setIsChangePasswordModalOpen(true)}
             >
               <FaLock
-                style={{ width: "1.5rem", height: "1.5rem" }}
+                style={{ width: "1rem", height: "1rem" }}
                 className="mr-2"
               />
               Change Password
