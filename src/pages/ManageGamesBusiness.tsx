@@ -12,7 +12,7 @@ import SortParking from '../assets/game_banner/SortParking.jpg';
 import CuttheRope from '../assets/game_banner/CuttheRope.jpg';
 import CupsWaterSortPuzzle from '../assets/game_banner/CupsWaterSortPuzzle.jpg';
 
-function ManageGames() {
+function ManageGamesBusiness() {
   const [activeTab, setActiveTab] = useState('seasonal');
   const [showForm, setShowForm] = useState(false);
   const [newGame, setNewGame] = useState({
@@ -311,4 +311,4 @@ function ManageGames() {
   );
 }
 
-export default ManageGames;
+export default ManageGamesBusiness;
