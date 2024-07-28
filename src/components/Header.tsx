@@ -15,7 +15,7 @@ const Header = () => {
     <div className="relative">
       <Nousernavbar />
       <header className="relative">
-        <img src={HomeImage} alt="Cityscape" className="w-full h-95.5 object-cover" />
+        <img src={HomeImage} alt="Cityscape" className="w-full h-95.5 object-cover brightness-50" />
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white">
           <h1 className="text-3xl md:text-5xl font-semibold">Find what you need, Where you need it!</h1>
           <p className="text-xl md:text-2xl font-medium mt-4">Search for local Businesses tailored to your preferences</p>

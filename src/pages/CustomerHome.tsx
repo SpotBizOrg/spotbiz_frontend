@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import Customernavbar from "../components/Customernavbar";
 import {
   FaSearch,
@@ -14,6 +14,12 @@ import RecentSearches from "../components/RecentSearches";
 import Footer from "../components/Footer";
 
 const CustomerHome: React.FC = () => {
+  const [query, setQuery] = useState("");
+
+  const handleSearch = () => {
+    // Implement the search functionality here
+    console.log("Searching for:", query);
+  };
   return (
     <div className="flex flex-col min-h-screen bg-white font-body">
       <Customernavbar />
@@ -25,20 +31,26 @@ const CustomerHome: React.FC = () => {
         />
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4">
-          <h1 className="text-subheading font-bold">
-            Explore the best places in the city
+          <h1 className="text-3xl md:text-5xl font-semibold">
+          Find what you need, Where you need it!
           </h1>
-          <p className="text-subsubsubheading mt-4">
-            Find the best places being at your comfort zones
+          <p className="text-xl md:text-2xl font-medium mt-4 ">
+          Search for local Businesses tailored to your preferences
           </p>
-          <div className="mt-6 flex items-center bg-white text-black py-2 px-4 rounded-full shadow-lg w-full max-w-md">
-            <FaSearch className="text-blue2 mr-2" />
-            <input
-              type="text"
-              placeholder="What are you looking for"
-              className="w-full bg-transparent focus:outline-none border-0 ring-0 focus:ring-0"
-            />
-          </div>
+          <div className="relative w-full">
+              <input
+                type="text"
+                placeholder="What are you looking for"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="w-full py-3 pl-4 pr-12 rounded-full text-gray-600"
+                style={{ boxShadow: 'none' }}
+              />
+              <FaSearch 
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+                onClick={handleSearch}
+              />
+            </div>
         </div>
       </header>
       <main className="flex-grow p-8">
