@@ -181,7 +181,7 @@ function ManageCoupons() {
             <FaPlus className="text-xl text-gray-500" />
           </div>
         </div>
-        <div className="relative table-container overflow-x-auto overflow-y-auto sm:rounded-lg border border-gray-200">
+        <div className="relative overflow-x-auto overflow-y-auto sm:rounded-lg border border-gray-200">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500">
             <thead className="table-header text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
