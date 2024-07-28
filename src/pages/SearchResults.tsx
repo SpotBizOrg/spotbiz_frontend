@@ -1,11 +1,8 @@
 import React from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { FaChevronDown } from 'react-icons/fa';
 import Customernavbar from '../components/Customernavbar';
-import Container from '../components/Container';
 import SortByDropdown from '../components/SortBy';
 import CategoryPills from '../components/CategoryPills';
-import { Button } from 'flowbite-react';
 import NearMeBtn from '../components/NearMeBtn';
 import { SearchPagination } from '../components/SearchPagePagination';
 import { Rating, RatingStar, Badge } from "flowbite-react";
@@ -78,7 +75,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ imageSrc, name, location, ratin
 };
 
 const SearchResults: React.FC = () => {
-  const query = useQuery().get('query');
+  // const query = useQuery().get('query');
 
   const results = [
     {

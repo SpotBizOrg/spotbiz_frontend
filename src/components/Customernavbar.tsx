@@ -1,7 +1,6 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { Bars3Icon, BellIcon, XMarkIcon, PuzzlePieceIcon } from '@heroicons/react/24/outline';
 import Logo from '../assets/logo.png';
-import Button from './Button';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useAuth } from '../utils/AuthProvider';
 import { useNavigate } from 'react-router-dom';

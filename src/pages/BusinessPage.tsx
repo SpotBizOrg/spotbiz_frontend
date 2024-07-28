@@ -1,7 +1,6 @@
 // src/pages/BusinessPage.tsx
 import React from 'react';
 import Customernavbar from '../components/Customernavbar';
-import Container from "../components/Container";
 import BusinessTitlenReview from '../components/BusinessTitlenReview';
 import BusinessInfoCol from '../components/BusinessInfoCol';
 import MainReview from '../components/MainReview';

@@ -1,10 +1,8 @@
 import React, { useState } from 'react';
-import { FaFacebook, FaInstagram, FaWhatsapp } from 'react-icons/fa';
-import { Modal, Button, Badge } from 'flowbite-react'; // Importing Modal and Button from Flowbite
+// import { FaFacebook, FaInstagram, FaWhatsapp } from 'react-icons/fa';
+import { Modal, Badge } from 'flowbite-react'; // Importing Modal and Button from Flowbite
 import Businessnavbar from '../components/Businessnavbar';
 import Businesssidebar from '../components/Businesssidebar';
-import profilePic from '../assets/profile.png';
-import abans from '../assets/Abans-Logo-1024x297.png';
 import ad1 from '../assets/ad1.png';
 import ad2 from '../assets/ad2.png';
 import ad3 from '../assets/ad3.png';
@@ -69,14 +67,14 @@ const BusinessAd: React.FC = () => {
     },
   ];
 
-  const renderSocialIcons = () => (
-    <div className="flex items-center mt-4 space-x-4">
-      <span>Share this promotion:</span>
-      <FaFacebook className="text-blue-700 text-2xl cursor-pointer" />
-      <FaWhatsapp className="text-green-600 text-2xl cursor-pointer" />
-      <FaInstagram className="text-pink-600 text-2xl cursor-pointer" />
-    </div>
-  );
+  // const renderSocialIcons = () => (
+  //   <div className="flex items-center mt-4 space-x-4">
+  //     <span>Share this promotion:</span>
+  //     <FaFacebook className="text-blue-700 text-2xl cursor-pointer" />
+  //     <FaWhatsapp className="text-green-600 text-2xl cursor-pointer" />
+  //     <FaInstagram className="text-pink-600 text-2xl cursor-pointer" />
+  //   </div>
+  // );
 
   return (
     <Container>

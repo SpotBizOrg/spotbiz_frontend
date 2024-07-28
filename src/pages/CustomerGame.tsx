@@ -6,7 +6,6 @@ import KittyScrambleWordStacks from '../assets/game_banner/KittyScrambleWordStac
 import SortParking from '../assets/game_banner/SortParking.jpg';
 import CuttheRope from '../assets/game_banner/CuttheRope.jpg';
 import CupsWaterSortPuzzle from '../assets/game_banner/CupsWaterSortPuzzle.jpg';
-import Adminnavbar from "../components/Adminnavbar";
 import { useState } from "react";
 import Customernavbar2 from "../components/Customernavbar2";
 

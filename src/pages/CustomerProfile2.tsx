@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import Customernavbar from "../components/Customernavbar";
 import { FaCamera } from "react-icons/fa";
 import Tabs from "../components/ProfileTabs";
 import ProfileContent from "../components/ProfileContent";
