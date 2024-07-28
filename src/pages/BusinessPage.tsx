@@ -13,7 +13,8 @@ import Footer from '../components/Footer';
 
 const BusinessPage: React.FC = () => {
   return (
-    <Container>
+    <>
+        <Container>
       <Customernavbar />
       <div className="px-12 sm mt-20 mb-20">
         <div className='w-fullflex flex-col'>
@@ -34,10 +35,12 @@ const BusinessPage: React.FC = () => {
           </div>
         </div>
       </div>
-      <Footer />
       
       {/* <Business /> */}
     </Container>
+      <Footer />
+    </>
+
   );
 };
 
