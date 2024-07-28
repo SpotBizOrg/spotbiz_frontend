@@ -43,6 +43,7 @@ const LoginPage: React.FC = () => {
       const data = await response.json();
   
       if (data.status === 'APPROVED') {
+        console.log("hello", data)
         localSave(data);
         toast.success("Login successful!");
         if(data.role === 'CUSTOMER'){
