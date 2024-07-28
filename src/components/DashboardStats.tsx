@@ -15,14 +15,14 @@ const DashboardStats: React.FC = () => {
 
   return (
     <div className="relative">
-      <div className="flex justify-between items-center mt-7 ml-9">
+      <div className="flex justify-between items-center mt-12 ml-9">
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 flex-1">
-        <div className="bg-white p-4 rounded shadow-lg shadow-black text-center w-full sm:w-60 md:w-80 lg:w-96">
+        <div className="bg-white p-8 rounded shadow-lg shadow-grey text-center w-full sm:w-60 md:w-80 lg:w-96">
           <h2 className="text-xl font-medium">Subscribers</h2>
           <div className="text-3xl font-bold">10,000</div>
           <div className="text-gray-500">Total Subscribers</div>
         </div>
-        <div className="bg-white p-4 rounded shadow-lg shadow-black text-center w-full sm:w-60 md:w-80 lg:w-96">
+        <div className="bg-white p-8 rounded shadow-lg shadow-grey text-center w-full sm:w-60 md:w-80 lg:w-96">
           <h2 className="text-xl font-medium">Views</h2>
           <div className="text-3xl font-bold">500,000</div>
           <div className="text-gray-500">Total Views</div>

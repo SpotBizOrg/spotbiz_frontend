@@ -156,8 +156,8 @@ function CustomerGame() {
         <div className="flex items-center mb-6">
           <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="User" className="rounded-full w-36 h-36 mr-2" />
           <div>
-            <p className="text-black text-xl">Yuhanga Induwara</p>
-            <p className="text-gray-400">Points: 95</p>
+            <p className="text-black text-xl ml-4">Yuhanga Induwara</p>
+            <p className="text-gray-400 ml-4">Points: 95</p>
           </div>
         </div>
         <div className="flex items-center justify-between w-full mb-5 border-b border-gray-300 mb-8">
