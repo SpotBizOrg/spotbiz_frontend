@@ -3,8 +3,10 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import Logo from '../assets/logo.png';
 import Button from './Button'; // Assuming the file path is correct and the file exists
 import { ChangeEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 function Nousernavbar() {
+    const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState<string>('');
 
     const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -126,6 +128,7 @@ function Nousernavbar() {
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <button
                 className="flex w-full justify-center rounded-md bg-bluedark px-3 py-1 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
+                onClick={() => navigate('/login')}
               >
                 Login
               </button>

@@ -5,6 +5,7 @@ import Registration from "./components/Regitration";
 import SignupFormBusiness from "./pages/SignupFormBusiness";
 import SignupFormCustomer from "./pages/SignUpForm";
 import SignupInProgress from "./pages/SignupInProgress";
+import VerificationInProgress from "./pages/VerificationInProgress";
 import Banned from "./components/Banned";
 import CustomerHome from "./pages/CustomerHome";
 import Guided2 from "./pages/Guided2";
@@ -48,6 +49,7 @@ function App() {
         <Route path="/signup-business" element={<SignupFormBusiness />} />
         <Route path="/signup-customer" element={<SignupFormCustomer />} />
         <Route path="/signup-in-process" element={<SignupInProgress />} />
+        <Route path="/verification_in_progress" element={<VerificationInProgress />} />
         <Route path="/packages" element={<Packages />} />
         <Route path="/chart" element={<Chart />} />
         <Route path="/admin" element={<AdminDashboard />} />

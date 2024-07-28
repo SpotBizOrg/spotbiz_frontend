@@ -65,11 +65,11 @@ const LoginPage: React.FC = () => {
       } else if (data.status === 'PENDING') {
         if(data.role === 'CUSTOMER'){
           setTimeout(() => {
-            navigate('/customerhome');
+            navigate('/verification_in_progress');
           }, 1000);
         } else if(data.role === 'BUSINESS_OWNER'){
           setTimeout(() => {
-            navigate('/bus_dashboard');
+            navigate('/signup-in-process');
           }, 1000);
         } else{
           setTimeout(() => {
@@ -79,11 +79,11 @@ const LoginPage: React.FC = () => {
       } else if (data.status === 'BANNED') {
         if(data.role === 'CUSTOMER'){
           setTimeout(() => {
-            navigate('/customerhome');
+            navigate('/login');
           }, 1000);
         } else if(data.role === 'BUSINESS_OWNER'){
           setTimeout(() => {
-            navigate('/bus_dashboard');
+            navigate('/login');
           }, 1000);
         } else{
           setTimeout(() => {
