@@ -11,6 +11,7 @@ import { SearchPagination } from '../components/SearchPagePagination';
 import { Rating, RatingStar, Badge } from "flowbite-react";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Footer from '../components/Footer';
+import Container2 from '../components/Container2';
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
@@ -211,7 +212,7 @@ const SearchResults: React.FC = () => {
 
   return (
     <>
-      <Container>
+      <Container2>
       <Customernavbar />
       <div className="flex flex-col justify-start px-20 mt-20 pt-5 w-full mb-20">
         <div className="w-full">
@@ -241,7 +242,7 @@ const SearchResults: React.FC = () => {
         </div>
       </div>
       <SearchPagination />
-    </Container>
+    </Container2>
     <Footer />
     
     </>
