@@ -126,7 +126,7 @@ function Customernavbar2(){
           </div> */}
           <div className="absolute z-50 inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <button onClick={navigateToPage} className="relative rounded-full p-1 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-            <PuzzlePieceIcon className="h-6 w-6" />
+            <PuzzlePieceIcon className="h-6 w-6  mr-2" />
             </button>
 
 
