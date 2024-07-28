@@ -62,6 +62,7 @@ module.exports = {
         blue8:'#90CAF8',
         blue9:'#BBDEFA',
         blue10:'#E4F2FD',
+        blue11:'#F0F8FE',
       },
       spacing: {
         96: '24rem',

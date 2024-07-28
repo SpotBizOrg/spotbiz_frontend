@@ -11,12 +11,13 @@ import KittyScrambleWordStacks from '../assets/game_banner/KittyScrambleWordStac
 import SortParking from '../assets/game_banner/SortParking.jpg';
 import CuttheRope from '../assets/game_banner/CuttheRope.jpg';
 import CupsWaterSortPuzzle from '../assets/game_banner/CupsWaterSortPuzzle.jpg';
+import Businesssidebar from '../components/Businesssidebar';
 
-function ManageGames() {
+function ManageGamesBusiness() {
   useEffect(()=>{
-    document.title = "SpotBiz | Games | Admin";
+    document.title = "SpotBiz | My Games | Business";
   },[]);
-  
+
   const [activeTab, setActiveTab] = useState('seasonal');
   const [showForm, setShowForm] = useState(false);
   const [newGame, setNewGame] = useState({
@@ -204,7 +205,7 @@ function ManageGames() {
   return (
     <Container>
       <Adminnavbar />
-      <Adminsidebar selectedTile="Games" />
+      <Businesssidebar selectedTile="My Games" />
 
       <div className="px-12 sm:ml-64 mt-20">
         <div className="w-fit mb-5 border-b-gray-900">
@@ -315,4 +316,4 @@ function ManageGames() {
   );
 }
 
-export default ManageGames;
+export default ManageGamesBusiness;

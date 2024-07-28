@@ -20,6 +20,10 @@ interface BadgeDetails {
 }
 
 function Badges() {
+  useEffect(()=>{
+    document.title = "SpotBiz | Badges | Admin";
+  },[]);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentBadge, setCurrentBadge] = useState<BadgeDetails | null>(null);
   const [badgeDetails, setBadgeDetails] = useState<BadgeDetails>({

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Adminnavbar from '../components/Adminnavbar';
 import Adminsidebar from '../components/Adminsidebar';
 import PackageCard from '../components/PackageCard';
@@ -71,6 +71,10 @@ const packagesData: Package[] = [
 ];
 
 export default function AdminPackages() {
+  useEffect(()=>{
+    document.title = "SpotBiz | Packages | Admin";
+  },[]);
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
 
@@ -101,7 +105,7 @@ export default function AdminPackages() {
       <Adminnavbar />
       <div className="flex flex-1 mt-6">
         <div className="flex-none w-64">
-          <Adminsidebar selectedTile={''} />
+          <Adminsidebar selectedTile={'Subscription Packages'} />
         </div>
         <div className="flex-1 px-2 sm:px-4 lg:px-6 py-4 sm:py-6">
           <div className="max-w-7xl mx-auto">
