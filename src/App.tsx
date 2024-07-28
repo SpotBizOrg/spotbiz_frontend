@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 import Home from "./pages/LandingPage";
 import Login from "./pages/Login";
 import Registration from "./components/Regitration";
@@ -24,15 +24,19 @@ import SearchResults from "./pages/SearchResults";
 import BusinessDashboard from "./pages/BusinessDashboard";
 import CustomerGame from "./pages/CustomerGame";
 import ManageGames from "./pages/ManageGames";
+import ManageGamesBusiness from "./pages/ManageGamesBusiness";
 import CustomerProfile from "./pages/CustomerProfile2";
 import BusinessProfile from "./pages/BusinessProfile2";
 import ManageCoupons from './pages/ManageCoupons';
 import Reports from "./pages/Reports&Appeals";
+import AdvertisementsPage from './components/BusinessAd';
+import BusinessList from './pages/BusinessList';
+import AdminPage from './pages/AdminPage'; 
+import BusinessPage from './pages/BusinessPage'; 
 import "./App.css";
 
 function App() {
   return (
-    <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
         <Route path="/customerhome" element={<CustomerHome />} />
@@ -51,6 +55,10 @@ function App() {
         <Route path="/customer_reviews" element={<CustomerReview />} />
         <Route path="/business_reviews" element={<BusinessReviews />} />
         <Route path="/badges" element={<Badges />} />
+        <Route path="/advertisements" element={<AdvertisementsPage />} />
+        <Route path="/business" element={<BusinessPage />} />
+        <Route path="/admin/customers" element={<AdminPage />} /> 
+        <Route path="/admin/businesses" element={<BusinessList />} /> 
         <Route path="/Business_profile" element={<BusinessProfile />} />{" "}
         <Route path="/Customer_profile" element={<CustomerProfile />} />
         <Route path="/cus_profile" element={<CustomerProfile1 />} />
@@ -61,10 +69,10 @@ function App() {
         <Route path="/bus_dashboard" element={<BusinessDashboard />} />
         <Route path="/customer_game" element={<CustomerGame />} />
         <Route path="/manage_games" element={<ManageGames />} />
+        <Route path="/manage_games_business" element={<ManageGamesBusiness />} />
         <Route path="/banned" element={<Banned />} />
         <Route path="/reports" element={<Reports />} />
       </Routes>
-    </BrowserRouter>
   );
 }
 
