@@ -33,7 +33,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
         className={`mt-4 w-full rounded-md bg-blue1 text-white hover:bg-bluedark py-2 text-sm font-semibold`}
         onClick={onClick}
       >
-        Edit Package
+        {buttonText}
       </button>
       <ul className="mt-4 space-y-1 text-sm text-gray-700">
         {Object.entries(features).map(([feature, value], index) => (
