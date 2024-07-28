@@ -4,7 +4,7 @@ import Adminsidebar from '../components/Adminsidebar';
 // import PerformanceChart from '../components/PerformanceChart';
 // import LatestBusiness from '../components/LatetBusiness';
 // import BusinessTables from '../components/BusinessTables';
-import ReportedReviews from '../components/ReportedReviews';
+// import ReportedReviews from '../components/ReportedReviews';
 import Categories from '../components/CategoryTag';
 import Container from '../components/Container';
 
@@ -21,9 +21,9 @@ const AdminTagsReviews: React.FC = () => {
           {/* <div className="mt-8">
             <BusinessTables />
           </div> */}
-          <div className="mt-8">
+          {/* <div className="mt-8">
             <ReportedReviews />
-          </div>
+          </div> */}
           <div className="mt-8">
             <Categories />
           </div>

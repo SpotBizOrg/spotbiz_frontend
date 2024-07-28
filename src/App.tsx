@@ -27,6 +27,7 @@ import ManageGames from "./pages/ManageGames";
 import CustomerProfile from "./pages/CustomerProfile2";
 import BusinessProfile from "./pages/BusinessProfile2";
 import ManageCoupons from './pages/ManageCoupons';
+import Reports from "./pages/Reports&Appeals";
 import "./App.css";
 
 function App() {
@@ -61,6 +62,7 @@ function App() {
         <Route path="/customer_game" element={<CustomerGame />} />
         <Route path="/manage_games" element={<ManageGames />} />
         <Route path="/banned" element={<Banned />} />
+        <Route path="/reports" element={<Reports />} />
       </Routes>
     </BrowserRouter>
   );
