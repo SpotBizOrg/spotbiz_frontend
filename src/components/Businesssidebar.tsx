@@ -18,23 +18,23 @@ interface NavigationItem {
   }
   
   const navigation: NavigationItem[] = [
-    { name: 'Dashboard', href: '#', current: true, ico: <DashboardIcon/>, 
+    { name: 'Dashboard', href: 'bus_dashboard', current: true, ico: <DashboardIcon/>, 
     label:<span className="ms-3">Dashboard</span>
   },
-    { name: 'Profile', href: '#', current: false, ico: <Person2Icon/>,
+    { name: 'Profile', href: '/Business_profile', current: false, ico: <Person2Icon/>,
     label:<span className="ms-3">Profile</span>
     
   },
-    { name: 'Ads & Promos', href: '#', current: false, ico: <CampaignIcon/>,
+    { name: 'Ads & Promos', href: '/advertisements', current: false, ico: <CampaignIcon/>,
     label:<span className="ms-3">Ads & Promos</span>
     
   },
-    { name: 'Reviews', href: '#', current: false, ico: <StarIcon/>,
+    { name: 'Reviews', href: '/business_reviews', current: false, ico: <StarIcon/>,
     label:<span className="ms-3">Reviews</span>
     
   
   },
-    { name: 'My Games', href: '#', current: false, ico: <SportsEsportsIcon/>,
+    { name: 'My Games', href: '/manage_games_business', current: false, ico: <SportsEsportsIcon/>,
     label:<span className="ms-3">My Games</span>
     
   },

@@ -35,7 +35,7 @@ function BusinessVerify() {
   };
 
   useEffect(() => {
-    document.title = "Business Verify Requests | Admin";
+    document.title = "SpotBiz | Business Verify | Admin";
     fetchBusinessData();
   }, []);
 
@@ -63,7 +63,7 @@ function BusinessVerify() {
     <>
       <Container>
         <Adminnavbar />
-        <Adminsidebar selectedTile="Business Registration" />
+        <Adminsidebar selectedTile="Business Verification" />
 
         <div className="px-12 sm:ml-64 mt-20">
           <div className="w-fit mb-10 border-b-gray-900">

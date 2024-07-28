@@ -10,7 +10,7 @@ const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false); 
-  const { localSave, checkAuthenticated, logout } = useAuth();
+  const { localSave, checkAuthenticated } = useAuth();
   
   const handleLogin = () => {
     if (validateForm()) {
