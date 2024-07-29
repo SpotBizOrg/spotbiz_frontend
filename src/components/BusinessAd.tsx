@@ -10,6 +10,7 @@ import ad4 from '../assets/add4.jpeg';
 import ad5 from '../assets/ad5.jpeg';
 import ad6 from '../assets/ad6.jpg';
 import Container from './Container';
+import { FaPlus } from 'react-icons/fa';
 
 interface Advertisement {
   img: string;
@@ -84,8 +85,14 @@ const BusinessAd: React.FC = () => {
         <div className="w-fit mb-10 border-b-gray-900">
           <h1 className="text-subsubheading text-bluedark">My Advertisements and Promotions</h1>
         </div>
-        <div className='flex w-full mb-5'>
+        <div className='flex items-center justify-between w-full mb-5'>
           <p className='text-gray-400 text-bodysmall font-semibold'>Advertisements posted on last two weeks</p>
+          <div
+            className="relative flex items-center justify-center w-[40px] h-[40px] mt-0 border-2 border-dashed border-gray-400 rounded-lg bg-white/50 backdrop-blur-md hover:bg-white/80 hover:border-gray-600 transition-all duration-300 ease-in-out cursor-pointer"
+            // onClick={() => setShowForm(true)}
+          >
+            <FaPlus className="text-xl text-gray-500" />
+          </div>
         </div>
         
         <div className="grid grid-cols-3 gap-4">
