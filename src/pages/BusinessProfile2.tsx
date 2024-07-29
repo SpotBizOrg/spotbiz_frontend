@@ -18,6 +18,13 @@ import CustomToggleSwitch from "../components/CustomToggleSwitch";
 import { useAuth } from '../utils/AuthProvider';
 const email = 'yuhanga2001@gmail.com';
 const token = 'eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ5dWhhbmdhMjAwMUBnbWFpbC5jb20iLCJpYXQiOjE3MjIxODIwNjAsImV4cCI6MTcyMjI2ODQ2MH0.RfRInCXSQ4nuyVdBqAdcAGc-VXS_dK4y7XnRK1w0HRkc-PBPu2HnF_MfjAWrXpn8'
+interface BusinessDetailsSubmit {
+  businessName: string;
+  locationUrl: string;
+  contactNumber: string;
+  address: string;
+  description: string;
+}
 
 const BusinessProfile: React.FC = () => {
   const { user, checkAuthenticated, logout } = useAuth();
@@ -77,12 +84,66 @@ const BusinessProfile: React.FC = () => {
 
         const responseData = await response.json();
         setData(responseData);
+        setBusinessname(responseData.name)
+        setAddress(responseData.address)
+        setContactNo(responseData.contactNo)
+        setLocationUrl(responseData.locationUrl)
+        setDescription(responseData.description)
         console.log(data);
       } catch (error) {
         console.error('Error fetching data:', error);
       }
     }
   };
+
+  // const [BusinessDetailsSubmit, setBusinessDetails] = useState<BusinessDetailsSubmit>({
+  //   businessName: 'hello',
+  //   locationUrl: '',
+  //   contactNumber: '',
+  //   address: '',
+  //   description: '',
+  // });
+
+  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  //   const { name, value } = e.target;
+  //   setBusinessDetails({ ...BusinessDetailsSubmit, [name]: value });
+  // };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+
+    console.log(businessName);
+    
+    e.preventDefault();
+
+      const name = businessName;
+    
+    if (1) {
+      console.log("name: "+businessName)
+      try {
+        const response = await fetch(`http://localhost:8080/api/v1/business/register/${email}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({ name, locationUrl, contactNo, address, description }),
+        });
+        
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const responseData = await response.json();
+        setData(responseData);
+        console.log(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+    console.log(businessDetails);
+    setOpenBusinessModal(false);
+  };
+
 
   const [selectedAvatar, setSelectedAvatar] = useState(
     "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
@@ -96,6 +157,11 @@ const BusinessProfile: React.FC = () => {
   const [uploadedAvatar, setUploadedAvatar] = useState<
     string | ArrayBuffer | null
   >(null);
+  const [businessName, setBusinessname] = useState("")
+  const [locationUrl, setLocationUrl] = useState("")
+  const [address, setAddress] = useState("")
+  const [description, setDescription] = useState("")
+  const [contactNo, setContactNo] = useState("")
   type Day =
     | "Monday"
     | "Tuesday"
@@ -209,10 +275,6 @@ const BusinessProfile: React.FC = () => {
     setIsAvatarModalOpen(false);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Handle form submission
-  };
 
   type Category =
     | "Stationary"
@@ -409,10 +471,10 @@ const BusinessProfile: React.FC = () => {
                             <TextInput
                               id="businessName"
                               name="businessName"
-                              value={businessDetails.name}
+                              value={businessName}
                               required
                               className="block w-full"
-                              onChange={(e) => setBusinessName(e.target.value)}
+                              onChange={(e) => {setBusinessname(e.target.value)}}
                             />
                           </div>
 
@@ -427,9 +489,10 @@ const BusinessProfile: React.FC = () => {
                             <TextInput
                               id="locationUrl"
                               name="locationUrl"
-                              value={businessDetails.locationUrl}
+                              value={locationUrl}
                               required
                               className="block w-full"
+                              onChange={(e) => {setLocationUrl(e.target.value)}}
                             />
                           </div>
                         </div>
@@ -446,9 +509,10 @@ const BusinessProfile: React.FC = () => {
                             <TextInput
                               id="contactNumber"
                               name="contactNumber"
-                              value={businessDetails.contactNo}
+                              value={contactNo}
                               required
                               className="block w-full"
+                              onChange={(e) => {setContactNo(e.target.value)}}
                             />
                           </div>
 
@@ -463,9 +527,10 @@ const BusinessProfile: React.FC = () => {
                             <TextInput
                               id="address"
                               name="address"
-                              value={businessDetails.address}
+                              value={address}
                               required
                               className="block w-full"
+                              onChange={(e) => {setAddress(e.target.value)}}
                             />
                           </div>
                         </div>
@@ -481,10 +546,11 @@ const BusinessProfile: React.FC = () => {
                           <Textarea
                             id="description"
                             name="description"
-                            value={businessDetails.description}
+                            value={description}
                             rows={4}
                             required
                             className="block w-full"
+                            onChange={(e) => {setDescription(e.target.value)}}
                           />
                         </div>
                       </form>
@@ -492,8 +558,7 @@ const BusinessProfile: React.FC = () => {
                     <Modal.Footer>
                       <Button
                         type="submit"
-                        onClick={() => updateBusinessData(businessDetails)}
-                        // onClick={() => setOpenBusinessModal(true)}
+                        onClick={handleSubmit}
                         className="bg-bluedark text-white  rounded-md flex items-center"
                       >
                         Update
