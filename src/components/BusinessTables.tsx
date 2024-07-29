@@ -254,7 +254,7 @@ const BusinessAndReviewTables: React.FC = () => {
               Do you want to consider this business for appeal?
             </h3>
             <div className="flex justify-center gap-4 pb-6">
-              <Button className="bg-blue-600 hover:bg-blue-700" onClick={handleConsider}>
+              <Button className="bg-blue2 hover:bg-blue-700" onClick={handleConsider}>
                 Yes, consider
               </Button>
               <Button className="bg-gray-500 hover:bg-gray-600" onClick={() => setShowConsiderPopup(false)}>
