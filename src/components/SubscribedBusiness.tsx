@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Button, List, Modal } from "flowbite-react";
 import { FaEyeSlash } from "react-icons/fa";
 import BusinessImg from "../assets/Abans.png";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 const SubscribedBusinesses: React.FC = () => {
   const [businessToUnsubscribe, setBusinessToUnsubscribe] = useState<
@@ -66,7 +67,7 @@ const SubscribedBusinesses: React.FC = () => {
           {businesses.map((business, index) => (
             <List.Item
               key={index}
-              className="flex justify-between items-center py-4 px-6"
+              className="flex justify-between items-center py-4 px-6 transform transition-transform duration-200 hover:scale-105"
             >
               <div className="flex items-center">
                 <img
@@ -80,7 +81,7 @@ const SubscribedBusinesses: React.FC = () => {
                 </div>
               </div>
               <Button
-                color="failure"
+                className="text-white bg-bluedark"
                 size="sm"
                 onClick={() => handleUnsubscribe(business.name)}
               >
@@ -94,12 +95,15 @@ const SubscribedBusinesses: React.FC = () => {
         <Modal.Header />
         <Modal.Body>
           <div className="text-center">
-            <FaEyeSlash className="mx-auto mb-4 h-12 w-12 text-gray-400 dark:text-gray-200" />
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
               Are you sure you want to unsubscribe from {businessToUnsubscribe}?
             </h3>
             <div className="flex justify-center gap-4">
-              <Button color="failure" onClick={confirmUnsubscribe}>
+              <Button
+                className="text-white bg-bluedark"
+                onClick={confirmUnsubscribe}
+              >
                 Yes, I'm sure
               </Button>
               <Button color="gray" onClick={cancelUnsubscribe}>
