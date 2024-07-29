@@ -1,4 +1,6 @@
+// src/pages/CustomerHome.tsx
 import React from "react";
+import { Link } from "react-router-dom";
 import Customernavbar from "../components/Customernavbar";
 import {
   FaSearch,
@@ -9,9 +11,29 @@ import {
   FaLightbulb,
 } from "react-icons/fa";
 import HomeImage from "../assets/Background.png";
-import RecommendationBox from "../components/RecommendationBox";
-import RecentSearches from "../components/RecentSearches";
+import Advertisement from "../components/Advertisement";
 import Footer from "../components/Footer";
+import ad1 from '../assets/ad1.png';
+import ad2 from '../assets/ad2.png';
+import ad3 from '../assets/ad3.png';
+
+const advertisements = [
+  {
+    img: ad1,
+    date: '2024-07-06',
+    details: 'Ad 1 details',
+  },
+  {
+    img: ad2,
+    date: '2024-07-05',
+    details: 'Ad 2 details',
+  },
+  {
+    img: ad3,
+    date: '2024-07-04',
+    details: 'Ad 3 details',
+  },
+];
 
 const CustomerHome: React.FC = () => {
   return (
@@ -76,30 +98,26 @@ const CustomerHome: React.FC = () => {
             </div>
           </div>
           <p className="mt-6 text-gray-500 italic">
-            Discover latest offers and win vouchers in Sri Lankan shops being at
-            your comfort zones
+            Discover latest offers and win vouchers in Sri Lankan shops being at your comfort zones
           </p>
         </section>
         <section>
-          <h2 className="text-subheading font-bold mb-4">Recommendations</h2>
+          <h2 className="text-subheading font-bold mb-4">Advertisements</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <RecommendationBox /> {/* Add the new component here */}
-            <RecommendationBox /> {/* Add more as needed */}
-            <RecommendationBox /> {/* Add more as needed */}
+            {advertisements.map((ad, index) => (
+              <Advertisement key={index} img={ad.img} details={ad.details} />
+            ))}
           </div>
-        </section>
-        <section className="mt-6">
-          <h2 className="text-subheading font-bold mb-4">Recent Searches</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <RecentSearches />
+          <div className="mt-4 text-center">
+            <Link to="/advertisements" className="text-slate-600 hover:underline">
+              See more
+            </Link>
           </div>
         </section>
       </main>
-      <Footer/>
+      <Footer />
     </div>
   );
 };
 
 export default CustomerHome;
-
-// flex justify-center space-x-20
