@@ -100,7 +100,7 @@ const navigation: NavigationItem[] = [
     label:<span className="ms-3">Business List</span>
 
 },
-  { name: 'Appeals & Reports', href: '#', current: false, ico:<FlagCircleIcon />,
+  { name: 'Appeals & Reports', href: '/reports', current: false, ico:<FlagCircleIcon />,
     label:<span className="ms-3">Appeals & Reports</span>
 },
   { name: 'Games', href: '/manage_games', current: false, ico:<ExtensionIcon />,
