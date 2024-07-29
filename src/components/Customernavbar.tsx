@@ -1,9 +1,9 @@
 import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Bars3Icon, BellIcon, XMarkIcon, PuzzlePieceIcon } from '@heroicons/react/24/outline';
 import Logo from '../assets/logo.png';
-import Button from './Button';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useAuth } from '../utils/AuthProvider';
+import { useNavigate } from 'react-router-dom';
 
 
 function classNames(...classes: string[]): string {
@@ -12,6 +12,12 @@ function classNames(...classes: string[]): string {
 
 
 function Customernavbar(){
+
+  const navigate = useNavigate();
+
+  function navigateToPage() {
+    navigate('/customer_game');
+  }
 
   const handleLogout = () => {
     logout();
@@ -217,7 +223,7 @@ function Customernavbar(){
                 ></path>
               </svg>
             </button>
-            <a href="https://flowbite.com" className="flex ms-2 md:me-24">
+            <a href="/" className="flex ms-2 md:me-24">
               <img src={Logo} className="h-8 me-3" alt="FlowBite Logo" />
             </a>
           </div>
@@ -273,6 +279,12 @@ function Customernavbar(){
             </button>
           </div>
           <div className="absolute z-50 inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            <button onClick={navigateToPage} className="relative rounded-full p-1 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+            <PuzzlePieceIcon className="h-6 w-6 mr-2" />
+            </button>
+
+
+
             <button
               type="button"
               onClick={toggleNotificationMenu}
@@ -312,23 +324,14 @@ function Customernavbar(){
                 <MenuItem>
                   {({ active }) => (
                     <a
-                      href="#"
+                      href="/Customer_profile"
                       className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-900')}
                     >
                       My Profile
                     </a>
                   )}
                 </MenuItem>
-                <MenuItem>
-                  {({ active }) => (
-                    <a
-                      href="#"
-                      className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-900')}
-                    >
-                      Subscribed
-                    </a>
-                  )}
-                </MenuItem>
+              
                 <MenuItem>
                   {({ active }) => (
                     <a

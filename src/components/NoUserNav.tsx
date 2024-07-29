@@ -9,11 +9,6 @@ function Nousernavbar() {
     const navigate = useNavigate();
     const [searchTerm, setSearchTerm] = useState<string>('');
 
-
-    function navigateToPage() {
-      navigate('/search');
-    }
-
     const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
         setSearchTerm(event.target.value);
     };
@@ -109,7 +104,7 @@ function Nousernavbar() {
                   <path clipRule="evenodd" fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
                 </svg>
               </button>
-              <a href="/" className="flex ms-2 md:me-24">
+              <a href="https://flowbite.com" className="flex ms-2 md:me-24">
                 <img src={Logo} className="h-8 me-3" alt="FlowBite Logo" />
               </a>
               
@@ -117,18 +112,18 @@ function Nousernavbar() {
             <div className='flex w-2/5 items-center justify-start rtl:justify-end'>
                 <div className="relative w-full">
                     <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none p-0">
-                    <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                    {/* <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-                    </svg>
+                    </svg> */}
                     </div>
-                    <input type="text" id="simple-search" value={searchTerm} onChange={handleSearchChange} className="bg-gray-50 border p-1 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10   dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="What are you looking for" required />
+                    {/* <input type="text" id="simple-search" value={searchTerm} onChange={handleSearchChange} className="bg-gray-50 border p-1 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10   dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search category or name..." required /> */}
                 </div>
-                <button onClick={navigateToPage} className="p-2 ms-2 text-sm font-medium text-white bg-bluedark rounded-lg border border-bluedark  hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                {/* <button type="submit" className="p-2 ms-2 text-sm font-medium text-white bg-bluedark rounded-lg border border-bluedark  hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                     </svg>
                     <span className="sr-only">Search</span>
-                </button>
+                </button> */}
             </div>
             <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <button

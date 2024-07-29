@@ -15,11 +15,48 @@ import { MdOutlineModeEdit } from "react-icons/md";
 import { Tab, Tabs } from "../components/CustomTabs";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import CustomToggleSwitch from "../components/CustomToggleSwitch";
+import { useAuth } from '../utils/AuthProvider';
+const email = 'yuhanga2001@gmail.com';
+const token = 'eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ5dWhhbmdhMjAwMUBnbWFpbC5jb20iLCJpYXQiOjE3MjIxODIwNjAsImV4cCI6MTcyMjI2ODQ2MH0.RfRInCXSQ4nuyVdBqAdcAGc-VXS_dK4y7XnRK1w0HRkc-PBPu2HnF_MfjAWrXpn8'
 
 const BusinessProfile: React.FC = () => {
+  const { user, checkAuthenticated, logout } = useAuth();
+  const [data, setData] = useState<any>(null);
   useEffect(()=>{
     document.title = "SpotBiz | Profile | Business";
   },[]);
+
+  useEffect(() => {
+    if (!checkAuthenticated()) {
+      fetchData();
+    } else {
+      fetchData();
+    }
+  }, []);
+  
+  const fetchData = async () => {
+    if (1) {
+      try {
+        const response = await fetch(`http://localhost:8080/api/v1/business_owner/business/${email}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+
+        const responseData = await response.json();
+        setData(responseData);
+        console.log(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+  };
 
   const [selectedAvatar, setSelectedAvatar] = useState(
     "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
@@ -173,17 +210,16 @@ const BusinessProfile: React.FC = () => {
   };
 
   const businessDetails = {
-    name: "Abans",
-    registrationNumber: "345 346 46",
-    description:
-      "Abans Sri Lanka is a leading electronics and home appliances provider, offering innovative solutions and top-notch service. Committed to quality, Abans delivers a wide range of products htmlFor modern living.",
-    locationUrl: "https://goo.gl/maps/xyz123",
-    contactNo: "+09 345 346 46",
-    address: "38/A, Aberdeen Road, Colombo 10",
-    status: "Active",
-    category: "Electronics",
-    subscriptionPackage: "Premium",
-    businessSocialLinks: {
+    name: data?.name || "No business name available",
+    registrationNumber: data?.businessRegNo || "No registration number available",
+    description: data?.description || "No description available.",
+    locationUrl: data?.locationUrl || "No location available",
+    contactNo: data?.contactNo || "No contact available",
+    address: data?.address || "No address available",
+    status: data?.status || "Active",
+    category: data?.category || "Electronics",
+    subscriptionPackage: data?.subscriptionPackage || "Free",
+    businessSocialLinks: data?.businessSocialLinks || {
       facebook: "https://facebook.com/abans",
       twitter: "https://twitter.com/abans",
       linkedin: "https://linkedin.com/company/abans",

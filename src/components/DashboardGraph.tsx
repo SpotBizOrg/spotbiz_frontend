@@ -78,9 +78,9 @@ const PerformanceChart: React.FC = () => {
   };
 
   return (
-    <div className="bg-white pt-3 pb-2 rounded-lg shadow-lg h-90 ml-7 pl-8 pr-8 mt-4"> {/* Increased height to h-96 */}
+    <div className="bg-white pt-3 pb-2 rounded-lg shadow-lg h-90 ml-7 pl-8 pr-8 mt-8"> {/* Increased height to h-96 */}
       <h2 className="text-lg font-semibold mt-1 mb-3 pl-3">Performance</h2>
-      <div className="flex justify-end mb-3">
+      <div className="flex justify-end mb-4">
         <select
           className="border rounded p-2"
           value={timeframe}
@@ -92,8 +92,10 @@ const PerformanceChart: React.FC = () => {
           <option value="yearly">Yearly</option>
         </select>
       </div>
+      <div className="mt-4 mb-3 pb-3">
       <Line data={data} options={chartOptions} />
-    </div>
+      </div>
+      </div>
   );
 };
 

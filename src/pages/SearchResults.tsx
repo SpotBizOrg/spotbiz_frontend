@@ -1,16 +1,14 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
-import { FaChevronDown } from 'react-icons/fa';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Customernavbar from '../components/Customernavbar';
-import Container from '../components/Container';
 import SortByDropdown from '../components/SortBy';
 import CategoryPills from '../components/CategoryPills';
-import { Button } from 'flowbite-react';
 import NearMeBtn from '../components/NearMeBtn';
 import { SearchPagination } from '../components/SearchPagePagination';
 import { Rating, RatingStar, Badge } from "flowbite-react";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Footer from '../components/Footer';
+import Container2 from '../components/Container2';
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
@@ -39,8 +37,14 @@ interface ResultCardProps {
 }
 
 const ResultCard: React.FC<ResultCardProps> = ({ imageSrc, name, location, rating, badges, description, status }) => {
+
+  const navigate = useNavigate();
+
+  function navigateToPage() {
+    navigate('/business');
+  }
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200 flex flex-col items-center">
+    <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200 flex flex-col items-center" onClick={navigateToPage}>
       <img src={imageSrc} alt={name} className="mb-4 rounded w-full" />
       <div className='flex flex-col divide-y w-full'>
         <div className="flex flex-col gap-3 p-4 rounded-b-lg">
@@ -71,7 +75,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ imageSrc, name, location, ratin
 };
 
 const SearchResults: React.FC = () => {
-  const query = useQuery().get('query');
+  // const query = useQuery().get('query');
 
   const results = [
     {
@@ -205,7 +209,7 @@ const SearchResults: React.FC = () => {
 
   return (
     <>
-      <Container>
+      <Container2>
       <Customernavbar />
       <div className="flex flex-col justify-start px-20 mt-20 pt-5 w-full mb-20">
         <div className="w-full">
@@ -235,7 +239,7 @@ const SearchResults: React.FC = () => {
         </div>
       </div>
       <SearchPagination />
-    </Container>
+    </Container2>
     <Footer />
     
     </>

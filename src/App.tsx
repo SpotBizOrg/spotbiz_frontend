@@ -1,3 +1,4 @@
+// src/App.tsx
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/LandingPage";
 import Login from "./pages/Login";
@@ -11,7 +12,7 @@ import CustomerHome from "./pages/CustomerHome";
 import Guided2 from "./pages/Guided2";
 import Guided3 from "./pages/Guided3";
 import AdminVerify from "./pages/BusinessVerify";
-import Packages from "./pages/BusinessPackages";
+// import Packages from "./pages/BusinessPackages";
 import AdminTagsReviews from "./pages/AdminTags&Reviews";
 import BusinessReviews from "./pages/BusinessReviews";
 import CustomerReview from "./pages/CustomerReviews";
@@ -25,6 +26,7 @@ import SearchResults from "./pages/SearchResults";
 import BusinessDashboard from "./pages/BusinessDashboard";
 import CustomerGame from "./pages/CustomerGame";
 import ManageGames from "./pages/ManageGames";
+import GamePage from "./pages/GamePage";
 import ManageGamesBusiness from "./pages/ManageGamesBusiness";
 import CustomerProfile from "./pages/CustomerProfile2";
 import BusinessProfile from "./pages/BusinessProfile2";
@@ -34,6 +36,8 @@ import AdvertisementsPage from './components/BusinessAd';
 import BusinessList from './pages/BusinessList';
 import AdminPage from './pages/AdminPage'; 
 import BusinessPage from './pages/BusinessPage'; 
+import PackageListPage from './pages/PackageListPage'; // Import the new page
+
 import "./App.css";
 
 function App() {
@@ -50,7 +54,7 @@ function App() {
         <Route path="/signup-customer" element={<SignupFormCustomer />} />
         <Route path="/signup-in-process" element={<SignupInProgress />} />
         <Route path="/verification_in_progress" element={<VerificationInProgress />} />
-        <Route path="/packages" element={<Packages />} />
+        {/* <Route path="/packages" element={<Packages />} /> */}
         <Route path="/chart" element={<Chart />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admintags" element={<AdminTagsReviews />} />
@@ -61,8 +65,8 @@ function App() {
         <Route path="/business" element={<BusinessPage />} />
         <Route path="/admin/customers" element={<AdminPage />} /> 
         <Route path="/admin/businesses" element={<BusinessList />} /> 
-        <Route path="/Business_profile" element={<BusinessProfile />} />{" "}
-        <Route path="/Customer_profile" element={<CustomerProfile />} />
+        <Route path="/business_profile" element={<BusinessProfile />} />{" "}
+        <Route path="/customer_profile" element={<CustomerProfile />} />
         <Route path="/cus_profile" element={<CustomerProfile1 />} />
         <Route path="/bus_profile" element={<BusinessProfile1 />} />
         <Route path="/search" element={<SearchResults />} /> 
@@ -71,9 +75,11 @@ function App() {
         <Route path="/bus_dashboard" element={<BusinessDashboard />} />
         <Route path="/customer_game" element={<CustomerGame />} />
         <Route path="/manage_games" element={<ManageGames />} />
+        <Route path="/game" element={<GamePage />} />
         <Route path="/manage_games_business" element={<ManageGamesBusiness />} />
         <Route path="/banned" element={<Banned />} />
         <Route path="/reports" element={<Reports />} />
+        <Route path="/packages" element={<PackageListPage />} /> {/* Add the new route */}
       </Routes>
   );
 }

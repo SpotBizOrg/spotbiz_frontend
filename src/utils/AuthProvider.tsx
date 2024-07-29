@@ -42,6 +42,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   const localSave = (data: any) => {
+    console.log(data.token)
     localStorage.setItem('token', data.token);
     localStorage.setItem('name', data.name);
     localStorage.setItem('email', data.email);

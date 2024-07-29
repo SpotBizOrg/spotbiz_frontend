@@ -1,6 +1,6 @@
-import { Disclosure, DisclosureButton, DisclosurePanel, Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
-import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline';
+import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import Logo from '../assets/logo.png';
+import { useNavigate } from 'react-router-dom';
 
 function classNames(...classes: string[]): string {
     return classes.filter(Boolean).join(' ');
@@ -8,6 +8,8 @@ function classNames(...classes: string[]): string {
   
 
 function Businessnavbar(){
+
+  const navigate = useNavigate();
 
     return (
       <nav className="fixed top-0 z-40 w-full bg-white border-b border-gray-200">
@@ -24,7 +26,7 @@ function Businessnavbar(){
                   <path clipRule="evenodd" fillRule="evenodd" d="M2 4.75A.75.75 0 012.75 4h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 4.75zm0 10.5a.75.75 0 01.75-.75h7.5a.75.75 0 010 1.5h-7.5a.75.75 0 01-.75-.75zM2 10a.75.75 0 01.75-.75h14.5a.75.75 0 010 1.5H2.75A.75.75 0 012 10z"></path>
                 </svg>
               </button>
-              <a href="https://flowbite.com" className="flex ms-2 md:me-24">
+              <a href="/" className="flex ms-2 md:me-24">
                 <img src={Logo} className="h-8 me-3" alt="FlowBite Logo" />
               </a>
             </div>
@@ -64,58 +66,105 @@ function Businessnavbar(){
                 }
               </div>
             </div> */}
-            <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-  
-       
-        <Menu as="div" className="relative ml-3">
-          <div>
-            <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-              <span className="absolute -inset-1.5" />
-              <span className="sr-only">Open user menu</span>
-              <img
-                className="h-8 w-8 rounded-full"
-                src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-                alt=""
-              />
-            </MenuButton>
+            <div className="absolute z-50 inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            <button 
+              onClick={() => navigate('/customerhome')} 
+              className="flex justify-center rounded-md bg-bluedark px-3 py-1 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 mr-5">
+            
+            Switch to Customer
+            </button>
+
+            <Menu as="div" className="relative ml-3">
+                  <div>
+                    <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                      <span className="absolute -inset-1.5" />
+                      <span className="sr-only">Open user menu</span>
+                      <img
+                        className="h-8 w-8 rounded-full"
+                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        alt=""
+                      />
+                    </MenuButton>
+                  </div>
+                  <MenuItems
+                    transition
+                    className="absolute right-0 z-10 mt-4 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+                  >
+                    <MenuItem>
+                      {({ active }) => (
+                        <a
+                          href="/Business_profile"
+                          className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-900')}
+                        >
+                          My Profile
+                        </a>
+                      )}
+                    </MenuItem>
+                    <MenuItem>
+                      {({ active }) => (
+                        <a
+                          href="#"
+                          className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-900')}
+                        >
+                          Sign out
+                        </a>
+                      )}
+                    </MenuItem>
+                  </MenuItems>
+                </Menu>
           </div>
-          <MenuItems
-            transition
-            className="absolute right-0 z-10 mt-4 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
-          >
-            <MenuItem>
-              {({ active }) => (
-                <a
-                  href="#"
-                  className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-900')}
-                >
-                  My Profile
-                </a>
-              )}
-            </MenuItem>
-            <MenuItem>
-              {({ active }) => (
-                <a
-                  href="#"
-                  className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-900')}
-                >
-                  Settings
-                </a>
-              )}
-            </MenuItem>
-            <MenuItem>
-              {({ active }) => (
-                <a
-                  href="#"
-                  className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-900')}
-                >
-                  Sign out
-                </a>
-              )}
-            </MenuItem>
-          </MenuItems>
-        </Menu>
-      </div>
+            {/* <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+
+       
+                <Menu as="div" className="relative ml-3">
+                  <div>
+                    <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
+                      <span className="absolute -inset-1.5" />
+                      <span className="sr-only">Open user menu</span>
+                      <img
+                        className="h-8 w-8 rounded-full"
+                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        alt=""
+                      />
+                    </MenuButton>
+                  </div>
+                  <MenuItems
+                    transition
+                    className="absolute right-0 z-10 mt-4 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 transition focus:outline-none data-[closed]:scale-95 data-[closed]:transform data-[closed]:opacity-0 data-[enter]:duration-100 data-[leave]:duration-75 data-[enter]:ease-out data-[leave]:ease-in"
+                  >
+                    <MenuItem>
+                      {({ active }) => (
+                        <a
+                          href="#"
+                          className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-900')}
+                        >
+                          My Profile
+                        </a>
+                      )}
+                    </MenuItem>
+                    <MenuItem>
+                      {({ active }) => (
+                        <a
+                          href="#"
+                          className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-900')}
+                        >
+                          Settings
+                        </a>
+                      )}
+                    </MenuItem>
+                    <MenuItem>
+                      {({ active }) => (
+                        <a
+                          href="#"
+                          className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-900')}
+                        >
+                          Sign out
+                        </a>
+                      )}
+                    </MenuItem>
+                  </MenuItems>
+                </Menu>
+      </div> */}
           </div>
         </div>
       </nav>
