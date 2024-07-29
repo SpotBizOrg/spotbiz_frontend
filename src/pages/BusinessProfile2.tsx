@@ -22,6 +22,7 @@ const token = 'eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ5dWhhbmdhMjAwMUBnbWFpbC5jb20iLCJp
 const BusinessProfile: React.FC = () => {
   const { user, checkAuthenticated, logout } = useAuth();
   const [data, setData] = useState<any>(null);
+  const [businessname, setBusinessName] = useState("");
   useEffect(()=>{
     document.title = "SpotBiz | Profile | Business";
   },[]);
@@ -33,6 +34,31 @@ const BusinessProfile: React.FC = () => {
       fetchData();
     }
   }, []);
+
+  const updateBusinessData = (data: typeof businessDetails) => {
+    fetch(`http://localhost:8080/api/v1/business/${email}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.json();
+    })
+    .then(responseData => {
+      setData(responseData);
+      console.log(responseData);
+    })
+    .catch(error => {
+      console.error('Error fetching data:', error);
+    });
+  };
+  
   
   const fetchData = async () => {
     if (1) {
@@ -386,6 +412,7 @@ const BusinessProfile: React.FC = () => {
                               value={businessDetails.name}
                               required
                               className="block w-full"
+                              onChange={(e) => setBusinessName(e.target.value)}
                             />
                           </div>
 
@@ -465,7 +492,8 @@ const BusinessProfile: React.FC = () => {
                     <Modal.Footer>
                       <Button
                         type="submit"
-                        onClick={() => setOpenBusinessModal(true)}
+                        onClick={() => updateBusinessData(businessDetails)}
+                        // onClick={() => setOpenBusinessModal(true)}
                         className="bg-bluedark text-white  rounded-md flex items-center"
                       >
                         Update
