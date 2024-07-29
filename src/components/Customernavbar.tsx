@@ -224,7 +224,7 @@ function Customernavbar(){
               </svg>
             </button>
             <a href="/" className="flex ms-2 md:me-24">
-              <img src={Logo} className="h-8 me-3" alt="FlowBite Logo" />
+              <img src={Logo} className="h-8 me-3" alt="SpotBiz Logo" />
             </a>
           </div>
           <div className="flex w-2/5 items-center justify-start rtl:justify-end">

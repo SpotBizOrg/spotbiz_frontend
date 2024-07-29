@@ -39,6 +39,8 @@ function BusinessVerify() {
   }, []);
 
   const handleVerify = () => {
+    setShowPopup(false);
+
     fetch(`http://localhost:8080/api/v1/admin/verify/${currentBusinessId}`)
       .then((response) => {
         if (response.ok) {
@@ -49,7 +51,7 @@ function BusinessVerify() {
       })
       .then((data) => {
         console.log(data);
-        setShowPopup(false);
+        // setShowPopup(false);
         fetchBusinessData(); // Fetch the data again to update the table
       })
       .catch((error) => {

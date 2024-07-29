@@ -6,6 +6,7 @@ import Review from "../components/Review";
 import SortByDropdown from "../components/SortBy";
 import Customernavbar from "../components/Customernavbar";
 import AddReviewModal from "../components/AddReviewModal";
+import Customernavbar2 from "../components/Customernavbar2";
 
 function Reviews() {
   const [selectedOption, setSelectedOption] = useState<string>("");
@@ -29,7 +30,7 @@ function Reviews() {
 
   return (
     <Container>
-      <Customernavbar />
+      <Customernavbar2 />
 
       <div className="px-12 sm mt-20">
         <div className="flex justify-between items-center mb-10 border-b-gray-900 w-full">
