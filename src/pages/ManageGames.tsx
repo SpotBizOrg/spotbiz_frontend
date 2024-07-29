@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal, TextInput, Label } from "flowbite-react";
 import Adminnavbar from "../components/Adminnavbar";
 import Adminsidebar from "../components/Adminsidebar";
@@ -13,6 +13,10 @@ import CuttheRope from '../assets/game_banner/CuttheRope.jpg';
 import CupsWaterSortPuzzle from '../assets/game_banner/CupsWaterSortPuzzle.jpg';
 
 function ManageGames() {
+  useEffect(()=>{
+    document.title = "SpotBiz | Games | Admin";
+  },[]);
+  
   const [activeTab, setActiveTab] = useState('seasonal');
   const [showForm, setShowForm] = useState(false);
   const [newGame, setNewGame] = useState({

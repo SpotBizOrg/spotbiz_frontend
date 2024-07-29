@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Businessnavbar from "../components/Businessnavbar";
 import Businesssidebar from "../components/Businesssidebar";
 import Container from "../components/Container";
@@ -8,6 +8,10 @@ import Review from "../components/Review";
 import SortByDropdown from "../components/SortBy";
 
 function Reviews() {
+  useEffect(()=>{
+    document.title = "SpotBiz | Reviews | Business";
+  },[]);
+
   const [selectedOption, setSelectedOption] = useState<string>("");
 
   const starCountOptions = [

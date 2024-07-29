@@ -1,4 +1,5 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 interface GameCardProps {
   image: string;
@@ -25,8 +26,10 @@ const GameCard: React.FC<GameCardProps> = ({
   url, 
   usage, 
 }) => {
+  const navigate = useNavigate();
+
   const handleClick = () => {
-    window.location.href = url;
+    navigate('/game', { state: { url } });
   };
 
   return (

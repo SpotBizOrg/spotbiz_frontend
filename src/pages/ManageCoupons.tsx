@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Adminnavbar from "../components/Adminnavbar";
 import Adminsidebar from "../components/Adminsidebar";
 import Container from "../components/Container";
@@ -135,6 +135,10 @@ const dummyCoupons: Coupon[] = [
 ];
 
 function ManageCoupons() {
+  useEffect(()=>{
+    document.title = "SpotBiz | Coupons | Admin";
+  },[]);
+  
   const [items, setItems] = useState<Coupon[]>(dummyCoupons);
   const [showForm, setShowForm] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -170,7 +174,7 @@ function ManageCoupons() {
   return (
     <Container>
       <Adminnavbar />
-      <Adminsidebar selectedTile="Business Registration" />
+      <Adminsidebar selectedTile="Coupons" />
       <div className="px-12 sm:ml-64 mt-20">
         <div className="flex justify-between items-center w-full mb-10">
           <h1 className="text-subsubheading text-bluedark">Discount Coupons</h1>
@@ -181,7 +185,7 @@ function ManageCoupons() {
             <FaPlus className="text-xl text-gray-500" />
           </div>
         </div>
-        <div className="relative table-container overflow-x-auto overflow-y-auto sm:rounded-lg border border-gray-200">
+        <div className="relative overflow-x-auto overflow-y-auto sm:rounded-lg border border-gray-200">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500">
             <thead className="table-header text-xs text-gray-700 uppercase bg-gray-50">
               <tr>

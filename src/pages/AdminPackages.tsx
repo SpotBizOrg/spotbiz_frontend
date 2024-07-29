@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Adminnavbar from '../components/Adminnavbar';
 import Adminsidebar from '../components/Adminsidebar';
 import PackageCard from '../components/PackageCard';
@@ -70,7 +70,25 @@ const packagesData: Package[] = [
   },
 ];
 
+const emptyPackage: Package = {
+  id: Date.now(),
+  title: '',
+  description: '',
+  monthlyPrice: 0,
+  features: {
+    'Advertisements & promotions per week': 0,
+    'Display business details to customer': '❌',
+    'Profile analytics': '❌',
+    'Interact with customers': '❌'
+  },
+  buttonText: 'Add Package',
+};
+
 export default function AdminPackages() {
+  useEffect(()=>{
+    document.title = "SpotBiz | Packages | Admin";
+  },[]);
+  
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
 
@@ -79,21 +97,21 @@ export default function AdminPackages() {
     setIsModalOpen(true);
   };
 
+  const handleAddPackage = () => {
+    setSelectedPackage(emptyPackage);
+    setIsModalOpen(true);
+  };
+
   const handleModalClose = () => {
     setIsModalOpen(false);
     setSelectedPackage(null);
   };
 
-  const handleUpdate = () => {
+  const handleUpdate = (updatedPackage: Package) => {
     // Implement update logic here
-    console.log('Package updated:', selectedPackage);
+    console.log('Package updated:', updatedPackage);
     setIsModalOpen(false);
     setSelectedPackage(null);
-  };
-
-  const handleAddPackage = () => {
-    // Logic to handle adding a new package
-    console.log('Add Package clicked');
   };
 
   return (
@@ -101,15 +119,15 @@ export default function AdminPackages() {
       <Adminnavbar />
       <div className="flex flex-1 mt-6">
         <div className="flex-none w-64">
-          <Adminsidebar selectedTile={''} />
+          <Adminsidebar selectedTile={'Subscription Packages'} />
         </div>
         <div className="flex-1 px-2 sm:px-4 lg:px-6 py-4 sm:py-6">
           <div className="max-w-7xl mx-auto">
             <div className="flex justify-between items-center mt-12">
-              <h2 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-2xl ">Update Subscription Packages</h2>
+              <h2 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-2xl">Update Subscription Packages</h2>
               <button
                 onClick={handleAddPackage}
-                className="px-6 py-2 mr-9 bg-blue1 text-white rounded-lg hover:bg-bluedark"
+                className="px-6 py-2 mr-7 bg-blue1 text-white rounded-lg hover:bg-bluedark"
               >
                 Add Package
               </button>
@@ -131,47 +149,7 @@ export default function AdminPackages() {
           </div>
         </div>
       </div>
-      <Modal isOpen={isModalOpen} onClose={handleModalClose} onUpdate={handleUpdate}>
-        {selectedPackage && (
-          <div>
-            <h3 className="text-2xl font-bold mb-6">Edit Package: {selectedPackage.title}</h3>
-            <form>
-              <div className="mb-4">
-                <label className="block text-gray-700">Package Title</label>
-                <input
-                  type="text"
-                  value={selectedPackage.title}
-                  className="w-full p-3 border border-gray-300 rounded mt-2"
-                  onChange={(e) =>
-                    setSelectedPackage({ ...selectedPackage, title: e.target.value })
-                  }
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700">Package Description</label>
-                <textarea
-                  value={selectedPackage.description}
-                  className="w-full p-2 border border-gray-300 rounded mt-2"
-                  onChange={(e) =>
-                    setSelectedPackage({ ...selectedPackage, description: e.target.value })
-                  }
-                />
-              </div>
-              <div className="mb-4">
-                <label className="block text-gray-700">Price (Rs.)</label>
-                <input
-                  type="number"
-                  value={selectedPackage.monthlyPrice}
-                  className="w-full p-2 border border-gray-300 rounded mt-2"
-                  onChange={(e) =>
-                    setSelectedPackage({ ...selectedPackage, monthlyPrice: parseInt(e.target.value, 10) })
-                  }
-                />
-              </div>
-            </form>
-          </div>
-        )}
-      </Modal>
+      <Modal isOpen={isModalOpen} onClose={handleModalClose} onUpdate={handleUpdate} packageData={selectedPackage} />
     </div>
   );
 }

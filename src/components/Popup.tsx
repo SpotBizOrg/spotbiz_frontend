@@ -72,7 +72,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
           <button onClick={onClose} className="text-xl font-bold">&times;</button>
         </div>
         <div className="mt-2">
-          <p className="text-subsubheading ">Subscription Plans</p>
+          <p className="text-subsubheading text-center">Subscription Plans</p>
           <div className="mt-8 grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
             {packagesData.map((pkg) => (
               <PackageCard
@@ -83,6 +83,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
                 features={pkg.features}
                 buttonText={pkg.buttonText}
                 isPopular={pkg.isPopular}
+                onClick={() => {}} // Provide a dummy onClick handler
               />
             ))}
           </div>
@@ -93,4 +94,3 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
 };
 
 export default Popup;
-

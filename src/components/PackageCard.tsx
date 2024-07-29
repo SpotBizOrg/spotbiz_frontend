@@ -21,7 +21,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
   onClick,
 }) => {
   return (
-    <div className={`flex flex-col p-4 bg-white border-2 rounded-xl shadow-md transition transform hover:scale-105 duration-300 ${isPopular ? 'border-primary' : 'border-gray-200'}`}>
+    <div className={`flex flex-col p-4 bg-white border-2 border-gray-300 rounded-xl shadow-md transition transform hover:scale-105 duration-300 ${isPopular ? 'border-primary' : 'border-gray-200'}`}>
       {isPopular && <div className="text-sm font-semibold text-gray-500">Most Popular Package</div>}
       <h3 className="mt-2 text-xl font-bold text-gray-900">{title}</h3>
       <p className="mt-2 text-sm text-gray-500">{description}</p>
@@ -33,7 +33,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
         className={`mt-4 w-full rounded-md bg-blue1 text-white hover:bg-bluedark py-2 text-sm font-semibold`}
         onClick={onClick}
       >
-        Edit Package
+        {buttonText}
       </button>
       <ul className="mt-4 space-y-1 text-sm text-gray-700">
         {Object.entries(features).map(([feature, value], index) => (

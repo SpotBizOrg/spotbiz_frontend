@@ -4,7 +4,6 @@ import Adminsidebar from "../components/Adminsidebar";
 import Container from "../components/Container";
 import { Button, Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-import Plate from "../components/Plate";
 
 interface User {
   userId: Number;
@@ -35,7 +34,7 @@ function BusinessVerify() {
   };
 
   useEffect(() => {
-    document.title = "Business Verify Requests | Admin";
+    document.title = "SpotBiz | Business Verify | Admin";
     fetchBusinessData();
   }, []);
 
@@ -63,66 +62,64 @@ function BusinessVerify() {
     <>
       <Container>
         <Adminnavbar />
-        <Adminsidebar selectedTile="Business Registration" />
+        <Adminsidebar selectedTile="Business Verification" />
 
         <div className="px-12 sm:ml-64 mt-20">
           <div className="w-fit mb-10 border-b-gray-900">
             <h1 className="text-subsubheading text-bluedark">Business Verify Requests</h1>
           </div>
 
-          <div className="relative overflow-x-auto sm:rounded-lg ">
-            <Plate>
-              <table className="w-full text-sm text-left rtl:text-right text-gray-500 rounded">
-                <thead className="text-xs text-gray-700 uppercase bg-gray-200 border-b border-gray-300">
-                  <tr>
-                    <th scope="col" className="px-6 py-3">
-                      Business ID
+          <div className="relative  overflow-x-auto overflow-y-auto sm:rounded-lg border border-gray-200">
+            <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+              <thead className="table-header text-xs text-gray-700 uppercase bg-gray-50">
+                <tr>
+                  <th scope="col" className="px-6 py-3" style={{ minWidth: '100px' }}>Business ID</th>
+                  <th scope="col" className="px-6 py-3" style={{ minWidth: '150px' }}>
+                    <div className="flex items-center">Business Reg No</div>
+                  </th>
+                  <th scope="col" className="px-6 py-3" style={{ minWidth: '150px' }}>
+                    <div className="flex items-center">Business Name</div>
+                  </th>
+                  <th scope="col" className="px-6 py-3" style={{ minWidth: '100px' }}>
+                    <div className="flex items-center">Representer Name</div>
+                  </th>
+                  <th scope="col" className="px-6 py-3" style={{ minWidth: '100px' }}>
+                    <div className="flex items-center">Representer Email</div>
+                  </th>
+                  <th scope="col" className="px-6 py-3 " style={{ minWidth: '150px' }}>
+                    <div className="flex items-center">Action</div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map((item, index) => (
+                  <tr key={index} className="bg-white border-b hover:bg-gray-50">
+                    <th
+                      scope="row"
+                      className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    >
+                      {item.businessId.toString()}
                     </th>
-                    <th scope="col" className="px-6 py-3">
-                      <div className="flex items-center">Business Reg No</div>
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      <div className="flex items-center">Business Name</div>
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      <div className="flex items-center">Representer Name</div>
-                    </th>
-                    <th scope="col" className="px-6 py-3">
-                      <div className="flex items-center">Representer Email</div>
-                    </th>
-                    <th scope="col" className="px-6 py-3"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {items.map((item, index) => (
-                    <tr key={index} className="bg-white border-b hover:bg-gray-50">
-                      <th
-                        scope="row"
-                        className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                    <td className="px-6 py-4">{item.businessRegNo}</td>
+                    <td className="px-6 py-4">{item.name}</td>
+                    <td className="px-6 py-4">{item.user.name}</td>
+                    <td className="px-6 py-4">{item.user.email}</td>
+                    <td className="px-0 py-4 flex gap-0 justify-start">
+                      <Button
+                        color="dark"
+                        size="xs"
+                        onClick={() => {
+                          setCurrentBusinessId(item.businessId);
+                          setShowPopup(true);
+                        }}
                       >
-                        {item.businessId.toString()}
-                      </th>
-                      <td className="px-6 py-4">{item.businessRegNo}</td>
-                      <td className="px-6 py-4">{item.name}</td>
-                      <td className="px-6 py-4">{item.user.name}</td>
-                      <td className="px-6 py-4">{item.user.email}</td>
-                      <td className="px-6 py-4 text-right">
-                        <Button
-                          color="dark"
-                          size="xs"
-                          onClick={() => {
-                            setCurrentBusinessId(item.businessId);
-                            setShowPopup(true);
-                          }}
-                        >
-                          Take Action
-                        </Button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </Plate>
+                        Take Action
+                      </Button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
       </Container>
@@ -131,9 +128,15 @@ function BusinessVerify() {
         onClose={() => setShowPopup(false)}
         popup
         className="flex items-center justify-center fixed inset-0 z-50"
+        theme={{
+          content: {
+            base: "bg-white w-3/4 rounded-lg", 
+            inner: "p-6 rounded-lg shadow-lg",
+          },
+        }}
       >
         <Modal.Header />
-        <Modal.Body>
+        <Modal.Body className="p-0">
           <div className="text-center">
             <HiOutlineExclamationCircle className="mx-auto h-14 w-14 text-gray-400 dark:text-gray-200" />
             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">

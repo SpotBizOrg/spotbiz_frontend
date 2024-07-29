@@ -83,39 +83,39 @@ interface NavigationItem {
 // },
 // ];
 const navigation: NavigationItem[] = [
-  { name: 'Dashboard', href: '#', current: true, ico: <DashboardIcon />, 
+  { name: 'Dashboard', href: '/admin', current: true, ico: <DashboardIcon />, 
   label:<span className="ms-3">Dashboard</span>
 },
-  { name: 'Business Registration', href: '#', current: false, ico: <BusinessCenterIcon />,
-    label:<span className="ms-3">Business Registration</span>
+  { name: 'Business Verification', href: '/admin_verify', current: false, ico: <BusinessCenterIcon />,
+    label:<span className="ms-3">Business Verification</span>
 },
-  { name: 'Categories & tags', href: '#', current: false, ico: <StyleIcon />,
+  { name: 'Categories & Tags', href: '/admintags', current: false, ico: <StyleIcon />,
     label:<span className="ms-3">Categories & Tags</span>
 
 },
-  { name: 'Customer List', href: '#', current: false, ico:<Person3Icon />,
+  { name: 'Customer List', href: '/admin/customers', current: false, ico:<Person3Icon />,
     label:<span className="ms-3">Customer List</span>
 },
-  { name: 'Business List', href: '#', current: false, ico:<StoreIcon />,
+  { name: 'Business List', href: '/admin/businesses', current: false, ico:<StoreIcon />,
     label:<span className="ms-3">Business List</span>
 
 },
-  { name: 'Appeals & Reports', href: '#', current: false, ico:<FlagCircleIcon />,
+  { name: 'Appeals & Reports', href: '/reports', current: false, ico:<FlagCircleIcon />,
     label:<span className="ms-3">Appeals & Reports</span>
 },
-  { name: 'Games', href: '#', current: false, ico:<ExtensionIcon />,
+  { name: 'Games', href: '/manage_games', current: false, ico:<ExtensionIcon />,
   label:<span className="ms-3">Games</span>
 
 },
-  { name: 'Badges', href: '#', current: false, ico:<LocalPoliceIcon />,
+  { name: 'Badges', href: '/badges', current: false, ico:<LocalPoliceIcon />,
     label:<span className="ms-3">Badges</span>
 
 },
-  { name: 'Cupons', href: '#', current: false, ico: <RequestQuoteIcon />,
-    label:<span className="ms-3">Cupons</span>
+  { name: 'Coupons', href: '/manage_coupons', current: false, ico: <RequestQuoteIcon />,
+    label:<span className="ms-3">Coupons</span>
 
 },
-  { name: 'Subscription Packages', href: '#', current: false, ico:<WidgetsIcon />,
+  { name: 'Subscription Packages', href: '/admin_packages', current: false, ico:<WidgetsIcon />,
     label:<span className="ms-3">Subscription Packages</span>
 
 },

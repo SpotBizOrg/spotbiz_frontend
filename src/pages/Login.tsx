@@ -10,7 +10,7 @@ const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false); 
-  const { localSave, checkAuthenticated, logout } = useAuth();
+  const { localSave, checkAuthenticated } = useAuth();
   
   const handleLogin = () => {
     if (validateForm()) {
@@ -43,6 +43,7 @@ const LoginPage: React.FC = () => {
       const data = await response.json();
   
       if (data.status === 'APPROVED') {
+        console.log("hello", data)
         localSave(data);
         toast.success("Login successful!");
         if(data.role === 'CUSTOMER'){
@@ -65,11 +66,11 @@ const LoginPage: React.FC = () => {
       } else if (data.status === 'PENDING') {
         if(data.role === 'CUSTOMER'){
           setTimeout(() => {
-            navigate('/customerhome');
+            navigate('/verification_in_progress');
           }, 1000);
         } else if(data.role === 'BUSINESS_OWNER'){
           setTimeout(() => {
-            navigate('/bus_dashboard');
+            navigate('/signup-in-process');
           }, 1000);
         } else{
           setTimeout(() => {
@@ -79,11 +80,11 @@ const LoginPage: React.FC = () => {
       } else if (data.status === 'BANNED') {
         if(data.role === 'CUSTOMER'){
           setTimeout(() => {
-            navigate('/customerhome');
+            navigate('/login');
           }, 1000);
         } else if(data.role === 'BUSINESS_OWNER'){
           setTimeout(() => {
-            navigate('/bus_dashboard');
+            navigate('/login');
           }, 1000);
         } else{
           setTimeout(() => {

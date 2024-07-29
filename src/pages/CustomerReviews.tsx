@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Container from "../components/Container";
 import Plate2 from "../components/Plate2";
 import Rating from "../components/Rating";
@@ -9,6 +9,10 @@ import AddReviewModal from "../components/AddReviewModal";
 
 function Reviews() {
   const [selectedOption, setSelectedOption] = useState<string>("");
+
+  useEffect(() => {
+    document.title = "SpotBiz | Reviews";
+  }, []);
 
   const starCountOptions = [
     "5 Star Reviews",

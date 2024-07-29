@@ -1,21 +1,19 @@
 import React from 'react';
-import registerImage from '../assets/register.png'; // Ensure you have this image in the correct path
+import GroupImage from '../assets/1.png';
 
 const HowToRegisterBusiness = () => {
   return (
-    <div className="container mx-auto my-8 p-8 bg-blue9 rounded-lg shadow flex flex-col md:flex-row items-center">
-      <div className="flex-shrink-0 mb-4 md:mb-0 md:mr-8">
-        <img src={registerImage} alt="How to register your business" className="h-32 w-32"/>
-      </div>
-      <div className="flex-1">
-        <h2 className="text-xl font-semibold mb-4">How to Register your Business at SpotBizz ?</h2>
-        <ul className="list-disc list-inside space-y-2 text-lg">
-          <li>Go to SpotBizz website or download the SpotBizz mobile app</li>
-          <li>Register your shop at the relevant category</li>
-          <li>Publish your latest offers and discounts</li>
-          <li>Buy packages for more services</li>
-          <li>Boost your business at SpotBizz</li>
-        </ul>
+    <div className="flex items-center bg-blue11 p-8 rounded-custom3 shadow-lg mx-4 md:mx-8 lg:mx-16">
+      <img src={GroupImage} alt="Connect to our network" className="w-1/2 h-auto" />
+      <div className="ml-8 text-left">
+        <h2 className="text-3xl font-bold mb-4">Connect to our network. Expand your reach</h2>
+        <p className="text-lg mb-6">Increase visibility! Attract new customers and boost business sales. Get reviews and build a strong online reputation. Your company profile can include contact information, a description, products, photos, and your business location on the map.</p>
+        <button className="bg-green-500 text-white py-2 px-6 rounded-full text-lg flex items-center">
+          List your business
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="ml-2 h-5 w-5">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 12h14m-7-7l7 7-7 7" />
+          </svg>
+        </button>
       </div>
     </div>
   );

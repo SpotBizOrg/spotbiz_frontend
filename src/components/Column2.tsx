@@ -9,37 +9,56 @@ const Column2: React.FC = () => {
     console.log(`Clicked on ${keyword}`);
   };
 
+  const images = [
+    { src: prom1, date: new Date('2023-07-01'), aspectRatio: '100%', title: "Mega Stock Clearance Sale!" },
+    { src: prom2, date: new Date('2023-07-15'), aspectRatio: '100%', title: "Abans Home Kitchen Baking Champion" },
+    { src: prom3, date: new Date('2023-07-20'), aspectRatio: '100%', title: "Newest Arrival!" },
+  ];
+
+  const calculateTimePassed = (date: Date) => {
+    const now = new Date();
+    const diff = now.getTime() - date.getTime();
+    const diffDays = Math.floor(diff / (1000 * 60 * 60 * 24));
+    if (diffDays === 0) return 'Today';
+    if (diffDays === 1) return '1 day ago';
+    if (diffDays < 7) return `${diffDays} days ago`;
+    const diffWeeks = Math.floor(diffDays / 7);
+    return diffWeeks === 1 ? '1 week ago' : `${diffWeeks} weeks ago`;
+  };
+
   return (
-    <div className="space-y-4 flex flex-col h-full justify-between">
+    <div className="flex flex-col h-full justify-between">
       <div>
-        <h3 className="text-2xl font-bold text-blue-900">Latest Promotions</h3>
-        <div className="space-y-2">
-          <div 
-            className="bg-gray-200 w-full bg-cover rounded-md mb-6"
-            style={{ backgroundImage: `url(${prom1})`, height: '450px' }}
-          ></div>
+        <div className="p-2 border border-gray-400 rounded text-center mb-10">
+          <p className="font-bold text-bluedark text-bodymedium">Latest Promotions</p>
         </div>
-        <div className="space-y-2">
-          <div 
-            className="bg-gray-200 w-full bg-cover rounded-md mb-6"
-            style={{ backgroundImage: `url(${prom2})`, height: '400px' }}
-          ></div>
-        </div>
-        <div className="space-y-2">
-          <div 
-            className="bg-gray-200 w-full bg-cover rounded-md mb-6"
-            style={{ backgroundImage: `url(${prom3})`, height: '450px' }}
-          ></div>
+        <div className="space-y-4">
+          {images.map((image, index) => (
+            <div key={index} className="space-y-2 bg-white shadow-md border border-gray-300 rounded-lg p-8">
+              <p className='text-subsubheading'>{image.title}</p>
+              <p className="text-end text-gray-600 text-bodysmall">{calculateTimePassed(image.date)}</p>
+
+              <div
+                className="relative bg-cover rounded-md mb-2"
+                style={{
+                  backgroundImage: `url(${image.src})`,
+                  paddingBottom: image.aspectRatio,
+                  height: 0,
+                }}
+              ></div>
+            </div>
+          ))}
         </div>
       </div>
-      <div className="mt-8">
-        <h4 className="text-lg font-bold text-blue-900">Keywords</h4>
-        <hr className="border-t-2 border-gray-300 my-2" />
-        <div className="flex flex-wrap gap-4 text-blue-900 font-semibold">
-          {['Electronics', 'Computer', 'Keyboard', 'Phone', 'Laptops', 'Apple'].map(keyword => (
-            <div 
-              key={keyword} 
-              className="bg-gray-200 p-4 rounded-md cursor-pointer flex-auto"
+      <div className="mt-10">
+      <div className="p-2 border border-gray-400 rounded text-center mb-4">
+                <p className="font-bold text-bluedark text-bodymedium">Keywords</p>
+            </div>
+        <div className="flex flex-wrap gap-4 text-blue-900 text-bodysmall font-semibold">
+          {['Electronics', 'Computer', 'Keyboard', 'Phone', 'Laptops', 'Apple'].map((keyword) => (
+            <div
+              key={keyword}
+              className="bg-blue9 text-wrap p-2 rounded-full cursor-pointer flex-auto text-center"
               onClick={() => handleClick(keyword)}
             >
               {keyword}

@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
 import Customernavbar from "../components/Customernavbar";
 import {
   FaSearch,
@@ -9,11 +10,37 @@ import {
   FaLightbulb,
 } from "react-icons/fa";
 import HomeImage from "../assets/Background.png";
-import RecommendationBox from "../components/RecommendationBox";
-import RecentSearches from "../components/RecentSearches";
+import Advertisement from "../components/Advertisement";
 import Footer from "../components/Footer";
+import ad1 from '../assets/ad1.png';
+import ad2 from '../assets/ad2.png';
+import ad3 from '../assets/ad3.png';
+
+const advertisements = [
+  {
+    img: ad1,
+    date: '2024-07-06',
+    details: 'Ad 1 details',
+  },
+  {
+    img: ad2,
+    date: '2024-07-05',
+    details: 'Ad 2 details',
+  },
+  {
+    img: ad3,
+    date: '2024-07-04',
+    details: 'Ad 3 details',
+  },
+];
 
 const CustomerHome: React.FC = () => {
+  const [query, setQuery] = useState("");
+
+  const handleSearch = () => {
+    console.log("Searching for:", query);
+  };
+
   return (
     <div className="flex flex-col min-h-screen bg-white font-body">
       <Customernavbar />
@@ -25,19 +52,27 @@ const CustomerHome: React.FC = () => {
         />
         <div className="absolute inset-0 bg-black opacity-50"></div>
         <div className="absolute inset-0 flex flex-col items-center justify-center text-center text-white px-4">
-          <h1 className="text-subheading font-bold">
-            Explore the best places in the city
+          <h1 className="text-3xl md:text-5xl font-semibold">
+            Find what you need, Where you need it!
           </h1>
-          <p className="text-subsubsubheading mt-4">
-            Find the best places being at your comfort zones
+          <p className="text-xl md:text-2xl font-medium mt-4">
+            Search for local Businesses tailored to your preferences
           </p>
-          <div className="mt-6 flex items-center bg-white text-black py-2 px-4 rounded-full shadow-lg w-full max-w-md">
-            <FaSearch className="text-blue2 mr-2" />
-            <input
-              type="text"
-              placeholder="What are you looking for"
-              className="w-full bg-transparent focus:outline-none border-0 ring-0 focus:ring-0"
-            />
+          <div className="flex items-center mt-8 w-full max-w-2xl">
+            <div className="relative w-full">
+              <input
+                type="text"
+                placeholder="What are you looking for"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                className="w-full py-3 pl-4 pr-12 rounded-full text-gray-600"
+                style={{ boxShadow: 'none' }}
+              />
+              <FaSearch 
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+                onClick={handleSearch}
+              />
+            </div>
           </div>
         </div>
       </header>
@@ -76,30 +111,26 @@ const CustomerHome: React.FC = () => {
             </div>
           </div>
           <p className="mt-6 text-gray-500 italic">
-            Discover latest offers and win vouchers in Sri Lankan shops being at
-            your comfort zones
+            Discover latest offers and win vouchers in Sri Lankan shops being at your comfort zones
           </p>
         </section>
         <section>
-          <h2 className="text-subheading font-bold mb-4">Recommendations</h2>
+          <h2 className="text-subheading font-bold mb-4">Advertisements</h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <RecommendationBox /> {/* Add the new component here */}
-            <RecommendationBox /> {/* Add more as needed */}
-            <RecommendationBox /> {/* Add more as needed */}
+            {advertisements.map((ad, index) => (
+              <Advertisement key={index} img={ad.img} details={ad.details} />
+            ))}
           </div>
-        </section>
-        <section className="mt-6">
-          <h2 className="text-subheading font-bold mb-4">Recent Searches</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <RecentSearches />
+          <div className="mt-4 text-center">
+            <Link to="/advertisements" className="text-slate-600 hover:underline">
+              See more
+            </Link>
           </div>
         </section>
       </main>
-      <Footer/>
+      <Footer />
     </div>
   );
 };
 
 export default CustomerHome;
-
-// flex justify-center space-x-20
