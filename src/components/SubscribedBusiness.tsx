@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { Button, List, Modal } from "flowbite-react";
-import { FaEyeSlash } from "react-icons/fa";
+import { FaBell } from "react-icons/fa";
 import BusinessImg from "../assets/Abans.png";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { BsBellSlashFill } from "react-icons/bs";
 
 const SubscribedBusinesses: React.FC = () => {
   const [businessToUnsubscribe, setBusinessToUnsubscribe] = useState<
@@ -12,27 +13,27 @@ const SubscribedBusinesses: React.FC = () => {
 
   const businesses = [
     {
-      img: BusinessImg,
+      img: "https://st3.depositphotos.com/3800167/16211/v/450/depositphotos_162117320-stock-illustration-luxury-hotel-crown-and-key.jpg",
       name: "Luxury Hotel",
       category: "Hotels",
     },
     {
-      img: BusinessImg,
+      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmTz44eme1dFrXyh48R25yq9tgBoIw0KUVnw&s",
       name: "Tech World",
       category: "Computer Shops",
     },
     {
-      img: BusinessImg,
+      img: "https://img.freepik.com/premium-vector/gourmet-food-vector-emblem-logo-design_530862-259.jpg",
       name: "Gourmet Foods",
       category: "Food",
     },
     {
-      img: BusinessImg,
+      img: "https://pbs.twimg.com/profile_images/1811315466888941568/mUjq0FQ8_400x400.jpg",
       name: "Electro Mart",
       category: "Electronic Shops",
     },
     {
-      img: BusinessImg,
+      img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9bjgy9KkyTWGNQGai0li96ZJhRLT9voo_IQ&s",
       name: "Cozy Bites",
       category: "Food",
     },
@@ -59,37 +60,32 @@ const SubscribedBusinesses: React.FC = () => {
       <h2 className="text-lg font-bold mb-4 text-center">
         Subscribed Businesses
       </h2>
-      <div className="flex justify-center">
-        <List
-          unstyled
-          className="max-w-md divide-y divide-gray-200 dark:divide-gray-700 w-full"
-        >
-          {businesses.map((business, index) => (
-            <List.Item
-              key={index}
-              className="flex justify-between items-center py-4 px-6 transform transition-transform duration-200 hover:scale-105"
-            >
-              <div className="flex items-center">
-                <img
-                  src={business.img}
-                  alt={business.name}
-                  className="w-10 h-10 rounded-full mr-4"
-                />
-                <div>
-                  <p className="text-gray-900 font-medium">{business.name}</p>
-                  <p className="text-gray-600 text-sm">{business.category}</p>
-                </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {businesses.map((business, index) => (
+          <div
+            key={index}
+            className="flex justify-between items-center py-4 px-6 transform transition-transform duration-200 hover:scale-105 bg-white border border-gray-300 rounded-lg shadow-sm"
+          >
+            <div className="flex items-center">
+              <img
+                src={business.img}
+                alt={business.name}
+                className="w-10 h-10 rounded-full mr-4"
+              />
+              <div>
+                <p className="text-gray-900 font-medium">{business.name}</p>
+                <p className="text-gray-600 text-sm">{business.category}</p>
               </div>
-              <Button
-                className="text-white bg-bluedark"
-                size="sm"
-                onClick={() => handleUnsubscribe(business.name)}
-              >
-                Unsubscribe
-              </Button>
-            </List.Item>
-          ))}
-        </List>
+            </div>
+            <Button
+              className="text-white bg-bluedark"
+              size="sm"
+              onClick={() => handleUnsubscribe(business.name)}
+            >
+              <BsBellSlashFill className="w-4 h-4 mr-2" /> Unsunscribe
+            </Button>
+          </div>
+        ))}
       </div>
       <Modal show={showModal} size="md" popup onClose={cancelUnsubscribe}>
         <Modal.Header />

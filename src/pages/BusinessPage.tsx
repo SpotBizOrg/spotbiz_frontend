@@ -25,7 +25,7 @@ const BusinessPage: React.FC = () => {
               <BusinessInfoCol/>
               <MainReview/>
             </div>
-            <div className='w-3/6 ml-20 mr-20 p-8 max-h-[95vh] overflow-y-auto scrollbar-hide'>
+            <div className='w-3/6 ml-20 mr-20 p-8 max-h-[130vh] overflow-y-auto scrollbar-hide'>
               <Column2/>
             </div>
             <div className='flex flex-col w-2/6'>
