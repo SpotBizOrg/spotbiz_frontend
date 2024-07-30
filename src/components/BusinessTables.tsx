@@ -67,7 +67,7 @@ const BusinessAndReviewTables: React.FC = () => {
   };
 
   const renderTable = (items: any[], headers: string[], actions: JSX.Element[]) => (
-    <div className="relative table-container overflow-x-auto overflow-y-auto sm:rounded-lg border border-gray-200 max-h-[400px]">
+    <div className="relative overflow-x-auto overflow-y-auto sm:rounded-lg border border-gray-200">
       <table className="w-full text-sm text-left text-gray-500">
         <thead className="sticky top-0 bg-gray-50 text-xs text-gray-700 uppercase z-10">
           <tr>
@@ -179,39 +179,61 @@ const BusinessAndReviewTables: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto mt-8 p-6 bg-white rounded-lg shadow-lg">
-      <h2 className="text-2xl font-bold mb-4">Business and Review Management</h2>
-      <div className="flex mb-6">
+    <div className="container mx-auto">
+      <div className="flex items-center justify-between w-full mb-5 border-b border-gray-300">
+      <div className="space-x-6">
         <button
           onClick={() => handleTabChange('reported')}
-          className={`px-4 py-2 rounded-t-lg ${selectedTab === 'reported' ? 'bg-gray-100 border-b-2 border-primary' : 'bg-gray-200'}`}
+          className={`px-0 py-2 pb-[calc(0.5rem - 4px)] rounded focus:outline-none ${selectedTab === 'reported' ? 'text-black border-b-4 border-black' : 'bg-transparent text-blue-500 border-b-4 border-transparent hover:border-b-4 hover:border-gray-300'}`}
         >
           Reported Businesses
         </button>
         <button
           onClick={() => handleTabChange('appealed')}
-          className={`px-4 py-2 rounded-t-lg ${selectedTab === 'appealed' ? 'bg-gray-100 border-b-2 border-primary' : 'bg-gray-200'}`}
+          className={`px-0 py-2 pb-[calc(0.5rem - 4px)] rounded focus:outline-none ${selectedTab === 'appealed' ? 'text-black border-b-4 border-black' : 'bg-transparent text-blue-500 border-b-4 border-transparent hover:border-b-4 hover:border-gray-300'}`}
         >
           Appealed Businesses
         </button>
         <button
           onClick={() => handleTabChange('reviews')}
-          className={`px-4 py-2 rounded-t-lg ${selectedTab === 'reviews' ? 'bg-gray-100 border-b-2 border-primary' : 'bg-gray-200'}`}
+          className={`px-0 py-2 pb-[calc(0.5rem - 4px)] rounded focus:outline-none ${selectedTab === 'reviews' ? 'text-black border-b-4 border-black' : 'bg-transparent text-blue-500 border-b-4 border-transparent hover:border-b-4 hover:border-gray-300'}`}
         >
           Reported Reviews
         </button>
+      </div>
+      <div className="flex items-center space-x-2 mb-1">
+        <div className="relative w-full max-w-xs">
+          <div className="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none p-0">
+            <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+            </svg>
+          </div>
+          <input type="text" id="simple-search" className="bg-gray-50 border p-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for games..." required />
+        </div>
+        <button type="submit" className="p-2 text-sm font-medium text-white bg-bluedark rounded-lg border border-bluedark hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+          <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+            <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+          </svg>
+          <span className="sr-only">Search</span>
+        </button>
+      </div>
       </div>
       {selectedTab === 'reported' && renderReportedBusinesses()}
       {selectedTab === 'appealed' && renderAppealedBusinesses()}
       {selectedTab === 'reviews' && renderReportedReviews()}
 
-      <Modal show={showPopup} onClose={() => setShowPopup(false)} size="lg" className="flex items-center justify-center min-h-screen">
+      <Modal show={showPopup} onClose={() => setShowPopup(false)} popup className="flex items-center justify-center inset-2/4 inset-y-1/2" theme={{
+        content: {
+          base: "bg-white w-3/4 rounded-lg",
+          inner: "p-6 rounded-lg shadow-lg",
+        },
+      }}>
         <Modal.Header />
         <Modal.Body>
           <div className="text-center">
             <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              Are you sure you want to delete this item?
+              Are you sure you want to get this action?
             </h3>
             <div className="flex justify-center gap-4 pb-6">
               <Button className="bg-red-600 hover:bg-red-700" onClick={handleDelete}>
@@ -225,13 +247,18 @@ const BusinessAndReviewTables: React.FC = () => {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showBanPopup} onClose={() => setShowBanPopup(false)} size="lg" className="flex items-center justify-center min-h-screen">
+      <Modal show={showBanPopup} onClose={() => setShowBanPopup(false)} popup className="flex items-center justify-center inset-2/4 inset-y-1/2" theme={{
+        content: {
+          base: "bg-white w-3/4 rounded-lg",
+          inner: "p-6 rounded-lg shadow-lg",
+        },
+      }}>
         <Modal.Header />
         <Modal.Body>
           <div className="text-center">
             <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              Are you sure you want to ban this business?
+            Are you sure you want to ban this business?
             </h3>
             <div className="flex justify-center gap-4 pb-6">
               <Button className="bg-red-600 hover:bg-red-700" onClick={handleBan}>
@@ -245,17 +272,22 @@ const BusinessAndReviewTables: React.FC = () => {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showConsiderPopup} onClose={() => setShowConsiderPopup(false)} size="lg" className="flex items-center justify-center min-h-screen">
+      <Modal show={showConsiderPopup} onClose={() => setShowConsiderPopup(false)} popup className="flex items-center justify-center inset-2/4 inset-y-1/2" theme={{
+        content: {
+          base: "bg-white w-3/4 rounded-lg",
+          inner: "p-6 rounded-lg shadow-lg",
+        },
+      }}>
         <Modal.Header />
         <Modal.Body>
           <div className="text-center">
             <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              Do you want to consider this business for appeal?
+            Do you want to consider this business for appeal?
             </h3>
             <div className="flex justify-center gap-4 pb-6">
-              <Button className="bg-blue2 hover:bg-blue-700" onClick={handleConsider}>
-                Yes, consider
+              <Button className="bg-bluedark hover:bg-blue2" onClick={handleConsider}>
+                Yes, I'm sure
               </Button>
               <Button className="bg-gray-500 hover:bg-gray-600" onClick={() => setShowConsiderPopup(false)}>
                 No, cancel
@@ -265,17 +297,22 @@ const BusinessAndReviewTables: React.FC = () => {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showKeepPopup} onClose={() => setShowKeepPopup(false)} size="lg" className="flex items-center justify-center min-h-screen">
+      <Modal show={showKeepPopup} onClose={() => setShowKeepPopup(false)} popup className="flex items-center justify-center inset-2/4 inset-y-1/2" theme={{
+        content: {
+          base: "bg-white w-3/4 rounded-lg",
+          inner: "p-6 rounded-lg shadow-lg",
+        },
+      }}>
         <Modal.Header />
         <Modal.Body>
           <div className="text-center">
             <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              Are you sure you want to keep this review?
+            Are you sure you want to keep this review?
             </h3>
             <div className="flex justify-center gap-4 pb-6">
-              <Button className="bg-green-600 hover:bg-green-700" onClick={handleKeep}>
-                Yes, keep
+              <Button className="bg-bluedark hover:bg-blue2" onClick={handleKeep}>
+                Yes, I'm sure
               </Button>
               <Button className="bg-gray-500 hover:bg-gray-600" onClick={() => setShowKeepPopup(false)}>
                 No, cancel
@@ -285,17 +322,22 @@ const BusinessAndReviewTables: React.FC = () => {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showRemovePopup} onClose={() => setShowRemovePopup(false)} size="lg" className="flex items-center justify-center min-h-screen">
+      <Modal show={showRemovePopup} onClose={() => setShowRemovePopup(false)} popup className="flex items-center justify-center inset-2/4 inset-y-1/2" theme={{
+        content: {
+          base: "bg-white w-3/4 rounded-lg",
+          inner: "p-6 rounded-lg shadow-lg",
+        },
+      }}>
         <Modal.Header />
         <Modal.Body>
           <div className="text-center">
             <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              Are you sure you want to remove this review?
+            Are you sure you want to remove this review?
             </h3>
             <div className="flex justify-center gap-4 pb-6">
               <Button className="bg-red-600 hover:bg-red-700" onClick={handleRemove}>
-                Yes, remove
+                Yes, I'm sure
               </Button>
               <Button className="bg-gray-500 hover:bg-gray-600" onClick={() => setShowRemovePopup(false)}>
                 No, cancel

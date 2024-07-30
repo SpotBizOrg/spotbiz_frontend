@@ -108,18 +108,20 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, onUpdate, packageData })
             ))}
           </div>
         </div>
-        <div className="flex justify-between mt-4 mx-12">
-          <button
+        <div className='flex gap-4'>
+        <button
+            type="button"
+            className="p-2 text-sm font-medium text-white bg-bluedark rounded-lg border border-bluedark hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300"
             onClick={() => onUpdate(updatedPackage)}
-            className="px-12 py-2 bg-black text-base text-center font-semibold text-white rounded-xl hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
           >
-            Update
+            Done
           </button>
           <button
+            type="button"
+            className="p-2 text-sm font-medium text-white bg-gray-500 rounded-lg border border-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300"
             onClick={onClose}
-            className="px-12 py-2 bg-red-600 text-base font-semibold text-white rounded-xl hover:bg-red-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
           >
-            Close
+            Cancel
           </button>
         </div>
       </div>
