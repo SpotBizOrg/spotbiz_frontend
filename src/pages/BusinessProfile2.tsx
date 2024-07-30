@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Businessnavbar from "../components/Businessnavbar";
 import Businesssidebar from "../components/Businesssidebar";
 import { Button, Card, Modal, Textarea, TextInput } from "flowbite-react";
+import AbansImage from "../assets/Abans.png";
 import {
   FaCamera,
   FaMapMarkerAlt,
@@ -15,9 +16,10 @@ import { MdOutlineModeEdit } from "react-icons/md";
 import { Tab, Tabs } from "../components/CustomTabs";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import CustomToggleSwitch from "../components/CustomToggleSwitch";
-import { useAuth } from '../utils/AuthProvider';
-const email = 'yuhanga2001@gmail.com';
-const token = 'eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ5dWhhbmdhMjAwMUBnbWFpbC5jb20iLCJpYXQiOjE3MjIxODIwNjAsImV4cCI6MTcyMjI2ODQ2MH0.RfRInCXSQ4nuyVdBqAdcAGc-VXS_dK4y7XnRK1w0HRkc-PBPu2HnF_MfjAWrXpn8'
+import { useAuth } from "../utils/AuthProvider";
+const email = "yuhanga2001@gmail.com";
+const token =
+  "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ5dWhhbmdhMjAwMUBnbWFpbC5jb20iLCJpYXQiOjE3MjIxODIwNjAsImV4cCI6MTcyMjI2ODQ2MH0.RfRInCXSQ4nuyVdBqAdcAGc-VXS_dK4y7XnRK1w0HRkc-PBPu2HnF_MfjAWrXpn8";
 interface BusinessDetailsSubmit {
   businessName: string;
   locationUrl: string;
@@ -30,9 +32,9 @@ const BusinessProfile: React.FC = () => {
   const { user, checkAuthenticated, logout } = useAuth();
   const [data, setData] = useState<any>(null);
   const [businessname, setBusinessName] = useState("");
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "SpotBiz | Profile | Business";
-  },[]);
+  }, []);
 
   useEffect(() => {
     if (!checkAuthenticated()) {
@@ -44,54 +46,56 @@ const BusinessProfile: React.FC = () => {
 
   const updateBusinessData = (data: typeof businessDetails) => {
     fetch(`http://localhost:8080/api/v1/business/${email}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${token}`
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify(data)
+      body: JSON.stringify(data),
     })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.json();
-    })
-    .then(responseData => {
-      setData(responseData);
-      console.log(responseData);
-    })
-    .catch(error => {
-      console.error('Error fetching data:', error);
-    });
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        return response.json();
+      })
+      .then((responseData) => {
+        setData(responseData);
+        console.log(responseData);
+      })
+      .catch((error) => {
+        console.error("Error fetching data:", error);
+      });
   };
-  
-  
+
   const fetchData = async () => {
     if (1) {
       try {
-        const response = await fetch(`http://localhost:8080/api/v1/business_owner/business/${email}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
+        const response = await fetch(
+          `http://localhost:8080/api/v1/business_owner/business/${email}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
           }
-        });
-        
+        );
+
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
 
         const responseData = await response.json();
         setData(responseData);
-        setBusinessname(responseData.name)
-        setAddress(responseData.address)
-        setContactNo(responseData.contactNo)
-        setLocationUrl(responseData.locationUrl)
-        setDescription(responseData.description)
+        setBusinessname(responseData.name);
+        setAddress(responseData.address);
+        setContactNo(responseData.contactNo);
+        setLocationUrl(responseData.locationUrl);
+        setDescription(responseData.description);
         console.log(data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     }
   };
@@ -110,44 +114,49 @@ const BusinessProfile: React.FC = () => {
   // };
 
   const handleSubmit = async (e: React.FormEvent) => {
-
     console.log(businessName);
-    
+
     e.preventDefault();
 
-      const name = businessName;
-    
+    const name = businessName;
+
     if (1) {
-      console.log("name: "+businessName)
+      console.log("name: " + businessName);
       try {
-        const response = await fetch(`http://localhost:8080/api/v1/business/register/${email}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}`
-          },
-          body: JSON.stringify({ name, locationUrl, contactNo, address, description }),
-        });
-        
+        const response = await fetch(
+          `http://localhost:8080/api/v1/business/register/${email}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+            body: JSON.stringify({
+              name,
+              locationUrl,
+              contactNo,
+              address,
+              description,
+            }),
+          }
+        );
+
         if (!response.ok) {
-          throw new Error('Network response was not ok');
+          throw new Error("Network response was not ok");
         }
 
         const responseData = await response.json();
         setData(responseData);
         console.log(data);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        console.error("Error fetching data:", error);
       }
     }
     console.log(businessDetails);
     setOpenBusinessModal(false);
   };
 
-
-  const [selectedAvatar, setSelectedAvatar] = useState(
-    "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-  );
+  const [selectedAvatar, setSelectedAvatar] = useState(AbansImage);
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
   const [openTagModal, setOpenTagModal] = useState(false);
   const [openSocialModal, setOpenSocialModal] = useState(false);
@@ -157,11 +166,11 @@ const BusinessProfile: React.FC = () => {
   const [uploadedAvatar, setUploadedAvatar] = useState<
     string | ArrayBuffer | null
   >(null);
-  const [businessName, setBusinessname] = useState("")
-  const [locationUrl, setLocationUrl] = useState("")
-  const [address, setAddress] = useState("")
-  const [description, setDescription] = useState("")
-  const [contactNo, setContactNo] = useState("")
+  const [businessName, setBusinessname] = useState("");
+  const [locationUrl, setLocationUrl] = useState("");
+  const [address, setAddress] = useState("");
+  const [description, setDescription] = useState("");
+  const [contactNo, setContactNo] = useState("");
   type Day =
     | "Monday"
     | "Tuesday"
@@ -275,7 +284,6 @@ const BusinessProfile: React.FC = () => {
     setIsAvatarModalOpen(false);
   };
 
-
   type Category =
     | "Stationary"
     | "Hotels"
@@ -299,7 +307,8 @@ const BusinessProfile: React.FC = () => {
 
   const businessDetails = {
     name: data?.name || "No business name available",
-    registrationNumber: data?.businessRegNo || "No registration number available",
+    registrationNumber:
+      data?.businessRegNo || "No registration number available",
     description: data?.description || "No description available.",
     locationUrl: data?.locationUrl || "No location available",
     contactNo: data?.contactNo || "No contact available",
@@ -441,138 +450,22 @@ const BusinessProfile: React.FC = () => {
                 </Button>
               </Modal.Footer>
             </Modal>
+
             {/* Rest of your component */}
             <Tabs>
               <Tab title="Business Details">
-                {/* Edit Button */}
-                <div className="flex justify-end mt-1 mb-1">
-                  <button
-                    className="bg-bluedark text-white px-2 py-2 rounded-md flex items-center"
-                    onClick={() => setOpenBusinessModal(true)}
-                  >
-                    <MdOutlineModeEdit />
-                  </button>
-                  <Modal
-                    show={openBusinessModal}
-                    onClose={() => setOpenBusinessModal(false)}
-                  >
-                    <Modal.Header>Update Business Details</Modal.Header>
-                    <Modal.Body>
-                      <form className="space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
-                          {/* Business Name */}
-                          <div className="flex flex-col">
-                            <label
-                              htmlFor="businessName"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                              Business Name
-                            </label>
-                            <TextInput
-                              id="businessName"
-                              name="businessName"
-                              value={businessName}
-                              required
-                              className="block w-full"
-                              onChange={(e) => {setBusinessname(e.target.value)}}
-                            />
-                          </div>
-
-                          {/* Location URL */}
-                          <div className="flex flex-col">
-                            <label
-                              htmlFor="locationUrl"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                              Location URL
-                            </label>
-                            <TextInput
-                              id="locationUrl"
-                              name="locationUrl"
-                              value={locationUrl}
-                              required
-                              className="block w-full"
-                              onChange={(e) => {setLocationUrl(e.target.value)}}
-                            />
-                          </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
-                          {/* Contact Number */}
-                          <div className="flex flex-col">
-                            <label
-                              htmlFor="contactNumber"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                              Contact Number
-                            </label>
-                            <TextInput
-                              id="contactNumber"
-                              name="contactNumber"
-                              value={contactNo}
-                              required
-                              className="block w-full"
-                              onChange={(e) => {setContactNo(e.target.value)}}
-                            />
-                          </div>
-
-                          {/* Address */}
-                          <div className="flex flex-col">
-                            <label
-                              htmlFor="address"
-                              className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                            >
-                              Address
-                            </label>
-                            <TextInput
-                              id="address"
-                              name="address"
-                              value={address}
-                              required
-                              className="block w-full"
-                              onChange={(e) => {setAddress(e.target.value)}}
-                            />
-                          </div>
-                        </div>
-
-                        {/* Description */}
-                        <div className="flex flex-col">
-                          <label
-                            htmlFor="description"
-                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                          >
-                            Description
-                          </label>
-                          <Textarea
-                            id="description"
-                            name="description"
-                            value={description}
-                            rows={4}
-                            required
-                            className="block w-full"
-                            onChange={(e) => {setDescription(e.target.value)}}
-                          />
-                        </div>
-                      </form>
-                    </Modal.Body>
-                    <Modal.Footer>
-                      <Button
-                        type="submit"
-                        onClick={handleSubmit}
-                        className="bg-bluedark text-white  rounded-md flex items-center"
-                      >
-                        Update
-                      </Button>
-                      <Button
-                        color="gray"
-                        onClick={() => setOpenBusinessModal(false)}
-                      >
-                        Close
-                      </Button>
-                    </Modal.Footer>
-                  </Modal>
-                </div>
                 <div className="flex flex-wrap -mx-2">
+                  {/* Fixed Button */}
+                  <div className="fixed -bottom-9 -right-12 m-8 w-24 h-24">
+                    <div className="relative w-full h-full">
+                      <div
+                        className="bg-bluedark absolute w-12 h-12 rounded-full text-white flex items-center justify-center shadow-lg cursor-pointer transition-transform duration-300"
+                        onClick={() => setOpenBusinessModal(true)}
+                      >
+                        <MdOutlineModeEdit className="text-lg" />
+                      </div>
+                    </div>
+                  </div>
                   {/* Left Card */}
                   <div className="w-full md:w-1/3 px-2 mb-4 flex">
                     <Card className="flex-1 p-6 shadow-md border border-gray-200 flex flex-col">
@@ -656,16 +549,130 @@ const BusinessProfile: React.FC = () => {
                     </Card>
                   </div>
                 </div>
+
+                <Modal
+                  show={openBusinessModal}
+                  onClose={() => setOpenBusinessModal(false)}
+                >
+                  <Modal.Header>Update Business Details</Modal.Header>
+                  <Modal.Body>
+                    <form className="space-y-4">
+                      <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+                        {/* Business Name */}
+                        <div className="flex flex-col">
+                          <label
+                            htmlFor="businessName"
+                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                          >
+                            Business Name
+                          </label>
+                          <TextInput
+                            id="businessName"
+                            name="businessName"
+                            value={businessName}
+                            required
+                            className="block w-full"
+                            onChange={(e) => setBusinessname(e.target.value)}
+                          />
+                        </div>
+
+                        {/* Location URL */}
+                        <div className="flex flex-col">
+                          <label
+                            htmlFor="locationUrl"
+                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                          >
+                            Location URL
+                          </label>
+                          <TextInput
+                            id="locationUrl"
+                            name="locationUrl"
+                            value={locationUrl}
+                            required
+                            className="block w-full"
+                            onChange={(e) => setLocationUrl(e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
+                        {/* Contact Number */}
+                        <div className="flex flex-col">
+                          <label
+                            htmlFor="contactNumber"
+                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                          >
+                            Contact Number
+                          </label>
+                          <TextInput
+                            id="contactNumber"
+                            name="contactNumber"
+                            value={contactNo}
+                            required
+                            className="block w-full"
+                            onChange={(e) => setContactNo(e.target.value)}
+                          />
+                        </div>
+
+                        {/* Address */}
+                        <div className="flex flex-col">
+                          <label
+                            htmlFor="address"
+                            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                          >
+                            Address
+                          </label>
+                          <TextInput
+                            id="address"
+                            name="address"
+                            value={address}
+                            required
+                            className="block w-full"
+                            onChange={(e) => setAddress(e.target.value)}
+                          />
+                        </div>
+                      </div>
+
+                      {/* Description */}
+                      <div className="flex flex-col">
+                        <label
+                          htmlFor="description"
+                          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                        >
+                          Description
+                        </label>
+                        <Textarea
+                          id="description"
+                          name="description"
+                          value={description}
+                          rows={4}
+                          required
+                          className="block w-full"
+                          onChange={(e) => setDescription(e.target.value)}
+                        />
+                      </div>
+                    </form>
+                  </Modal.Body>
+                  <Modal.Footer>
+                    <Button
+                      type="submit"
+                      onClick={handleSubmit}
+                      className="bg-bluedark text-white rounded-md flex items-center"
+                    >
+                      Update
+                    </Button>
+                    <Button
+                      color="gray"
+                      onClick={() => setOpenBusinessModal(false)}
+                    >
+                      Close
+                    </Button>
+                  </Modal.Footer>
+                </Modal>
               </Tab>
 
               <Tab title="Owner Details">
                 <div className="flex justify-end mt-1 mb-1">
-                  <button
-                    className="bg-bluedark text-white px-2 py-2 rounded-md flex items-center"
-                    onClick={() => setOpenOwnerModal(true)}
-                  >
-                    <MdOutlineModeEdit />
-                  </button>
                   <Modal
                     show={openOwnerModal}
                     onClose={() => setOpenOwnerModal(false)}
@@ -749,8 +756,22 @@ const BusinessProfile: React.FC = () => {
                     </Modal.Footer>
                   </Modal>
                 </div>
+
                 <Card className="bg-white p-6 shadow-md border border-gray-200">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div className="fixed bottom-0 right-0 mb-8 mr-8 w-24 h-24">
+                      <div className="relative w-full h-full">
+                        <button
+                          className="bg-bluedark absolute w-12 h-12 rounded-full text-white flex items-center justify-center shadow-lg cursor-pointer transition-transform duration-300"
+                          onClick={() => setOpenOwnerModal(true)}
+                          style={{
+                            transform: " translateX(1.8rem) translateY(-5rem)",
+                          }}
+                        >
+                          <MdOutlineModeEdit className="text-lg" />
+                        </button>
+                      </div>
+                    </div>
                     <div className="mb-2">
                       <p className="text-black text-sm font-medium p-2">
                         Owner Name
@@ -781,19 +802,13 @@ const BusinessProfile: React.FC = () => {
 
               <Tab title="Opening Hours">
                 <div className="flex justify-end mt-1 mb-1">
-                  <button
-                    className="bg-bluedark text-white px-2 py-2 rounded-md flex items-center"
-                    onClick={() => setOpenHoursModal(true)}
-                  >
-                    <MdOutlineModeEdit className="text-lg" />
-                  </button>
                   <Modal
                     show={openHoursModal}
                     size="3xl"
                     onClose={() => setOpenHoursModal(false)}
                     theme={{
                       content: {
-                        base: "bg-white w-3/4 rounded-lg",
+                        base: "bg-white w-3/4 mx-auto rounded-lg",
                         inner: "p-6 rounded-lg shadow-lg",
                       },
                     }}
@@ -874,7 +889,7 @@ const BusinessProfile: React.FC = () => {
                     </Modal.Footer>
                   </Modal>
                 </div>
-                <Card className="bg-white p-6 shadow-md border border-gray-200">
+                <Card className="bg-white p-6 shadow-md border border-gray-200 overflow-y-auto max-h-screen">
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                     {businessDetails.businessHours.map((hour) => (
                       <div key={hour.businessHourId} className="mb-2">
@@ -885,6 +900,16 @@ const BusinessProfile: React.FC = () => {
                       </div>
                     ))}
                   </div>
+                  <div className="fixed bottom-40 right-8 w-12 h-12">
+                    <div className="relative w-full h-full">
+                      <div
+                        className="bg-bluedark absolute w-12 h-12 rounded-full text-white flex items-center justify-center shadow-lg cursor-pointer transition-transform duration-300"
+                        onClick={() => setOpenHoursModal(true)}
+                      >
+                        <MdOutlineModeEdit className="text-lg" />
+                      </div>
+                    </div>
+                  </div>
                 </Card>
               </Tab>
 
@@ -892,7 +917,20 @@ const BusinessProfile: React.FC = () => {
                 <div className="flex justify-between gap-4">
                   {/* Tags Card */}
                   <Card className="bg-white shadow-md border border-gray-200 flex-1">
-                    <div className="flex justify-between  px-4 py-2">
+                    <div className="fixed bottom-0 right-0 m-8 w-24 h-24">
+                      <div className="relative w-full h-full">
+                        <div
+                          className="bg-bluedark absolute w-12 h-12 rounded-full text-white flex items-center justify-center shadow-lg cursor-pointer transition-transform duration-300"
+                          onClick={() => setOpenTagModal(true)}
+                          style={{
+                            transform: " translateX(-34rem) translateY(-3rem)",
+                          }}
+                        >
+                          <MdOutlineModeEdit className="text-lg" />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex justify-between  px-4 py-4">
                       {/* Container for text and button */}
                       <div className="flex-1">
                         <div className="mb-2">
@@ -900,14 +938,6 @@ const BusinessProfile: React.FC = () => {
                             <p className="text-black text-sm font-medium p-2">
                               Category
                             </p>
-                            <button
-                              className="bg-bluedark text-white px-2 py-2 rounded-md flex items-center ml-4"
-                              onClick={() => setOpenTagModal(true)}
-                            >
-                              <MdOutlineModeEdit />
-
-                              {/* Optional text for clarity */}
-                            </button>
                           </div>
                           <p className="bg-gray-200 text-gray-800 text-sm font-medium px-3 py-1 rounded-full inline-block">
                             {businessDetails.category}
@@ -1014,20 +1044,24 @@ const BusinessProfile: React.FC = () => {
                   </Card>
 
                   {/* Social Links Card */}
-                  <Card className="bg-white shadow-md border border-gray-200 flex-1 pb-28 ">
-                    <div className="flex justify-between  mt-14 mb-2">
+                  <Card className="bg-white shadow-md border border-gray-200 flex-1 pb-15 ">
+                    <div className="flex justify-between  pb-1">
                       <p className="text-black text-sm font-medium p-2">
                         Social Links
                       </p>
-                      <button
-                        className="bg-bluedark text-white px-2 py-2 rounded-md flex items-center"
-                        onClick={() => setOpenSocialModal(true)}
-                      >
-                        <MdOutlineModeEdit />
-                      </button>
+                      <div className="fixed bottom-11 -right-12 m-8 w-24 h-24">
+                        <div className="relative w-full h-full">
+                          <div
+                            className="bg-bluedark absolute w-12 h-12 rounded-full text-white flex items-center justify-center shadow-lg cursor-pointer transition-transform duration-300"
+                            onClick={() => setOpenSocialModal(true)}
+                          >
+                            <MdOutlineModeEdit className="text-lg" />
+                          </div>
+                        </div>
+                      </div>
                     </div>
                     <div className="mb-4">
-                      <div className="flex space-x-8">
+                      <div className="flex  justify-between">
                         {businessDetails.businessSocialLinks.facebook && (
                           <a
                             href={businessDetails.businessSocialLinks.facebook}

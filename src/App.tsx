@@ -1,4 +1,3 @@
-// src/App.tsx
 import { Routes, Route } from "react-router-dom";
 import Home from "./pages/LandingPage";
 import Login from "./pages/Login";
@@ -12,13 +11,10 @@ import CustomerHome from "./pages/CustomerHome";
 import Guided2 from "./pages/Guided2";
 import Guided3 from "./pages/Guided3";
 import AdminVerify from "./pages/BusinessVerify";
-// import Packages from "./pages/BusinessPackages";
 import AdminTagsReviews from "./pages/AdminTags&Reviews";
 import BusinessReviews from "./pages/BusinessReviews";
 import CustomerReview from "./pages/CustomerReviews";
 import Badges from "./pages/Badges";
-import CustomerProfile1 from "./pages/CustomerProfile";
-import BusinessProfile1 from "./pages/BusinessProfile";
 import AdminDashboard from "./pages/AdminDashboard";
 import AdminPackages from "./pages/AdminPackages";
 import Chart from "./components/PerformanceChart";
@@ -27,7 +23,6 @@ import BusinessDashboard from "./pages/BusinessDashboard";
 import CustomerGame from "./pages/CustomerGame";
 import ManageGames from "./pages/ManageGames";
 import GamePage from "./pages/GamePage";
-import ManageGamesBusiness from "./pages/ManageGamesBusiness";
 import CustomerProfile from "./pages/CustomerProfile2";
 import BusinessProfile from "./pages/BusinessProfile2";
 import ManageCoupons from './pages/ManageCoupons';
@@ -36,50 +31,45 @@ import AdvertisementsPage from './components/BusinessAd';
 import BusinessList from './pages/BusinessList';
 import AdminPage from './pages/AdminPage'; 
 import BusinessPage from './pages/BusinessPage'; 
-import PackageListPage from './pages/PackageListPage'; // Import the new page
-
+import PackageListPage from './pages/PackageListPage'; 
 import "./App.css";
 
 function App() {
   return (
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/customerhome" element={<CustomerHome />} />
+        <Route path="/home" element={<CustomerHome />} />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Registration />} />
         <Route path="/guided" element={<Guided2 />} />
         <Route path="/guided3" element={<Guided3 />} />
-        <Route path="/admin_verify" element={<AdminVerify />} />
-        <Route path="/signup-business" element={<SignupFormBusiness />} />
-        <Route path="/signup-customer" element={<SignupFormCustomer />} />
-        <Route path="/signup-in-process" element={<SignupInProgress />} />
-        <Route path="/verification_in_progress" element={<VerificationInProgress />} />
-        {/* <Route path="/packages" element={<Packages />} /> */}
+        <Route path="/admin/business_verify" element={<AdminVerify />} />
+        <Route path="/business/signup" element={<SignupFormBusiness />} />
+        <Route path="/customer/signup" element={<SignupFormCustomer />} />
+        <Route path="/business/verification-in-progress" element={<SignupInProgress />} />
+        <Route path="/customer/not_verified" element={<VerificationInProgress />} />
         <Route path="/chart" element={<Chart />} />
-        <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admintags" element={<AdminTagsReviews />} />
-        <Route path="/customer_reviews" element={<CustomerReview />} />
-        <Route path="/business_reviews" element={<BusinessReviews />} />
-        <Route path="/badges" element={<Badges />} />
-        <Route path="/advertisements" element={<AdvertisementsPage />} />
-        <Route path="/business" element={<BusinessPage />} />
+        <Route path="/admin/dashboard" element={<AdminDashboard />} />
+        <Route path="/admin/categories_tags" element={<AdminTagsReviews />} />
+        <Route path="/customer/reviews" element={<CustomerReview />} />
+        <Route path="/business/reviews" element={<BusinessReviews />} />
+        <Route path="/admin/badges" element={<Badges />} />
+        <Route path="/business/advertisements" element={<AdvertisementsPage />} />
+        <Route path="/customer/business_page" element={<BusinessPage />} />
         <Route path="/admin/customers" element={<AdminPage />} /> 
         <Route path="/admin/businesses" element={<BusinessList />} /> 
-        <Route path="/business_profile" element={<BusinessProfile />} />{" "}
-        <Route path="/customer_profile" element={<CustomerProfile />} />
-        <Route path="/cus_profile" element={<CustomerProfile1 />} />
-        <Route path="/bus_profile" element={<BusinessProfile1 />} />
-        <Route path="/search" element={<SearchResults />} /> 
-        <Route path="/manage_coupons" element={<ManageCoupons />} /> 
-        <Route path="/admin_packages" element={<AdminPackages />} />
-        <Route path="/bus_dashboard" element={<BusinessDashboard />} />
-        <Route path="/customer_game" element={<CustomerGame />} />
-        <Route path="/manage_games" element={<ManageGames />} />
-        <Route path="/game" element={<GamePage />} />
-        <Route path="/manage_games_business" element={<ManageGamesBusiness />} />
-        <Route path="/banned" element={<Banned />} />
-        <Route path="/reports" element={<Reports />} />
-        <Route path="/packages" element={<PackageListPage />} /> {/* Add the new route */}
+        <Route path="/business/profile" element={<BusinessProfile />} />{" "}
+        <Route path="/customer/profile" element={<CustomerProfile />} />
+        <Route path="/customer/search_results" element={<SearchResults />} /> 
+        <Route path="/admin/coupons" element={<ManageCoupons />} /> 
+        <Route path="/admin/packages" element={<AdminPackages />} />
+        <Route path="/business/dashboard" element={<BusinessDashboard />} />
+        <Route path="/customer/games" element={<CustomerGame />} />
+        <Route path="/admin/games" element={<ManageGames />} />
+        <Route path="/customer/play_game" element={<GamePage />} />
+        <Route path="/business/banned" element={<Banned />} />
+        <Route path="/admin/appeals_reports" element={<Reports />} />
+        <Route path="/packages" element={<PackageListPage />} />
       </Routes>
   );
 }

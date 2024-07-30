@@ -13,9 +13,8 @@ const Header = () => {
     const searchQuery = query.trim(); 
   
     if (searchQuery) {
-      navigate('/search', { state: { query: searchQuery } });
+      navigate('/customer/search_results', { state: { query: searchQuery } });
     } else {
-      navigate("/")
     }
   };
 

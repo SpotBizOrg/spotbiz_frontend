@@ -18,18 +18,18 @@ interface NavigationItem {
   }
   
   const navigation: NavigationItem[] = [
-    { name: 'Dashboard', href: 'bus_dashboard', current: true, ico: <DashboardIcon/>, 
+    { name: 'Dashboard', href: 'business/dashboard', current: true, ico: <DashboardIcon/>, 
     label:<span className="ms-3">Dashboard</span>
   },
-    { name: 'Profile', href: '/Business_profile', current: false, ico: <Person2Icon/>,
+    { name: 'Profile', href: '/business/profile', current: false, ico: <Person2Icon/>,
     label:<span className="ms-3">Profile</span>
     
   },
-    { name: 'Ads & Promos', href: '/advertisements', current: false, ico: <CampaignIcon/>,
+    { name: 'Ads & Promos', href: '/business/advertisements', current: false, ico: <CampaignIcon/>,
     label:<span className="ms-3">Ads & Promos</span>
     
   },
-    { name: 'Reviews', href: '/business_reviews', current: false, ico: <StarIcon/>,
+    { name: 'Reviews', href: '/business/reviews', current: false, ico: <StarIcon/>,
     label:<span className="ms-3">Reviews</span>
     
   

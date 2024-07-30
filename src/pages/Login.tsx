@@ -48,15 +48,15 @@ const LoginPage: React.FC = () => {
         toast.success("Login successful!");
         if(data.role === 'CUSTOMER'){
           setTimeout(() => {
-            navigate('/customerhome');
+            navigate('/home');
           }, 1000);
         } else if(data.role === 'BUSINESS_OWNER'){
           setTimeout(() => {
-            navigate('/bus_dashboard');
+            navigate('/business/dashboard');
           }, 1000);
         } else if(data.role === 'ADMIN'){
           setTimeout(() => {
-            navigate('/admin');
+            navigate('/admin/dashboard');
           }, 1000);
         } else{
           setTimeout(() => {
@@ -66,11 +66,11 @@ const LoginPage: React.FC = () => {
       } else if (data.status === 'PENDING') {
         if(data.role === 'CUSTOMER'){
           setTimeout(() => {
-            navigate('/verification_in_progress');
+            navigate('/customer/not_verified');
           }, 1000);
         } else if(data.role === 'BUSINESS_OWNER'){
           setTimeout(() => {
-            navigate('/signup-in-process');
+            navigate('/business/verification-in-progress');
           }, 1000);
         } else{
           setTimeout(() => {
@@ -94,11 +94,11 @@ const LoginPage: React.FC = () => {
       } else if (data.status === 'DELETED') {
         if(data.role === 'CUSTOMER'){
           setTimeout(() => {
-            navigate('/customerhome');
+            navigate('/login');
           }, 1000);
         } else if(data.role === 'BUSINESS_OWNER'){
           setTimeout(() => {
-            navigate('/bus_dashboard');
+            navigate('/login');
           }, 1000);
         } else{
           setTimeout(() => {

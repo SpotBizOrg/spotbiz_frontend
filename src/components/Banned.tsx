@@ -10,13 +10,13 @@ const Banned: React.FC = () => {
 
   return (
     <Container>
-      <Businesssidebar />
+      <Businesssidebar selectedTile=""/>
       <div className="flex-1 flex flex-col">
         <Businessnavbar />
         <div className="flex flex-row items-center">
           <div className="w-1/6 bg-gray-100">this is another div</div>
           <div className="flex flex-col w-5/6 h-screen items-center justify-center">
-            <Plate />
+            <Plate2 />
             <div className="p-5"></div>
             <Plate2 />
           </div>

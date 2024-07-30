@@ -12,7 +12,7 @@ function Nousernavbar() {
 
 
     function navigateToPage() {
-      navigate('/search');
+      navigate('/customer/search_results');
     }
 
     const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -27,9 +27,8 @@ function Nousernavbar() {
       const searchQuery = searchTerm.trim(); 
     
       if (searchQuery) {
-        navigate('/search', { state: { query: searchQuery } });
+        navigate('/customer/search_results', { state: { query: searchQuery } });
       } else {
-        toast.error('Please enter something to search!');
       }
     };
 
@@ -144,7 +143,7 @@ function Nousernavbar() {
             <div className="absolute inset-y-0 right-0 flex justify-between items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <button
                 className="flex mr-5 w-full justify-center rounded-md bg-bluedark px-3 py-1 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
-                onClick={() => navigate('/login')}
+                onClick={() => navigate('/register')}
               >
                 SignUp
               </button>

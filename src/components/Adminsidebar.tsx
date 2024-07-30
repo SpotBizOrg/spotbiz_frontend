@@ -83,13 +83,13 @@ interface NavigationItem {
 // },
 // ];
 const navigation: NavigationItem[] = [
-  { name: 'Dashboard', href: '/admin', current: true, ico: <DashboardIcon />, 
+  { name: 'Dashboard', href: '/admin/dashboard', current: true, ico: <DashboardIcon />, 
   label:<span className="ms-3">Dashboard</span>
 },
-  { name: 'Business Verification', href: '/admin_verify', current: false, ico: <BusinessCenterIcon />,
+  { name: 'Business Verification', href: '/admin/business_verify', current: false, ico: <BusinessCenterIcon />,
     label:<span className="ms-3">Business Verification</span>
 },
-  { name: 'Categories & Tags', href: '/admintags', current: false, ico: <StyleIcon />,
+  { name: 'Categories & Tags', href: '/admin/categories_tags', current: false, ico: <StyleIcon />,
     label:<span className="ms-3">Categories & Tags</span>
 
 },
@@ -100,22 +100,22 @@ const navigation: NavigationItem[] = [
     label:<span className="ms-3">Business List</span>
 
 },
-  { name: 'Appeals & Reports', href: '/reports', current: false, ico:<FlagCircleIcon />,
+  { name: 'Appeals & Reports', href: '/admin/appeals_reports', current: false, ico:<FlagCircleIcon />,
     label:<span className="ms-3">Appeals & Reports</span>
 },
-  { name: 'Games', href: '/manage_games', current: false, ico:<ExtensionIcon />,
+  { name: 'Games', href: '/admin/games', current: false, ico:<ExtensionIcon />,
   label:<span className="ms-3">Games</span>
 
 },
-  { name: 'Badges', href: '/badges', current: false, ico:<LocalPoliceIcon />,
+  { name: 'Badges', href: '/admin/badges', current: false, ico:<LocalPoliceIcon />,
     label:<span className="ms-3">Badges</span>
 
 },
-  { name: 'Coupons', href: '/manage_coupons', current: false, ico: <RequestQuoteIcon />,
+  { name: 'Coupons', href: '/admin/coupons', current: false, ico: <RequestQuoteIcon />,
     label:<span className="ms-3">Coupons</span>
 
 },
-  { name: 'Subscription Packages', href: '/admin_packages', current: false, ico:<WidgetsIcon />,
+  { name: 'Subscription Packages', href: '/admin/packages', current: false, ico:<WidgetsIcon />,
     label:<span className="ms-3">Subscription Packages</span>
 
 },
