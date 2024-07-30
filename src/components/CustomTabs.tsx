@@ -22,8 +22,8 @@ const Tabs: React.FC<TabsProps> = ({ children }) => {
   const tabs = React.Children.toArray(children) as ReactElement<TabProps>[];
 
   return (
-    <div className="shadow-md rounded-lg">
-      <div className="flex justify-center border-b border-gray-200 mb-4">
+    <div className=" rounded-lg">
+      <div className="flex justify-center  mb-4">
         {tabs.map((tab, index) =>
           React.isValidElement(tab) ? (
             <button
