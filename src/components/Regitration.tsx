@@ -11,13 +11,13 @@ const Registration: React.FC = () => {
             <h1 className="text-3xl font-bold mb-10">Tell us who you are?</h1>
             <div className="flex flex-col space-y-8">
               <Link
-                to="/signup-business"
+                to="/business/signup"
                 className="bg-primary text-white py-4 px-8 rounded-2xl shadow-lg hover:bg-blue-400 text-center text-lg font-semibold"
               >
                 I want to add my business into SpotBiz
               </Link>
               <Link
-                to="/signup-customer"
+                to="/customer/signup"
                 className="bg-primary text-white py-4 px-8 rounded-2xl shadow-lg hover:bg-blue-400 text-center text-lg font-semibold"
               >
                I want to find and access services on SpotBiz

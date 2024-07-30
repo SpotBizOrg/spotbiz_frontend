@@ -43,9 +43,8 @@ const CustomerHome: React.FC = () => {
     const searchQuery = query.trim(); 
   
     if (searchQuery) {
-      navigate('/search', { state: { query: searchQuery } });
+      navigate('/customer/search_results', { state: { query: searchQuery } });
     } else {
-      toast.error('Please enter something to search!');
     }
   };
   

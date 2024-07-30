@@ -87,7 +87,7 @@ const PackageListPage: React.FC = () => {
           <div className="mt-6 text-center">
             <p className="text-gray-600 text-sm">*Register to the System to buy the plans</p>
             <button
-              onClick={() => navigate('/signup-business')}
+              onClick={() => navigate('/business/signup')}
               className="mt-3 mb-2 px-6 py-3 bg-green-500 text-white font-semibold rounded-xl hover:bg-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
               List Your Business

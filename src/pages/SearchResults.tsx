@@ -41,7 +41,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ imageSrc, name, place_location,
   const navigate = useNavigate();
 
   function navigateToPage() {
-    navigate('/business');
+    navigate('/customer/business_page');
   }
   return (
     <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200 flex flex-col items-center" onClick={navigateToPage}>
