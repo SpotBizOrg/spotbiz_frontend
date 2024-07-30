@@ -10,6 +10,7 @@ import { Button, Card, Modal, Label, TextInput } from "flowbite-react";
 
 import "react-datepicker/dist/react-datepicker.css";
 import YearMonthSelector from "../components/DatePicker";
+import { FaPlus } from "react-icons/fa";
 
 interface BadgeDetails {
   month: string;
@@ -36,31 +37,46 @@ function Badges() {
   const [pastBadges, setPastBadges] = useState<BadgeDetails[]>([
     // Sample data for past badges
     {
-      month: "June",
-      year: "2023",
-      businessName: "Sample Business 1",
-      rating: 4.2,
-      createdAt: new Date("2023-06-01"),
-    },
-    {
-      month: "July",
-      year: "2023",
-      businessName: "Sample Business 2",
+      month: "January",
+      year: "2024",
+      businessName: "Asian Electrical",
       rating: 4.8,
-      createdAt: new Date("2023-07-01"),
+      createdAt: new Date("2024-02-01"),
     },
     {
-      month: "August",
-      year: "2023",
-      businessName: "Sample Business 3",
-      rating: 4.5,
-      createdAt: new Date("2023-08-01"),
+      month: "February",
+      year: "2024",
+      businessName: "Idealz Lanka",
+      rating: 4.4,
+      createdAt: new Date("2024-03-01"),
+    },
+    {
+      month: "March",
+      year: "2024",
+      businessName: "Silvertones Limited",
+      rating: 4.3,
+      createdAt: new Date("2024-04-01"),
+    },
+    {
+      month: "April",
+      year: "2024",
+      businessName: "Abans PLC",
+      rating: 4.2,
+      createdAt: new Date("2024-05-01"),
+    },
+    {
+      month: "May",
+      year: "2024",
+      businessName: "Idealz Lanka",
+      rating: 4.8,
+      createdAt: new Date("2024-06-01"),
     },
   ]);
+
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
 
   // Replace these with values fetched from the backend
-  const businessName = "ABC private limited";
+  const businessName = "Present Solutions";
   const rating = 4.5;
 
   useEffect(() => {
@@ -100,8 +116,14 @@ function Badges() {
       <Adminsidebar selectedTile="Badges" />
 
       <div className="px-12 sm:ml-64 mt-20">
-        <div className="w-fit mb-10 ">
+      <div className="flex justify-between items-center w-full mb-10">
           <h1 className="text-subsubheading text-bluedark">Business Badges</h1>
+          <div
+            className="relative flex items-center justify-center w-[40px] h-[40px] mt-0 border-2 border-dashed border-gray-400 rounded-lg bg-white/50 backdrop-blur-md hover:bg-white/80 hover:border-gray-600 transition-all duration-300 ease-in-out cursor-pointer"
+            onClick={openModal}
+          >
+            <FaPlus className="text-xl text-gray-500" />
+          </div>
         </div>
 
         <div className=" mx-auto p-4">
@@ -123,7 +145,7 @@ function Badges() {
                 <img
                   src={BadgeImg}
                   alt="Badge"
-                  className="w-24 h-24 mb-4 mx-auto"
+                  className="w-36 h-36 mb-4 mx-auto"
                 />
                 <p className="text-md font-medium">
                   {currentBadge.businessName}
@@ -135,9 +157,6 @@ function Badges() {
             ) : (
               <p>No current badge available.</p>
             )}
-            <Button onClick={openModal} className="mt-4 bg-bluedark">
-              Create New Badge
-            </Button>
           </section>
 
           {/* Past Badges Section */}
@@ -161,7 +180,7 @@ function Badges() {
                     <img
                       src={BadgeImg}
                       alt="Badge"
-                      className="w-16 h-16 mb-2 mx-auto"
+                      className="w-20 h-20 mb-2 mx-auto"
                     />
                     <p className="text-md font-medium">{badge.businessName}</p>
                   </Card>
