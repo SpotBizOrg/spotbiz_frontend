@@ -29,7 +29,7 @@ const GameCard: React.FC<GameCardProps> = ({
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/game', { state: { url } });
+    navigate('/customer/play_game', { state: { url } });
   };
 
   return (

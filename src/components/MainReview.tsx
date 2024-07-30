@@ -7,7 +7,7 @@ const MainReview: React.FC = () => {
   const navigate = useNavigate();
 
   function navigateToPage() {
-    navigate('/customer_reviews');
+    navigate('/customer/reviews');
   }
 
   return (

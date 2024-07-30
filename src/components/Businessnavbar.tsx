@@ -68,7 +68,7 @@ function Businessnavbar(){
             </div> */}
             <div className="absolute z-50 inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
             <button 
-              onClick={() => navigate('/customerhome')} 
+              onClick={() => navigate('/home')} 
               className="flex justify-center rounded-md bg-bluedark px-3 py-1 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 mr-5">
             
             Switch to Customer
@@ -93,7 +93,7 @@ function Businessnavbar(){
                     <MenuItem>
                       {({ active }) => (
                         <a
-                          href="/Business_profile"
+                          href="/Business/profile"
                           className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-900')}
                         >
                           My Profile
@@ -103,7 +103,7 @@ function Businessnavbar(){
                     <MenuItem>
                       {({ active }) => (
                         <a
-                          href="#"
+                          href="/login"
                           className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-900')}
                         >
                           Sign out

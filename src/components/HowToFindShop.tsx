@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 const HowToFindShop = () => {
   const navigate = useNavigate();
   function navigateToPage(){
-    navigate('/signup-customer')
+    navigate('/customer/signup')
   }
 
   return (

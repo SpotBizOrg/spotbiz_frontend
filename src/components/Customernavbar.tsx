@@ -16,7 +16,7 @@ function Customernavbar(){
   const navigate = useNavigate();
 
   function navigateToPage() {
-    navigate('/customer_game');
+    navigate('/customer/games');
   }
 
   const handleLogout = () => {
@@ -44,9 +44,8 @@ function Customernavbar(){
       const searchQuery = searchTerm.trim(); 
     
       if (searchQuery) {
-        navigate('/search', { state: { query: searchQuery } });
+        navigate('/customer/search_results', { state: { query: searchQuery } });
       } else {
-        toast.error('Please enter something to search!');
       }
     };
 
@@ -308,12 +307,6 @@ function Customernavbar(){
                 <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
                   Abans: 📱 Introducing the new Samsung S24! Get yours today with a special launch discount.
                 </a>
-                <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  Notification 2
-                </a>
-                <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
-                  Notification 3
-                </a>
               </div>
             )}
             <Menu as="div" className="relative ml-3">
@@ -334,7 +327,7 @@ function Customernavbar(){
                 <MenuItem>
                   {({ active }) => (
                     <a
-                      href="/Customer_profile"
+                      href="/Customer/profile"
                       className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-900')}
                     >
                       My Profile
@@ -345,7 +338,7 @@ function Customernavbar(){
                 <MenuItem>
                   {({ active }) => (
                     <a
-                      href="#"
+                      href="/login"
                       onClick={(e) => {
                         e.preventDefault(); 
                         handleLogout();
