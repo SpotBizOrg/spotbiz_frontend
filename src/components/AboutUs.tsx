@@ -27,7 +27,7 @@ const AboutUs = () => {
           <div className="text-right mb-4 md:mb-0 md:mr-8">
             <h3 className="text-sm uppercase">Businesses</h3>
             <p className="text-2xl font-bold">
-              <CountUp end={5000} duration={2} separator="," />
+              <CountUp end={500} duration={2} separator="," />
             </p>
             <p className="text-sm">Verified businesses listed.</p>
           </div>
