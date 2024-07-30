@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Customernavbar from "../components/Customernavbar";
 import {
   FaSearch,
@@ -15,6 +15,7 @@ import Footer from "../components/Footer";
 import ad1 from '../assets/ad1.png';
 import ad2 from '../assets/ad2.png';
 import ad3 from '../assets/ad3.png';
+import { toast } from 'react-toastify';
 
 const advertisements = [
   {
@@ -36,10 +37,18 @@ const advertisements = [
 
 const CustomerHome: React.FC = () => {
   const [query, setQuery] = useState("");
+  const navigate = useNavigate();
 
   const handleSearch = () => {
-    console.log("Searching for:", query);
+    const searchQuery = query.trim(); 
+  
+    if (searchQuery) {
+      navigate('/search', { state: { query: searchQuery } });
+    } else {
+      toast.error('Please enter something to search!');
+    }
   };
+  
 
   return (
     <div className="flex flex-col min-h-screen bg-white font-body">
@@ -69,7 +78,7 @@ const CustomerHome: React.FC = () => {
                 style={{ boxShadow: 'none' }}
               />
               <FaSearch 
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer hover:text-gray-600"
                 onClick={handleSearch}
               />
             </div>

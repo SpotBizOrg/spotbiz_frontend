@@ -34,10 +34,6 @@ interface NavigationItem {
     
   
   },
-    { name: 'My Games', href: '/manage_games_business', current: false, ico: <SportsEsportsIcon/>,
-    label:<span className="ms-3">My Games</span>
-    
-  },
   ];
   
   function classNames(...classes: string[]): string {

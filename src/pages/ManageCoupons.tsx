@@ -376,7 +376,7 @@ function ManageCoupons() {
           <div className="text-center">
             <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              Are you sure you want to delete this coupon?
+              Are you sure you want to get this action?
             </h3>
             <div className="flex justify-center gap-4 pb-6">
               <Button className="bg-red-600 hover:bg-red-700" onClick={handleDeleteCoupon}>
@@ -407,6 +407,9 @@ function ManageCoupons() {
                   <th scope="col" className="px-6 py-3" style={{ minWidth: '150px' }}>
                     <div className="flex items-center">Score</div>
                   </th>
+                  <th scope="col" className="px-6 py-3" style={{ minWidth: '150px' }}>
+                    <div className="flex items-center">Action</div>
+                  </th>
                 </tr>
               </thead>
               <tbody>
@@ -416,6 +419,17 @@ function ManageCoupons() {
                     <td className="px-6 py-4">{user.email}</td>
                     <td className="px-6 py-4">{user.phone}</td>
                     <td className="px-6 py-4">{user.score}</td>
+                    <td className="px-0 py-4 flex gap-0 justify-start ">
+                      <Button
+                        color="dark"
+                        size="xs"
+                        onClick={() => {
+                          setShowPopup(true);
+                        }}
+                      >
+                        Offer Coupon
+                      </Button>
+                    </td>
                   </tr>
                 ))}
               </tbody>

@@ -4,6 +4,7 @@ import Logo from '../assets/logo.png';
 import Button from './Button'; // Assuming the file path is correct and the file exists
 import { ChangeEvent, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
 
 function Nousernavbar() {
     const navigate = useNavigate();
@@ -20,6 +21,16 @@ function Nousernavbar() {
 
     const doSearch = () => {
         console.log(searchTerm);
+    };
+
+    const handleSearch = () => {
+      const searchQuery = searchTerm.trim(); 
+    
+      if (searchQuery) {
+        navigate('/search', { state: { query: searchQuery } });
+      } else {
+        toast.error('Please enter something to search!');
+      }
     };
 
     return (
@@ -123,7 +134,7 @@ function Nousernavbar() {
                     </div>
                     <input type="text" id="simple-search" value={searchTerm} onChange={handleSearchChange} className="bg-gray-50 border p-1 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10   dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="What are you looking for" required />
                 </div>
-                <button onClick={navigateToPage} className="p-2 ms-2 text-sm font-medium text-white bg-bluedark rounded-lg border border-bluedark  hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <button onClick={handleSearch} className="p-2 ms-2 text-sm font-medium text-white bg-bluedark rounded-lg border border-bluedark  hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
                     <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
                         <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
                     </svg>

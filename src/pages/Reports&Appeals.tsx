@@ -13,7 +13,7 @@ const Reports: React.FC = () => {
     <Container>
       <Adminnavbar />
       {/* <div className="flex min-h-screen bg-gray-100 font-body"> */}
-      <Adminsidebar selectedTile="Dashboard" />
+      <Adminsidebar selectedTile="Appeals & Reports" />
       {/* <div className="flex flex-col flex-grow ml-64">  */}
       <div className="px-12 sm:ml-64 mt-20">
         <div className="flex-grow p-8 mt-16">
