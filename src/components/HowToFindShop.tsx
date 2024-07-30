@@ -1,7 +1,13 @@
 import React from 'react';
 import ShopImage from '../assets/Untitled design-7.png'; // Ensure this image path is correct
+import { useNavigate } from 'react-router-dom';
 
 const HowToFindShop = () => {
+  const navigate = useNavigate();
+  function navigateToPage(){
+    navigate('/signup-customer')
+  }
+
   return (
     <div className="flex items-center bg-blue10 p-8 rounded-custom3 shadow-lg mx-4 md:mx-8 lg:mx-16">
       <div className="mr-8 text-left">
@@ -16,7 +22,7 @@ const HowToFindShop = () => {
           <li>Stay updated on their latest offers and discounts</li>
           <li>Engage with games and earn points</li>
         </ul>
-        <button className="bg-green-500 text-white py-2 px-6 rounded-full text-lg mt-4">
+        <button onClick={navigateToPage} className="bg-green-500 text-white py-2 px-6 rounded-full text-lg mt-4">
           Explore Now
         </button>
       </div>

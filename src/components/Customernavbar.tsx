@@ -4,7 +4,7 @@ import Logo from '../assets/logo.png';
 import { ChangeEvent, useEffect, useState } from 'react';
 import { useAuth } from '../utils/AuthProvider';
 import { useNavigate } from 'react-router-dom';
-
+import { toast } from 'react-toastify';
 
 function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(' ');
@@ -40,6 +40,15 @@ function Customernavbar(){
         console.log(searchTerm);
     }
 
+    const handleSearch = () => {
+      const searchQuery = searchTerm.trim(); 
+    
+      if (searchQuery) {
+        navigate('/search', { state: { query: searchQuery } });
+      } else {
+        toast.error('Please enter something to search!');
+      }
+    };
 
     return(
     // <Disclosure as="nav" className="bg-white shadow-bottom fixed top-0 left-0 right-0 z-50">
@@ -259,6 +268,7 @@ function Customernavbar(){
             <button
               type="submit"
               className="p-2 ms-2 text-sm font-medium text-white bg-bluedark rounded-lg border border-bluedark hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              onClick={handleSearch}
             >
               <svg
                 className="w-4 h-4"

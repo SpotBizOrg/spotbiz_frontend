@@ -29,14 +29,14 @@ const handleSelectOption = (option: string) => {
 interface ResultCardProps {
   imageSrc: string;
   name: string;
-  location: string;
+  place_location: string;
   rating: number;
   badges: string[];
   description: string;
   status: string;
 }
 
-const ResultCard: React.FC<ResultCardProps> = ({ imageSrc, name, location, rating, badges, description, status }) => {
+const ResultCard: React.FC<ResultCardProps> = ({ imageSrc, name, place_location, rating, badges, description, status }) => {
 
   const navigate = useNavigate();
 
@@ -48,7 +48,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ imageSrc, name, location, ratin
       <img src={imageSrc} alt={name} className="mb-4 rounded w-full" />
       <div className='flex flex-col divide-y w-full'>
         <div className="flex flex-col gap-3 p-4 rounded-b-lg">
-          <p className='text-xl font-semibold'>{name} - {location}</p>
+          <p className='text-xl font-semibold'>{name} - {place_location}</p>
           <Rating>
             <RatingStar className='text-yellow-500' />
             <p className="ml-2 text-lg font-bold text-gray-900 dark:text-white">{rating.toFixed(2)}</p>
@@ -63,7 +63,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ imageSrc, name, location, ratin
           </div>
           <div className='flex flex-row gap-1 items-center mt-4'>
             <LocationOnIcon className='text-gray-800' />
-            <p className="text-gray-700">{location}</p>
+            <p className="text-gray-700">{place_location}</p>
           </div>
         </div>
         <div className={`p-4 flex justify-end text-sm font-semibold ${status === 'Open Now' ? 'text-green-600' : 'text-red-600'}`}>
@@ -81,7 +81,7 @@ const SearchResults: React.FC = () => {
     {
       imageSrc: "https://media.licdn.com/dms/image/C560BAQGplG-OJazYng/company-logo_200_200/0/1630646931271?e=2147483647&v=beta&t=bm-AX73n6sJpT_Pamn2_IVmWTwj7UnKuPZBJvIfzu18",
       name: "Abans",
-      location: "Colombo",
+      place_location: "Colombo",
       rating: 4.95,
       badges: ["Computer", "AC", "Laptop", "Kitchen items"],
       description: "Dealers in all kinds of Laptops, electronic items and accessories",
@@ -90,7 +90,7 @@ const SearchResults: React.FC = () => {
     {
       imageSrc: "https://findit-resources.s3.us-east-2.amazonaws.com/account/profilePictures/1623042343123.jpg",
       name: "Idealz Lanka",
-      location: "Colombo",
+      place_location: "Colombo",
       rating: 4.85,
       badges: ["Mobile Phones", "Accessories", "Laptops", "Gadgets"],
       description: "Dealers in mobile phones, accessories, laptops, and various gadgets.",
@@ -99,7 +99,7 @@ const SearchResults: React.FC = () => {
     {
       imageSrc: "https://media.licdn.com/dms/image/C560BAQGplG-OJazYng/company-logo_200_200/0/1630646931271?e=2147483647&v=beta&t=bm-AX73n6sJpT_Pamn2_IVmWTwj7UnKuPZBJvIfzu18",
       name: "Abans",
-      location: "Colombo",
+      place_location: "Colombo",
       rating: 4.95,
       badges: ["Computer", "AC", "Laptop", "Kitchen items"],
       description: "Dealers in all kinds of Laptops, electronic items and accessories",
@@ -108,7 +108,7 @@ const SearchResults: React.FC = () => {
     {
       imageSrc: "https://findit-resources.s3.us-east-2.amazonaws.com/account/profilePictures/1623042343123.jpg",
       name: "Idealz Lanka",
-      location: "Colombo",
+      place_location: "Colombo",
       rating: 4.85,
       badges: ["Mobile Phones", "Accessories", "Laptops", "Gadgets"],
       description: "Dealers in mobile phones, accessories, laptops, and various gadgets.",
@@ -117,7 +117,7 @@ const SearchResults: React.FC = () => {
     {
       imageSrc: "https://media.licdn.com/dms/image/C560BAQGplG-OJazYng/company-logo_200_200/0/1630646931271?e=2147483647&v=beta&t=bm-AX73n6sJpT_Pamn2_IVmWTwj7UnKuPZBJvIfzu18",
       name: "Abans",
-      location: "Colombo",
+      place_location: "Colombo",
       rating: 4.95,
       badges: ["Computer", "AC", "Laptop", "Kitchen items"],
       description: "Dealers in all kinds of Laptops, electronic items and accessories",
@@ -126,7 +126,7 @@ const SearchResults: React.FC = () => {
     {
       imageSrc: "https://findit-resources.s3.us-east-2.amazonaws.com/account/profilePictures/1623042343123.jpg",
       name: "Idealz Lanka",
-      location: "Colombo",
+      place_location: "Colombo",
       rating: 4.85,
       badges: ["Mobile Phones", "Accessories", "Laptops", "Gadgets"],
       description: "Dealers in mobile phones, accessories, laptops, and various gadgets.",
@@ -135,7 +135,7 @@ const SearchResults: React.FC = () => {
     {
       imageSrc: "https://media.licdn.com/dms/image/C560BAQGplG-OJazYng/company-logo_200_200/0/1630646931271?e=2147483647&v=beta&t=bm-AX73n6sJpT_Pamn2_IVmWTwj7UnKuPZBJvIfzu18",
       name: "Abans",
-      location: "Colombo",
+      place_location: "Colombo",
       rating: 4.95,
       badges: ["Computer", "AC", "Laptop", "Kitchen items"],
       description: "Dealers in all kinds of Laptops, electronic items and accessories",
@@ -144,7 +144,7 @@ const SearchResults: React.FC = () => {
     {
       imageSrc: "https://findit-resources.s3.us-east-2.amazonaws.com/account/profilePictures/1623042343123.jpg",
       name: "Idealz Lanka",
-      location: "Colombo",
+      place_location: "Colombo",
       rating: 4.85,
       badges: ["Mobile Phones", "Accessories", "Laptops", "Gadgets"],
       description: "Dealers in mobile phones, accessories, laptops, and various gadgets.",
@@ -153,7 +153,7 @@ const SearchResults: React.FC = () => {
     {
       imageSrc: "https://media.licdn.com/dms/image/C560BAQGplG-OJazYng/company-logo_200_200/0/1630646931271?e=2147483647&v=beta&t=bm-AX73n6sJpT_Pamn2_IVmWTwj7UnKuPZBJvIfzu18",
       name: "Abans",
-      location: "Colombo",
+      place_location: "Colombo",
       rating: 4.95,
       badges: ["Computer", "AC", "Laptop", "Kitchen items"],
       description: "Dealers in all kinds of Laptops, electronic items and accessories",
@@ -162,7 +162,7 @@ const SearchResults: React.FC = () => {
     {
       imageSrc: "https://findit-resources.s3.us-east-2.amazonaws.com/account/profilePictures/1623042343123.jpg",
       name: "Idealz Lanka",
-      location: "Colombo",
+      place_location: "Colombo",
       rating: 4.85,
       badges: ["Mobile Phones", "Accessories", "Laptops", "Gadgets"],
       description: "Dealers in mobile phones, accessories, laptops, and various gadgets.",
@@ -171,7 +171,7 @@ const SearchResults: React.FC = () => {
     {
       imageSrc: "https://media.licdn.com/dms/image/C560BAQGplG-OJazYng/company-logo_200_200/0/1630646931271?e=2147483647&v=beta&t=bm-AX73n6sJpT_Pamn2_IVmWTwj7UnKuPZBJvIfzu18",
       name: "Abans",
-      location: "Colombo",
+      place_location: "Colombo",
       rating: 4.95,
       badges: ["Computer", "AC", "Laptop", "Kitchen items"],
       description: "Dealers in all kinds of Laptops, electronic items and accessories",
@@ -180,7 +180,7 @@ const SearchResults: React.FC = () => {
     {
       imageSrc: "https://findit-resources.s3.us-east-2.amazonaws.com/account/profilePictures/1623042343123.jpg",
       name: "Idealz Lanka",
-      location: "Colombo",
+      place_location: "Colombo",
       rating: 4.85,
       badges: ["Mobile Phones", "Accessories", "Laptops", "Gadgets"],
       description: "Dealers in mobile phones, accessories, laptops, and various gadgets.",
@@ -189,7 +189,7 @@ const SearchResults: React.FC = () => {
     {
       imageSrc: "https://media.licdn.com/dms/image/C560BAQGplG-OJazYng/company-logo_200_200/0/1630646931271?e=2147483647&v=beta&t=bm-AX73n6sJpT_Pamn2_IVmWTwj7UnKuPZBJvIfzu18",
       name: "Abans",
-      location: "Colombo",
+      place_location: "Colombo",
       rating: 4.95,
       badges: ["Computer", "AC", "Laptop", "Kitchen items"],
       description: "Dealers in all kinds of Laptops, electronic items and accessories",
@@ -198,7 +198,7 @@ const SearchResults: React.FC = () => {
     {
       imageSrc: "https://findit-resources.s3.us-east-2.amazonaws.com/account/profilePictures/1623042343123.jpg",
       name: "Idealz Lanka",
-      location: "Colombo",
+      place_location: "Colombo",
       rating: 4.85,
       badges: ["Mobile Phones", "Accessories", "Laptops", "Gadgets"],
       description: "Dealers in mobile phones, accessories, laptops, and various gadgets.",
@@ -207,13 +207,16 @@ const SearchResults: React.FC = () => {
     // Add more result objects here
   ];
 
+  const location = useLocation();
+  const { query } = location.state;
+
   return (
     <>
       <Container2>
       <Customernavbar />
       <div className="flex flex-col justify-start px-20 mt-20 pt-5 w-full mb-20">
         <div className="w-full">
-          <h1 className="text-3xl font-bold mb-1 pt-4">Search for "Laptop"</h1>
+          <h1 className="text-3xl font-bold mb-1 pt-4">Search for "{query ? query : 'computers'}"</h1>
           <p className="text-gray-700 mb-6 pt-1">500 Search results</p>
           <div className='flex flex-row justify-center'>
             <CategoryPills />

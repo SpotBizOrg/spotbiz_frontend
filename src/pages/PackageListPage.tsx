@@ -5,6 +5,7 @@ import PackageCard from '../components/Pkg';
 import { useNavigate } from 'react-router-dom';
 import NoUserNav from '../components/NoUserNav';
 import Footer from '../components/Footer';
+import Container2 from '../components/Container2';
 
 const packagesData = [
   {
@@ -68,7 +69,7 @@ const PackageListPage: React.FC = () => {
   return (
     <div>
       <NoUserNav />
-      <Container>
+      <Container2>
         <div className="flex flex-col items-center justify-center min-h-screens pt-8">
           <h1 className="text-3xl font-bold text-center mb-4 mt-8">Subscription Plans</h1>
           <div className="mt-3 grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ml-8 mr-8">
@@ -86,14 +87,14 @@ const PackageListPage: React.FC = () => {
           <div className="mt-6 text-center">
             <p className="text-gray-600 text-sm">*Register to the System to buy the plans</p>
             <button
-              onClick={() => navigate('/register')}
+              onClick={() => navigate('/signup-business')}
               className="mt-3 mb-2 px-6 py-3 bg-green-500 text-white font-semibold rounded-xl hover:bg-black focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
               List Your Business
             </button>
           </div>
         </div>
-      </Container>
+      </Container2>
       <Footer />
     </div>
   );

@@ -17,7 +17,7 @@ function ManageGames() {
     document.title = "SpotBiz | Games | Admin";
   },[]);
   
-  const [activeTab, setActiveTab] = useState('seasonal');
+  const [activeTab, setActiveTab] = useState('normal');
   const [showForm, setShowForm] = useState(false);
   const [newGame, setNewGame] = useState({
     image: '',
@@ -28,7 +28,7 @@ function ManageGames() {
   });
   const [imagePreview, setImagePreview] = useState<string>('');
 
-  const games = [
+  const normalGames = [
     {
       image: Tag234Players,
       title: 'Tag 2 3 4 Players',
@@ -64,78 +64,6 @@ function ManageGames() {
       visits: '11M',
       usage: 0,
       url: 'https://www.crazygames.com/embed/cups---water-sort-puzzle'
-    },
-    {
-      image: SortParking,
-      title: 'Sort Parking',
-      developer: 'Synk',
-      description: 'Hello',
-      visits: '11M',
-      usage: 0,
-      url: 'https://www.crazygames.com/embed/sort-parking'
-    },
-    {
-      image: DropMergetheNumbers,
-      title: 'Drop & Merge the Numbers',
-      developer: 'GMR Bros',
-      description: 'Hello',
-      visits: '11M',
-      usage: 0,
-      url: 'https://www.crazygames.com/embed/drop-merge-the-numbers'
-    },
-    {
-      image: Tag234Players,
-      title: 'Tag 2 3 4 Players',
-      developer: 'Jet Games',
-      description: 'Hello',
-      visits: '11M',
-      usage: 0,
-      url: 'https://www.crazygames.com/embed/tag-2-3-4-players'
-    },
-    {
-      image: KittyScrambleWordStacks,
-      title: 'Kitty Scramble: Word Stacks',
-      developer: 'Clever Apps',
-      description: 'Hello',
-      visits: '11M',
-      usage: 0,
-      url: 'https://www.crazygames.com/embed/kitty-scramble'
-    },
-    {
-      image: CuttheRope,
-      title: 'Cut the Rope',
-      developer: 'Famobi',
-      description: 'Hello',
-      visits: '11M',
-      usage: 0,
-      url: 'https://www.crazygames.com/embed/cut-the-rope-ebx'
-    },
-    {
-      image: CupsWaterSortPuzzle,
-      title: 'Cups - Water Sort Puzzle',
-      developer: 'Blury Studio',
-      description: 'Hello',
-      visits: '11M',
-      usage: 0,
-      url: 'https://www.crazygames.com/embed/cups---water-sort-puzzle'
-    },
-    {
-      image: SortParking,
-      title: 'Sort Parking',
-      developer: 'Synk',
-      description: 'Hello',
-      visits: '11M',
-      usage: 0,
-      url: 'https://www.crazygames.com/embed/sort-parking'
-    },
-    {
-      image: DropMergetheNumbers,
-      title: 'Drop & Merge the Numbers',
-      developer: 'GMR Bros',
-      description: 'Hello',
-      visits: '11M',
-      usage: 0,
-      url: 'https://www.crazygames.com/embed/drop-merge-the-numbers'
     },
     {
       image: SortParking,
@@ -157,9 +85,96 @@ function ManageGames() {
     },
   ];
 
-  const seasonalGames = games.filter((_, index) => index % 3 === 0);
-  const normalGames = games.filter((_, index) => index % 3 === 1);
-  const businessGames = games.filter((_, index) => index % 3 === 2);
+  const seasonalGames = [
+    {
+      image: CuttheRope,
+      title: 'Cut the Rope',
+      developer: 'Famobi',
+      description: 'Hello',
+      visits: '11M',
+      usage: 0,
+      url: 'https://www.crazygames.com/embed/cut-the-rope-ebx'
+    },
+    {
+      image: CupsWaterSortPuzzle,
+      title: 'Cups - Water Sort Puzzle',
+      developer: 'Blury Studio',
+      description: 'Hello',
+      visits: '11M',
+      usage: 0,
+      url: 'https://www.crazygames.com/embed/cups---water-sort-puzzle'
+    },
+    {
+      image: DropMergetheNumbers,
+      title: 'Drop & Merge the Numbers',
+      developer: 'GMR Bros',
+      description: 'Hello',
+      visits: '11M',
+      usage: 0,
+      url: 'https://www.crazygames.com/embed/drop-merge-the-numbers'
+    },
+  ];
+
+  const businessGames = [
+    {
+      image: Tag234Players,
+      title: 'Tag 2 3 4 Players',
+      developer: 'Jet Games',
+      description: 'Hello',
+      visits: '11M',
+      usage: 0,
+      url: 'https://www.crazygames.com/embed/tag-2-3-4-players'
+    },
+    {
+      image: KittyScrambleWordStacks,
+      title: 'Kitty Scramble: Word Stacks',
+      developer: 'Clever Apps',
+      description: 'Hello',
+      visits: '11M',
+      usage: 0,
+      url: 'https://www.crazygames.com/embed/kitty-scramble'
+    },
+    {
+      image: CuttheRope,
+      title: 'Cut the Rope',
+      developer: 'Famobi',
+      description: 'Hello',
+      visits: '11M',
+      usage: 0,
+      url: 'https://www.crazygames.com/embed/cut-the-rope-ebx'
+    },
+    {
+      image: CupsWaterSortPuzzle,
+      title: 'Cups - Water Sort Puzzle',
+      developer: 'Blury Studio',
+      description: 'Hello',
+      visits: '11M',
+      usage: 0,
+      url: 'https://www.crazygames.com/embed/cups---water-sort-puzzle'
+    },
+    {
+      image: SortParking,
+      title: 'Sort Parking',
+      developer: 'Synk',
+      description: 'Hello',
+      visits: '11M',
+      usage: 0,
+      url: 'https://www.crazygames.com/embed/sort-parking'
+    },
+    {
+      image: DropMergetheNumbers,
+      title: 'Drop & Merge the Numbers',
+      developer: 'GMR Bros',
+      description: 'Hello',
+      visits: '11M',
+      usage: 0,
+      url: 'https://www.crazygames.com/embed/drop-merge-the-numbers'
+    },
+  ];
+
+  // const seasonalGames = games.filter((_, index) => index % 4 === 0);
+  // const normalGames = games.filter((_, index) => index % 2 === 1);
+  // const businessGames = games.filter((_, index) => index % 3 === 2);
 
   const getDisplayedGames = () => {
     switch (activeTab) {
@@ -212,23 +227,17 @@ function ManageGames() {
         </div>
         <div className="flex items-center justify-between w-full mb-5 border-b border-gray-300">
           <div className="flex space-x-6">
-            <button
-              className={`px-0 py-2 pb-[calc(0.5rem - 4px)] rounded focus:outline-none ${activeTab === 'seasonal' ? 'text-black border-b-4 border-black' : 'bg-transparent text-blue-500 border-b-4 border-transparent hover:border-b-4 hover:border-gray-300'}`}
-              onClick={() => setActiveTab('seasonal')}
-            >
-              Seasonal Games
-            </button>
-            <button
+          <button
               className={`px-0 py-2 pb-[calc(0.5rem - 4px)] rounded focus:outline-none ${activeTab === 'normal' ? 'text-black border-b-4 border-black' : 'bg-transparent text-blue-500 border-b-4 border-transparent hover:border-b-4 hover:border-gray-300'}`}
               onClick={() => setActiveTab('normal')}
             >
               Normal Games
             </button>
             <button
-              className={`px-0 py-2 pb-[calc(0.5rem - 4px)] rounded focus:outline-none ${activeTab === 'business' ? 'text-black border-b-4 border-black' : 'bg-transparent text-blue-500 border-b-4 border-transparent hover:border-b-4 hover:border-gray-300'}`}
-              onClick={() => setActiveTab('business')}
+              className={`px-0 py-2 pb-[calc(0.5rem - 4px)] rounded focus:outline-none ${activeTab === 'seasonal' ? 'text-black border-b-4 border-black' : 'bg-transparent text-blue-500 border-b-4 border-transparent hover:border-b-4 hover:border-gray-300'}`}
+              onClick={() => setActiveTab('seasonal')}
             >
-              Business Games
+              Seasonal Games
             </button>
           </div>
           <div className="flex items-center space-x-2 mb-1">

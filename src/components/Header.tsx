@@ -2,13 +2,21 @@ import React, { useState } from "react";
 import { FaSearch } from 'react-icons/fa';
 import Nousernavbar from "./Nousernavbar";
 import HomeImage from '../assets/Background.png'; 
+import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 const Header = () => {
   const [query, setQuery] = useState("");
+  const navigate = useNavigate();
 
   const handleSearch = () => {
-    // Implement the search functionality here
-    console.log("Searching for:", query);
+    const searchQuery = query.trim(); 
+  
+    if (searchQuery) {
+      navigate('/search', { state: { query: searchQuery } });
+    } else {
+      toast.error('Please enter something to search!');
+    }
   };
 
   return (
@@ -30,7 +38,7 @@ const Header = () => {
                 style={{ boxShadow: 'none' }}
               />
               <FaSearch 
-                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+                className="absolute right-4 top-1/2 transform -translate-y-1/2 text-gray-400 cursor-pointer hover:text-gray-600"
                 onClick={handleSearch}
               />
             </div>
