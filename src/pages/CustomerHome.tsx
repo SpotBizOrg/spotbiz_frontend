@@ -15,23 +15,29 @@ import Footer from "../components/Footer";
 import ad1 from '../assets/ad1.png';
 import ad2 from '../assets/ad2.png';
 import ad3 from '../assets/ad3.png';
+import ad4 from '../assets/prom3.jpg';
 import { toast } from 'react-toastify';
 
 const advertisements = [
   {
     img: ad1,
     date: '2024-07-06',
-    details: 'Ad 1 details',
+    details: 'Black Friday Sales with Amex!',
   },
   {
     img: ad2,
     date: '2024-07-05',
-    details: 'Ad 2 details',
+    details: 'Black Friday Sales - 5% off!',
   },
   {
     img: ad3,
     date: '2024-07-04',
-    details: 'Ad 3 details',
+    details: 'Abans 8 days of deals',
+  },
+  {
+    img: ad4,
+    date: '2024-07-04',
+    details: 'New arrivals!',
   },
 ];
 
@@ -123,13 +129,13 @@ const CustomerHome: React.FC = () => {
           </p>
         </section>
         <section>
-          <h2 className="text-subheading font-bold mb-4">Advertisements</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <h2 className="text-subheading font-bold mb-4">Recommonded</h2>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {advertisements.map((ad, index) => (
               <Advertisement key={index} img={ad.img} details={ad.details} />
             ))}
           </div>
-          <div className="mt-4 text-center">
+          <div className="mt-4 text-center mb-10">
             <Link to="/advertisements" className="text-slate-600 hover:underline">
               See more
             </Link>

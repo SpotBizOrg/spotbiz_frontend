@@ -8,9 +8,9 @@ const AboutMe: React.FC = () => {
   const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] =
     useState(false);
   const [formData, setFormData] = useState({
-    name: "Nirasha Nelki",
-    email: "someone@gmail.com",
-    phone: "+1 234 567 8900",
+    name: "Shalini",
+    email: "shalinimasha2002@gmail.com",
+    phone: "0762415235",
   });
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,15 +55,15 @@ const AboutMe: React.FC = () => {
         </div>
         <div className="mt-4 grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="text-gray-600">Email address</label>
+            <label className="text-gray-600 font-bold">Email address</label>
             <p className="text-gray-800">{formData.email}</p>
           </div>
           <div>
-            <label className="text-gray-600">Name</label>
+            <label className="text-gray-600 font-bold">Name</label>
             <p className="text-gray-800">{formData.name}</p>
           </div>
           <div>
-            <label className="text-gray-600">Phone Number</label>
+            <label className="text-gray-600 font-bold">Phone Number</label>
             <p className="text-gray-800">{formData.phone}</p>
           </div>
         </div>

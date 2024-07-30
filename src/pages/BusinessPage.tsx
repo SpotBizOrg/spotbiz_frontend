@@ -10,13 +10,14 @@ import Column2 from '../components/Column2';
 import OpeningHrs from '../components/OpeningHrs';
 import Footer from '../components/Footer';
 import Container2 from '../components/Container2';
+import FloatingBtnsbusiness from '../components/FlotingBtnsbusiness';
 
 const BusinessPage: React.FC = () => {
   return (
     <>
         <Container2>
       <Customernavbar />
-      <div className="px-12 sm mt-20 mb-20">
+      <div className="px-12 sm mt-8 mb-20">
         <div className='w-fullflex flex-col'>
           <BusinessTitlenReview/>
           <div className='w-full flex flex-row justify-start'>
@@ -24,7 +25,7 @@ const BusinessPage: React.FC = () => {
               <BusinessInfoCol/>
               <MainReview/>
             </div>
-            <div className='w-3/6 ml-20 mr-20 p-8 max-h-[95vh] overflow-y-auto scrollbar-hide'>
+            <div className='w-3/6 ml-20 mr-20 p-8 max-h-[130vh] overflow-y-auto scrollbar-hide'>
               <Column2/>
             </div>
             <div className='flex flex-col w-2/6'>
@@ -35,7 +36,7 @@ const BusinessPage: React.FC = () => {
           </div>
         </div>
       </div>
-      
+      <FloatingBtnsbusiness/>
       {/* <Business /> */}
     </Container2>
       <Footer />

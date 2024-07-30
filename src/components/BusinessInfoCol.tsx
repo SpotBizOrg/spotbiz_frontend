@@ -31,14 +31,14 @@ const BusinessInfoCol: React.FC = () => {
                 <p className="flex item-center text-gray-800 text-bodysmall cursor-pointer">Abans
                 </p>
             </div>
-            <div className="flex flex-row text-center justify-start mb-2">
+            {/* <div className="flex flex-row text-center justify-start mb-2">
                 <IoLogoWhatsapp className="mr-3 pt-1 text-gray-500 text-bodymedium" />
                 <p className="flex item-center text-gray-800 text-bodysmall underline underline-offset-4 cursor-pointer">Contact via WhatsApp
                 </p>
-            </div>
+            </div> */}
         </div>
       </div>
-        <button className="border border-green-500 text-green-500 font-bold px-4 py-1 rounded-md w-full text-bodysmall mb-5">Open Now</button>
+        {/* <button className="border border-green-500 text-green-500 font-bold px-4 py-1 rounded-md w-full text-bodysmall mb-5">Open Now</button> */}
 
         </>
         
