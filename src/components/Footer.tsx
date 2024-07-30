@@ -13,7 +13,7 @@ import Logo from "../assets/logo.png";
 
 const Footer: React.FC = () => {
   return (
-    <footer className=" bottom-0 left-0 w-full bg-white py-4 shadow-inner">
+    <footer className="bottom-0 left-0 w-full bg-white py-4 shadow-inner">
       <div className="container mx-auto px-4 flex flex-col md:flex-row justify-between items-center">
         <div className="flex items-center mb-4 md:mb-0">
           <img src={Logo} alt="Logo" className="h-10 mr-3" />
