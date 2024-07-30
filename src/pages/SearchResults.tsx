@@ -85,7 +85,7 @@ const SearchResults: React.FC = () => {
       rating: 4.95,
       badges: ["Computer", "AC", "Laptop", "Kitchen items"],
       description: "Dealers in all kinds of Laptops, electronic items and accessories",
-      status: "Closed Now",
+      status: "Open Now",
     },
     {
       imageSrc: "https://findit-resources.s3.us-east-2.amazonaws.com/account/profilePictures/1623042343123.jpg",
@@ -97,7 +97,7 @@ const SearchResults: React.FC = () => {
       status: "Open Now",
     },
     {
-      imageSrc: "https://softlogic.lk/wp-content/uploads/2020/06/Softlogic-Holdings-Logo.png",
+      imageSrc: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQDYuPDso2Uc5jgFr_T0Fxh3idtz0y_UqdQOg&s",
       name: "Softlogic Holdings",
       place_location: "Colombo",
       rating: 4.80,
@@ -106,7 +106,7 @@ const SearchResults: React.FC = () => {
       status: "Open Now",
     },
     {
-      imageSrc: "https://redlinetech.lk/wp-content/uploads/2017/10/Redline-Logo-New-500px.png",
+      imageSrc: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR9941BHlFTlJrJSW2i2HaB6Aj6bOJ35cO2lA&s",
       name: "Redline Technologies",
       place_location: "Colombo",
       rating: 4.75,
@@ -115,7 +115,7 @@ const SearchResults: React.FC = () => {
       status: "Closed Now",
     },
     {
-      imageSrc: "https://nanotek.lk/wp-content/uploads/2020/06/nanotek-logo.png",
+      imageSrc: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQjiqQieKfS-RLsZgOmiYt62UJkJaKUbwKBiA&s",
       name: "Nanotek",
       place_location: "Colombo",
       rating: 4.70,
@@ -124,13 +124,13 @@ const SearchResults: React.FC = () => {
       status: "Open Now",
     },
     {
-      imageSrc: "https://lifemobile.lk/wp-content/uploads/2017/09/lifemobile-logo.png",
+      imageSrc: "https://www.americanexpress.lk/images/specialOffers/homecare/lifemobile_600x600.jpg",
       name: "Life Mobile",
       place_location: "Colombo",
       rating: 4.65,
       badges: ["Mobile Phones", "Tablets", "Accessories", "Gadgets"],
       description: "Providers of a range of mobile phones, tablets, and accessories.",
-      status: "Open Now",
+      status: "Closed Now",
     },
   ];
 
