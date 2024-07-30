@@ -81,7 +81,7 @@ const SearchResults: React.FC = () => {
     {
       imageSrc: "https://media.licdn.com/dms/image/C560BAQGplG-OJazYng/company-logo_200_200/0/1630646931271?e=2147483647&v=beta&t=bm-AX73n6sJpT_Pamn2_IVmWTwj7UnKuPZBJvIfzu18",
       name: "Abans",
-      location: "Colombo",
+      place_location: "Colombo",
       rating: 4.95,
       badges: ["Computer", "AC", "Laptop", "Kitchen items"],
       description: "Dealers in all kinds of Laptops, electronic items and accessories",
@@ -90,7 +90,7 @@ const SearchResults: React.FC = () => {
     {
       imageSrc: "https://findit-resources.s3.us-east-2.amazonaws.com/account/profilePictures/1623042343123.jpg",
       name: "Idealz Lanka",
-      location: "Colombo",
+      place_location: "Colombo",
       rating: 4.85,
       badges: ["Mobile Phones", "Accessories", "Laptops", "Gadgets"],
       description: "Dealers in mobile phones, accessories, laptops, and various gadgets.",
@@ -99,7 +99,7 @@ const SearchResults: React.FC = () => {
     {
       imageSrc: "https://softlogic.lk/wp-content/uploads/2020/06/Softlogic-Holdings-Logo.png",
       name: "Softlogic Holdings",
-      location: "Colombo",
+      place_location: "Colombo",
       rating: 4.80,
       badges: ["Electronics", "IT Products", "Home Appliances", "Retail"],
       description: "Providers of a wide range of electronics, IT products, and home appliances.",
@@ -108,7 +108,7 @@ const SearchResults: React.FC = () => {
     {
       imageSrc: "https://redlinetech.lk/wp-content/uploads/2017/10/Redline-Logo-New-500px.png",
       name: "Redline Technologies",
-      location: "Colombo",
+      place_location: "Colombo",
       rating: 4.75,
       badges: ["Gaming PCs", "Custom-built PCs", "Hardware", "Gaming Gear"],
       description: "Specializing in high-end gaming and custom-built PCs.",
@@ -117,7 +117,7 @@ const SearchResults: React.FC = () => {
     {
       imageSrc: "https://nanotek.lk/wp-content/uploads/2020/06/nanotek-logo.png",
       name: "Nanotek",
-      location: "Colombo",
+      place_location: "Colombo",
       rating: 4.70,
       badges: ["Computers", "Accessories", "Peripherals"],
       description: "Offering a variety of tech products, from laptops to peripherals.",
@@ -126,7 +126,7 @@ const SearchResults: React.FC = () => {
     {
       imageSrc: "https://lifemobile.lk/wp-content/uploads/2017/09/lifemobile-logo.png",
       name: "Life Mobile",
-      location: "Colombo",
+      place_location: "Colombo",
       rating: 4.65,
       badges: ["Mobile Phones", "Tablets", "Accessories", "Gadgets"],
       description: "Providers of a range of mobile phones, tablets, and accessories.",
