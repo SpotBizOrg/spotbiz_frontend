@@ -18,7 +18,7 @@ interface NavigationItem {
   }
   
   const navigation: NavigationItem[] = [
-    { name: 'Dashboard', href: 'business/dashboard', current: true, ico: <DashboardIcon/>, 
+    { name: 'Dashboard', href: '/business/dashboard', current: true, ico: <DashboardIcon/>, 
     label:<span className="ms-3">Dashboard</span>
   },
     { name: 'Profile', href: '/business/profile', current: false, ico: <Person2Icon/>,
