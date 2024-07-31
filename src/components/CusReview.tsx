@@ -71,7 +71,7 @@ const Review: React.FC<ReviewProps> = ({
         </a>
       )}
 
-      {userType === "business" && (
+      {/* {userType === "business" && (
         <aside>
           <div className="flex items-center mt-3">
             <a
@@ -82,7 +82,7 @@ const Review: React.FC<ReviewProps> = ({
             </a>
           </div>
         </aside>
-      )}
+      )} */}
     </Card>
   );
 };
