@@ -3,9 +3,23 @@ import { Card, Avatar, Rating } from "flowbite-react";
 
 interface ReviewProps {
   userType: "business" | "regular";
+  reviewerName: string;
+  reviewDate: string;
+  reviewTitle: string;
+  reviewText: string;
+  reviewerAvatar: string;
+  rating: number;
 }
 
-const Review: React.FC<ReviewProps> = ({ userType }) => {
+const Review: React.FC<ReviewProps> = ({
+  userType,
+  reviewerName,
+  reviewDate,
+  reviewTitle,
+  reviewText,
+  reviewerAvatar,
+  rating,
+}) => {
   const [isFullReviewShown, setIsFullReviewShown] = useState(false);
 
   const toggleFullReview = (
@@ -15,40 +29,32 @@ const Review: React.FC<ReviewProps> = ({ userType }) => {
     setIsFullReviewShown(!isFullReviewShown);
   };
 
-  const reviewText =
-    "This is my third Invicta Pro Diver. They are just fantastic value for money. This one arrived yesterday and the first thing I did was set the time, popped on an identical strap from another Invicta and went in the shower with it to test the waterproofing. It kept perfect time in the shower and didn't fog up at all. The waterproofing is really impressive for the price. I've been swimming with it, snorkeling, and it's been great. If you're looking for a durable and stylish watch at a reasonable price, the Invicta Pro Diver is a great choice.";
-
   const truncatedReview =
     reviewText.length > 100 && !isFullReviewShown
       ? reviewText.slice(0, 100) + "..."
       : reviewText;
 
   return (
-    <Card>
+    <Card className="w-full">
       <div className="flex items-center mb-4">
-        <Avatar
-          img="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
-          rounded
-        />
+        <Avatar img={reviewerAvatar} rounded />
         <div className="font-medium dark:text-white ml-4">
-          <p>Jese Leos</p>
+          <p>{reviewerName}</p>
         </div>
       </div>
       <div className="flex items-center mb-1 space-x-1">
         <Rating>
-          <Rating.Star filled />
-          <Rating.Star filled />
-          <Rating.Star filled />
-          <Rating.Star filled />
-          <Rating.Star />
+          {[...Array(5)].map((_, i) => (
+            <Rating.Star key={i} filled={i < rating} />
+          ))}
         </Rating>
         <h3 className="ml-2 text-sm font-semibold text-gray-900 dark:text-white">
-          Thinking to buy another one!
+          {reviewTitle}
         </h3>
       </div>
       <footer className="mb-5 text-sm text-gray-500 dark:text-gray-400">
         <p>
-          Reviewed on <time dateTime="2017-03-03 19:00">March 3, 2017</time>
+          Reviewed on <time dateTime={reviewDate}>{reviewDate}</time>
         </p>
       </footer>
       <p className="mb-2 text-gray-500 dark:text-gray-400">
