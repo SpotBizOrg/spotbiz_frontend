@@ -10,9 +10,9 @@ const Column2: React.FC = () => {
   };
 
   const images = [
-    { src: prom1, date: new Date('2023-07-01'), aspectRatio: '100%', title: "Mega Stock Clearance Sale!" },
-    { src: prom2, date: new Date('2023-07-15'), aspectRatio: '100%', title: "Abans Home Kitchen Baking Champion" },
-    { src: prom3, date: new Date('2023-07-20'), aspectRatio: '100%', title: "Newest Arrival!" },
+    { src: prom1, date: new Date('2024-07-30'), aspectRatio: '100%', title: "Mega Stock Clearance Sale!" },
+    { src: prom2, date: new Date('2024-07-27'), aspectRatio: '100%', title: "Abans Home Kitchen Baking Champion" },
+    { src: prom3, date: new Date('2024-07-25'), aspectRatio: '100%', title: "Newest Arrival!" },
   ];
 
   const calculateTimePassed = (date: Date) => {
