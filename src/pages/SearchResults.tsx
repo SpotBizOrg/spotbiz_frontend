@@ -145,7 +145,7 @@ const SearchResults: React.FC = () => {
       <div className="flex flex-col justify-start px-20 mt-20 pt-5 w-full mb-20">
         <div className="w-full">
           <h1 className="text-3xl font-bold mb-1 pt-4">Search for "{query ? query : 'computers'}"</h1>
-          <p className="text-gray-700 mb-6 pt-1">500 Search results</p>
+          <p className="text-gray-700 mb-6 pt-1">6 Search results</p>
           <div className='flex flex-row justify-center'>
             <CategoryPills />
           </div>
