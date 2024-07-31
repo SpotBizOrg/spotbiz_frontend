@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import Businessnavbar from "../components/Businessnavbar";
 import Businesssidebar from "../components/Businesssidebar";
 import { Button, Card, Modal, Textarea, TextInput } from "flowbite-react";
-import AbansImage from "../assets/Abans.png";
+import AbansImage from "../assets/profPicAbans.png";
+import RedlineImage from "../assets/profPicRedline.jpg";
+import iDealzImage from "../assets/profPiciDealz.png";
+import SoftlogicImage from "../assets/profPicSoftlogic.png";
+import DefaultImage from "../assets/profPicDefault.jpg";
 import {
   FaCamera,
   FaMapMarkerAlt,
@@ -17,9 +21,7 @@ import { Tab, Tabs } from "../components/CustomTabs";
 import { FaSquareXTwitter } from "react-icons/fa6";
 import CustomToggleSwitch from "../components/CustomToggleSwitch";
 import { useAuth } from "../utils/AuthProvider";
-const email = "yuhanga2001@gmail.com";
-const token =
-  "eyJhbGciOiJIUzM4NCJ9.eyJzdWIiOiJ5dWhhbmdhMjAwMUBnbWFpbC5jb20iLCJpYXQiOjE3MjIxODIwNjAsImV4cCI6MTcyMjI2ODQ2MH0.RfRInCXSQ4nuyVdBqAdcAGc-VXS_dK4y7XnRK1w0HRkc-PBPu2HnF_MfjAWrXpn8";
+
 interface BusinessDetailsSubmit {
   businessName: string;
   locationUrl: string;
@@ -28,75 +30,95 @@ interface BusinessDetailsSubmit {
   description: string;
 }
 
+const imageMap: { [key: string]: string } = {
+  'profPicAbans.png': AbansImage,
+};
+
 const BusinessProfile: React.FC = () => {
-  const { user, checkAuthenticated, logout } = useAuth();
+  const { token, user, checkAuthenticated, logout } = useAuth();
   const [data, setData] = useState<any>(null);
-  const [businessname, setBusinessName] = useState("");
+
   useEffect(() => {
     document.title = "SpotBiz | Profile | Business";
   }, []);
+  
 
   useEffect(() => {
-    if (!checkAuthenticated()) {
-      fetchData();
+    if (checkAuthenticated() && user?.email && token) {
+      fetchData(user.email, token);
     } else {
-      fetchData();
+      console.log("User is not authenticated or email/token is missing");
     }
-  }, []);
+  }, [user, token]);
 
-  const updateBusinessData = (data: typeof businessDetails) => {
-    fetch(`http://localhost:8080/api/v1/business/${email}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        return response.json();
+  const updateBusinessData = (data: BusinessDetailsSubmit) => {
+    if (user?.email && token) {
+      fetch(`http://localhost:8080/api/v1/business/${user.email}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(data),
       })
-      .then((responseData) => {
-        setData(responseData);
-        console.log(responseData);
-      })
-      .catch((error) => {
-        console.error("Error fetching data:", error);
-      });
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Network response was not ok");
+          }
+          return response.json();
+        })
+        .then((responseData) => {
+          setData(responseData);
+          console.log(responseData);
+        })
+        .catch((error) => {
+          console.error("Error updating data:", error);
+        });
+    }
   };
 
-  const fetchData = async () => {
-    if (1) {
-      try {
-        const response = await fetch(
-          `http://localhost:8080/api/v1/business_owner/business/${email}`,
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
+  const fetchData = async (email: string, token: string) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/v1/business_owner/business/${email}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
         }
+      );
 
-        const responseData = await response.json();
-        setData(responseData);
-        setBusinessname(responseData.name);
-        setAddress(responseData.address);
-        setContactNo(responseData.contactNo);
-        setLocationUrl(responseData.locationUrl);
-        setDescription(responseData.description);
-        console.log(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
       }
+
+      const responseData = await response.json();
+      setData(responseData);
+      setBusinessname(responseData.name);
+      setAddress(responseData.address);
+      setContactNo(responseData.contactNo);
+      setLocationUrl(responseData.locationUrl);
+      setDescription(responseData.description);
+      console.log(responseData.name)
+      if(responseData.name === "Abans Elite "){
+        setSelectedAvatar(AbansImage)
+      }
+      else if(responseData.name === "Redline Technologies"){
+        setSelectedAvatar(RedlineImage)
+      }
+      else if(responseData.name === "iDealz Lanka Pvt Ltd"){
+        setSelectedAvatar(iDealzImage)
+      }
+      else if(responseData.name === "Softlogic Holdings"){
+        setSelectedAvatar(SoftlogicImage)
+      }
+      else{
+        setSelectedAvatar(DefaultImage)
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
   };
 
@@ -114,49 +136,49 @@ const BusinessProfile: React.FC = () => {
   // };
 
   const handleSubmit = async (e: React.FormEvent) => {
-    console.log(businessName);
-
     e.preventDefault();
-
-    const name = businessName;
-
-    if (1) {
-      console.log("name: " + businessName);
-      try {
-        const response = await fetch(
-          `http://localhost:8080/api/v1/business/register/${email}`,
-          {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-            body: JSON.stringify({
-              name,
-              locationUrl,
-              contactNo,
-              address,
-              description,
-            }),
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-
-        const responseData = await response.json();
-        setData(responseData);
-        console.log(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+  
+    if (!user || !token) {
+      console.error("User or token is missing");
+      return;
     }
-    console.log(businessDetails);
+  
+    const name = businessName;
+  
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/v1/business/register/${user.email}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({
+            name,
+            locationUrl,
+            contactNo,
+            address,
+            description,
+          }),
+        }
+      );
+  
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+  
+      const responseData = await response.json();
+      setData(responseData);
+      console.log(responseData);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  
     setOpenBusinessModal(false);
   };
+  
 
-  const [selectedAvatar, setSelectedAvatar] = useState(AbansImage);
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
   const [openTagModal, setOpenTagModal] = useState(false);
   const [openSocialModal, setOpenSocialModal] = useState(false);
@@ -171,6 +193,7 @@ const BusinessProfile: React.FC = () => {
   const [address, setAddress] = useState("");
   const [description, setDescription] = useState("");
   const [contactNo, setContactNo] = useState("");
+  const [selectedAvatar, setSelectedAvatar] = useState("");
   type Day =
     | "Monday"
     | "Tuesday"
@@ -328,7 +351,7 @@ const BusinessProfile: React.FC = () => {
       {
         businessHourId: 1,
         item: "Monday 09:00 18:00",
-        specialNote: "Closed htmlFor lunch 1 PM - 2 PM",
+        specialNote: "Closed For lunch 1 PM - 2 PM",
       },
       {
         businessHourId: 2,
@@ -338,13 +361,13 @@ const BusinessProfile: React.FC = () => {
       {
         businessHourId: 3,
         item: "Sun: Closed",
-        specialNote: "Available htmlFor emergency services",
+        specialNote: "Available for emergency services",
       },
     ],
     owner: {
-      name: "John Doe",
-      email: "john.doe@example.com",
-      phone: "+09 123 456 789",
+      name: "Buddhika Dharmawardne",
+      email: "info@buyabans.com",
+      phone: "+94 71 81 28 888",
     },
   };
   const [selectedCategory, setSelectedCategory] =
