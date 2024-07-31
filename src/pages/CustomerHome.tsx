@@ -129,7 +129,7 @@ const CustomerHome: React.FC = () => {
           </p>
         </section>
         <section>
-          <h2 className="text-subheading font-bold mb-4">Recommonded</h2>
+          <h2 className="text-subsubheading font-bold mb-4">Recommonded</h2>
           <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
             {advertisements.map((ad, index) => (
               <Advertisement key={index} img={ad.img} details={ad.details} />

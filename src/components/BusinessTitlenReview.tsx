@@ -10,7 +10,7 @@ const BusinessTitlenReview: React.FC = () => {
           <FaMapMarkerAlt className="mr-1" />
           <p>Colombo 7</p>
         </div>
-        <button className="border border-green-500 text-green-500 font-bold px-4 py-1 rounded-md  text-bodysmall mb-2">Open Now</button>
+        <div className="border border-green-500 text-green-500 font-bold px-4 py-1 rounded-md text-center text-bodysmall mb-2">Open Now</div>
 
       </div>
       <div className="text-right">
