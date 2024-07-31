@@ -14,7 +14,7 @@ const PkgCard: React.FC<PkgCardProps> = ({ onUpgradeClick }) => {
         <span className="text-sm text-gray-500">/monthly</span>
       </div>
       <hr className="border-gray-300 my-5" />
-      <ul className="list-disc list-inside text-center space-y-2 mb-4">
+      <ul className="list-disc list-inside text-bodysmall  space-y-2 mb-4">
         <li>Advertisements & Promotions per week - 3</li>
         <li>Display only basic details about the business</li>
         <li>Interact with customers</li>

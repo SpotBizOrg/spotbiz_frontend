@@ -1,42 +1,58 @@
 // src/components/DashboardStats.tsx
 import React, { useState } from 'react';
 import CouponPopup from './CouponPopup';
+import { Card } from 'flowbite-react';
+import BadgeImg from "../assets/badge.png";
 
 const DashboardStats: React.FC = () => {
-  const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isCPopupOpen, setIsCPopupOpen] = useState(false);
 
   const handleOpenPopup = () => {
-    setIsPopupOpen(true);
+    setIsCPopupOpen(true);
   };
 
   const handleClosePopup = () => {
-    setIsPopupOpen(false);
+    setIsCPopupOpen(false);
   };
 
   return (
-    <div className="relative">
-      <div className="flex justify-between items-center mt-12 ml-9">
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-1 flex-1">
-        <div className="bg-white p-8 rounded shadow-lg shadow-grey text-center w-full sm:w-60 md:w-80 lg:w-96">
+    <div className=" flex relative">
+      <div className="flex justify-between  mt-12">
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 flex-1">
+        <div className="bg-white p-8 rounded shadow-lg shadow-grey text-center flex-col w-full sm:w-60 md:w-80 lg:w-96 flex  justify-center">
           <h2 className="text-xl font-medium">Subscribers</h2>
-          <div className="text-3xl font-bold">10,000</div>
+          <div className="text-3xl font-bold">20</div>
           <div className="text-gray-500">Total Subscribers</div>
         </div>
-        <div className="bg-white p-8 rounded shadow-lg shadow-grey text-center w-full sm:w-60 md:w-80 lg:w-96">
+        <div className="flex flex-col justify-center bg-white p-8 rounded shadow-lg shadow-grey text-center w-full sm:w-60 md:w-80 lg:w-96">
           <h2 className="text-xl font-medium">Views</h2>
-          <div className="text-3xl font-bold">500,000</div>
+          <div className="text-3xl font-bold">100</div>
           <div className="text-gray-500">Total Views</div>
         </div>
+        <div className="bg-white flex flex-col p-8 rounded shadow-lg shadow-grey w-full sm:w-60 md:w-80 lg:w-96">
+        <h3 className="text-xl font-medium">Badges</h3>
+
+        <div className='flex flex-row items-center justify-between'>
+        <div className='w-1/2'>
+            <img
+              src={BadgeImg}
+              alt="Badge"
+              className="w-20 h-20 mx-auto"
+            />
         </div>
-        <button
-          onClick={handleOpenPopup}
-          className="bg-black text-white py-3 px-5 rounded shadow mr-7 text-center"
-        >
-          <span className="block">Check Coupon</span>
-          <span className="block">Code</span>
-        </button>
+            <div className="flex flex-col justify-center  w-1/2">
+            <p className="text-md font-medium">Abans</p>
+
+              <p className="text-sm text-gray-500">April 2024</p>
+            </div>
+        </div>
+
+        </div>
+        
+        </div>
+        
       </div>
-      <CouponPopup isOpen={isPopupOpen} onClose={handleClosePopup} />
+      <CouponPopup isOpen={isCPopupOpen} onClose={handleClosePopup} />
     </div>
   );
 };
