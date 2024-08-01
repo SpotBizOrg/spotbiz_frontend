@@ -102,7 +102,7 @@ const BusinessProfile: React.FC = () => {
       setLocationUrl(responseData.locationUrl);
       setDescription(responseData.description);
       console.log(responseData.name)
-      if(responseData.name === "Abans Elite "){
+      if(responseData.name === "Abans "){
         setSelectedAvatar(AbansImage)
       }
       else if(responseData.name === "Redline Technologies"){
