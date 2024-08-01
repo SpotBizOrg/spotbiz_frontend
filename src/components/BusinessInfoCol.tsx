@@ -13,17 +13,17 @@ const BusinessInfoCol: React.FC = () => {
         <div>
             <div className="flex flex-row item-center justify-start mb-2">
                 <FaUser className="mr-3 pt-1 text-gray-500 text-bodymedium" />
-                <p className="flex item-center text-gray-800 text-bodysmall">R.D.A Chandana
+                <p className="flex item-center text-gray-800 text-bodysmall">Buddhika Dharmawardne
                 </p>
             </div>
             <div className="flex flex-row text-center justify-start mb-2">
                 <FaMapMarkerAlt className="mr-3 pt-1 text-gray-500 text-bodymedium" />
-                <p className="flex item-center text-gray-800 text-bodysmall">Colombo 7
+                <p className="flex item-center text-gray-800 text-bodysmall">Colombo 2
                 </p>
             </div>
             <div className="flex flex-row text-center justify-start mb-2">
                 <FaPhone className="mr-3 pt-1 text-gray-500 text-bodymedium" />
-                <p className="flex item-center text-gray-800 text-bodysmall">011-1234567
+                <p className="flex item-center text-gray-800 text-bodysmall">0718128888
                 </p>
             </div>
             <div className="flex flex-row text-center justify-start mb-2">

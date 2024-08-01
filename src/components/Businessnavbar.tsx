@@ -56,7 +56,7 @@ function Businessnavbar(){
 
       const responseData = await response.json();
       setData(responseData);
-      if(responseData.name === "Abans Elite "){
+      if(responseData.name === "Abans "){
         setSelectedAvatar(AbansImage)
       }
       else if(responseData.name === "Redline Technologies"){
