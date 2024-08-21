@@ -11,21 +11,35 @@ import KittyScrambleWordStacks from '../assets/game_banner/KittyScrambleWordStac
 import SortParking from '../assets/game_banner/SortParking.jpg';
 import CuttheRope from '../assets/game_banner/CuttheRope.jpg';
 import CupsWaterSortPuzzle from '../assets/game_banner/CupsWaterSortPuzzle.jpg';
+import axios from 'axios';
+
+const dropboxToken = 'sl.B7b5GobtKWMQ0B48YmLFR1BaRfQeDZGFt1K1I0NeXtkJ1n6L3n8kGSXTNdQ8zvVnnWYepL43xXUU5TLndohzpfapfG5l54RHpKfXl2oLFtVQdnBsdCYhC5HfYmR-JBA-hoAuy_3nklju9-zV1HB3qMc'; 
 
 function ManageGames() {
   useEffect(()=>{
     document.title = "SpotBiz | Games | Admin";
   },[]);
+
+  interface Game {
+    image: string | File;
+    title: string;
+    type: string;
+    developer: string;
+    description: string;
+    url: string;
+  }  
   
   const [activeTab, setActiveTab] = useState('normal');
   const [showForm, setShowForm] = useState(false);
-  const [newGame, setNewGame] = useState({
+  const [newGame, setNewGame] = useState<Game>({
     image: '',
     title: '',
+    type: '',
     developer: '',
     description: '',
     url: ''
   });
+  
   const [imagePreview, setImagePreview] = useState<string>('');
 
   const normalGames = [
@@ -189,32 +203,115 @@ function ManageGames() {
     }
   };
 
-  const handleAddGame = () => {
+  const getTemporaryLink = async (filePath: string) => {
+    try {
+      const response = await axios.post(
+        'https://api.dropboxapi.com/2/files/get_temporary_link',
+        { path: filePath },
+        {
+          headers: {
+            'Authorization': `Bearer ${dropboxToken}`,
+            'Content-Type': 'application/json',
+          },
+        }
+      );
+      return response.data.link;
+    } catch (error) {
+      console.error('Error getting temporary link:', error);
+      throw error;
+    }
+  };
+
+  const handleAddGame = async (filePath: string) => {
+    try {
+      const response = await fetch('http://localhost:8080/api/v1/game/insert_game', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          gameName : newGame.title,
+          gameType: newGame.type,
+          developer: newGame.developer,
+          description: newGame.description,
+          gameUrl: newGame.url,
+          gameImg: filePath,
+        }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Error response:', errorData);
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || 'Unknown error'}`);
+      }
+  
+      const responseData = await response.json();
+      console.log('Success:', responseData);
+  
+    } catch (error) {
+      console.error('An error occurred:', error);
+      alert('An error occurred while saving game progress. Please try again later.');
+    }
+  }
+
+  const uploadImage = async () => {
+    if (newGame.image) {
+      try {
+        const uploadResponse = await axios.post('https://content.dropboxapi.com/2/files/upload', newGame.image, {
+          headers: {
+            'Authorization': `Bearer ${dropboxToken}`,
+            'Dropbox-API-Arg': JSON.stringify({
+              path: `/uploads/${new Date().getTime()}_${newGame.title}.png`,
+              mode: 'add',
+              autorename: true,
+              mute: false,
+            }),
+            'Content-Type': 'application/octet-stream',
+          },
+        });
+
+        const fileMetadata = uploadResponse.data;
+        const filePath = fileMetadata.path_lower;
+
+        // const temporaryLink = await getTemporaryLink(filePath);
+        handleAddGame(filePath);
+
+        // console.log('Uploaded Image URL:', temporaryLink);
+
+        // setNewGame({ ...newGame, image: temporaryLink });
+      } catch (error) {
+        console.error('Error uploading image:', error);
+      }
+    }
+
     console.log('New Game:', newGame);
     setShowForm(false);
     setNewGame({
       image: '',
       title: '',
+      type: '',
       developer: '',
       description: '',
       url: ''
     });
     setImagePreview('');
   };
+  
 
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
+      setNewGame({ ...newGame, image: file });
       const reader = new FileReader();
       reader.onloadend = () => {
         if (reader.result) {
           setImagePreview(reader.result as string);
-          setNewGame({ ...newGame, image: reader.result as string });
         }
       };
       reader.readAsDataURL(file);
     }
   };
+  
 
   return (
     <Container>
@@ -284,6 +381,10 @@ function ManageGames() {
                 <TextInput id="game-title" type="text" placeholder="Enter game title" value={newGame.title} onChange={(e) => setNewGame({ ...newGame, title: e.target.value })} />
               </div>
               <div className="mb-6">
+                <Label htmlFor="game-type" value="Game Type" />
+                <TextInput id="game-type" type="text" placeholder="Enter game type" value={newGame.type} onChange={(e) => setNewGame({ ...newGame, type: e.target.value })} />
+              </div>
+              <div className="mb-6">
                 <Label htmlFor="game-developer" value="Game Developer" />
                 <TextInput id="game-developer" type="text" placeholder="Enter game developer" value={newGame.developer} onChange={(e) => setNewGame({ ...newGame, developer: e.target.value })} />
               </div>
@@ -306,7 +407,7 @@ function ManageGames() {
           <button
             type="button"
             className="p-2 text-sm font-medium text-white bg-bluedark rounded-lg border border-bluedark hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300"
-            onClick={handleAddGame}
+            onClick={uploadImage}
           >
             Add Game
           </button>

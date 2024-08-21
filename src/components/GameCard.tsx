@@ -29,7 +29,8 @@ const GameCard: React.FC<GameCardProps> = ({
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/customer/play_game', { state: { url } });
+    const startTime = new Date().toISOString();
+    navigate('/customer/play_game', { state: { url, startTime } });
   };
 
   return (
