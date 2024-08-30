@@ -1,4 +1,3 @@
-// src/pages/AdminPage.tsx
 import React, { useEffect, useState } from 'react';
 import Adminnavbar from '../components/Adminnavbar';
 import Adminsidebar from '../components/Adminsidebar';
@@ -8,47 +7,92 @@ import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { IconButton } from "@mui/material";
 import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
 
-const dummyCustomers = [
-  { id: 1, name: "John Doe", email: "john@example.com", phone: "123-456-7890", score: 90 },
-  { id: 2, name: "Jane Smith", email: "jane@example.com", phone: "098-765-4321", score: 87 },
-  { id: 3, name: "Alice Johnson", email: "alice@example.com", phone: "555-555-5555", score: 86 },
-];
+// Dummy API endpoint (replace this with your real API endpoint)
+const API_URL = "http://localhost:8080/api/v1/admin/customers";
+
+interface Customer {
+  userId: number;
+  name: string;
+  email: string;
+  phoneNo: string;
+  score: number;
+}
 
 const AdminPage: React.FC = () => {
   useEffect(()=>{
     document.title = "SpotBiz | Customer List | Admin";
+    fetchCustomers();
   },[]);
   
-  const [customers, setCustomers] = useState(dummyCustomers);
+  const [customers, setCustomers] = useState<Customer[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
   const [currentCustomerId, setCurrentCustomerId] = useState<number | null>(null);
-  const [newCustomer, setNewCustomer] = useState({
-    id: customers.length + 1,
+  const [newCustomer, setNewCustomer] = useState<Customer>({
+    userId: customers.length + 1,
     name: "",
     email: "",
-    phone: "",
+    phoneNo: "",
     score: 0,
   });
-  const [editCustomer, setEditCustomer] = useState<any | null>(null);
+  const [editCustomer, setEditCustomer] = useState<Customer | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
 
+  // Fetch customers from the API
+  const fetchCustomers = () => {
+    fetch(API_URL)
+      .then(response => response.json())
+      .then(data => setCustomers(data))
+      .catch(error => console.error('Error fetching customers:', error));
+  };
+
+  // Add a new customer to the API
   const handleAddCustomer = () => {
-    setCustomers([...customers, newCustomer]);
-    setShowForm(false);
+    fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newCustomer),
+    })
+    .then(response => response.json())
+    .then(data => {
+      setCustomers([...customers, data]);
+      setShowForm(false);
+    })
+    .catch(error => console.error('Error adding customer:', error));
   };
 
+  // Delete a customer via the API
   const handleDeleteCustomer = () => {
-    setCustomers(customers.filter((customer) => customer.id !== currentCustomerId));
-    setShowPopup(false);
-    setCurrentCustomerId(null);
+    fetch(`${API_URL}/${currentCustomerId}`, {
+      method: 'DELETE',
+    })
+    .then(() => {
+      setCustomers(customers.filter(customer => customer.userId !== currentCustomerId));
+      setShowPopup(false);
+      setCurrentCustomerId(null);
+    })
+    .catch(error => console.error('Error deleting customer:', error));
   };
 
+  // Edit a customer via the API
   const handleEditCustomer = () => {
-    setCustomers(customers.map((customer) => customer.id === editCustomer.id ? editCustomer : customer));
-    setShowEditForm(false);
-    setEditCustomer(null);
+    fetch(`${API_URL}/${editCustomer?.userId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(editCustomer),
+    })
+    .then(response => response.json())
+    .then(updatedCustomer => {
+      setCustomers(customers.map(customer => customer.userId === updatedCustomer.id ? updatedCustomer : customer));
+      setShowEditForm(false);
+      setEditCustomer(null);
+    })
+    .catch(error => console.error('Error editing customer:', error));
   };
 
   const filteredCustomers = customers.filter(customer =>
@@ -114,11 +158,11 @@ const AdminPage: React.FC = () => {
             </thead>
             <tbody>
               {filteredCustomers.map((customer) => (
-                <tr key={customer.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="px-6 py-4">{customer.id}</td>
+                <tr key={customer.userId} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <td className="px-6 py-4">{customer.userId}</td>
                   <td className="px-6 py-4">{customer.name}</td>
                   <td className="px-6 py-4">{customer.email}</td>
-                  <td className="px-6 py-4">{customer.phone}</td>
+                  <td className="px-6 py-4">{customer.phoneNo}</td>
                   <td className="px-6 py-4">{customer.score}</td>
                   <td className="px-0 py-4 flex gap-0 justify-start">
                     <IconButton
@@ -133,7 +177,7 @@ const AdminPage: React.FC = () => {
                     <IconButton
                       color="error"
                       onClick={() => {
-                        setCurrentCustomerId(customer.id);
+                        setCurrentCustomerId(customer.userId);
                         setShowPopup(true);
                       }}
                     >
@@ -181,8 +225,8 @@ const AdminPage: React.FC = () => {
               <TextInput
                 id="phone"
                 type="text"
-                value={newCustomer.phone}
-                onChange={(e) => setNewCustomer({ ...newCustomer, phone: e.target.value })}
+                value={newCustomer.phoneNo}
+                onChange={(e) => setNewCustomer({ ...newCustomer, phoneNo: e.target.value })}
                 className="w-full"
               />
             </div>
@@ -251,8 +295,8 @@ const AdminPage: React.FC = () => {
                 <TextInput
                   id="phone"
                   type="text"
-                  value={editCustomer.phone}
-                  onChange={(e) => setEditCustomer({ ...editCustomer, phone: e.target.value })}
+                  value={editCustomer.phoneNo}
+                  onChange={(e) => setEditCustomer({ ...editCustomer, phoneNo: e.target.value })}
                   className="w-full"
                 />
               </div>
