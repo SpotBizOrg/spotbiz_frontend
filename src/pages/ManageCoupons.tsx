@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Adminnavbar from "../components/Adminnavbar";
 import Adminsidebar from "../components/Adminsidebar";
 import Container from "../components/Container";
-import { Button, Modal, TextInput, Label } from "flowbite-react";
+import { Button, Modal, TextInput, Label, Tooltip } from "flowbite-react";
 import { FaPlus } from 'react-icons/fa';
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { IconButton } from "@mui/material";
@@ -11,6 +11,9 @@ import {
   Delete as DeleteIcon, 
   IosShare as IosShareIcon
 } from "@mui/icons-material";
+import { format } from 'date-fns';
+import { toast } from 'react-toastify';
+import SortByDropdown from "../components/SortBy";
 
 const dummyUsers = [
   { name: "John Doe", email: "john@example.com", phone: "123-456-7890", score:90 },
@@ -18,126 +21,126 @@ const dummyUsers = [
   { name: "Alice Johnson", email: "alice@example.com", phone: "555-555-5555", score:86 },
 ];
 
-interface Coupon {
-  couponId: number;
-  createdDate: string;
-  purpose: string;
-  discountRate: string;
-  validity: string;
+interface Business {
+  businessId: string;
+  name: string;
+  address: string;
+  contactNo: string;
+  status: string;
 }
 
-const dummyCoupons: Coupon[] = [
-  {
-    couponId: 1,
-    createdDate: "2024-07-02",
-    purpose: "Game Launch",
-    discountRate: "20%",
-    validity: "Claimed",
-  },
-  {
-    couponId: 2,
-    createdDate: "2024-07-05",
-    purpose: "New Player",
-    discountRate: "10%",
-    validity: "Claimed",
-  },
-  {
-    couponId: 3,
-    createdDate: "2024-07-25",
-    purpose: "Event Special",
-    discountRate: "50%",
-    validity: "Issued",
-  },
-  {
-    couponId: 4,
-    createdDate: "2024-07-26",
-    purpose: "Level Up Bonus",
-    discountRate: "15%",
-    validity: "Issued",
-  },
-  {
-    couponId: 5,
-    createdDate: "2024-07-15",
-    purpose: "Weekend Sale",
-    discountRate: "25%",
-    validity: "Claimed",
-  },
-  {
-    couponId: 6,
-    createdDate: "2024-07-27",
-    purpose: "Exclusive Offer",
-    discountRate: "30%",
-    validity: "Issued",
-  },
-  {
-    couponId: 7,
-    createdDate: "2024-07-10",
-    purpose: "Anniversary Bonus",
-    discountRate: "40%",
-    validity: "Claimed",
-  },
-  {
-    couponId: 8,
-    createdDate: "2024-07-29",
-    purpose: "Season Pass",
-    discountRate: "35%",
-    validity: "Issued",
-  },
-  {
-    couponId: 9,
-    createdDate: "2024-07-30",
-    purpose: "Special Quest",
-    discountRate: "60%",
-    validity: "Pending",
-  },
-  {
-    couponId: 10,
-    createdDate: "2024-07-28",
-    purpose: "Holiday Event",
-    discountRate: "20%",
-    validity: "Issued",
-  },
-  {
-    couponId: 11,
-    createdDate: "2024-07-31",
-    purpose: "Daily Reward",
-    discountRate: "25%",
-    validity: "Issued",
-  },
-  {
-    couponId: 12,
-    createdDate: "2024-07-15",
-    purpose: "Mega Sale",
-    discountRate: "50%",
-    validity: "Claimed",
-  },
-  {
-    couponId: 13,
-    createdDate: "2024-07-30",
-    purpose: "Festive Season",
-    discountRate: "30%",
-    validity: "Pending",
-  },
-  {
-    couponId: 14,
-    createdDate: "2024-07-05",
-    purpose: "Special Offer",
-    discountRate: "40%",
-    validity: "Claimed",
-  },
-  {
-    couponId: 15,
-    createdDate: "2024-07-01",
-    purpose: "Valentine's Bonus",
-    discountRate: "20%",
-    validity: "Claimed",
-  }
+interface Customer {
+  userId: string;
+  email: string,
+  name: string;
+  phoneNo: string;
+  role: string;
+  status: string;
+}
+
+interface Coupon {
+  couponId: number;
+  dateTime: string;
+  description: string;
+  discount: string;
+  status: string;
+  business: Business;
+  customer: Customer;
+}
+
+interface AddCoupon {
+  dateTime: string;
+  description: string;
+  discount: number | null;
+}
+
+let dummyCoupons: Coupon[] = [
 ];
 
 function ManageCoupons() {
   useEffect(()=>{
     document.title = "SpotBiz | Coupons | Admin";
+    fetchAllCoupons(null, null);
   },[]);
+
+  const fetchAllCoupons = async (statusFilter: string | null, discountFilter: string | null) => {
+    console.log(statusFilter)
+    try {
+      const response = await fetch('http://localhost:8080/api/v1/coupon/all', {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Error response:', errorData);
+        toast.error('An unexpected error occurred');
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || 'Unknown error'}`);
+      }
+  
+      const responseData = await response.json();
+      const formattedCoupons = responseData.map((coupon: { 
+        user?: { userId: string; email:string, name: string; phoneNo: string; role: string; status: string; };
+        business?: { businessId: string; name: string; address: string; contactNo: string; status: string; };
+        discount: number;
+        status: string;
+      }) => ({
+        ...coupon,
+        customer: coupon.user ? {
+          userId: coupon.user.userId,
+          email: coupon.user.email,
+          name: coupon.user.name,
+          phoneNo: coupon.user.phoneNo,
+          role: coupon.user.role,
+          status: coupon.user.status
+        } : {
+          userId: '',
+          name: 'N/A',
+          phoneNo: '',
+          role: '',
+          status: ''
+        },
+        business: coupon.business ? {
+          businessId: coupon.business.businessId,
+          name: coupon.business.name,
+          address: coupon.business.address,
+          contactNo: coupon.business.contactNo,
+          status: coupon.business.status
+        } : {
+          businessId: '',
+          name: 'N/A',
+          address: '',
+          contactNo: '',
+          status: ''
+        }
+      }));
+  
+      // Apply filters
+      const filteredCoupons = formattedCoupons.filter((coupon: { status: string; discount: number; }) => {
+        // Check status filter
+        const statusMatches = !statusFilter || coupon.status === statusFilter;
+  
+        // Check discount filter
+        let discountMatches = true;
+        if (discountFilter) {
+          const [min, max] = discountFilter.split('-').map(Number);
+          discountMatches = coupon.discount >= min && coupon.discount <= max;
+        }
+  
+        return statusMatches && discountMatches;
+      });
+  
+      setItems(filteredCoupons);
+      console.log('Filtered Coupons:', filteredCoupons);
+  
+    } catch (error) {
+      console.error('An error occurred:', error);
+      toast.error('An unexpected error occurred');
+    }
+  };
+  
   
   const [items, setItems] = useState<Coupon[]>(dummyCoupons);
   const [showForm, setShowForm] = useState(false);
@@ -145,30 +148,135 @@ function ManageCoupons() {
   const [showEditForm, setShowEditForm] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const [currentCouponId, setCurrentCouponId] = useState<number | null>(null);
-  const [newCoupon, setNewCoupon] = useState<Coupon>({
-    couponId: items.length + 1,
-    createdDate: "",
-    purpose: "",
-    discountRate: "",
-    validity: "Pending",
+  const [newCoupon, setNewCoupon] = useState<AddCoupon>({
+    dateTime: "",
+    description: "",
+    discount: null,
   });
   const [editCoupon, setEditCoupon] = useState<Coupon | null>(null);
+  const [statusFilter, setStatusFilter] = useState("");
+  const [discountFilter, setDiscountFilter] = useState("");
 
   const handleAddCoupon = () => {
-    setItems([...items, newCoupon]);
-    setShowForm(false);
+    if(newCoupon.description === ""){
+      toast.error("Purpose could not be empty");
+    }
+    else if(newCoupon.discount === 0){
+      toast.error("Discount could not be zero");
+    }
+    else if (newCoupon.discount === null || newCoupon.discount > 100) {
+      toast.error("Discount cannot be null or greater than 100");
+    }    
+    else{
+      newCoupon.dateTime = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss")
+      console.log(newCoupon);
+      addCoupon();
+    }
   };
 
-  const handleDeleteCoupon = () => {
-    setItems(items.filter((item) => item.couponId !== currentCouponId));
-    setShowPopup(false);
-    setCurrentCouponId(null);
+  const addCoupon = async () => {
+    const dateTime = newCoupon.dateTime
+    const description = newCoupon.description
+    const discount = newCoupon.discount
+    try {
+      const response = await fetch('http://localhost:8080/api/v1/coupon/insert', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          dateTime,
+          description,
+          discount,
+        }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Error response:', errorData);
+        toast.error('An unexpected error occurred');
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || 'Unknown error'}`);
+      }
+  
+      const responseData = await response.json();
+      console.log('Success:', responseData);
+      toast.success("Coupon added successfully!");
+      resetNewCoupon();
+      fetchAllCoupons(null, null);
+      setShowForm(false);
+    } catch (error) {
+      console.error('An error occurred:', error);
+      toast.error('An unexpected error occurred');
+    }
   };
 
-  const handleEditCoupon = () => {
-    setItems(items.map((item) => item.couponId === editCoupon!.couponId ? editCoupon! : item));
-    setShowEditForm(false);
-    setEditCoupon(null);
+  const resetNewCoupon = () => {
+    newCoupon.dateTime = "";
+    newCoupon.description = "";
+    newCoupon.discount = null;
+  }
+
+  const handleDeleteCoupon = async() => {
+    try {
+      const response = await fetch(`http://localhost:8080/api/v1/coupon/delete/${currentCouponId}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Error response:', errorData);
+        toast.error('An unexpected error occurred');
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || 'Unknown error'}`);
+      }
+  
+      const responseData = await response.json();
+      console.log('Success:', responseData);
+      toast.success("Coupon deleted successfully!");
+      setShowPopup(false);
+      fetchAllCoupons(null, null);
+      setCurrentCouponId(null);
+    } catch (error) {
+      console.error('An error occurred:', error);
+      toast.error('An unexpected error occurred');
+    }
+  };
+
+  const handleEditCoupon = async() => {
+    const description = editCoupon?.description
+    const discount = editCoupon?.discount
+    try {
+      const response = await fetch(`http://localhost:8080/api/v1/coupon/update/${editCoupon?.couponId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          description,
+          discount,
+        }),
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Error response:', errorData);
+        toast.error('An unexpected error occurred');
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || 'Unknown error'}`);
+      }
+  
+      const responseData = await response.json();
+      console.log('Success:', responseData);
+      toast.success("Coupon updated successfully!");
+      resetNewCoupon();
+      fetchAllCoupons(null, null);
+      setShowEditForm(false);
+      setEditCoupon(null);
+    } catch (error) {
+      console.error('An error occurred:', error);
+      toast.error('An unexpected error occurred');
+    }
   };
 
   return (
@@ -178,37 +286,65 @@ function ManageCoupons() {
       <div className="px-12 sm:ml-64 mt-20">
         <div className="flex justify-between items-center w-full mb-10">
           <h1 className="text-subsubheading text-bluedark">Discount Coupons</h1>
+          <div className="flex gap-4">
+          <div className="flex space-x-4 z-40">
+            <SortByDropdown
+              defaultTitle="Status"
+              options={["PENDING", "ISSUED", "USED"]}
+              onSelect={(value) => {
+                fetchAllCoupons(value, discountFilter);
+                setStatusFilter(value);
+              }}
+            />
+            <SortByDropdown
+              defaultTitle="Discount"
+              options={["10-20", "20-30", "30-40", "40-50", "50-60", "60-70", "70-80", "80-90", "90-100"]}
+              onSelect={(value) => {
+                fetchAllCoupons(statusFilter, value);
+                setDiscountFilter(value);
+              }}
+            />
+          </div>
           <div
             className="relative flex items-center justify-center w-[40px] h-[40px] mt-0 border-2 border-dashed border-gray-400 rounded-lg bg-white/50 backdrop-blur-md hover:bg-white/80 hover:border-gray-600 transition-all duration-300 ease-in-out cursor-pointer"
             onClick={() => setShowForm(true)}
           >
             <FaPlus className="text-xl text-gray-500" />
           </div>
+          </div>
         </div>
         <div className="relative overflow-x-auto overflow-y-auto sm:rounded-lg border border-gray-200">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500">
             <thead className="table-header text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
-                <th scope="col" className="px-6 py-3" style={{ minWidth: '100px' }}>Coupon ID</th>
+                <th scope="col" className="px-4 py-3" style={{ minWidth: '100px' }}>Coupon ID</th>
                 <th scope="col" className="px-6 py-3" style={{ minWidth: '150px' }}>
                   <div className="flex items-center">Created Date</div>
                 </th>
                 <th scope="col" className="px-6 py-3" style={{ minWidth: '150px' }}>
                   <div className="flex items-center">Purpose</div>
                 </th>
-                <th scope="col" className="px-6 py-3" style={{ minWidth: '100px' }}>
+                <th scope="col" className="px-4 py-3" style={{ minWidth: '100px' }}>
                   <div className="flex items-center">Discount Rate</div>
                 </th>
                 <th scope="col" className="px-6 py-3" style={{ minWidth: '100px' }}>
-                  <div className="flex items-center">Validity</div>
+                  <div className="flex items-center">Status</div>
                 </th>
-                <th scope="col" className="px-6 py-3 " style={{ minWidth: '150px' }}>
+                <th scope="col" className="px-6 py-3" style={{ minWidth: '100px' }}>
+                  <div className="flex items-center">Customer</div>
+                </th>
+                <th scope="col" className="px-6 py-3" style={{ minWidth: '100px' }}>
+                  <div className="flex items-center">Business</div>
+                </th>
+                <th scope="col" className="px-3 py-3 " style={{ minWidth: '150px' }}>
                   <div className="flex items-center">Action</div>
                 </th>
               </tr>
             </thead>
             <tbody>
-              {items.map((item) => (
+            {items
+              .filter((item) => item.status !== "DELETED")
+              .map((item) => (
                 <tr key={item.couponId} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                   <th
                     scope="row"
@@ -216,10 +352,50 @@ function ManageCoupons() {
                   >
                     {item.couponId.toString()}
                   </th>
-                  <td className="px-6 py-4">{item.createdDate}</td>
-                  <td className="px-6 py-4">{item.purpose}</td>
-                  <td className="px-6 py-4">{item.discountRate}</td>
-                  <td className="px-6 py-4">{item.validity}</td>
+                  <td className="px-6 py-4">{item.dateTime}</td>
+                  <td className="px-6 py-4">{item.description}</td>
+                  <td className="px-4 py-4">{item.discount}%</td>
+                  <td className="px-6 py-4">{item.status}</td>
+                  <td className="px-6 py-4">
+                    {item.customer.name !== 'N/A' ? (
+                      <Tooltip content={
+                        <>
+                          <p><strong>Name:</strong> {item.customer.name}</p>
+                          <p><strong>Phone No:</strong> {item.customer.phoneNo}</p>
+                          <p><strong>Email:</strong> {item.customer.email}</p>
+                          <p><strong>Role:</strong> {item.customer.role}</p>
+                          <p><strong>Status:</strong> {item.customer.status}</p>
+                        </>
+                      }
+                      style="auto"
+                      className="bg-gray-100 text-black"
+                      >
+                        <span className="cursor-pointer">{item.customer.name}</span>
+                      </Tooltip>
+                    ) : (
+                      <span>{item.customer.name}</span>
+                    )}
+                  </td>
+
+                  <td className="px-6 py-4">
+                    {item.business.name !== 'N/A' ? (
+                      <Tooltip content={
+                        <>
+                          <p><strong>Name:</strong> {item.business.name}</p>
+                          <p><strong>Address:</strong> {item.business.address}</p>
+                          <p><strong>Contact No:</strong> {item.business.contactNo}</p>
+                          <p><strong>Status:</strong> {item.business.status}</p>
+                        </>
+                      }
+                      style="auto"
+                      className="bg-gray-100 text-black"
+                      >
+                        <span className="cursor-pointer">{item.business.name}</span>
+                      </Tooltip>
+                    ) : (
+                      <span>{item.business.name}</span>
+                    )}
+                  </td>
                   <td className="px-0 py-4 flex gap-0 justify-start">
                     <IconButton
                       color="success"
@@ -227,7 +403,7 @@ function ManageCoupons() {
                         setCurrentCouponId(item.couponId);
                         setShowShareModal(true);
                       }}
-                      disabled={item.validity !== "Pending"}
+                      disabled={item.status !== "PENDING"}
                     >
                       <IosShareIcon />
                     </IconButton>
@@ -237,7 +413,7 @@ function ManageCoupons() {
                         setEditCoupon(item);
                         setShowEditForm(true);
                       }}
-                      disabled={item.validity !== "Pending"}
+                      disabled={item.status !== "PENDING"}
                     >
                       <EditIcon />
                     </IconButton>
@@ -247,13 +423,13 @@ function ManageCoupons() {
                         setCurrentCouponId(item.couponId);
                         setShowPopup(true);
                       }}
-                      disabled={item.validity !== "Pending"}
+                      disabled={item.status !== "PENDING"}
                     >
                       <DeleteIcon />
                     </IconButton>
                   </td>
                 </tr>
-              ))}
+            ))}
             </tbody>
           </table>
         </div>
@@ -273,21 +449,21 @@ function ManageCoupons() {
               <TextInput
                 id="purpose"
                 type="text"
-                value={newCoupon.purpose}
-                onChange={(e) => setNewCoupon({ ...newCoupon, purpose: e.target.value })}
+                value={newCoupon.description}
+                onChange={(e) => setNewCoupon({ ...newCoupon, description: e.target.value })}
                 className="w-full"
               />
             </div>
             <div className="w-full">
               <Label htmlFor="discountRate">Discount Rate</Label>
               <div className="flex items-center">
-                <TextInput
-                  id="discountRate"
-                  type="text"
-                  value={newCoupon.discountRate.replace('%', '')}
-                  onChange={(e) => setNewCoupon({ ...newCoupon, discountRate: e.target.value + '%' })}
-                  className="w-full"
-                />
+              <TextInput
+                id="discountRate"
+                type="number"
+                value={newCoupon.discount ?? ""}
+                onChange={(e) => setNewCoupon({ ...newCoupon, discount: e.target.value ? parseFloat(e.target.value) : null })}
+                className="w-full"
+              />
                 <span className="ml-2">%</span>
               </div>
             </div>
@@ -326,8 +502,8 @@ function ManageCoupons() {
                 <TextInput
                   id="purpose"
                   type="text"
-                  value={editCoupon.purpose}
-                  onChange={(e) => setEditCoupon({ ...editCoupon, purpose: e.target.value })}
+                  value={editCoupon.description}
+                  onChange={(e) => setEditCoupon({ ...editCoupon, description: e.target.value })}
                   className="w-full"
                 />
               </div>
@@ -337,8 +513,8 @@ function ManageCoupons() {
                   <TextInput
                     id="discountRate"
                     type="text"
-                    value={editCoupon.discountRate.replace('%', '')}
-                    onChange={(e) => setEditCoupon({ ...editCoupon, discountRate: e.target.value + '%' })}
+                    value={editCoupon.discount}
+                    onChange={(e) => setEditCoupon({ ...editCoupon, discount: e.target.value})}
                     className="w-full"
                   />
                   <span className="ml-2">%</span>

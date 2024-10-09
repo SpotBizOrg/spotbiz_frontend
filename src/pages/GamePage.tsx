@@ -4,18 +4,18 @@ import AdComponent from '../components/AdComponent';
 import { format } from 'date-fns';
 
 interface LocationState {
-  url: string;
+  gameUrl: string;
   startTime: string;
 }
 
 const GamePage: React.FC = () => {
   const location = useLocation();
-  const { url, startTime } = location.state as LocationState;
+  const { gameUrl, startTime } = location.state as LocationState;
   const [showAd, setShowAd] = useState(true);
 
   useEffect(() => {
     const startTimestamp = new Date(startTime);
-
+    console.log(gameUrl)
     document.body.style.overflow = 'hidden';
 
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
@@ -79,7 +79,7 @@ const GamePage: React.FC = () => {
     <div className="game-page relative bg-white">
       {showAd && <AdComponent onClose={handleCloseAd} />}
       <iframe
-        src={url}
+        src={gameUrl}
         title="Game"
         width="100%"
         height="800px"

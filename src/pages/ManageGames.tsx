@@ -5,238 +5,159 @@ import Adminsidebar from "../components/Adminsidebar";
 import Container from "../components/Container";
 import GameCard from '../components/GameCard';
 import { FaPlus } from 'react-icons/fa';
-import DropMergetheNumbers from '../assets/game_banner/DropMergetheNumbers.jpg';
-import Tag234Players from '../assets/game_banner/Tag234Players.jpg';
-import KittyScrambleWordStacks from '../assets/game_banner/KittyScrambleWordStacks.jpg';
-import SortParking from '../assets/game_banner/SortParking.jpg';
-import CuttheRope from '../assets/game_banner/CuttheRope.jpg';
-import CupsWaterSortPuzzle from '../assets/game_banner/CupsWaterSortPuzzle.jpg';
-import axios from 'axios';
-
-const dropboxToken = 'sl.B7b5GobtKWMQ0B48YmLFR1BaRfQeDZGFt1K1I0NeXtkJ1n6L3n8kGSXTNdQ8zvVnnWYepL43xXUU5TLndohzpfapfG5l54RHpKfXl2oLFtVQdnBsdCYhC5HfYmR-JBA-hoAuy_3nklju9-zV1HB3qMc'; 
 
 function ManageGames() {
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "SpotBiz | Games | Admin";
-  },[]);
+    fetchNormalGames();
+    fetchSeasonalGames();
+  }, []);
 
   interface Game {
-    image: string | File;
+    image: File | null;
     title: string;
     type: string;
     developer: string;
     description: string;
     url: string;
-  }  
-  
+  }
+
+  interface Game_display {
+    imageUrl: string;
+    gameName: string;
+    type: string;
+    developer: string;
+    description: string;
+    gameUrl: string;
+  }
+
   const [activeTab, setActiveTab] = useState('normal');
   const [showForm, setShowForm] = useState(false);
   const [newGame, setNewGame] = useState<Game>({
-    image: '',
+    image: null,
     title: '',
     type: '',
     developer: '',
     description: '',
     url: ''
   });
-  
   const [imagePreview, setImagePreview] = useState<string>('');
 
-  const normalGames = [
-    {
-      image: Tag234Players,
-      title: 'Tag 2 3 4 Players',
-      developer: 'Jet Games',
-      description: 'Hello',
-      visits: '11M',
-      usage: 0,
-      url: 'https://www.crazygames.com/embed/tag-2-3-4-players'
-    },
-    {
-      image: KittyScrambleWordStacks,
-      title: 'Kitty Scramble: Word Stacks',
-      developer: 'Clever Apps',
-      description: 'Hello',
-      visits: '11M',
-      usage: 0,
-      url: 'https://www.crazygames.com/embed/kitty-scramble'
-    },
-    {
-      image: CuttheRope,
-      title: 'Cut the Rope',
-      developer: 'Famobi',
-      description: 'Hello',
-      visits: '11M',
-      usage: 0,
-      url: 'https://www.crazygames.com/embed/cut-the-rope-ebx'
-    },
-    {
-      image: CupsWaterSortPuzzle,
-      title: 'Cups - Water Sort Puzzle',
-      developer: 'Blury Studio',
-      description: 'Hello',
-      visits: '11M',
-      usage: 0,
-      url: 'https://www.crazygames.com/embed/cups---water-sort-puzzle'
-    },
-    {
-      image: SortParking,
-      title: 'Sort Parking',
-      developer: 'Synk',
-      description: 'Hello',
-      visits: '11M',
-      usage: 0,
-      url: 'https://www.crazygames.com/embed/sort-parking'
-    },
-    {
-      image: DropMergetheNumbers,
-      title: 'Drop & Merge the Numbers',
-      developer: 'GMR Bros',
-      description: 'Hello',
-      visits: '11M',
-      usage: 0,
-      url: 'https://www.crazygames.com/embed/drop-merge-the-numbers'
-    },
-  ];
+  const [normalGames, setNormalGames] = useState<Game_display>({
+    imageUrl: '',
+    gameName: '',
+    type: '',
+    developer: '',
+    description: '',
+    gameUrl: ''
+  });
+  const [seasonalGames, setSeasonalGames] = useState<Game_display>({
+    imageUrl: '',
+    gameName: '',
+    type: '',
+    developer: '',
+    description: '',
+    gameUrl: ''
+  });
 
-  const seasonalGames = [
-    {
-      image: CuttheRope,
-      title: 'Cut the Rope',
-      developer: 'Famobi',
-      description: 'Hello',
-      visits: '11M',
-      usage: 0,
-      url: 'https://www.crazygames.com/embed/cut-the-rope-ebx'
-    },
-    {
-      image: CupsWaterSortPuzzle,
-      title: 'Cups - Water Sort Puzzle',
-      developer: 'Blury Studio',
-      description: 'Hello',
-      visits: '11M',
-      usage: 0,
-      url: 'https://www.crazygames.com/embed/cups---water-sort-puzzle'
-    },
-    {
-      image: DropMergetheNumbers,
-      title: 'Drop & Merge the Numbers',
-      developer: 'GMR Bros',
-      description: 'Hello',
-      visits: '11M',
-      usage: 0,
-      url: 'https://www.crazygames.com/embed/drop-merge-the-numbers'
-    },
-  ];
+  const fetchNormalGames = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/api/v1/game/all_games/REGULAR");
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setNormalGames(data);
+    } catch (error) {
+      console.error('An error occurred:', error);
+      alert('An error occurred while fetching normal games. Please try again later.');
+    }
+  };
 
-  const businessGames = [
-    {
-      image: Tag234Players,
-      title: 'Tag 2 3 4 Players',
-      developer: 'Jet Games',
-      description: 'Hello',
-      visits: '11M',
-      usage: 0,
-      url: 'https://www.crazygames.com/embed/tag-2-3-4-players'
-    },
-    {
-      image: KittyScrambleWordStacks,
-      title: 'Kitty Scramble: Word Stacks',
-      developer: 'Clever Apps',
-      description: 'Hello',
-      visits: '11M',
-      usage: 0,
-      url: 'https://www.crazygames.com/embed/kitty-scramble'
-    },
-    {
-      image: CuttheRope,
-      title: 'Cut the Rope',
-      developer: 'Famobi',
-      description: 'Hello',
-      visits: '11M',
-      usage: 0,
-      url: 'https://www.crazygames.com/embed/cut-the-rope-ebx'
-    },
-    {
-      image: CupsWaterSortPuzzle,
-      title: 'Cups - Water Sort Puzzle',
-      developer: 'Blury Studio',
-      description: 'Hello',
-      visits: '11M',
-      usage: 0,
-      url: 'https://www.crazygames.com/embed/cups---water-sort-puzzle'
-    },
-    {
-      image: SortParking,
-      title: 'Sort Parking',
-      developer: 'Synk',
-      description: 'Hello',
-      visits: '11M',
-      usage: 0,
-      url: 'https://www.crazygames.com/embed/sort-parking'
-    },
-    {
-      image: DropMergetheNumbers,
-      title: 'Drop & Merge the Numbers',
-      developer: 'GMR Bros',
-      description: 'Hello',
-      visits: '11M',
-      usage: 0,
-      url: 'https://www.crazygames.com/embed/drop-merge-the-numbers'
-    },
-  ];
+  const fetchSeasonalGames = async () => {
+    try {
+      const response = await fetch("http://localhost:8080/api/v1/game/all_games/SEASONAL");
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const data = await response.json();
+      setSeasonalGames(data);
+    } catch (error) {
+      console.error('An error occurred:', error);
+      alert('An error occurred while fetching seasonal games. Please try again later.');
+    }
+  };
 
-  // const seasonalGames = games.filter((_, index) => index % 4 === 0);
-  // const normalGames = games.filter((_, index) => index % 2 === 1);
-  // const businessGames = games.filter((_, index) => index % 3 === 2);
-
-  const getDisplayedGames = () => {
+  const getDisplayedGames = (): Game_display[] => {
     switch (activeTab) {
       case 'seasonal':
-        return seasonalGames;
+        console.log(seasonalGames)
+        return Array.isArray(seasonalGames) ? seasonalGames : [seasonalGames];
       case 'normal':
-        return normalGames;
-      case 'business':
-        return businessGames;
+        return Array.isArray(normalGames) ? normalGames : [normalGames];
       default:
         return [];
     }
   };
+  
 
-  const getTemporaryLink = async (filePath: string) => {
+  const handleImageUpload = async (imageFile: string | Blob) => {
+    const formData = new FormData();
+    formData.append('file', imageFile);
+  
     try {
-      const response = await axios.post(
-        'https://api.dropboxapi.com/2/files/get_temporary_link',
-        { path: filePath },
-        {
-          headers: {
-            'Authorization': `Bearer ${dropboxToken}`,
-            'Content-Type': 'application/json',
-          },
-        }
-      );
-      return response.data.link;
+      const response = await fetch('http://localhost:8080/api/v1/upload_image', {
+        method: 'POST',
+        body: formData,
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Error uploading image:', errorData);
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || 'Unknown error'}`);
+      }
+  
+      const imageUrl = await response.text();
+      console.log('Image URL:', imageUrl);
+      return imageUrl;
     } catch (error) {
-      console.error('Error getting temporary link:', error);
+      console.error('An error occurred during image upload:', error);
       throw error;
+    }
+  };  
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      setNewGame(prevState => ({ ...prevState, image: file }));
+      setImagePreview(URL.createObjectURL(file));
     }
   };
 
-  const handleAddGame = async (filePath: string) => {
+  const handleAddGame = async () => {
     try {
+      let imageUrl = "";
+  
+      if (newGame.image) {
+        imageUrl = await handleImageUpload(newGame.image);
+      }
+  
+      const gameData = {
+        gameName: newGame.title,
+        gameType: newGame.type,
+        developer: newGame.developer,
+        description: newGame.description,
+        gameUrl: newGame.url,
+        imageUrl: imageUrl, 
+      };
+      
+      console.log(gameData)
       const response = await fetch('http://localhost:8080/api/v1/game/insert_game', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          gameName : newGame.title,
-          gameType: newGame.type,
-          developer: newGame.developer,
-          description: newGame.description,
-          gameUrl: newGame.url,
-          gameImg: filePath,
-        }),
+        body: JSON.stringify(gameData),
       });
   
       if (!response.ok) {
@@ -247,70 +168,13 @@ function ManageGames() {
   
       const responseData = await response.json();
       console.log('Success:', responseData);
-  
+      setShowForm(false); 
     } catch (error) {
       console.error('An error occurred:', error);
       alert('An error occurred while saving game progress. Please try again later.');
     }
-  }
-
-  const uploadImage = async () => {
-    if (newGame.image) {
-      try {
-        const uploadResponse = await axios.post('https://content.dropboxapi.com/2/files/upload', newGame.image, {
-          headers: {
-            'Authorization': `Bearer ${dropboxToken}`,
-            'Dropbox-API-Arg': JSON.stringify({
-              path: `/uploads/${new Date().getTime()}_${newGame.title}.png`,
-              mode: 'add',
-              autorename: true,
-              mute: false,
-            }),
-            'Content-Type': 'application/octet-stream',
-          },
-        });
-
-        const fileMetadata = uploadResponse.data;
-        const filePath = fileMetadata.path_lower;
-
-        // const temporaryLink = await getTemporaryLink(filePath);
-        handleAddGame(filePath);
-
-        // console.log('Uploaded Image URL:', temporaryLink);
-
-        // setNewGame({ ...newGame, image: temporaryLink });
-      } catch (error) {
-        console.error('Error uploading image:', error);
-      }
-    }
-
-    console.log('New Game:', newGame);
-    setShowForm(false);
-    setNewGame({
-      image: '',
-      title: '',
-      type: '',
-      developer: '',
-      description: '',
-      url: ''
-    });
-    setImagePreview('');
   };
   
-
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      setNewGame({ ...newGame, image: file });
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        if (reader.result) {
-          setImagePreview(reader.result as string);
-        }
-      };
-      reader.readAsDataURL(file);
-    }
-  };
   
 
   return (
@@ -324,11 +188,11 @@ function ManageGames() {
         </div>
         <div className="flex items-center justify-between w-full mb-5 border-b border-gray-300">
           <div className="flex space-x-6">
-          <button
+            <button
               className={`px-0 py-2 pb-[calc(0.5rem - 4px)] rounded focus:outline-none ${activeTab === 'normal' ? 'text-black border-b-4 border-black' : 'bg-transparent text-blue-500 border-b-4 border-transparent hover:border-b-4 hover:border-gray-300'}`}
               onClick={() => setActiveTab('normal')}
             >
-              Normal Games
+              Regular Games
             </button>
             <button
               className={`px-0 py-2 pb-[calc(0.5rem - 4px)] rounded focus:outline-none ${activeTab === 'seasonal' ? 'text-black border-b-4 border-black' : 'bg-transparent text-blue-500 border-b-4 border-transparent hover:border-b-4 hover:border-gray-300'}`}
@@ -359,7 +223,14 @@ function ManageGames() {
           <div className="flex flex-row w-full overflow-x-auto overflow-y-hidden h-full space-x-4 scrollbar-hide">
             {getDisplayedGames().map((game, index) => (
               <div key={index} className="min-w-[270px] max-w-[270px]">
-                <GameCard {...game} />
+                <GameCard 
+                  image={game.imageUrl}  
+                  title={game.gameName}
+                  developer={game.developer}
+                  description={game.description}
+                  gameUrl={game.gameUrl}
+                  usage={0}
+                />
               </div>
             ))}
           </div>
@@ -375,54 +246,91 @@ function ManageGames() {
         <Modal show={showForm} onClose={() => setShowForm(false)} size="lg">
           <Modal.Header>Add New Game</Modal.Header>
           <Modal.Body>
-            <form>
-              <div className="mb-6">
-                <Label htmlFor="game-title" value="Game Title" />
-                <TextInput id="game-title" type="text" placeholder="Enter game title" value={newGame.title} onChange={(e) => setNewGame({ ...newGame, title: e.target.value })} />
+            <div className="flex flex-wrap space-x-4 space-y-4">
+              <div className="flex-1 min-w-[200px]">
+                <Label htmlFor="gameTitle" value="Title" />
+                <TextInput
+                  id="gameTitle"
+                  placeholder="Game Title"
+                  onChange={(e) => setNewGame({ ...newGame, title: e.target.value })}
+                />
               </div>
-              <div className="mb-6">
-                <Label htmlFor="game-type" value="Game Type" />
-                <TextInput id="game-type" type="text" placeholder="Enter game type" value={newGame.type} onChange={(e) => setNewGame({ ...newGame, type: e.target.value })} />
+
+              <div className="flex-1 min-w-[200px]">
+                <Label htmlFor="gameType" value="Type" />
+                <select
+                  id="gameType"
+                  className="w-full p-2 border border-gray-300 rounded"
+                  onChange={(e) => setNewGame({ ...newGame, type: e.target.value })}
+                >
+                  <option value="">Select Type</option>
+                  <option value="SEASONAL">SEASONAL</option>
+                  <option value="REGULAR">REGULAR</option>
+                </select>
               </div>
-              <div className="mb-6">
-                <Label htmlFor="game-developer" value="Game Developer" />
-                <TextInput id="game-developer" type="text" placeholder="Enter game developer" value={newGame.developer} onChange={(e) => setNewGame({ ...newGame, developer: e.target.value })} />
+
+              <div className="flex-1 min-w-[200px]">
+                <Label htmlFor="gameDeveloper" value="Developer" />
+                <TextInput
+                  id="gameDeveloper"
+                  placeholder="Game Developer"
+                  onChange={(e) => setNewGame({ ...newGame, developer: e.target.value })}
+                />
               </div>
-              <div className="mb-6">
-                <Label htmlFor="game-description" value="Description" />
-                <TextInput id="game-description" type="text" placeholder="Enter game description" value={newGame.description} onChange={(e) => setNewGame({ ...newGame, description: e.target.value })} />
+
+              <div className="flex-1 min-w-[200px]">
+                <Label htmlFor="gameDescription" value="Description" />
+                <TextInput
+                  id="gameDescription"
+                  placeholder="Game Description"
+                  onChange={(e) => setNewGame({ ...newGame, description: e.target.value })}
+                />
               </div>
-              <div className="mb-6">
-                <Label htmlFor="game-url" value="Game URL" />
-                <TextInput id="game-url" type="text" placeholder="Enter game URL" value={newGame.url} onChange={(e) => setNewGame({ ...newGame, url: e.target.value })} />
+
+              <div className="flex-1 min-w-[200px]">
+                <Label htmlFor="gameUrl" value="URL" />
+                <TextInput
+                  id="gameUrl"
+                  placeholder="Game URL"
+                  onChange={(e) => setNewGame({ ...newGame, url: e.target.value })}
+                />
               </div>
-              <div className="mb-6">
-                <Label htmlFor="game-image" value="Game Image" className='mr-4'/>
-                <input type="file" id="game-image" accept="image/*" onChange={handleImageUpload} className='mr-4'/>
-                {imagePreview && <img src={imagePreview} alt="Image Preview" className="mt-2 max-w-[200px]"/>}
+
+              <div className="flex-1 min-w-[200px]">
+                <Label htmlFor="gameImage" value="Game Image" />
+                <input
+                  id="gameImage"
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="w-full p-2 border border-gray-300 rounded"
+                />
+                {imagePreview && (
+                  <img
+                    src={imagePreview}
+                    alt="Image Preview"
+                    className="w-24 h-24 object-cover mt-2 border border-gray-300 rounded"
+                  />
+                )}
               </div>
-            </form>
+            </div>
           </Modal.Body>
           <Modal.Footer>
-          <button
-            type="button"
-            className="p-2 text-sm font-medium text-white bg-bluedark rounded-lg border border-bluedark hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300"
-            onClick={uploadImage}
-          >
-            Add Game
-          </button>
-          <button
-            type="button"
-            className="p-2 text-sm font-medium text-white bg-gray-500 rounded-lg border border-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300"
-            onClick={() => setShowForm(false)}
-          >
-            Cancel
-          </button>
-        </Modal.Footer>
+            <button
+              type="button"
+              className="px-4 py-2 text-white bg-bluedark rounded hover:bg-blue-600"
+              onClick={handleAddGame}
+            >
+              Add Game
+            </button>
+          </Modal.Footer>
         </Modal>
+
       </div>
     </Container>
   );
 }
 
 export default ManageGames;
+
+
