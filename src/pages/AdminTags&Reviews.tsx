@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Adminnavbar from "../components/Adminnavbar";
 import Adminsidebar from "../components/Adminsidebar";
-import CategoriesTable from "../components/CategoryTag";
+import BusinessTypesTable from "../components/BusinessTypesTable"; // Updated import
 import Container from "../components/Container";
 import { FaPlus } from "react-icons/fa";
 
@@ -9,19 +9,18 @@ const AdminTagsReviews: React.FC = () => {
   const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
-    document.title = "SpotBiz | Categories & Tags | Admin";
+    document.title = "SpotBiz | Business Types & Tags | Admin"; // Updated title
   }, []);
 
   return (
     <Container>
       <Adminnavbar />
-      <Adminsidebar selectedTile="Categories & Tags" />
-
+      <Adminsidebar selectedTile="Business Types & Tags" /> {/* Updated sidebar title */}
       <div className="px-12 sm:ml-64 mt-20">
         <div className="flex-grow mt-16">
           <div className="flex justify-between items-center w-full mb-10">
             <h1 className="text-subsubheading text-bluedark">
-              Categories & Tags
+              Business Types & Tags {/* Updated page title */}
             </h1>
             <div
               onClick={() => setShowModal(true)}
@@ -31,7 +30,7 @@ const AdminTagsReviews: React.FC = () => {
             </div>
           </div>
           <div className="mt-8">
-            <CategoriesTable
+            <BusinessTypesTable // Updated component name
               showModal={showModal}
               setShowModal={setShowModal}
             />
