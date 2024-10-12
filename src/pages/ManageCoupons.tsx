@@ -16,9 +16,9 @@ import { toast } from 'react-toastify';
 import SortByDropdown from "../components/SortBy";
 
 const dummyUsers = [
-  { name: "John Doe", email: "john@example.com", phone: "123-456-7890", score:90 },
-  { name: "Jane Smith", email: "jane@example.com", phone: "098-765-4321", score:87 },
-  { name: "Alice Johnson", email: "alice@example.com", phone: "555-555-5555", score:86 },
+  { userId:1, name: "John Doe", email: "john@example.com", phone: "123-456-7890", score:90 },
+  { userId:2, name: "Jane Smith", email: "jane@example.com", phone: "098-765-4321", score:87 },
+  { userId:3, name: "Alice Johnson", email: "alice@example.com", phone: "555-555-5555", score:86 },
 ];
 
 interface Business {
@@ -117,12 +117,9 @@ function ManageCoupons() {
         }
       }));
   
-      // Apply filters
       const filteredCoupons = formattedCoupons.filter((coupon: { status: string; discount: number; }) => {
-        // Check status filter
         const statusMatches = !statusFilter || coupon.status === statusFilter;
   
-        // Check discount filter
         let discountMatches = true;
         if (discountFilter) {
           const [min, max] = discountFilter.split('-').map(Number);
@@ -145,7 +142,9 @@ function ManageCoupons() {
   const [items, setItems] = useState<Coupon[]>(dummyCoupons);
   const [showForm, setShowForm] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
+  const [showIssuePopup, setShowIssuePopup] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
+  const [userId, setUserId] = useState<number | null>(null);
   const [showShareModal, setShowShareModal] = useState(false);
   const [currentCouponId, setCurrentCouponId] = useState<number | null>(null);
   const [newCoupon, setNewCoupon] = useState<AddCoupon>({
@@ -171,6 +170,38 @@ function ManageCoupons() {
       newCoupon.dateTime = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss")
       console.log(newCoupon);
       addCoupon();
+    }
+  };
+
+  const handleIssueCoupon = async () => {
+    if(currentCouponId !== null && userId != null){
+      try {
+        const response = await fetch(`http://localhost:8080/api/v1/coupon/issue/${userId}/${currentCouponId}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+    
+        if (!response.ok) {
+          const errorData = await response.json();
+          console.error('Error response:', errorData);
+          toast.error('An unexpected error occurred');
+          throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || 'Unknown error'}`);
+        }
+    
+        const responseData = await response.json();
+        console.log('Success:', responseData);
+        toast.success("Coupon issued successfully!");
+        fetchAllCoupons(null, null);
+        setShowIssuePopup(false);
+        setShowShareModal(false);
+        setCurrentCouponId(null);
+        setUserId(null);
+      } catch (error) {
+        console.error('An error occurred:', error);
+        toast.error('An unexpected error occurred');
+      }
     }
   };
 
@@ -566,6 +597,31 @@ function ManageCoupons() {
         </Modal.Body>
       </Modal>
 
+      <Modal show={showIssuePopup} onClose={() => setShowIssuePopup(false)} popup className="flex items-center justify-center inset-2/4 inset-y-1/2" theme={{
+        content: {
+          base: "bg-white w-3/4 rounded-lg",
+          inner: "p-6 rounded-lg shadow-lg",
+        },
+      }}>
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+              Are you sure you want to issue this coupon?
+            </h3>
+            <div className="flex justify-center gap-4 pb-6">
+              <Button className="bg-red-600 hover:bg-red-700" onClick={handleIssueCoupon}>
+                Yes, I'm sure
+              </Button>
+              <Button className="bg-gray-500 hover:bg-gray-600" onClick={() => setShowIssuePopup(false)}>
+                No, cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
+
       <Modal show={showShareModal} onClose={() => setShowShareModal(false)} size="xl" className="flex items-center justify-center min-h-screen"  >
         <Modal.Header className="text-center">Share Coupon</Modal.Header>
         <Modal.Body>
@@ -600,7 +656,8 @@ function ManageCoupons() {
                         color="dark"
                         size="xs"
                         onClick={() => {
-                          setShowPopup(true);
+                          setShowIssuePopup(true);
+                          setUserId(user.userId);
                         }}
                       >
                         Offer Coupon
