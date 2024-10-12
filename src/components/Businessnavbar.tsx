@@ -1,6 +1,14 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import Logo from '../assets/logo.png';
 import { useNavigate } from 'react-router-dom';
+import profPic from '../assets/profPicAbans.png';
+import { useEffect, useState } from 'react';
+import { useAuth } from "../utils/AuthProvider";
+import AbansImage from "../assets/profPicAbans.png";
+import RedlineImage from "../assets/profPicRedline.jpg";
+import iDealzImage from "../assets/profPiciDealz.png";
+import SoftlogicImage from "../assets/profPicSoftlogic.png";
+import DefaultImage from "../assets/profPicDefault.jpg";
 
 function classNames(...classes: string[]): string {
     return classes.filter(Boolean).join(' ');
@@ -10,6 +18,64 @@ function classNames(...classes: string[]): string {
 function Businessnavbar(){
 
   const navigate = useNavigate();
+
+  const { token, user, checkAuthenticated, logout } = useAuth();
+  const [data, setData] = useState<any>(null);
+  const [selectedAvatar, setSelectedAvatar] = useState("");
+
+  useEffect(() => {
+    document.title = "SpotBiz | Profile | Business";
+  }, []);
+  
+
+  useEffect(() => {
+    if (checkAuthenticated() && user?.email && token) {
+      fetchData(user.email, token);
+    } else {
+      console.log("User is not authenticated or email/token is missing");
+    }
+  }, [user, token]);
+
+
+  const fetchData = async (email: string, token: string) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/v1/business_owner/business/${email}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const responseData = await response.json();
+      setData(responseData);
+      if(responseData.name === "Abans "){
+        setSelectedAvatar(AbansImage)
+      }
+      else if(responseData.name === "Redline Technologies"){
+        setSelectedAvatar(RedlineImage)
+      }
+      else if(responseData.name === "iDealz Lanka Pvt Ltd"){
+        setSelectedAvatar(iDealzImage)
+      }
+      else if(responseData.name === "Softlogic Holdings"){
+        setSelectedAvatar(SoftlogicImage)
+      }
+      else{
+        setSelectedAvatar(DefaultImage)
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
 
     return (
       <nav className="fixed top-0 z-40 w-full bg-white border-b border-gray-200">
@@ -81,7 +147,7 @@ function Businessnavbar(){
                       <span className="sr-only">Open user menu</span>
                       <img
                         className="h-8 w-8 rounded-full"
-                        src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                        src={selectedAvatar}
                         alt=""
                       />
                     </MenuButton>

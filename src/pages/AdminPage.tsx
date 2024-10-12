@@ -1,11 +1,10 @@
-import React, { useEffect, useState } from 'react';
-import Adminnavbar from '../components/Adminnavbar';
-import Adminsidebar from '../components/Adminsidebar';
-import Container from '../components/Container';
+
+import React, { useEffect, useState } from "react";
+import Adminnavbar from "../components/Adminnavbar";
+import Adminsidebar from "../components/Adminsidebar";
+import Container from "../components/Container";
 import { Modal, TextInput, Label } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { IconButton } from "@mui/material";
-import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
 
 // Dummy API endpoint (replace this with your real API endpoint)
 const API_URL = "http://localhost:8080/api/v1/admin/customers";
@@ -19,7 +18,7 @@ interface Customer {
 }
 
 const AdminPage: React.FC = () => {
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "SpotBiz | Customer List | Admin";
     fetchCustomers();
   },[]);
@@ -95,7 +94,7 @@ const AdminPage: React.FC = () => {
     .catch(error => console.error('Error editing customer:', error));
   };
 
-  const filteredCustomers = customers.filter(customer =>
+  const filteredCustomers = customers.filter((customer) =>
     customer.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -104,55 +103,101 @@ const AdminPage: React.FC = () => {
       <Adminnavbar />
       <Adminsidebar selectedTile="Customer List" />
       <div className="px-12 sm:ml-64 mt-20">
-        <div className="flex justify-between items-center w-full mb-5 border-b border-gray-300">
+        <div className="flex justify-between items-center w-full mb-5 ">
           <h1 className="text-subsubheading text-bluedark">Customer List</h1>
         </div>
         <div className="flex items-center justify-between w-full mb-5">
-          <div className="flex w-full max-w-xs relative">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <svg className="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-              </svg>
+          <div className="flex justify-end w-full">
+            <div className="flex w-full max-w-xs relative">
+              <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
+                <svg
+                  className="w-4 h-4 text-gray-500"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                  />
+                </svg>
+              </div>
+              <input
+                type="text"
+                id="simple-search"
+                className="bg-gray-50 border p-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                placeholder="Search for customers..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                required
+              />
+              <button
+                type="submit"
+                className="p-2 ml-2 text-sm font-medium text-white bg-bluedark rounded-lg border border-bluedark hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                <svg
+                  className="w-4 h-4"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 20 20"
+                >
+                  <path
+                    stroke="currentColor"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                  />
+                </svg>
+                <span className="sr-only">Search</span>
+              </button>
             </div>
-            <input 
-              type="text" 
-              id="simple-search" 
-              className="bg-gray-50 border p-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-              placeholder="Search for customers..." 
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              required 
-            />
-            <button 
-              type="submit" 
-              className="p-2 ml-2 text-sm font-medium text-white bg-bluedark rounded-lg border border-bluedark hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
-            >
-              <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-              </svg>
-              <span className="sr-only">Search</span>
-            </button>
           </div>
         </div>
+
         <div className="relative overflow-x-auto overflow-y-auto sm:rounded-lg border border-gray-200">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500">
             <thead className="table-header text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
-                <th scope="col" className="px-6 py-3" style={{ minWidth: '100px' }}>ID</th>
-                <th scope="col" className="px-6 py-3" style={{ minWidth: '150px' }}>
+                <th
+                  scope="col"
+                  className="px-6 py-3"
+                  style={{ minWidth: "100px" }}
+                >
+                  ID
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3"
+                  style={{ minWidth: "150px" }}
+                >
                   <div className="flex items-center">Name</div>
                 </th>
-                <th scope="col" className="px-6 py-3" style={{ minWidth: '150px' }}>
+                <th
+                  scope="col"
+                  className="px-6 py-3"
+                  style={{ minWidth: "150px" }}
+                >
                   <div className="flex items-center">Email</div>
                 </th>
-                <th scope="col" className="px-6 py-3" style={{ minWidth: '100px' }}>
+                <th
+                  scope="col"
+                  className="px-6 py-3"
+                  style={{ minWidth: "100px" }}
+                >
                   <div className="flex items-center">Phone</div>
                 </th>
-                <th scope="col" className="px-6 py-3" style={{ minWidth: '100px' }}>
+                <th
+                  scope="col"
+                  className="px-6 py-3"
+                  style={{ minWidth: "100px" }}
+                >
                   <div className="flex items-center">Score</div>
-                </th>
-                <th scope="col" className="px-6 py-3 " style={{ minWidth: '150px' }}>
-                  <div className="flex items-center">Action</div>
                 </th>
               </tr>
             </thead>
@@ -191,12 +236,18 @@ const AdminPage: React.FC = () => {
         </div>
       </div>
 
-      <Modal show={showForm} onClose={() => setShowForm(false)} size="lg" className="flex items-center justify-center min-h-screen" theme={{
-        content: {
-          base: "bg-white w-3/4 rounded-lg", 
-          inner: "p-6 rounded-lg shadow-lg",
-        },
-      }}>
+      <Modal
+        show={showForm}
+        onClose={() => setShowForm(false)}
+        size="lg"
+        className="flex items-center justify-center min-h-screen"
+        theme={{
+          content: {
+            base: "bg-white w-3/4 rounded-lg",
+            inner: "p-6 rounded-lg shadow-lg",
+          },
+        }}
+      >
         <Modal.Header className="text-center">Add New Customer</Modal.Header>
         <Modal.Body>
           <div className="space-y-4 flex flex-col items-center">
@@ -206,7 +257,9 @@ const AdminPage: React.FC = () => {
                 id="name"
                 type="text"
                 value={newCustomer.name}
-                onChange={(e) => setNewCustomer({ ...newCustomer, name: e.target.value })}
+                onChange={(e) =>
+                  setNewCustomer({ ...newCustomer, name: e.target.value })
+                }
                 className="w-full"
               />
             </div>
@@ -216,7 +269,9 @@ const AdminPage: React.FC = () => {
                 id="email"
                 type="email"
                 value={newCustomer.email}
-                onChange={(e) => setNewCustomer({ ...newCustomer, email: e.target.value })}
+                onChange={(e) =>
+                  setNewCustomer({ ...newCustomer, email: e.target.value })
+                }
                 className="w-full"
               />
             </div>
@@ -236,7 +291,12 @@ const AdminPage: React.FC = () => {
                 id="score"
                 type="number"
                 value={newCustomer.score}
-                onChange={(e) => setNewCustomer({ ...newCustomer, score: parseInt(e.target.value, 10) })}
+                onChange={(e) =>
+                  setNewCustomer({
+                    ...newCustomer,
+                    score: parseInt(e.target.value, 10),
+                  })
+                }
                 className="w-full"
               />
             </div>
@@ -260,12 +320,18 @@ const AdminPage: React.FC = () => {
         </Modal.Footer>
       </Modal>
 
-      <Modal show={showEditForm} onClose={() => setShowEditForm(false)} size="lg" className="flex items-center justify-center min-h-screen" theme={{
-        content: {
-          base: "bg-white w-3/4 rounded-lg", 
-          inner: "p-6 rounded-lg shadow-lg",
-        },
-      }}>
+      <Modal
+        show={showEditForm}
+        onClose={() => setShowEditForm(false)}
+        size="lg"
+        className="flex items-center justify-center min-h-screen"
+        theme={{
+          content: {
+            base: "bg-white w-3/4 rounded-lg",
+            inner: "p-6 rounded-lg shadow-lg",
+          },
+        }}
+      >
         <Modal.Header className="text-center">Edit Customer</Modal.Header>
         <Modal.Body>
           {editCustomer && (
@@ -276,7 +342,9 @@ const AdminPage: React.FC = () => {
                   id="name"
                   type="text"
                   value={editCustomer.name}
-                  onChange={(e) => setEditCustomer({ ...editCustomer, name: e.target.value })}
+                  onChange={(e) =>
+                    setEditCustomer({ ...editCustomer, name: e.target.value })
+                  }
                   className="w-full"
                 />
               </div>
@@ -286,7 +354,9 @@ const AdminPage: React.FC = () => {
                   id="email"
                   type="email"
                   value={editCustomer.email}
-                  onChange={(e) => setEditCustomer({ ...editCustomer, email: e.target.value })}
+                  onChange={(e) =>
+                    setEditCustomer({ ...editCustomer, email: e.target.value })
+                  }
                   className="w-full"
                 />
               </div>
@@ -306,7 +376,12 @@ const AdminPage: React.FC = () => {
                   id="score"
                   type="number"
                   value={editCustomer.score}
-                  onChange={(e) => setEditCustomer({ ...editCustomer, score: parseInt(e.target.value, 10) })}
+                  onChange={(e) =>
+                    setEditCustomer({
+                      ...editCustomer,
+                      score: parseInt(e.target.value, 10),
+                    })
+                  }
                   className="w-full"
                 />
               </div>
@@ -331,12 +406,18 @@ const AdminPage: React.FC = () => {
         </Modal.Footer>
       </Modal>
 
-      <Modal show={showPopup} onClose={() => setShowPopup(false)} popup className="flex items-center justify-center inset-2/4 inset-y-1/2" theme={{
-        content: {
-          base: "bg-white w-3/4 rounded-lg",
-          inner: "p-6 rounded-lg shadow-lg",
-        },
-      }}>
+      <Modal
+        show={showPopup}
+        onClose={() => setShowPopup(false)}
+        popup
+        className="flex items-center justify-center inset-2/4 inset-y-1/2"
+        theme={{
+          content: {
+            base: "bg-white w-3/4 rounded-lg",
+            inner: "p-6 rounded-lg shadow-lg",
+          },
+        }}
+      >
         <Modal.Header />
         <Modal.Body>
           <div className="text-center">
@@ -345,10 +426,16 @@ const AdminPage: React.FC = () => {
               Are you sure you want to delete this customer?
             </h3>
             <div className="flex justify-center gap-4 pb-6">
-              <button className="p-2 text-sm font-medium text-white bg-red-600 rounded-lg border border-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300" onClick={handleDeleteCustomer}>
+              <button
+                className="p-2 text-sm font-medium text-white bg-red-600 rounded-lg border border-red-600 hover:bg-red-700 focus:ring-4 focus:outline-none focus:ring-red-300"
+                onClick={handleDeleteCustomer}
+              >
                 Yes, I'm sure
               </button>
-              <button className="p-2 text-sm font-medium text-white bg-gray-500 rounded-lg border border-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300" onClick={() => setShowPopup(false)}>
+              <button
+                className="p-2 text-sm font-medium text-white bg-gray-500 rounded-lg border border-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300"
+                onClick={() => setShowPopup(false)}
+              >
                 No, cancel
               </button>
             </div>

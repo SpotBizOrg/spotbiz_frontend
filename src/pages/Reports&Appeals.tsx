@@ -14,29 +14,14 @@ const Reports: React.FC = () => {
       <Adminnavbar />
       {/* <div className="flex min-h-screen bg-gray-100 font-body"> */}
       <Adminsidebar selectedTile="Appeals & Reports" />
-      {/* <div className="flex flex-col flex-grow ml-64">  */}
       <div className="px-12 sm:ml-64 mt-20">
-        <div className="flex-grow p-8 mt-16">
-          <h1 className="text-2xl font-bold mb-8">Reports and Appeals</h1>
-          {/* <div className="mt-6 mb-4">
-            <PerformanceChart />
-            </div>
-            <div className="mt-6 mb-4">
-            <LatestBusiness />
-            </div> */}
-          <div className="mt-8">
+          <div className="w-fit mb-5 border-b-gray-900">
+            <h1 className="text-subsubheading text-bluedark">Appeals & Reports</h1>
+          </div>
+          <div className="">
             <BusinessTables />
           </div>
-          {/* <div className="mt-8">
-            <ReportedReviews />
-          </div> */}
-          {/* <div className="mt-8">
-            <Categories />
-          </div> */}
         </div>
-      </div>
-      {/* </div> */}
-      {/* </div> */}
     </Container>
   );
 };

@@ -3,13 +3,15 @@ import { FaMapMarkerAlt, FaStar, FaStarHalfAlt, FaRegStar } from 'react-icons/fa
 
 const BusinessTitlenReview: React.FC = () => {
   return (
-    <div className="p-4 flex justify-between items-center mb-4">
+    <div className="bg-white border border-gray-300 p-4 rounded-md shadow-md space-y-2 mb-5 flex justify-between items-center px-10">
       <div>
         <h1 className="text-subheading font-bold text-bluedark">Abans</h1>
-        <div className="flex items-center text-gray-800">
+        <div className="flex items-center text-gray-800 mb-3">
           <FaMapMarkerAlt className="mr-1" />
           <p>Colombo 7</p>
         </div>
+        <div className="border border-green-500 text-green-500 font-bold px-4 py-1 rounded-md text-center text-bodysmall mb-2">Open Now</div>
+
       </div>
       <div className="text-right">
         <p className="text-blue-900 font-bold">Ratings & Reviews</p>

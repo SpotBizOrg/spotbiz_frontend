@@ -4,7 +4,10 @@ import Tabs from "../components/ProfileTabs";
 import ProfileContent from "../components/ProfileContent";
 import AvatarModal from "../components/AvatarModal"; // Ensure the correct import
 import Customernavbar2 from "../components/Customernavbar2";
-
+import avatar1 from "../assets/cus_avatar1.jpg";
+import avatar2 from "../assets/cus_avatar2.jpg";
+import avatar3 from "../assets/cus_avatar3.jpg";
+import avatar4 from "../assets/cus_avatar4.jpg";
 const CustomerProfile: React.FC = () => {
   const [activeTab, setActiveTab] = useState("About Me");
   const [selectedAvatar, setSelectedAvatar] = useState(
@@ -19,7 +22,11 @@ const CustomerProfile: React.FC = () => {
 
   
   const avatars = [
-    "https://flowbite.com/docs/images/people/profile-picture-1.jpg",
+    // avatar1,
+    // avatar2,
+    // avatar3,
+    // avatar4,
+    // "https://www.pexels.com/photo/woman-wearing-coat-762020/",
     "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
     "https://flowbite.com/docs/images/people/profile-picture-3.jpg",
     "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
@@ -32,7 +39,7 @@ const CustomerProfile: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col">
+    <div className="bg-gray-100 font-body min-h-screen flex flex-col">
       <Customernavbar2 />
       <div className="w-11/12 bg-white shadow-lg rounded-lg transform duration-200 ease-in-out mx-auto mt-6">
         <div
@@ -66,12 +73,12 @@ const CustomerProfile: React.FC = () => {
                 </div>
               </div>
               <div className="ml-6">
-                <h2 className="text-white text-3xl font-bold">Nirasha Nelki</h2>
+                <h2 className="text-white text-3xl font-bold">Shalini</h2>
                 <a
                   className="text-gray-400 mt-2 hover:text-primary"
                   href="mailto:someone@gmail.com"
                 >
-                  someone@gmail.com
+                  shalinimasha2002@gmail.com
                 </a>
               </div>
             </div>

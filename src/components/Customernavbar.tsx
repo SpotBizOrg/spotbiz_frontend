@@ -5,6 +5,7 @@ import { ChangeEvent, useEffect, useState } from 'react';
 import { useAuth } from '../utils/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { Tooltip } from 'flowbite-react';
 
 function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(' ');
@@ -260,7 +261,7 @@ function Customernavbar(){
                 value={searchTerm}
                 onChange={handleSearchChange}
                 className="bg-gray-50 border p-1 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                placeholder="Search category or name..."
+                placeholder="What are you looking for"
                 required
               />
             </div>
@@ -288,13 +289,16 @@ function Customernavbar(){
             </button>
           </div>
           <div className="absolute z-50 inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+          <Tooltip content="Games">
             <button onClick={navigateToPage} className="relative rounded-full p-1 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-            <PuzzlePieceIcon className="h-6 w-6 mr-2" />
+              <PuzzlePieceIcon className="h-6 w-6 mr-2" />
             </button>
+          </Tooltip>
+            
 
 
-
-            <button
+          <Tooltip content="Notifications">
+          <button
               type="button"
               onClick={toggleNotificationMenu}
               className="relative rounded-full p-1 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
@@ -302,6 +306,8 @@ function Customernavbar(){
               <span className="sr-only">View notifications</span>
               <BellIcon className="h-6 w-6" />
             </button>
+          </Tooltip>
+            
             {isNotificationMenuOpen && (
               <div className="absolute right-12 top-12 mt-2 bg-white border border-gray-200 rounded-md shadow-lg py-1">
                 <a href="#" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">
@@ -315,7 +321,7 @@ function Customernavbar(){
                   <span className="sr-only">Open user menu</span>
                   <img
                     className="h-8 w-8 rounded-full"
-                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
+                    src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
                     alt=""
                   />
                 </MenuButton>

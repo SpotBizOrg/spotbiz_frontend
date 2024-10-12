@@ -6,9 +6,19 @@ import DashboardStats from '../components/DashboardStats';
 import PkgCard from '../components/PkgCard';
 import Container from '../components/Container';
 import Popup from '../components/Popup';
+import CouponPopup from '../components/CouponPopup';
 
 const Dashboard: React.FC = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
+  const [isCPopupOpen, setIsCPopupOpen] = useState(false);
+
+  const handleOpenPopup = () => {
+    setIsCPopupOpen(true);
+  };
+
+  const handleClosePopup = () => {
+    setIsCPopupOpen(false);
+  };
 
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
@@ -17,18 +27,28 @@ const Dashboard: React.FC = () => {
   return (
     <Container>
       <Businessnavbar />
-      <div className="flex pt-3">
+      {/* <div className="flex pt-3"> */}
         <Businesssidebar selectedTile="Dashboard" />
-        <div className="flex-1 ml-64 px-4 sm:px-6 lg:px-8 py-3 sm:py-3">
-          <div className="max-w-7xl mx-auto">
+        <div className="flex items-center justify-center px-12 sm:ml-64">
+          <div >
             <DashboardStats />
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-4">
               <PerformanceChart />
-              <PkgCard onUpgradeClick={togglePopup} /> {/* Pass the toggle function */}
+              <PkgCard onUpgradeClick={togglePopup} />
+
             </div>
           </div>
         </div>
-      </div>
+      {/* </div> */}
+      <div className="fixed bottom-4 right-10">
+                    <button 
+                    onClick={handleOpenPopup}
+                    className="bg-gray-800 text-bodysmall text-white py-2 px-2 rounded-lg shadow-lg">
+                        Check Cupoun Code
+                    </button>
+                
+            </div>
+      <CouponPopup isOpen={isCPopupOpen} onClose={handleClosePopup} />
       <Popup isOpen={isPopupOpen} onClose={togglePopup} /> {/* Include the Popup component */}
     </Container>
   );

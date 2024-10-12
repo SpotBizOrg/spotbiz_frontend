@@ -17,7 +17,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/tag-2-3-4-players',
+    gameUrl: 'https://www.crazygames.com/embed/tag-2-3-4-players',
     special: true
   },
   {
@@ -27,7 +27,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/kitty-scramble'
+    gameUrl: 'https://www.crazygames.com/embed/kitty-scramble'
   },
   {
     image: CuttheRope,
@@ -36,7 +36,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/cut-the-rope-ebx'
+    gameUrl: 'https://www.crazygames.com/embed/cut-the-rope-ebx'
   },
   {
     image: CupsWaterSortPuzzle,
@@ -45,7 +45,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/cups---water-sort-puzzle'
+    gameUrl: 'https://www.crazygames.com/embed/cups---water-sort-puzzle'
   },
   {
     image: SortParking,
@@ -54,7 +54,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/sort-parking'
+    gameUrl: 'https://www.crazygames.com/embed/sort-parking'
   },
   {
     image: DropMergetheNumbers,
@@ -63,7 +63,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/drop-merge-the-numbers'
+    gameUrl: 'https://www.crazygames.com/embed/drop-merge-the-numbers'
   },
   {
     image: SortParking,
@@ -72,7 +72,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/sort-parking'
+    gameUrl: 'https://www.crazygames.com/embed/sort-parking'
   },
   {
     image: DropMergetheNumbers,
@@ -81,7 +81,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/drop-merge-the-numbers'
+    gameUrl: 'https://www.crazygames.com/embed/drop-merge-the-numbers'
   },
   {
     image: Tag234Players,
@@ -90,7 +90,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/tag-2-3-4-players',
+    gameUrl: 'https://www.crazygames.com/embed/tag-2-3-4-players',
     special: true
   },
   {
@@ -100,7 +100,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/cut-the-rope-ebx'
+    gameUrl: 'https://www.crazygames.com/embed/cut-the-rope-ebx'
   },
   {
     image: CupsWaterSortPuzzle,
@@ -109,7 +109,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/cups---water-sort-puzzle'
+    gameUrl: 'https://www.crazygames.com/embed/cups---water-sort-puzzle'
   },
   {
     image: CupsWaterSortPuzzle,
@@ -118,7 +118,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/cups---water-sort-puzzle'
+    gameUrl: 'https://www.crazygames.com/embed/cups---water-sort-puzzle'
   },
   {
     image: DropMergetheNumbers,
@@ -127,7 +127,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/drop-merge-the-numbers'
+    gameUrl: 'https://www.crazygames.com/embed/drop-merge-the-numbers'
   },
 ];
 
@@ -153,10 +153,10 @@ function CustomerGame() {
     <Container>
       <Customernavbar2 />
       <div className="flex flex-col justify-startpt-20 px-16 mt-12 py-4">
-        <div className="flex items-center mb-6">
-          <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="User" className="rounded-full w-36 h-36 mr-2" />
+        <div className="flex items-center mb-6 ">
+          <img className="ring-offset-2 ring h-40 w-40 rounded-full" src="https://flowbite.com/docs/images/people/profile-picture-3.jpg" />
           <div>
-            <p className="text-black text-xl ml-4">Yuhanga Induwara</p>
+            <p className="text-black text-xl ml-4">Shalini</p>
             <p className="text-gray-400 ml-4">Points: 95</p>
           </div>
         </div>

@@ -3,6 +3,8 @@ import Adminnavbar from '../components/Adminnavbar';
 import Adminsidebar from '../components/Adminsidebar';
 import PackageCard from '../components/PackageCard';
 import Modal from '../components/modal';
+import Container from '../components/Container';
+import { FaPlus } from 'react-icons/fa';
 
 interface Package {
   id: number;
@@ -114,42 +116,65 @@ export default function AdminPackages() {
     setSelectedPackage(null);
   };
 
+  // return (
+  //   <div className="bg-gray-100 min-h-screen flex flex-col">
+  //     <Adminnavbar />
+  //     <div className="flex flex-1 mt-6">
+  //       <div className="flex-none w-64">
+  //         <Adminsidebar selectedTile={'Subscription Packages'} />
+  //       </div>
+  //       <div className="flex-1 px-2 sm:px-4 lg:px-6 py-4 sm:py-6">
+  //         <div className="max-w-7xl mx-auto">
+  //           <div className="flex justify-between items-center mt-12">
+  //             <div className="w-fit mb-5 border-b-gray-900">
+  //           <h1 className="text-subsubheading text-bluedark">Business Verify Requests</h1>
+  //         </div>
+  //             <button
+  //               onClick={handleAddPackage}
+  //               className="px-6 py-2 mr-7 bg-blue1 text-white rounded-lg hover:bg-bluedark"
+  //             >
+  //               Add Package
+  //             </button>
+  //           </div>
+            
+  //         </div>
+  //       </div>
+  //     </div>
+  //     <Modal isOpen={isModalOpen} onClose={handleModalClose} onUpdate={handleUpdate} packageData={selectedPackage} />
+  //   </div>
+  // );
+
   return (
-    <div className="bg-gray-100 min-h-screen flex flex-col">
+    <Container>
       <Adminnavbar />
-      <div className="flex flex-1 mt-6">
-        <div className="flex-none w-64">
-          <Adminsidebar selectedTile={'Subscription Packages'} />
-        </div>
-        <div className="flex-1 px-2 sm:px-4 lg:px-6 py-4 sm:py-6">
-          <div className="max-w-7xl mx-auto">
-            <div className="flex justify-between items-center mt-12">
-              <h2 className="text-2xl font-bold tracking-tight text-gray-900 sm:text-2xl">Update Subscription Packages</h2>
-              <button
-                onClick={handleAddPackage}
-                className="px-6 py-2 mr-7 bg-blue1 text-white rounded-lg hover:bg-bluedark"
-              >
-                Add Package
-              </button>
-            </div>
-            <div className="mt-9 grid gap-4 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
-              {packagesData.map((pkg) => (
-                <PackageCard
-                  key={pkg.id}
-                  title={pkg.title}
-                  description={pkg.description}
-                  price={`Rs. ${pkg.monthlyPrice}`}
-                  features={pkg.features}
-                  buttonText="Edit Package"
-                  isPopular={pkg.isPopular}
-                  onClick={() => handleEdit(pkg)}
-                />
-              ))}
-            </div>
+      {/* <div className="flex min-h-screen bg-gray-100 font-body"> */}
+      <Adminsidebar selectedTile="Subscription Packages" />
+      <div className="px-12 sm:ml-64 mt-20">
+        <div className="flex justify-between items-center w-full mb-10">
+          <h1 className="text-subsubheading text-bluedark">Subscription Packages</h1>
+          <div
+            className="relative flex items-center justify-center w-[40px] h-[40px] mt-0 border-2 border-dashed border-gray-400 rounded-lg bg-white/50 backdrop-blur-md hover:bg-white/80 hover:border-gray-600 transition-all duration-300 ease-in-out cursor-pointer"
+            onClick={handleAddPackage}
+          >
+            <FaPlus className="text-xl text-gray-500" />
           </div>
+        </div>
+        <div className="mt-9 grid gap-4 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+          {packagesData.map((pkg) => (
+            <PackageCard
+              key={pkg.id}
+              title={pkg.title}
+              description={pkg.description}
+              price={`Rs. ${pkg.monthlyPrice}`}
+              features={pkg.features}
+              buttonText="Edit Package"
+              isPopular={pkg.isPopular}
+              onClick={() => handleEdit(pkg)}
+            />
+          ))}
         </div>
       </div>
       <Modal isOpen={isModalOpen} onClose={handleModalClose} onUpdate={handleUpdate} packageData={selectedPackage} />
-    </div>
+    </Container>
   );
 }
