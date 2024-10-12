@@ -1,24 +1,36 @@
-// src/components/BusinessList.tsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaSearch } from 'react-icons/fa';
 
-const BusinessList: React.FC = () => {
+interface Business {
+  id: string;
+  name: string;
+  phoneNo: string;
+  status?: string;
+  address?: string;
+  email?: string;
+}
+
+interface BusinessListProps {
+  businesses: Business[];
+  onDeleteClick: (id: string) => void;
+}
+
+const BusinessList: React.FC<BusinessListProps> = ({ businesses, onDeleteClick }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterTerm, setFilterTerm] = useState('');
 
-  const businesses = [
-    { id: '001', businessName: 'ABC Inc.', ownerName: 'John Doe', status: 'Active', address: '123 Main St', phone: '555-1234', email: 'john@example.com' },
-    { id: '002', businessName: 'XYZ Ltd.', ownerName: 'Jane Smith', status: 'Inactive', address: '456 Oak Ave', phone: '555-5678', email: 'jane@example.com' },
-    { id: '003', businessName: 'PQR Corp.', ownerName: 'Adam Smith', status: 'Active', address: '789 Elm Rd', phone: '555-9876', email: 'adam@example.com' },
-    { id: '004', businessName: 'LMN Enterprises', ownerName: 'Emily Brown', status: 'Inactive', address: '321 Pine Blvd', phone: '555-5432', email: 'emily@example.com' },
-    { id: '005', businessName: 'UVW Solutions', ownerName: 'Michael Johnson', status: 'Active', address: '654 Cedar Dr', phone: '555-1111', email: 'michael@example.com' },
-    { id: '006', businessName: 'RST Technologies', ownerName: 'Sarah Lee', status: 'Active', address: '987 Maple Ln', phone: '555-2222', email: 'sarah@example.com' },
-  ];
+  useEffect(() => {
+    // Log the businesses prop to ensure it contains the expected data
+    console.log("Businesses data:", businesses);
+  }, [businesses]);
 
-  const filteredBusinesses = businesses.filter(business =>
-    business.ownerName.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    (filterTerm === '' || business.ownerName.toLowerCase().includes(filterTerm.toLowerCase()))
-  );
+  const filteredBusinesses = businesses.filter((business) => {
+    const ownerName = business.name ? business.name.toLowerCase() : '';
+    return (
+      ownerName.includes(searchTerm.toLowerCase()) &&
+      (filterTerm === '' || ownerName.includes(filterTerm.toLowerCase()))
+    );
+  });
 
   return (
     <div className="px-4 py-6">
@@ -27,7 +39,7 @@ const BusinessList: React.FC = () => {
           <FaSearch className="text-gray-500 mr-2" />
           <input
             type="text"
-            placeholder="Search by keyword..."
+            placeholder="Search by owner name..."
             className="outline-none"
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
@@ -38,47 +50,46 @@ const BusinessList: React.FC = () => {
           value={filterTerm}
           onChange={(e) => setFilterTerm(e.target.value)}
         >
-          <option value="">Filter by Name</option>
-          {businesses.map(business => (
-            <option key={business.id} value={business.ownerName}>
-              {business.ownerName}
+          <option value="">All</option>
+          {businesses.map((business) => (
+            <option key={business.id} value={business.name}>
+              {business.name}
             </option>
           ))}
         </select>
       </div>
-      <div className="overflow-x-auto">
-        <table className="min-w-full bg-white border border-gray-300">
-          <thead className="bg-gray-700 text-white">
-            <tr>
-              <th className="py-3 px-4 border border-gray-400">BID</th>
-              <th className="py-3 px-4 border border-gray-400">Business Name</th>
-              <th className="py-3 px-4 border border-gray-400">Owner Name</th>
-              <th className="py-3 px-4 border border-gray-400">Status</th>
-              <th className="py-3 px-4 border border-gray-400">Address</th>
-              <th className="py-3 px-4 border border-gray-400">Phone No</th>
-              <th className="py-3 px-4 border border-gray-400">Email Address</th>
-              <th className="py-3 px-4 border border-gray-400">Actions</th>
+
+      <table className="w-full text-left">
+        <thead>
+          <tr>
+            <th className="p-2">Owner Name</th>
+            <th className="p-2">Phone</th>
+            <th className="p-2">Status</th>
+            <th className="p-2">Address</th>
+            <th className="p-2">Email</th>
+            <th className="p-2">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {filteredBusinesses.map((business) => (
+            <tr key={business.id} className="border-b">
+              <td className="p-2">{business.name}</td>
+              <td className="p-2">{business.phoneNo}</td>
+              <td className="p-2">{business.status || 'N/A'}</td>
+              <td className="p-2">{business.address || 'N/A'}</td>
+              <td className="p-2">{business.email || 'N/A'}</td>
+              <td className="p-2">
+                <button
+                  className="text-red-500 hover:text-red-700"
+                  onClick={() => onDeleteClick(business.id)}
+                >
+                  Delete
+                </button>
+              </td>
             </tr>
-          </thead>
-          <tbody>
-            {filteredBusinesses.map((business) => (
-              <tr key={business.id} className="text-center border-b border-gray-300">
-                <td className="py-2 px-4 border border-gray-300">{business.id}</td>
-                <td className="py-2 px-4 border border-gray-300">{business.businessName}</td>
-                <td className="py-2 px-4 border border-gray-300">{business.ownerName}</td>
-                <td className={`py-2 px-4 border border-gray-300 ${business.status === 'Active' ? 'text-green-600' : 'text-red-600'}`}>{business.status}</td>
-                <td className="py-2 px-4 border border-gray-300">{business.address}</td>
-                <td className="py-2 px-4 border border-gray-300">{business.phone}</td>
-                <td className="py-2 px-4 border border-gray-300">{business.email}</td>
-                <td className="py-2 px-4 border border-gray-300">
-                  <button className="bg-green-500 text-white px-3 py-1 rounded mr-2">Update</button>
-                  <button className="bg-red-500 text-white px-3 py-1 rounded">Delete</button>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 };
