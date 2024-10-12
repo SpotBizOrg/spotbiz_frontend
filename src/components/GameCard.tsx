@@ -2,46 +2,56 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface GameCardProps {
-  image: string;
+  image: string;  
   title: string;
   developer: string;
   description: string;
-  visits: string;
-  url: string; 
-  usage: number; 
+  gameUrl: string;
+  usage: number;
 }
-
-const handleEditClick = () => {
-};
-
-const handleDeleteClick = () => {
-};
 
 const GameCard: React.FC<GameCardProps> = ({
   image,
   title,
   developer,
   description,
-  visits,
-  url, 
-  usage, 
+  gameUrl,
+  usage,
 }) => {
+  console.log({ image, title, developer, description, gameUrl, usage });
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate('/customer/play_game', { state: { url } });
+    const startTime = new Date().toISOString();
+    navigate('/customer/play_game', { state: { gameUrl, startTime } });
+  };
+
+  const handleEditClick = () => {
+    console.log({gameUrl})
+  };
+
+  const handleDeleteClick = () => {
+    // Add your delete logic here
   };
 
   return (
-    <div className="p-4 rounded-lg shadow-md text-white" style={{ background: 'linear-gradient(135deg, #0f52ba, #000000)', boxShadow: '0 0 10px rgba(0, 255, 255, 0.5)' }}>
-      <img src={image} alt={title} className="rounded-lg w-full transform transition-transform hover:scale-105 hover:z-10" />
+    <div
+      className="p-4 rounded-lg shadow-md text-white"
+      style={{
+        background: 'linear-gradient(135deg, #0f52ba, #000000)',
+        boxShadow: '0 0 10px rgba(0, 255, 255, 0.5)',
+      }}
+    >
+      {/* Display the image using the provided URL */}
+      <img
+        src={image}  // URL to display the image
+        alt={title}
+        className="rounded-lg w-full transform transition-transform hover:scale-105 hover:z-10"
+      />
       <h3 className="text-white mt-2">{title}</h3>
       <p className="text-gray-400">@{developer}</p>
       <div className="flex items-center mt-2">
         <span className="text-green-500">{description}</span>
-      </div>
-      <div className="flex items-center mt-2">
-        <span className="text-gray-400 ">Visits: {visits}</span>
       </div>
       <div className="flex mt-4">
         <button

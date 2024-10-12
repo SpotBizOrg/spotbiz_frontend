@@ -17,7 +17,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/tag-2-3-4-players',
+    gameUrl: 'https://www.crazygames.com/embed/tag-2-3-4-players',
     special: true
   },
   {
@@ -27,7 +27,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/kitty-scramble'
+    gameUrl: 'https://www.crazygames.com/embed/kitty-scramble'
   },
   {
     image: CuttheRope,
@@ -36,7 +36,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/cut-the-rope-ebx'
+    gameUrl: 'https://www.crazygames.com/embed/cut-the-rope-ebx'
   },
   {
     image: CupsWaterSortPuzzle,
@@ -45,7 +45,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/cups---water-sort-puzzle'
+    gameUrl: 'https://www.crazygames.com/embed/cups---water-sort-puzzle'
   },
   {
     image: SortParking,
@@ -54,7 +54,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/sort-parking'
+    gameUrl: 'https://www.crazygames.com/embed/sort-parking'
   },
   {
     image: DropMergetheNumbers,
@@ -63,7 +63,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/drop-merge-the-numbers'
+    gameUrl: 'https://www.crazygames.com/embed/drop-merge-the-numbers'
   },
   {
     image: SortParking,
@@ -72,7 +72,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/sort-parking'
+    gameUrl: 'https://www.crazygames.com/embed/sort-parking'
   },
   {
     image: DropMergetheNumbers,
@@ -81,7 +81,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/drop-merge-the-numbers'
+    gameUrl: 'https://www.crazygames.com/embed/drop-merge-the-numbers'
   },
   {
     image: Tag234Players,
@@ -90,7 +90,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/tag-2-3-4-players',
+    gameUrl: 'https://www.crazygames.com/embed/tag-2-3-4-players',
     special: true
   },
   {
@@ -100,7 +100,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/cut-the-rope-ebx'
+    gameUrl: 'https://www.crazygames.com/embed/cut-the-rope-ebx'
   },
   {
     image: CupsWaterSortPuzzle,
@@ -109,7 +109,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/cups---water-sort-puzzle'
+    gameUrl: 'https://www.crazygames.com/embed/cups---water-sort-puzzle'
   },
   {
     image: CupsWaterSortPuzzle,
@@ -118,7 +118,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/cups---water-sort-puzzle'
+    gameUrl: 'https://www.crazygames.com/embed/cups---water-sort-puzzle'
   },
   {
     image: DropMergetheNumbers,
@@ -127,7 +127,7 @@ const games = [
     description: 'Hello',
     visits: '11M',
     usage: 1,
-    url: 'https://www.crazygames.com/embed/drop-merge-the-numbers'
+    gameUrl: 'https://www.crazygames.com/embed/drop-merge-the-numbers'
   },
 ];
 
