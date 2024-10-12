@@ -1,4 +1,4 @@
-// src/pages/AdminPage.tsx
+
 import React, { useEffect, useState } from "react";
 import Adminnavbar from "../components/Adminnavbar";
 import Adminsidebar from "../components/Adminsidebar";
@@ -6,122 +6,92 @@ import Container from "../components/Container";
 import { Modal, TextInput, Label } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
-const dummyCustomers = [
-  {
-    id: 1,
-    name: "Nimal Perera",
-    email: "nimal.perera@gmail.com",
-    phone: "+94-71-234-5678",
-    score: 90,
-  },
-  {
-    id: 2,
-    name: "Kumari Silva",
-    email: "kumari.silva@gmail.com",
-    phone: "+94-72-345-6789",
-    score: 87,
-  },
-  {
-    id: 3,
-    name: "Ruwan Fernando",
-    email: "ruwan.fernando@gmail.com",
-    phone: "+94-77-456-7890",
-    score: 86,
-  },
-  {
-    id: 4,
-    name: "Saman Wijesinghe",
-    email: "saman.wijesinghe@gmail.com",
-    phone: "+94-78-567-8901",
-    score: 88,
-  },
-  {
-    id: 5,
-    name: "Mala Jayasinghe",
-    email: "mala.jayasinghe@gmail.com",
-    phone: "+94-70-678-9012",
-    score: 85,
-  },
-  {
-    id: 6,
-    name: "Kavindu Rathnayake",
-    email: "kavindu.rathnayake@gmail.com",
-    phone: "+94-71-789-0123",
-    score: 92,
-  },
-  {
-    id: 7,
-    name: "Tharushi de Silva",
-    email: "tharushi.desilva@gmail.com",
-    phone: "+94-72-890-1234",
-    score: 89,
-  },
-  {
-    id: 8,
-    name: "Dinesh Abeykoon",
-    email: "dinesh.abeykoon@gmail.com",
-    phone: "+94-77-901-2345",
-    score: 91,
-  },
-  {
-    id: 9,
-    name: "Roshani Senanayake",
-    email: "roshani.senanayake@gmail.com",
-    phone: "+94-78-012-3456",
-    score: 84,
-  },
-  {
-    id: 10,
-    name: "Gayan Madushanka",
-    email: "gayan.madushanka@gmail.com",
-    phone: "+94-70-123-4567",
-    score: 93,
-  },
-];
+// Dummy API endpoint (replace this with your real API endpoint)
+const API_URL = "http://localhost:8080/api/v1/admin/customers";
+
+interface Customer {
+  userId: number;
+  name: string;
+  email: string;
+  phoneNo: string;
+  score: number;
+}
 
 const AdminPage: React.FC = () => {
   useEffect(() => {
     document.title = "SpotBiz | Customer List | Admin";
-  }, []);
-
-  const [customers, setCustomers] = useState(dummyCustomers);
+    fetchCustomers();
+  },[]);
+  
+  const [customers, setCustomers] = useState<Customer[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [showEditForm, setShowEditForm] = useState(false);
-  const [currentCustomerId, setCurrentCustomerId] = useState<number | null>(
-    null
-  );
-  const [newCustomer, setNewCustomer] = useState({
-    id: customers.length + 1,
+  const [currentCustomerId, setCurrentCustomerId] = useState<number | null>(null);
+  const [newCustomer, setNewCustomer] = useState<Customer>({
+    userId: customers.length + 1,
     name: "",
     email: "",
-    phone: "",
+    phoneNo: "",
     score: 0,
   });
-  const [editCustomer, setEditCustomer] = useState<any | null>(null);
-  const [searchQuery, setSearchQuery] = useState("");
+  const [editCustomer, setEditCustomer] = useState<Customer | null>(null);
+  const [searchQuery, setSearchQuery] = useState('');
 
+  // Fetch customers from the API
+  const fetchCustomers = () => {
+    fetch(API_URL)
+      .then(response => response.json())
+      .then(data => setCustomers(data))
+      .catch(error => console.error('Error fetching customers:', error));
+  };
+
+  // Add a new customer to the API
   const handleAddCustomer = () => {
-    setCustomers([...customers, newCustomer]);
-    setShowForm(false);
+    fetch(API_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newCustomer),
+    })
+    .then(response => response.json())
+    .then(data => {
+      setCustomers([...customers, data]);
+      setShowForm(false);
+    })
+    .catch(error => console.error('Error adding customer:', error));
   };
 
+  // Delete a customer via the API
   const handleDeleteCustomer = () => {
-    setCustomers(
-      customers.filter((customer) => customer.id !== currentCustomerId)
-    );
-    setShowPopup(false);
-    setCurrentCustomerId(null);
+    fetch(`${API_URL}/${currentCustomerId}`, {
+      method: 'DELETE',
+    })
+    .then(() => {
+      setCustomers(customers.filter(customer => customer.userId !== currentCustomerId));
+      setShowPopup(false);
+      setCurrentCustomerId(null);
+    })
+    .catch(error => console.error('Error deleting customer:', error));
   };
 
+  // Edit a customer via the API
   const handleEditCustomer = () => {
-    setCustomers(
-      customers.map((customer) =>
-        customer.id === editCustomer.id ? editCustomer : customer
-      )
-    );
-    setShowEditForm(false);
-    setEditCustomer(null);
+    fetch(`${API_URL}/${editCustomer?.userId}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(editCustomer),
+    })
+    .then(response => response.json())
+    .then(updatedCustomer => {
+      setCustomers(customers.map(customer => customer.userId === updatedCustomer.id ? updatedCustomer : customer));
+      setShowEditForm(false);
+      setEditCustomer(null);
+    })
+    .catch(error => console.error('Error editing customer:', error));
   };
 
   const filteredCustomers = customers.filter((customer) =>
@@ -233,15 +203,32 @@ const AdminPage: React.FC = () => {
             </thead>
             <tbody>
               {filteredCustomers.map((customer) => (
-                <tr
-                  key={customer.id}
-                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                >
-                  <td className="px-6 py-4">{customer.id}</td>
+                <tr key={customer.userId} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <td className="px-6 py-4">{customer.userId}</td>
                   <td className="px-6 py-4">{customer.name}</td>
                   <td className="px-6 py-4">{customer.email}</td>
-                  <td className="px-6 py-4">{customer.phone}</td>
+                  <td className="px-6 py-4">{customer.phoneNo}</td>
                   <td className="px-6 py-4">{customer.score}</td>
+                  <td className="px-0 py-4 flex gap-0 justify-start">
+                    <IconButton
+                      color="default"
+                      onClick={() => {
+                        setEditCustomer(customer);
+                        setShowEditForm(true);
+                      }}
+                    >
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton
+                      color="error"
+                      onClick={() => {
+                        setCurrentCustomerId(customer.userId);
+                        setShowPopup(true);
+                      }}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -293,10 +280,8 @@ const AdminPage: React.FC = () => {
               <TextInput
                 id="phone"
                 type="text"
-                value={newCustomer.phone}
-                onChange={(e) =>
-                  setNewCustomer({ ...newCustomer, phone: e.target.value })
-                }
+                value={newCustomer.phoneNo}
+                onChange={(e) => setNewCustomer({ ...newCustomer, phoneNo: e.target.value })}
                 className="w-full"
               />
             </div>
@@ -380,10 +365,8 @@ const AdminPage: React.FC = () => {
                 <TextInput
                   id="phone"
                   type="text"
-                  value={editCustomer.phone}
-                  onChange={(e) =>
-                    setEditCustomer({ ...editCustomer, phone: e.target.value })
-                  }
+                  value={editCustomer.phoneNo}
+                  onChange={(e) => setEditCustomer({ ...editCustomer, phoneNo: e.target.value })}
                   className="w-full"
                 />
               </div>
