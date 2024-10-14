@@ -27,6 +27,7 @@ const starCountOptions = [
 
 let selectedCategory: string | null = null
 let starRating: number = 0;
+let selectedCategoryId: number = 0;
 
 interface WeeklySchedule {
   startTime: string;
@@ -151,22 +152,32 @@ const SearchResults: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [sortedResults, setSortedResults] = useState<any[]>([]);
   const [locationFilter, setLocationFilter] = useState(false);
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  // const [selectedOption, setSelectedOption] = useState<string | null>(null);
+  const [currentPageS, setCurrentPageS] = useState(1);
+  const [currentPageC, setCurrentPageC] = useState(1);
+  // const [totalItems, setTotalItems] = useState(0);
+  const [totalPagesS, setTotalPagesS] = useState(0);
+  const [totalPagesC, setTotalPagesC] = useState(0);
 
 
-  const page = 0;
-  const size = 8;
+  
+  // const page = 0;
+  const size = 4;
 
-  const fetchData = async () => {
-    const url = `http://localhost:8080/api/v1/search/${query}?page=${page}&size=${size}`;
+  const fetchData = async (page: number) => {
+    const url = `http://localhost:8080/api/v1/search/${query}?page=${page-1}&size=${size}`;
 
     try {
       const response = await fetch(url);
       const data = await response.json();
 
       if (response.ok) {
+        setTotalPagesS(data.totalPages);  // Set the total pages
         setResults(data.content);  // Set the results to the fetched content
         starRating = 0;
+        selectedCategoryId = 0
+        console.log(currentPageS);
+        
       } else {
         throw new Error('Failed to fetch data');
       }
@@ -198,10 +209,41 @@ const SearchResults: React.FC = () => {
     
   };
 
+  const loadBusinessByCategory = async (categoryId: number, page: number) => {
+    const url = `http://localhost:8080/api/v1/search/category/${categoryId}?page=${page-1}&size=${size}`;
+
+    try {
+      setLoading(true);
+      const response = await axios.get(url);
+      setTotalPagesC(response.data.totalPages); 
+      setResults(response.data.content);
+      console.log(currentPageC);
+      
+      starRating = 0;
+      // query.set('category', categoryId.toString());
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setLoading(false);  // Update loading state after the fetch is complete
+    }
+  };
+
   useEffect(() => {
     document.title = "SpotBiz | Search Results";
-    fetchData();
-  }, []);
+    fetchData(currentPageS);
+  }, [currentPageS]);
+
+  useEffect(() => {
+    document.title = "SpotBiz | Search Results";
+    loadBusinessByCategory(selectedCategoryId, currentPageC);
+  }, [currentPageC]);
+
+  const onPageChangeS = (page: number) => setCurrentPageS(page);
+  const onPageChangeC = (page: number) =>{ 
+    setCurrentPageC(page);
+    // loadBusinessByCategory(selectedCategoryId)
+  };
+
 
   if (loading) {
     return (
@@ -218,7 +260,7 @@ const SearchResults: React.FC = () => {
   }
 
   const geocodeAddress = async (address: string): Promise<any | null> => {
-    const api_key = '1a8fbbeaffdd467db7e42bd66702aad1'; // Add your OpenCage API key here
+    const api_key = ''; // Add your OpenCage API key here
     const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(address)}&key=${api_key}`;
   
     try {
@@ -394,21 +436,7 @@ const SearchResults: React.FC = () => {
   
 
 
-  const loadBusinessByCategory = async (categoryId: number) => {
-    const url = `http://localhost:8080/api/v1/search/category/${categoryId}?page=${page}&size=${size}`;
 
-    try {
-      setLoading(true);
-      const response = await axios.get(url);
-      setResults(response.data.content);
-      starRating = 0;
-      // query.set('category', categoryId.toString());
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);  // Update loading state after the fetch is complete
-    }
-  };
 
   return (
     <>
@@ -419,9 +447,14 @@ const SearchResults: React.FC = () => {
             <h1 className="text-3xl font-bold mb-1 pt-4">Search for "{ selectedCategory != null ? selectedCategory : (query ? query : 'computers')}"</h1>
             <p className="text-gray-700 mb-6 pt-1">{results.length} Search results</p>
             <div className='flex flex-row justify-center'>
-              <CategoryPills loadCategory={(categoryId: number) => loadBusinessByCategory(categoryId)} 
+              <CategoryPills loadCategory={(categoryId: number) => {
+                loadBusinessByCategory(categoryId, currentPageC);
+                selectedCategoryId = categoryId;
+              }} 
+              
               markActive={function (categoryName: string): void {
                 selectedCategory = categoryName;
+                
               } }                 />
             </div>
             <div className="sticky top-4 p-4 space-y-4 md:space-y-0 md:space-x-4 flex flex-wrap md:flex-nowrap justify-start mb-6 bg-gray-100 -ml-10 pl-10 -mr-10">
@@ -471,7 +504,10 @@ const SearchResults: React.FC = () => {
             </div>
           </div>
         </div>
-        {results.length !== 0 && <SearchPagination />}
+        {/* pagination for keyword search */}
+        {results.length !== 0 && selectedCategory == null && <SearchPagination currentPage={currentPageS} totalPages={totalPagesS} onPageChange={onPageChangeS}/>}
+        {/* pagination for category search */}
+        {results.length !== 0 && selectedCategory != null && <SearchPagination currentPage={currentPageC} totalPages={totalPagesC} onPageChange={onPageChangeC}/>}
       </Container2>
       <Footer />
     </>
