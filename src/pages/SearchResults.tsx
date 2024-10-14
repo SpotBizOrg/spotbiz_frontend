@@ -11,6 +11,7 @@ import { Rating, RatingStar, Badge } from "flowbite-react";
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Footer from '../components/Footer';
 import Container2 from '../components/Container2';
+import Empty from '../components/Empty';
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
@@ -436,9 +437,12 @@ const SearchResults: React.FC = () => {
                 />
               </div>
             </div>
+
+            {results.length === 0 && <Empty />}
+
             <div className="grid grid-cols-4 gap-8 mb-10">
-            
-              {starRating == 0 && results.map((result, index) => (
+
+              {results.length > 0 && starRating == 0 && results.map((result, index) => (
                 <ResultCard
                   key={result.businessId}
                   imageSrc={result.logo}
@@ -451,7 +455,7 @@ const SearchResults: React.FC = () => {
                   weeklySchedule={result.weeklySchedule}
                 />
               ))}
-              {starRating > 0 && sortedResults.map((result, index) => (
+              {results.length > 0 && starRating > 0 && sortedResults.map((result, index) => (
                 <ResultCard
                   key={result.businessId}
                   imageSrc={result.logo}
@@ -467,7 +471,7 @@ const SearchResults: React.FC = () => {
             </div>
           </div>
         </div>
-        <SearchPagination />
+        {results.length !== 0 && <SearchPagination />}
       </Container2>
       <Footer />
     </>
