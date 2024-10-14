@@ -39,6 +39,7 @@ import { getToken, onMessage } from 'firebase/messaging';
 import { toast} from "react-toastify";
 import Message from "./components/Message";
 import "react-toastify/dist/ReactToastify.css";
+import { setNotificationCount} from '../config';
 
 function App() {
 
@@ -54,6 +55,7 @@ function App() {
     const { title = "Default Title", body = "Default Body", image } = payload.notification || {};
   
     if (title && body) {
+      setNotificationCount();
       const notificationData = { title, body, image };
       toast(<Message notification={notificationData} />);
       saveNotificationToDatabase(notificationData);
@@ -70,6 +72,7 @@ function App() {
         vapidKey: import.meta.env.VITE_APP_VAPID_KEY,
       });
 
+      localStorage.setItem("fcmToken", token);
       console.log("Token generated : ", token);
     } else if (permission === "denied") {
       alert("You denied for the notification");

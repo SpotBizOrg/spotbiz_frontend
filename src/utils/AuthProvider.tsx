@@ -6,6 +6,7 @@ interface User {
   name: string;
   email: string;
   role: string;
+  user_id: string;
 }
 
 interface AuthContextType {
@@ -34,12 +35,13 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     const storedName = localStorage.getItem('name');
     const storedEmail = localStorage.getItem('email');
     const storedRole = localStorage.getItem('role');
+    const storedUserId = localStorage.getItem('user_id');
 
-    console.log('Stored data:', { storedToken, storedName, storedEmail, storedRole });
+    console.log('Stored data:', { storedToken, storedName, storedEmail, storedRole, storedUserId });
 
-    if (storedToken && storedName && storedEmail && storedRole) {
+    if (storedToken && storedName && storedEmail && storedRole && storedUserId) {
       setToken(storedToken);
-      setUser({ name: storedName, email: storedEmail, role: storedRole });
+      setUser({ name: storedName, email: storedEmail, role: storedRole, user_id:storedUserId });
       setIsAuthenticated(checkAuthenticated(storedToken));
     } else {
       setIsAuthenticated(false);
@@ -52,8 +54,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.setItem('name', data.name);
     localStorage.setItem('email', data.email);
     localStorage.setItem('role', data.role);
+    localStorage.setItem('user_id', data.user_id);
     setToken(data.token);
-    setUser({ name: data.name, email: data.email, role: data.role });
+    setUser({ name: data.name, email: data.email, role: data.role,  user_id:data.user_id});
     setIsAuthenticated(true);
   };
 
