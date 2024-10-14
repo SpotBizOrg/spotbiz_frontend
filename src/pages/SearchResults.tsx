@@ -81,7 +81,6 @@ const ResultCard: React.FC<ResultCardProps> = ({ imageSrc, name, place_location,
     hour12: false // 24-hour format
   });
   const currentSriLankanTime = getTimeAsDate(currentTime);
-  console.log(currentSriLankanTime);
   
 
   // Initialize the status, defaulting to "Open Now"
@@ -95,9 +94,6 @@ const ResultCard: React.FC<ResultCardProps> = ({ imageSrc, name, place_location,
     if (todaySchedule && todaySchedule.isOpen) {
       const startTime = getTimeAsDate(todaySchedule.startTime);
       const endTime = getTimeAsDate(todaySchedule.endTime);
-
-      console.log(startTime.getHours);
-      console.log(endTime);
       
 
       // Check if current time is within startTime and endTime
@@ -153,6 +149,9 @@ const SearchResults: React.FC = () => {
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [sortedResults, setSortedResults] = useState<any[]>([]);
+  const [locationFilter, setLocationFilter] = useState(false);
+  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
 
   const page = 0;
   const size = 8;
@@ -217,9 +216,181 @@ const SearchResults: React.FC = () => {
    ); 
   }
 
-  const handleFilterNearBy = () => {
-    // Handle logic for filtering near
+  const geocodeAddress = async (address: string): Promise<any | null> => {
+    const api_key = '1a8fbbeaffdd467db7e42bd66702aad1'; // Add your OpenCage API key here
+    const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(address)}&key=${api_key}`;
+  
+    try {
+      const response = await axios.get(url);
+      const data = response.data;
+  
+      // Check if the response contains valid results
+      if (data && data.results && data.results.length > 0) {
+        const result = data.results[0]; // Take the first result
+        const geometry = result.geometry; // Extract geometry
+        return {
+          name: result.formatted, // Extract the formatted address
+          latitude: geometry.lat, // Extract latitude
+          longitude: geometry.lng, // Extract longitude
+        };
+      }
+    } catch (error) {
+      console.error(`Error geocoding address ${address}:`, error);
+    }
+    return null;
   };
+
+  // let clickOnce: boolean = true;
+  // const handleFilterNearBy = async () => {
+    
+  //   setLocationFilter(!locationFilter);
+  //   const updatedRes: any[] = [];
+    
+  //   if (locationFilter) {
+  //     // Get user location
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition(async (position) => {
+  //       const userLat = position.coords.latitude;
+  //       const userLng = position.coords.longitude;
+  
+  //       console.log("User Location:", userLat, userLng);
+  
+  //       // Geocode all the business addresses
+  //       const addressPromises = results.map((business) =>
+  //         geocodeAddress(business.address)
+  //       );
+        
+  //       const businessLocations = await Promise.all(addressPromises);
+  
+  //       // Calculate distances and log them
+  //       businessLocations.map((businessLocation, index) => {
+  //         if (businessLocation) {
+  //           const distance = calculateDistance(
+  //             userLat,
+  //             userLng,
+  //             businessLocation.latitude,
+  //             businessLocation.longitude
+  //           );
+  //           console.log(
+  //             `Distance to ${results[index].name}: ${distance.toFixed(2)} km`
+  //           );
+
+  //           updatedRes.push({ ...results[index], distance });
+  //         }
+  //       });
+
+  //       // console.log(updatedRes);
+
+  //       const sortedRes = updatedRes.sort((a, b) => a.distance - b.distance);
+
+  //       // console.log(sortedRes);
+
+  //       if (starRating > 0) {
+  //         setSortedResults(sortedRes);
+  //       } else{
+  //         setResults(sortedRes);
+  //       }
+        
+        
+
+  //       // console.log(withDistance);
+
+  //     });
+  //   } else {
+  //     console.error("Geolocation is not supported by this browser.");
+  //   }
+  //   } 
+  //   else {
+  //     if (starRating > 0) {
+  //       setSortedResults(results);
+  //     } else{
+  //       setResults(results);
+  //     }
+  //   }
+  // };
+
+  const handleFilterNearBy = async () => {
+    setLocationFilter(!locationFilter);
+    console.log("Location Filter:", locationFilter);
+    
+    const updatedRes: any[] = [];
+  
+    if (locationFilter) {  // If toggling to apply proximity filter
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(async (position) => {
+          const userLat = position.coords.latitude;
+          const userLng = position.coords.longitude;
+  
+          console.log("User Location:", userLat, userLng);
+  
+          // Geocode all the business addresses
+          const addressPromises = results.map((business) =>
+            geocodeAddress(business.address)
+          );
+  
+          const businessLocations = await Promise.all(addressPromises);
+  
+          // Calculate distances and add to updated results
+          businessLocations.map((businessLocation, index) => {
+            if (businessLocation) {
+              const distance = calculateDistance(
+                userLat,
+                userLng,
+                businessLocation.latitude,
+                businessLocation.longitude
+              );
+              console.log(
+                `Distance to ${results[index].name}: ${distance.toFixed(2)} km`
+              );
+              updatedRes.push({ ...results[index], distance });
+            }
+          });
+  
+          // Sort by proximity
+          const sortedRes = updatedRes.sort((a, b) => a.distance - b.distance);
+  
+          // If starRating is applied, filter after sorting by proximity
+          if (starRating > 0) {
+            const filteredSortedRes = sortedRes.filter((result) => result.avgRating >= starRating);
+            setSortedResults(filteredSortedRes);
+          } else {
+            setResults(sortedRes);
+          }
+        });
+      } else {
+        console.error("Geolocation is not supported by this browser.");
+      }
+    } else {  // If toggling to remove proximity filter
+      if (starRating > 0) {
+        const filteredResults = results.filter((result) => result.avgRating >= starRating);
+        setSortedResults(filteredResults);
+      } else {
+        setResults(results);  // Reset to original results
+      }
+    }
+  };
+  
+  
+  // Haversine formula to calculate the distance between two lat/lng points
+  const calculateDistance = (lat1: number, lon1: number, lat2: number, lon2: number) => {
+    const toRad = (value: number) => (value * Math.PI) / 180;
+  
+    const R = 6371; // Earth's radius in kilometers
+    const dLat = toRad(lat2 - lat1);
+    const dLon = toRad(lon2 - lon1);
+    
+    const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(toRad(lat1)) * Math.cos(toRad(lat2)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+    
+    const distance = R * c; // Distance in kilometers
+    return distance;
+  };
+  
+  
 
 
   const loadBusinessByCategory = async (categoryId: number) => {
@@ -266,6 +437,7 @@ const SearchResults: React.FC = () => {
               </div>
             </div>
             <div className="grid grid-cols-4 gap-8 mb-10">
+            
               {starRating == 0 && results.map((result, index) => (
                 <ResultCard
                   key={result.businessId}
@@ -303,4 +475,6 @@ const SearchResults: React.FC = () => {
 };
 
 export default SearchResults;
+
+
 
