@@ -45,6 +45,8 @@ const CustomerHome: React.FC = () => {
   const [query, setQuery] = useState("");
   const navigate = useNavigate();
 
+  console.log("Hiii")
+
   const handleSearch = () => {
     const searchQuery = query.trim(); 
   
