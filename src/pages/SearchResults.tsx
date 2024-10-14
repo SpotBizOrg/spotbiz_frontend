@@ -27,7 +27,12 @@ const starCountOptions = [
 let selectedCategory: string | null = null
 let starRating: number = 0;
 
-
+interface WeeklySchedule {
+  startTime: string;
+  endTime: string;
+  specialNote: string;
+  isOpen: boolean;
+}
 
 interface ResultCardProps {
   imageSrc: string;
@@ -37,14 +42,76 @@ interface ResultCardProps {
   badges: string[];
   description: string;
   status: string;
+  weeklySchedule: {
+    Monday: WeeklySchedule;
+    Tuesday: WeeklySchedule;
+    Wednesday: WeeklySchedule;
+    Thursday: WeeklySchedule;
+    Friday: WeeklySchedule;
+    Saturday: WeeklySchedule;
+    Sunday: WeeklySchedule;
+  };
 }
 
-const ResultCard: React.FC<ResultCardProps> = ({ imageSrc, name, place_location, rating, badges, description, status }) => {
+const ResultCard: React.FC<ResultCardProps> = ({ imageSrc, name, place_location, rating, badges, description, status, weeklySchedule }) => {
   const navigate = useNavigate();
 
   function navigateToPage() {
     navigate('/customer/business_page');
   }
+
+  // Helper function to convert time strings like "22:00" to Date objects
+  const getTimeAsDate = (time: string) => {
+    const [hours, minutes] = time.split(':').map(Number);
+    const date = new Date();
+    date.setHours(hours, minutes, 0, 0); // Set the hours, minutes, seconds, and milliseconds
+    return date;
+  };
+
+  // Get the current day and time in Sri Lanka time zone
+  const today = new Date();
+  const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+  const currentDay = daysOfWeek[today.getDay()];
+
+  // Convert the Sri Lankan time to a comparable Date object
+  const currentTime = new Date().toLocaleString("en-US", { 
+    timeZone: "Asia/Colombo", 
+    hour: '2-digit', 
+    minute: '2-digit', 
+    hour12: false // 24-hour format
+  });
+  const currentSriLankanTime = getTimeAsDate(currentTime);
+  console.log(currentSriLankanTime);
+  
+
+  // Initialize the status, defaulting to "Open Now"
+  let updatedStatus = "Open Now";
+
+  // If weeklySchedule exists, use it to determine the status
+  if (weeklySchedule) {
+    const todaySchedule = weeklySchedule[currentDay as keyof typeof weeklySchedule];
+    
+
+    if (todaySchedule && todaySchedule.isOpen) {
+      const startTime = getTimeAsDate(todaySchedule.startTime);
+      const endTime = getTimeAsDate(todaySchedule.endTime);
+
+      console.log(startTime.getHours);
+      console.log(endTime);
+      
+
+      // Check if current time is within startTime and endTime
+      if (currentSriLankanTime.getTime() >= startTime.getTime() && currentSriLankanTime.getTime() <= endTime.getTime()) {
+        updatedStatus = "Open Now";
+      } else {
+        updatedStatus = "Closed Now";
+      }
+    } else {
+      updatedStatus = "Closed Now";
+    }
+  }
+
+  
 
   return (
     <div className="bg-white p-4 rounded-lg shadow-md border border-gray-200 flex flex-col items-center" onClick={navigateToPage}>
@@ -69,8 +136,8 @@ const ResultCard: React.FC<ResultCardProps> = ({ imageSrc, name, place_location,
             <p className="text-gray-700">{place_location}</p>
           </div>
         </div>
-        <div className={`p-4 flex justify-end text-sm font-semibold ${status === 'Open Now' ? 'text-green-600' : 'text-red-600'}`}>
-          <p>{status}</p>
+        <div className={`p-4 flex justify-end text-sm font-semibold ${updatedStatus === 'Open Now' ? 'text-green-600' : 'text-red-600'}`}>
+          <p>{updatedStatus}</p>
         </div>
       </div>
     </div>
@@ -209,6 +276,7 @@ const SearchResults: React.FC = () => {
                   badges={result.tags} // You can replace with actual badges if available in your data
                   description={result.description}
                   status={result.status === "open now" ? "Open Now" : "Closed Now"}
+                  weeklySchedule={result.weeklySchedule}
                 />
               ))}
               {starRating > 0 && sortedResults.map((result, index) => (
@@ -221,6 +289,7 @@ const SearchResults: React.FC = () => {
                   badges={result.tags} // You can replace with actual badges if available in your data
                   description={result.description}
                   status={result.status === "open now" ? "Open Now" : "Closed Now"}
+                  weeklySchedule={result.weeklySchedule}
                 />
               ))}
             </div>
