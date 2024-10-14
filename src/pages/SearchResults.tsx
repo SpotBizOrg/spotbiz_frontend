@@ -25,10 +25,9 @@ const starCountOptions = [
 ];
 
 let selectedCategory: string | null = null
+let starRating: number = 0;
 
-const handleSelectOption = (option: string) => {
-  // Handle whatever logic you need here based on the selected option
-};
+
 
 interface ResultCardProps {
   imageSrc: string;
@@ -78,6 +77,8 @@ const ResultCard: React.FC<ResultCardProps> = ({ imageSrc, name, place_location,
   );
 };
 
+
+
 const SearchResults: React.FC = () => {
   const location = useLocation();
   const { query } = location.state;
@@ -98,6 +99,7 @@ const SearchResults: React.FC = () => {
 
       if (response.ok) {
         setResults(data.content);  // Set the results to the fetched content
+        starRating = 0;
       } else {
         throw new Error('Failed to fetch data');
       }
@@ -106,6 +108,27 @@ const SearchResults: React.FC = () => {
     } finally {
       setLoading(false);  // Update loading state after the fetch is complete
     }
+  };
+
+  const filterOnStarRating = (rating: number) => {
+
+    const filteredResults = results.filter((result) => {
+      return result.avgRating >= rating;
+    });
+
+    setSortedResults(filteredResults);
+  
+  }
+  
+  
+  const handleSelectOption = (option: string) => {
+    // Handle whatever logic you need here based on the selected option
+    starRating = parseInt(option.charAt(0));
+    console.log(starRating);
+  
+    filterOnStarRating(starRating);
+    
+    
   };
 
   useEffect(() => {
@@ -139,6 +162,7 @@ const SearchResults: React.FC = () => {
       setLoading(true);
       const response = await axios.get(url);
       setResults(response.data.content);
+      starRating = 0;
       // query.set('category', categoryId.toString());
     } catch (error) {
       console.error(error);
@@ -175,7 +199,19 @@ const SearchResults: React.FC = () => {
               </div>
             </div>
             <div className="grid grid-cols-4 gap-8 mb-10">
-              {results.map((result, index) => (
+              {starRating == 0 && results.map((result, index) => (
+                <ResultCard
+                  key={result.businessId}
+                  imageSrc={result.logo}
+                  name={result.name}
+                  place_location={result.address}
+                  rating={result.avgRating}
+                  badges={result.tags} // You can replace with actual badges if available in your data
+                  description={result.description}
+                  status={result.status === "open now" ? "Open Now" : "Closed Now"}
+                />
+              ))}
+              {starRating > 0 && sortedResults.map((result, index) => (
                 <ResultCard
                   key={result.businessId}
                   imageSrc={result.logo}
