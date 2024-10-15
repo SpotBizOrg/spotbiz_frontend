@@ -50,7 +50,7 @@ const BusinessLocation: React.FC<BusinessLocationProps> = ({ location }) => {
 
   useEffect(() => {
     if (location) {
-      fetchCoordinates(location);
+      // fetchCoordinates(location); // Uncomment this line to fetch coordinates
     }
   }, [location]);
 

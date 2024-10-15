@@ -111,8 +111,9 @@ const BusinessPage: React.FC = () => {
               userId={businessData?.latestReview.userId || 0} 
               businessId={businessData?.latestReview.businessId || 0}/>
             </div>
+            
             <div className='w-3/6 ml-20 mr-20 p-8 max-h-[130vh] overflow-y-auto scrollbar-hide'>
-              <Column2/>
+              {businessData && <Column2 businessEmail={businessData.email}/>}
             </div>
             <div className='flex flex-col w-2/6'>
               <AboutBusiness about={businessData?.description || 'We offer a diverse range of high-quality electronic items, including home appliances, personal gadgets, and entertainment systems, backed by exceptional customer service and after-sales support, ensuring a seamless and satisfying shopping experience for all our customers.'}/>
