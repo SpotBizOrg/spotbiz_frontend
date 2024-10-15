@@ -1,14 +1,16 @@
 import { Pagination } from "flowbite-react";
-import { useState } from "react";
 
-export function SearchPagination() {
-  const [currentPage, setCurrentPage] = useState(1);
+interface SearchPaginationProps {
+  currentPage: number;
+  totalPages: number;
+  onPageChange: (page: number) => void;
+}
 
-  const onPageChange = (page: number) => setCurrentPage(page);
+export function SearchPagination({ currentPage, totalPages, onPageChange }: SearchPaginationProps) {
 
   return (
     <div className="flex overflow-x-auto sm:justify-center">
-      <Pagination currentPage={currentPage} totalPages={100} onPageChange={onPageChange} />
+      <Pagination currentPage={currentPage} totalPages={totalPages} onPageChange={onPageChange} />
     </div>
   );
 }
