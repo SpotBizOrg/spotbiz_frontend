@@ -12,6 +12,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Footer from '../components/Footer';
 import Container2 from '../components/Container2';
 import Empty from '../components/Empty';
+import { BACKEND_URL } from '../../config';
 
 const useQuery = () => {
   return new URLSearchParams(useLocation().search);
@@ -165,7 +166,7 @@ const SearchResults: React.FC = () => {
   const size = 4;
 
   const fetchData = async (page: number) => {
-    const url = `http://localhost:8080/api/v1/search/${query}?page=${page-1}&size=${size}`;
+    const url = `${BACKEND_URL}/search/${query}?page=${page-1}&size=${size}`;
 
     try {
       const response = await fetch(url);
@@ -210,7 +211,7 @@ const SearchResults: React.FC = () => {
   };
 
   const loadBusinessByCategory = async (categoryId: number, page: number) => {
-    const url = `http://localhost:8080/api/v1/search/category/${categoryId}?page=${page-1}&size=${size}`;
+    const url = `${BACKEND_URL}/search/category/${categoryId}?page=${page-1}&size=${size}`;
 
     try {
       setLoading(true);
