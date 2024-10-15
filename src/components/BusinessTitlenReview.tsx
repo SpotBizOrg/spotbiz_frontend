@@ -104,11 +104,11 @@ const BusinessTitlenReview: React.FC<BusinessTitlenReviewProps> = ({ businessNam
             {
               Array.from({ length: 5 }).map((_, index) => {
                 if (index < Math.floor(rating)) {
-                  return <FaStar key={index} className="text-yellow-400" />;
+                  return <FaStar key={index} className="text-gray-800" />;
                 } else if (index === Math.floor(rating) && rating % 1 !== 0) {
-                  return <FaStarHalfAlt key={index} className="text-yellow-400" />;
+                  return <FaStarHalfAlt key={index} className="text-gray-800" />;
                 } else {
-                  return <FaRegStar key={index} className="text-gray-500" />;
+                  return <FaRegStar key={index} className="text-gray-800" />;
                 }
               })
             }

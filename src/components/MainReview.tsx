@@ -1,14 +1,40 @@
 import React from 'react';
-import { FaFlag, FaStar } from "react-icons/fa";
+import { FaFlag, FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
 import { HiPencilAlt } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 
-const MainReview: React.FC = () => {
+interface MainReviewProps {
+  rating: number;
+    description: string;
+    date: string;
+    userId: number;
+    businessId: number;
+    title: string;
+}
+
+
+
+const MainReview: React.FC<MainReviewProps> = ({ rating, description, date, userId, businessId, title }) => {
   const navigate = useNavigate();
 
   function navigateToPage() {
     navigate('/customer/reviews');
   }
+
+  const formatDate = (inputDate: string): string => {
+    const date = new Date(inputDate);
+  
+    // Define options for formatting the date
+    const options: Intl.DateTimeFormatOptions = {
+      year: "numeric",
+      month: "long", // Full month name like 'July'
+      day: "numeric", // Day of the month like '26'
+    };
+  
+    // Format the date
+    return date.toLocaleDateString("en-US", options);
+  };
+  
 
   return (
     <>
@@ -17,20 +43,26 @@ const MainReview: React.FC = () => {
           <p className="font-bold text-bluedark text-bodymedium">Reviews</p>
         </div>
         <div className="mt-4 mb-2">
-          <p className="font-semibold text-gray-800">S.A.Edirisinghe</p>
+          <p className="font-semibold text-gray-800">{title}</p>
           <div className="flex items-center text-yellow-400">
-            <FaStar />
-            <FaStar />
-            <FaStar />
-            <FaStar />
-            <FaStar />
+          {
+              Array.from({ length: 5 }).map((_, index) => {
+                if (index < Math.floor(rating)) {
+                  return <FaStar key={index} className="text-gray-800" />;
+                } else if (index === Math.floor(rating) && rating % 1 !== 0) {
+                  return <FaStarHalfAlt key={index} className="text-gray-800" />;
+                } else {
+                  return <FaRegStar key={index} className="text-gray-800" />;
+                }
+              })
+            }
           </div>
         </div>
         <p className="text-gray-700 mb-4">
-          The selection of electronics and computers is top-notch and always up-to-date.
+          {description}
         </p>
         <div className="flex justify-between items-center border-b border-gray-200 pb-4">
-          <span className="text-gray-500 text-body">July 28</span>
+          <span className="text-gray-500 text-body">{formatDate(date)}</span>
           <button
             onClick={navigateToPage}
             className="text-sm bg-gray-800 text-white px-3 py-1 rounded-lg hover:bg-gray-500"

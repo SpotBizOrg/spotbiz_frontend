@@ -26,28 +26,28 @@ const BusinessInfoCol: React.FC<BusinessInfoColProps> = ({ name, logo, address, 
                 <p className="flex item-center text-gray-800 text-bodysmall">Buddhika Dharmawardne
                 </p>
             </div> */}
-            <div className="flex flex-row items-center mb-2">
+            <div className="flex flex-row items-center mb-2 ">
                 <FaMapMarkerAlt className="mr-3 pt-1 text-gray-500 text-bodymedium" />
-                <p className="flex item-center text-gray-800 text-bodysmall">{address}
+                <p className="flex item-center text-gray-800 text-bodysmall ">{address}
                 </p>
             </div>
-            <div className="flex flex-row text-center justify-start mb-2">
+            <div className="flex flex-row tems-center mb-2 truncate">
                 <FaPhone className="mr-3 pt-1 text-gray-500 text-bodymedium" />
                 <p className="flex item-center text-gray-800 text-bodysmall">{phone}
                 </p>
             </div>
             {
                 email && (
-                    <div className="flex flex-row text-center justify-start mb-2">
-                        <IoMailSharp className="mr-3 pt-1 text-gray-500 text-bodymedium" />
-                        <p className="flex item-center text-gray-800 text-bodysmall">{email}
+                    <div className="flex flex-row tems-center mb-2 ">
+                        <IoMailSharp className="mr-3 pt-1 text-gray-500 text-bodymedium " />
+                        <p className="flex item-center text-gray-800 text-bodysmall truncate">{email}
                         </p>
                     </div>
                 )
             }
             {
                 fbLink && (
-                    <div className="flex flex-row text-center justify-start mb-2">
+                    <div className="flex flex-row tems-center mb-2 ">
                         <FaFacebookF className="mr-3 pt-1 text-gray-500 text-bodymedium" />
                         <p className="flex item-center text-gray-800 text-bodysmall cursor-pointer"><a href={fbLink}>{name}</a></p>
                     </div>

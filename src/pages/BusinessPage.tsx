@@ -14,7 +14,7 @@ import FloatingBtnsbusiness from '../components/FlotingBtnsbusiness';
 import { BACKEND_URL } from '../../config';
 import image from '../assets/promo.lk-44253997837344f08aed5b131f0bd271.jpg';
 
-const businessId: number = 30
+const businessId: number = 28
 
 interface WeeklySchedule {
   startTime: string;
@@ -45,6 +45,14 @@ interface BusinessPageProps {
     Saturday: WeeklySchedule;
     Sunday: WeeklySchedule;
   };
+  latestReview:{
+    rating: number;
+    description: string;
+    date: string;
+    userId: number;
+    businessId: number;
+    title: string;
+  }
 }
 
 
@@ -61,6 +69,8 @@ const BusinessPage: React.FC = () => {
       const data = await response.json();
       console.log(data);
       setBusinessData(data);
+      console.log(businessData?.latestReview.description);
+      
     } catch (error) {
       console.error(error);
     }
@@ -93,7 +103,13 @@ const BusinessPage: React.FC = () => {
               phone={businessData?.phone || 'phone number'} 
               email={businessData?.email || 'email'} 
               fbLink={businessData?.fblink || '#'}/>
-              <MainReview/>
+              
+              <MainReview title={businessData?.latestReview.title || "sample name"} 
+              rating={businessData?.latestReview.rating || 0} 
+              description={businessData?.latestReview.description || "this is description"} 
+              date={businessData?.latestReview.date || "2024-10-14T04:46:49.097"} 
+              userId={businessData?.latestReview.userId || 0} 
+              businessId={businessData?.latestReview.businessId || 0}/>
             </div>
             <div className='w-3/6 ml-20 mr-20 p-8 max-h-[130vh] overflow-y-auto scrollbar-hide'>
               <Column2/>
