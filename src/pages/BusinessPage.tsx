@@ -13,7 +13,6 @@ import Container2 from '../components/Container2';
 import FloatingBtnsbusiness from '../components/FlotingBtnsbusiness';
 import { BACKEND_URL } from '../../config';
 import image from '../assets/promo.lk-44253997837344f08aed5b131f0bd271.jpg';
-import loadStoredData from '../utils/AuthProvider';
 
 const businessId: number = 28
 
@@ -61,6 +60,7 @@ interface BusinessPageProps {
 const BusinessPage: React.FC = () => {
 
   const StoredEmail = localStorage.getItem('email');
+  const StoredClientId = parseInt(localStorage.getItem('user_id') || '0');
   console.log(StoredEmail);
   
 
@@ -137,7 +137,7 @@ const BusinessPage: React.FC = () => {
           </div>
         </div>
       </div>
-      <FloatingBtnsbusiness/>
+      <FloatingBtnsbusiness businessMobile={businessData?.phone || ''} clientId={StoredClientId || 0} businessId={businessData?.businessId || 0}/>
       {/* <Business /> */}
     </Container2>
       <Footer />
