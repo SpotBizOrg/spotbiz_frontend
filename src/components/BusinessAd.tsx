@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
 import { useAuth } from "../utils/AuthProvider";
-import { Modal, Badge, TextInput, Label, Button } from "flowbite-react";
+import { Modal, Badge } from "flowbite-react";
 import Businessnavbar from "../components/Businessnavbar";
 import Businesssidebar from "../components/Businesssidebar";
 import Container from "./Container";
 import { FaPlus } from "react-icons/fa";
+import AddAdvertisementModal from "../components/AddBusinessAd";
+import { toast } from "react-toastify";
 
 interface Advertisement {
+  id: number;
   img: string;
-  date: string;
   description: string;
   startDate: string;
   endDate: string;
@@ -23,6 +25,8 @@ const BusinessAd: React.FC = () => {
   const [selectedImageDetails, setSelectedImageDetails] =
     useState<Advertisement | null>(null);
   const [advertisements, setAdvertisements] = useState<Advertisement[]>([]);
+  const [tags, setTags] = useState<string[]>([]);
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     if (checkAuthenticated() && user?.email && token) {
@@ -43,20 +47,46 @@ const BusinessAd: React.FC = () => {
     )
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         const parsedAdvertisements = data.map((ad: any) => ({
-          ...JSON.parse(ad.data),
+          id: ad.adsId,
+          img: JSON.parse(ad.data).img,
+          description: JSON.parse(ad.data).description,
+          startDate: JSON.parse(ad.data).startDate,
+          endDate: JSON.parse(ad.data).endDate,
           isActive: ad.status,
         }));
-        console.log(parsedAdvertisements);
         setAdvertisements(parsedAdvertisements);
       })
       .catch((error) => console.error(error));
   };
 
-  const openPopup = (image: string, details: Advertisement) => {
+  const openPopup = (image: string, details: Advertisement, id: Number) => {
     setSelectedImage(image);
     setSelectedImageDetails(details);
+    setTags([]);
+    setLoading(true);
+    console.log(id);
+    fetch(`http://localhost:8080/api/v1/advertisement/getTags/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (Array.isArray(data.keywords)) {
+          setTags(data.keywords);
+        } else {
+          console.error("Unexpected data format:", data);
+          toast.error("Unexpected data format");
+        }
+      })
+      .catch((error) => {
+        console.error("Failed to fetch tags:", error);
+        toast.error("Failed to fetch tags");
+      })
+      .finally(() => {
+        setLoading(false);
+      });
     setPopupOpen(true);
   };
 
@@ -74,15 +104,50 @@ const BusinessAd: React.FC = () => {
     setFormPopupOpen(false);
   };
 
-  const handleAddAd = () => {
-    console.log("New Advertisement:", newAd);
-    closeFormPopup();
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
+    return date.toISOString().split("T")[0];
   };
 
-  const [newAd, setNewAd] = useState<Partial<Advertisement>>({
-    description: "",
-    img: "",
-  });
+  const handleAddAd = () => {
+    try {
+      fetch(
+        `http://localhost:8080/api/v1/business_owner/advertisements/${user?.email}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      )
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error("Failed to fetch advertisements");
+          }
+          return response.json();
+        })
+        .then((data) => {
+          const parsedAdvertisements = data.map((ad: any) => ({
+            id: JSON.parse(ad.data).adsId,
+            img: JSON.parse(ad.data).img,
+            description: JSON.parse(ad.data).description,
+            startDate: JSON.parse(ad.data).startDate,
+            endDate: JSON.parse(ad.data).endDate,
+            isActive: ad.status,
+          }));
+          console.log(parsedAdvertisements);
+          setAdvertisements(parsedAdvertisements);
+        })
+        .catch((error) => {
+          console.error("Failed to fetch advertisements:", error);
+          toast.error("Failed to fetch advertisements");
+        });
+    } catch (error) {
+      console.error("Failed to fetch advertisements:", error);
+      toast.error("Failed to fetch advertisements");
+    }
+  };
 
   return (
     <Container>
@@ -106,25 +171,29 @@ const BusinessAd: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-3 gap-4">
-          {advertisements.map((ad, index) => (
-            <div
-              key={index}
-              className="bg-white p-5 rounded-md shadow-md mb-5 border border-gray-300 cursor-pointer transform transition-transform duration-300 hover:scale-105"
-              onClick={() => openPopup(ad.img, ad)}
-            >
-              <img
-                src={ad.img}
-                alt="Ad"
-                className="w-full h-auto object-cover rounded-lg mb-5 "
-              />
-              <p className="text-bodylarge">{ad.description}</p>
-              <p className="mt-2 text-bodysmall text-gray-600">
-                <b>Posted on:</b> {ad.date}
-              </p>
-            </div>
-          ))}
-        </div>
+        {advertisements.length === 0 ? (
+          <p className="text-center text-gray-500">No advertisements found</p>
+        ) : (
+          <div className="grid grid-cols-3 gap-4">
+            {advertisements.map((ad, index) => (
+              <div
+                key={index}
+                className="bg-white p-5 rounded-md shadow-md mb-5 border border-gray-300 cursor-pointer transform transition-transform duration-300 hover:scale-105"
+                onClick={() => openPopup(ad.img, ad, ad.id)}
+              >
+                <img
+                  src={ad.img}
+                  alt="Ad"
+                  className="w-full h-auto object-cover rounded-lg mb-5 "
+                />
+                <p className="text-bodylarge">{ad.description}</p>
+                <p className="mt-2 text-bodysmall text-gray-600">
+                  <b>Posted on:</b> {formatDate(ad.startDate)}
+                </p>
+              </div>
+            ))}
+          </div>
+        )}
 
         <Modal
           dismissible
@@ -153,12 +222,28 @@ const BusinessAd: React.FC = () => {
                   </p>
                   <p className="text-sm text-gray-600">
                     <b>Posted on: </b>
-                    {selectedImageDetails?.date}
+                    {selectedImageDetails?.startDate
+                      ? formatDate(selectedImageDetails.startDate)
+                      : "Date not available"}
                   </p>
                   <p className="text-sm text-gray-600">
                     <b>Removing on: </b>
-                    {selectedImageDetails?.endDate}
+                    {selectedImageDetails?.endDate
+                      ? formatDate(selectedImageDetails.endDate)
+                      : "Date not available"}
                   </p>
+
+                  {loading ? (
+                    <p>Loading tags...</p>
+                  ) : (
+                    <div>
+                      {tags.map((tag, index) => (
+                        <span key={index} className="badge">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  )}
 
                   {!selectedImageDetails?.isActive && (
                     <div className="float-right">
@@ -171,60 +256,11 @@ const BusinessAd: React.FC = () => {
           </Modal.Body>
         </Modal>
 
-        <Modal
-          dismissible
+        <AddAdvertisementModal
           show={formPopupOpen}
           onClose={closeFormPopup}
-          size="lg"
-          theme={{
-            content: {
-              base: "bg-white w-3/4 rounded-lg",
-              inner: "rounded-lg shadow-lg",
-            },
-          }}
-        >
-          <Modal.Header>Add New Advertisement</Modal.Header>
-          <Modal.Body>
-            <form className="space-y-6">
-              <div>
-                <Label htmlFor="details">Advertisement Name</Label>
-                <TextInput
-                  id="details"
-                  type="text"
-                  value={newAd.description}
-                  onChange={(e) =>
-                    setNewAd({ ...newAd, description: e.target.value })
-                  }
-                  className="mt-1"
-                />
-              </div>
-              <div>
-                <Label htmlFor="image">Advertisement Image</Label>
-                <TextInput
-                  id="image"
-                  type="file"
-                  onChange={(e) => {
-                    const file = e.target.files?.[0];
-                    if (file) {
-                      const reader = new FileReader();
-                      reader.onloadend = () => {
-                        setNewAd({ ...newAd, img: reader.result as string });
-                      };
-                      reader.readAsDataURL(file);
-                    }
-                  }}
-                  className="mt-1"
-                />
-              </div>
-            </form>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onClick={handleAddAd}>Add Advertisement</Button>
-            <Button color="gray" onClick={closeFormPopup}>
-              Cancel
-            </Button>
-          </Modal.Footer>
-        </Modal>
+          onAdd={handleAddAd}
+        />
       </div>
     </Container>
   );
