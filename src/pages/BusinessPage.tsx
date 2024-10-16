@@ -13,6 +13,7 @@ import Container2 from '../components/Container2';
 import FloatingBtnsbusiness from '../components/FlotingBtnsbusiness';
 import { BACKEND_URL } from '../../config';
 import image from '../assets/promo.lk-44253997837344f08aed5b131f0bd271.jpg';
+import loadStoredData from '../utils/AuthProvider';
 
 const businessId: number = 28
 
@@ -59,6 +60,10 @@ interface BusinessPageProps {
 
 const BusinessPage: React.FC = () => {
 
+  const StoredEmail = localStorage.getItem('email');
+  console.log(StoredEmail);
+  
+
   const [businessData, setBusinessData] = React.useState<BusinessPageProps | null>(null);
 
   const fetchBusinessData = async (businessId: number) => {
@@ -69,7 +74,7 @@ const BusinessPage: React.FC = () => {
       const data = await response.json();
       console.log(data);
       setBusinessData(data);
-      console.log(businessData?.latestReview.description);
+      // console.log(businessData?.latestReview.description);
       
     } catch (error) {
       console.error(error);
@@ -104,12 +109,13 @@ const BusinessPage: React.FC = () => {
               email={businessData?.email || 'email'} 
               fbLink={businessData?.fblink || '#'}/>
               
-              <MainReview title={businessData?.latestReview.title || "sample name"} 
-              rating={businessData?.latestReview.rating || 0} 
-              description={businessData?.latestReview.description || "this is description"} 
-              date={businessData?.latestReview.date || "2024-10-14T04:46:49.097"} 
-              userId={businessData?.latestReview.userId || 0} 
-              businessId={businessData?.latestReview.businessId || 0}/>
+              <MainReview title={businessData?.latestReview.title || "sample name"}
+                rating={businessData?.latestReview.rating || 0}
+                description={businessData?.latestReview.description || "this is description"}
+                date={businessData?.latestReview.date || "2024-10-14T04:46:49.097"}
+                userId={businessData?.latestReview.userId || 0}
+                businessId={businessData?.latestReview.businessId || 0} 
+                storedEmail={StoredEmail || 'nirashanelki@gmail.com'}/>
             </div>
             
             <div className='w-3/6 ml-20 mr-20 p-8 max-h-[130vh] overflow-y-auto scrollbar-hide'>
