@@ -14,6 +14,7 @@ import {
 import { format } from 'date-fns';
 import { toast } from 'react-toastify';
 import SortByDropdown from "../components/SortBy";
+import { BACKEND_URL } from '../../config';
 
 const dummyUsers = [
   { userId:1, name: "John Doe", email: "john@example.com", phone: "123-456-7890", score:90 },
@@ -64,9 +65,8 @@ function ManageCoupons() {
   },[]);
 
   const fetchAllCoupons = async (statusFilter: string | null, discountFilter: string | null) => {
-    console.log(statusFilter)
     try {
-      const response = await fetch('http://localhost:8080/api/v1/coupon/all', {
+      const response = await fetch(`${BACKEND_URL}/coupon/all`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -130,7 +130,6 @@ function ManageCoupons() {
       });
   
       setItems(filteredCoupons);
-      console.log('Filtered Coupons:', filteredCoupons);
   
     } catch (error) {
       console.error('An error occurred:', error);
@@ -176,7 +175,7 @@ function ManageCoupons() {
   const handleIssueCoupon = async () => {
     if(currentCouponId !== null && userId != null){
       try {
-        const response = await fetch(`http://localhost:8080/api/v1/coupon/issue/${userId}/${currentCouponId}`, {
+        const response = await fetch(`${BACKEND_URL}/coupon/issue/${userId}/${currentCouponId}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -210,7 +209,7 @@ function ManageCoupons() {
     const description = newCoupon.description
     const discount = newCoupon.discount
     try {
-      const response = await fetch('http://localhost:8080/api/v1/coupon/insert', {
+      const response = await fetch(`${BACKEND_URL}/coupon/insert`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -249,7 +248,7 @@ function ManageCoupons() {
 
   const handleDeleteCoupon = async() => {
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/coupon/delete/${currentCouponId}`, {
+      const response = await fetch(`${BACKEND_URL}/coupon/delete/${currentCouponId}`, {
         method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
@@ -279,7 +278,7 @@ function ManageCoupons() {
     const description = editCoupon?.description
     const discount = editCoupon?.discount
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/coupon/update/${editCoupon?.couponId}`, {
+      const response = await fetch(`${BACKEND_URL}/coupon/update/${editCoupon?.couponId}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
