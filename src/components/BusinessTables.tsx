@@ -5,16 +5,18 @@ import { IconButton } from "@mui/material";
 import { Delete as DeleteIcon, Block as BlockIcon, Edit as EditIcon, CheckCircle as CheckCircleIcon, Cancel as CancelIcon } from "@mui/icons-material";
 import { BACKEND_URL } from '../../config';
 import axios from 'axios';
+import { Bounce, toast } from 'react-toastify';
 
 
 const BusinessAndReviewTables: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState('reported');
   const [showPopup, setShowPopup] = useState(false);
+  const [showAppealDiscardPopup, setAppealDiscardPopup] = useState(false);
   const [showBanPopup, setShowBanPopup] = useState(false);
   const [showConsiderPopup, setShowConsiderPopup] = useState(false);
   const [showKeepPopup, setShowKeepPopup] = useState(false);
   const [showRemovePopup, setShowRemovePopup] = useState(false);
-  const [currentItemId, setCurrentItemId] = useState<string | null>(null);
+  const [currentItemId, setCurrentItemId] = useState<number>(0);
   const [reportedBusinesses, setReportedBusinesses] = useState<any[]>([]);
   const [appealedBusinesses, setAppealedBusinesses] = useState<any[]>([]);
   const [reportedReviews, setReportedReviews] = useState<any[]>([]);
@@ -39,8 +41,9 @@ const BusinessAndReviewTables: React.FC = () => {
       // console.log(response.data);
 
       const formattedData = response.data.map((item: any) => ({
-        id: item.business.businessId,
-        name: item.business.name,
+        reportId: item.reportId,
+        BusinessId: item.business.businessId,
+        BusinessName: item.business.name,
         reason: item.reason,
       }));
       
@@ -61,6 +64,7 @@ const BusinessAndReviewTables: React.FC = () => {
       console.log(response.data);
 
       const formattedData = response.data.map((item: any) => ({
+        appealId: item.appealId,
         id: item.reportedBusiness.reportId,
         name: item.business.name,
         reason: item.reason,
@@ -84,6 +88,7 @@ const BusinessAndReviewTables: React.FC = () => {
 
       const formattedData = response.data.map((item: any) => ({
         id: item.reviewId,
+        reviewerId: item.user.userId,
         name: item.business.name,
         reason: item.description,
 
@@ -100,28 +105,267 @@ const BusinessAndReviewTables: React.FC = () => {
     setSelectedTab(tab);
   };
 
-  const handleDelete = () => {
-    console.log(`Item ${currentItemId} deleted.`);
-    setShowPopup(false);
+  const handleDelete = async () => {
+    try {
+      
+      const url = `${BACKEND_URL}/reported-business/delete?reportId=${currentItemId}`;
+      const response = await axios.put(url);  // Assuming the API returns success response
+  
+      setShowPopup(false);
+  
+      // Show success toast and reload page after it's dismissed
+      toast.success('Report Request Deleted', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        onClose: () => window.location.reload(),
+      });
+  
+    } catch (error) {
+      setShowPopup(false);
+      console.error('Failed to delete the report request:', error);
+  
+      // Handle and show error if the API call fails
+      toast.error('Failed to delete the report request', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
   };
+  
 
   const handleBan = () => {
-    console.log(`Business ${currentItemId} banned.`);
-    setShowBanPopup(false);
+    try {
+      
+      console.log(`Business ${currentItemId} banned.`);
+      
+      const url = `${BACKEND_URL}/reported-business/ban?reportId=${currentItemId}`;
+      axios.put(url);  // Assuming the API returns success response
+  
+      setShowBanPopup(false);
+
+  
+      // Show success toast and reload page after it's dismissed
+      toast.success('Account was banned!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        onClose: () => window.location.reload(),
+      });
+  
+    } catch (error) {
+      setShowBanPopup(false);
+
+      console.error('Failed to delete the report request:', error);
+  
+      // Handle and show error if the API call fails
+      toast.error('Failed to ban the account', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
   };
 
   const handleConsider = () => {
-    console.log(`Business ${currentItemId} considered for appeal.`);
-    setShowConsiderPopup(false);
+    try {
+      
+      // console.log(`Business ${currentItemId} banned.`);
+      
+      const url = `${BACKEND_URL}/business-appeal/update/${currentItemId}?status=APPROVED`;
+      axios.put(url);  // Assuming the API returns success response
+  
+      setShowConsiderPopup(false);
+
+  
+      // Show success toast and reload page after it's dismissed
+      toast.success('Success!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        onClose: () => window.location.reload(),
+      });
+  
+    } catch (error) {
+      setShowConsiderPopup(false);
+
+      console.error('Failed to update status:', error);
+  
+      // Handle and show error if the API call fails
+      toast.error('Error occured', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+    
+  };
+
+  const handleAppealDiscard = () => {
+    try {
+      
+      // console.log(`Business ${currentItemId} banned.`);
+      
+      const url = `${BACKEND_URL}/business-appeal/update/${currentItemId}?status=REJECTED`;
+      axios.put(url);  // Assuming the API returns success response
+  
+      setAppealDiscardPopup(false);
+
+  
+      // Show success toast and reload page after it's dismissed
+      toast.success('Appeal rejected!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        onClose: () => window.location.reload(),
+      });
+  
+    } catch (error) {
+      setAppealDiscardPopup(false);
+
+      console.error('Failed to update status:', error);
+  
+      // Handle and show error if the API call fails
+      toast.error('Error occured', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
+    
   };
 
   const handleKeep = () => {
-    console.log(`Review ${currentItemId} kept.`);
-    setShowKeepPopup(false);
+    try {
+ 
+      const url = `${BACKEND_URL}/review-report/action/${currentItemId}?action=KEEP`;
+      axios.put(url);  // Assuming the API returns success response
+  
+      setShowKeepPopup(false);
+  
+      // Show success toast and reload page after it's dismissed
+      toast.success('Review Kept!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        onClose: () => window.location.reload(),
+      });
+  
+    } catch (error) {
+      setShowKeepPopup(false);
+
+      console.error('Failed to update status:', error);
+  
+      // Handle and show error if the API call fails
+      toast.error('Error occured', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
   };
 
   const handleRemove = () => {
-    console.log(`Review ${currentItemId} removed.`);
+    try {
+           
+      const url = `${BACKEND_URL}/review-report/action/${currentItemId}?action=DELETE`;
+      axios.put(url);  // Assuming the API returns success response
+  
+      setShowKeepPopup(false);
+  
+      // Show success toast and reload page after it's dismissed
+      toast.success('Review Deleted!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        onClose: () => window.location.reload(),
+      });
+  
+    } catch (error) {
+      setShowKeepPopup(false);
+
+      console.error('Failed to update status:', error);
+  
+      // Handle and show error if the API call fails
+      toast.error('Error occured', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+      });
+    }
     setShowRemovePopup(false);
   };
 
@@ -154,13 +398,13 @@ const BusinessAndReviewTables: React.FC = () => {
   
 
   const renderReportedBusinesses = () => {
-    const headers = ['Business ID', 'Business Name', 'Reason for Reporting'];
+    const headers = ['Report ID','Business ID', 'Business Name', 'Reason for Reporting'];
     const actions = reportedBusinesses.map((business) => (
       <>
         <IconButton
           color="default"
           onClick={() => {
-            setCurrentItemId(business.id);
+            setCurrentItemId(business.reportId);
             setShowBanPopup(true);
           }}
         >
@@ -169,7 +413,7 @@ const BusinessAndReviewTables: React.FC = () => {
         <IconButton
           color="error"
           onClick={() => {
-            setCurrentItemId(business.id);
+            setCurrentItemId(business.ReportId);
             setShowPopup(true);
           }}
         >
@@ -182,13 +426,13 @@ const BusinessAndReviewTables: React.FC = () => {
   };
 
   const renderAppealedBusinesses = () => {
-    const headers = ['ReportId', 'Business Name', 'Reason for Appealing'];
-    const actions = appealedBusinesses.map((business) => (
+    const headers = ['Appeal ID','ReportId', 'Business Name', 'Reason for Appealing'];
+    const actions = appealedBusinesses.map((appeal) => (
       <>
         <IconButton
           color="default"
           onClick={() => {
-            setCurrentItemId(business.id);
+            setCurrentItemId(appeal.appealId);
             setShowConsiderPopup(true);
           }}
         >
@@ -197,8 +441,8 @@ const BusinessAndReviewTables: React.FC = () => {
         <IconButton
           color="error"
           onClick={() => {
-            setCurrentItemId(business.id);
-            setShowPopup(true);
+            setCurrentItemId(appeal.appealId);
+            setAppealDiscardPopup(true);
           }}
         >
           <DeleteIcon />
@@ -210,13 +454,13 @@ const BusinessAndReviewTables: React.FC = () => {
   };
 
   const renderReportedReviews = () => {
-    const headers = ['Review ID', 'Business Name', 'Review Description'];
+    const headers = ['Review ID', 'Reviewer ID', 'Business Name', 'Review Description'];
     const actions = reportedReviews.map((review) => (
       <>
         <IconButton
           color="default"
           onClick={() => {
-            setCurrentItemId(review.reviewId);
+            setCurrentItemId(review.id);
             setShowKeepPopup(true);
           }}
         >
@@ -225,7 +469,7 @@ const BusinessAndReviewTables: React.FC = () => {
         <IconButton
           color="error"
           onClick={() => {
-            setCurrentItemId(review.reviewId);
+            setCurrentItemId(review.id);
             setShowRemovePopup(true);
           }}
         >
@@ -292,13 +536,38 @@ const BusinessAndReviewTables: React.FC = () => {
           <div className="text-center">
             <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
             <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-              Are you sure you want to get this action?
+              Are you sure you want to delete?
             </h3>
             <div className="flex justify-center gap-4 pb-6">
               <Button className="bg-red-600 hover:bg-red-700" onClick={handleDelete}>
                 Yes, I'm sure
               </Button>
               <Button className="bg-gray-500 hover:bg-gray-600" onClick={() => setShowPopup(false)}>
+                No, cancel
+              </Button>
+            </div>
+          </div>
+        </Modal.Body>
+      </Modal>
+
+      <Modal show={showAppealDiscardPopup} onClose={() => setAppealDiscardPopup(false)} popup className="flex items-center justify-center inset-2/4 inset-y-1/2" theme={{
+        content: {
+          base: "bg-white w-3/4 rounded-lg",
+          inner: "p-6 rounded-lg shadow-lg",
+        },
+      }}>
+        <Modal.Header />
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+            <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+              Are you sure you want to discard this?
+            </h3>
+            <div className="flex justify-center gap-4 pb-6">
+              <Button className="bg-red-600 hover:bg-red-700" onClick={handleAppealDiscard}>
+                Yes, I'm sure
+              </Button>
+              <Button className="bg-gray-500 hover:bg-gray-600" onClick={() => setAppealDiscardPopup(false)}>
                 No, cancel
               </Button>
             </div>
