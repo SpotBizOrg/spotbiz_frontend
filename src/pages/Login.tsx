@@ -4,6 +4,8 @@ import { FaEnvelope, FaLock } from 'react-icons/fa';
 import login from '../assets/LoginPage.png';
 import { toast } from 'react-toastify';
 import { useAuth } from '../utils/AuthProvider';
+import { format } from 'date-fns';
+import { BACKEND_URL } from '../../config';
 
 const LoginPage: React.FC = () => {
   const navigate = useNavigate();
@@ -20,10 +22,35 @@ const LoginPage: React.FC = () => {
   };
   checkAuthenticated();
 
+  const saveNotificationToken = async (userId: number) => {
+    const dateTime = format(new Date(), "yyyy-MM-dd'T'HH:mm:ss");
+    const token = localStorage.getItem("fcmToken"); 
+    try {
+      const response = await fetch(`${BACKEND_URL}/notification/token`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ userId, dateTime, token }),
+      });
+  
+      if (!response.ok) {
+          throw new Error('Saving token was unsuccessful!');
+      }
+  
+      const data = await response.json();
+      console.log(data);
+
+    } catch (error) {
+      console.error('An error occurred:', error);
+      toast.error('An unexpected error occurred');
+    }
+  }
+
   const performLogin = async () => {
   
     try {
-      const response = await fetch('http://localhost:8080/api/v1/login', {
+      const response = await fetch( `${BACKEND_URL}/login` , {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -46,6 +73,8 @@ const LoginPage: React.FC = () => {
         console.log("hello", data)
         localSave(data);
         toast.success("Login successful!");
+        saveNotificationToken(data.user_id);
+        console.log(data.userId);
         if(data.role === 'CUSTOMER'){
           setTimeout(() => {
             navigate('/home');

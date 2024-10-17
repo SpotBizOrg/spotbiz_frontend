@@ -4,6 +4,7 @@ import Adminsidebar from "../components/Adminsidebar";
 import Container from "../components/Container";
 import { Button, Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { BACKEND_URL } from "../../config";
 
 interface User {
   userId: Number;
@@ -24,7 +25,7 @@ function BusinessVerify() {
   const [currentBusinessId, setCurrentBusinessId] = useState<Number | null>(null);
 
   const fetchBusinessData = () => {
-    fetch("http://localhost:8080/api/v1/admin/check_registration")
+    fetch(`${BACKEND_URL}/admin/check_registration`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data);
@@ -41,7 +42,7 @@ function BusinessVerify() {
   const handleVerify = () => {
     setShowPopup(false);
 
-    fetch(`http://localhost:8080/api/v1/admin/verify/${currentBusinessId}`)
+    fetch(`${BACKEND_URL}/admin/verify/${currentBusinessId}`)
       .then((response) => {
         if (response.ok) {
           return response.text();
