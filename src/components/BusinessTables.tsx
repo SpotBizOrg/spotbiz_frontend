@@ -1,32 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { IconButton } from "@mui/material";
 import { Delete as DeleteIcon, Block as BlockIcon, Edit as EditIcon, CheckCircle as CheckCircleIcon, Cancel as CancelIcon } from "@mui/icons-material";
+import { BACKEND_URL } from '../../config';
+import axios from 'axios';
 
-const reportedBusinesses = [
-  { id: 'B001', name: 'Cozy Home Furnishings', reason: 'Violation of terms' },
-  { id: 'B002', name: 'Stellar Styles', reason: 'Fraudulent activity' },
-  { id: 'B003', name: 'Luxe Living Store', reason: 'Customer complaints' },
-  { id: 'B004', name: 'Turcotte, Wyman and Veum', reason: 'Inappropriate content' },
-  { id: 'B005', name: 'Reilly LLC', reason: 'Spam' },
-  { id: 'B006', name: 'O\'Conner - Bayer', reason: 'Misleading information' },
-];
-
-const appealedBusinesses = [
-  { id: 'A001', name: 'Home Comforts', reason: 'Incorrect information' },
-  { id: 'A002', name: 'Urban Styles', reason: 'Unfair suspension' },
-  { id: 'A003', name: 'Elite Furnishings', reason: 'Misunderstanding' },
-  { id: 'A004', name: 'Anderson, Smith and Co.', reason: 'Resolved issues' },
-  { id: 'A005', name: 'Modern LLC', reason: 'False claims' },
-  { id: 'A006', name: 'Greenfield - Bauer', reason: 'Clarification needed' },
-];
-
-const reviews = [
-  { reviewId: 'R001', businessId: 'B001', description: 'Inappropriate content' },
-  { reviewId: 'R002', businessId: 'B002', description: 'Spam' },
-  { reviewId: 'R003', businessId: 'B003', description: 'Offensive language' },
-];
 
 const BusinessAndReviewTables: React.FC = () => {
   const [selectedTab, setSelectedTab] = useState('reported');
@@ -36,6 +15,86 @@ const BusinessAndReviewTables: React.FC = () => {
   const [showKeepPopup, setShowKeepPopup] = useState(false);
   const [showRemovePopup, setShowRemovePopup] = useState(false);
   const [currentItemId, setCurrentItemId] = useState<string | null>(null);
+  const [reportedBusinesses, setReportedBusinesses] = useState<any[]>([]);
+  const [appealedBusinesses, setAppealedBusinesses] = useState<any[]>([]);
+  const [reportedReviews, setReportedReviews] = useState<any[]>([]);
+
+  useEffect(() => {
+    console.log(`Selected tab: ${selectedTab}`);
+
+    if (selectedTab === 'reported') {
+      getBusinessReports();
+    } else if (selectedTab === 'appealed') {
+      getBusinessAppeals();
+    } else if (selectedTab === 'reviews') {
+      getReviewReports();
+    }
+  }, [selectedTab]);
+
+  const getBusinessReports = async () => {
+    try{
+      const url = `${BACKEND_URL}/reported-business/all`;
+
+      const response = await axios.get(url);
+      // console.log(response.data);
+
+      const formattedData = response.data.map((item: any) => ({
+        id: item.business.businessId,
+        name: item.business.name,
+        reason: item.reason,
+      }));
+      
+      setReportedBusinesses(formattedData); 
+      
+      console.log(reportedBusinesses);
+      
+    } catch (error) {
+      console.error('Error fetching reported businesses:', error);
+    }
+  }
+
+  const getBusinessAppeals = async () => {
+    try{
+      const url = `${BACKEND_URL}/business-appeal/all`;
+
+      const response = await axios.get(url);
+      console.log(response.data);
+
+      const formattedData = response.data.map((item: any) => ({
+        id: item.reportedBusiness.reportId,
+        name: item.business.name,
+        reason: item.reason,
+      }));
+
+      setAppealedBusinesses(formattedData);
+      console.log(appealedBusinesses);
+      
+      
+    } catch (error) {
+      console.error('Error fetching reported businesses:', error);
+    }
+  }
+
+  const getReviewReports = async () => {
+    try{
+      const url = `${BACKEND_URL}/review-report/all`;
+
+      const response = await axios.get(url);
+      console.log(response.data);
+
+      const formattedData = response.data.map((item: any) => ({
+        id: item.reviewId,
+        name: item.business.name,
+        reason: item.description,
+
+      }));
+
+      setReportedReviews(formattedData);
+
+    } catch (error) {
+      console.error('Error fetching reported businesses:', error);
+    }
+  }
 
   const handleTabChange = (tab: string) => {
     setSelectedTab(tab);
@@ -123,7 +182,7 @@ const BusinessAndReviewTables: React.FC = () => {
   };
 
   const renderAppealedBusinesses = () => {
-    const headers = ['Business ID', 'Business Name', 'Reason for Appealing'];
+    const headers = ['ReportId', 'Business Name', 'Reason for Appealing'];
     const actions = appealedBusinesses.map((business) => (
       <>
         <IconButton
@@ -151,8 +210,8 @@ const BusinessAndReviewTables: React.FC = () => {
   };
 
   const renderReportedReviews = () => {
-    const headers = ['Review ID', 'Business ID', 'Review Description'];
-    const actions = reviews.map((review) => (
+    const headers = ['Review ID', 'Business Name', 'Review Description'];
+    const actions = reportedReviews.map((review) => (
       <>
         <IconButton
           color="default"
@@ -175,7 +234,7 @@ const BusinessAndReviewTables: React.FC = () => {
       </>
     ));
 
-    return renderTable(reviews, headers, actions);
+    return renderTable(reportedReviews, headers, actions);
   };
 
   return (
