@@ -20,6 +20,7 @@ const BusinessAndReviewTables: React.FC = () => {
   const [reportedBusinesses, setReportedBusinesses] = useState<any[]>([]);
   const [appealedBusinesses, setAppealedBusinesses] = useState<any[]>([]);
   const [reportedReviews, setReportedReviews] = useState<any[]>([]);
+  const [searchText, setSearchText] = useState('');
 
   useEffect(() => {
     console.log(`Selected tab: ${selectedTab}`);
@@ -105,11 +106,11 @@ const BusinessAndReviewTables: React.FC = () => {
     setSelectedTab(tab);
   };
 
-  const handleDelete = async () => {
+  const handleDelete =  () => {
     try {
       
       const url = `${BACKEND_URL}/reported-business/delete?reportId=${currentItemId}`;
-      const response = await axios.put(url);  // Assuming the API returns success response
+      axios.put(url);  // Assuming the API returns success response
   
       setShowPopup(false);
   
@@ -369,6 +370,31 @@ const BusinessAndReviewTables: React.FC = () => {
     setShowRemovePopup(false);
   };
 
+  const searchBtnClik = () => {
+console.log(searchText);
+
+    if (selectedTab === 'reported') {
+      const filteredData = reportedBusinesses.filter((item) => {
+        return item.BusinessName.toLowerCase().includes(searchText.toLowerCase());
+      });
+      setReportedBusinesses(filteredData);
+      
+    } else if (selectedTab === 'appealed') {
+      const filteredData = appealedBusinesses.filter((item) => {
+        return item.name.toLowerCase().includes(searchText.toLowerCase());
+      });
+      setAppealedBusinesses(filteredData);
+      
+    } else if (selectedTab === 'reviews') {
+      const filteredData = reportedReviews.filter((item) => {
+        return item.name.toLowerCase().includes(searchText.toLowerCase());
+      });
+      setReportedReviews(filteredData);
+      
+    }
+
+  };
+
   const renderTable = (items: any[], headers: string[], actions: JSX.Element[]) => (
     <div className="relative overflow-x-auto overflow-y-auto sm:rounded-lg border border-gray-200">
       <table className="w-full text-sm text-left text-gray-500">
@@ -511,9 +537,9 @@ const BusinessAndReviewTables: React.FC = () => {
               <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
             </svg>
           </div>
-          <input type="text" id="simple-search" className="bg-gray-50 border p-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for games..." required />
+          <input type="text" id="simple-search" value={searchText}onChange={(e) => setSearchText(e.target.value)} className="bg-gray-50 border p-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search" required />
         </div>
-        <button type="submit" className="p-2 text-sm font-medium text-white bg-bluedark rounded-lg border border-bluedark hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+        <button onClick={searchBtnClik} type="submit" className="p-2 text-sm font-medium text-white bg-bluedark rounded-lg border border-bluedark hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
           <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
             <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
           </svg>
