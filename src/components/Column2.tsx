@@ -28,6 +28,7 @@ const Column2: React.FC<Column2Props> = ({ businessEmail }) => {
   };
 
   const fetchData = async (email: string) => {
+    
     const url = `${BACKEND_URL}/business_owner/advertisements/${email}`;
 
     try {
@@ -45,6 +46,7 @@ const Column2: React.FC<Column2Props> = ({ businessEmail }) => {
       });
 
       setAdsData(parsedAdsData);
+      
     } catch (error) {
       console.error(error);
     }
@@ -58,12 +60,6 @@ const checkActive = (startDate: Date, endDate: Date) => {
   const now = new Date();
   return now > startDate && now < endDate;
 }
-
-  // const images = [
-  //   { src: prom1, date: new Date('2024-07-30'), aspectRatio: '100%', title: "Mega Stock Clearance Sale!" },
-  //   { src: prom2, date: new Date('2024-07-27'), aspectRatio: '100%', title: "Abans Home Kitchen Baking Champion" },
-  //   { src: prom3, date: new Date('2024-07-25'), aspectRatio: '100%', title: "Newest Arrival!" },
-  // ];
 
   const calculateTimePassed = (date: Date) => {
     const now = new Date();
@@ -83,8 +79,12 @@ const checkActive = (startDate: Date, endDate: Date) => {
           <p className="font-bold text-bluedark text-bodymedium">Latest Promotions</p>
         </div>
         <div className="space-y-4">
-          {AdsData.map((image, index) => (
-            checkActive(new Date(image.data.startDate), new Date(image.data.endDate)) && (
+          {AdsData.length == 0 ? (
+            <div className="space-y-2 text-gray-500 text-center bg-white shadow-md border border-gray-300 rounded-lg p-8">
+              <p>No active promotions available</p>
+            </div>
+          ):(AdsData.map((image, index) => (
+            checkActive(new Date(image.data.startDate), new Date(image.data.endDate)) ? (
               <div key={index} className="space-y-2 bg-white shadow-md border border-gray-300 rounded-lg p-8">
               <p className='text-subsubheading'>{image.data.description}</p>
               <p className="text-end text-gray-600 text-bodysmall">{calculateTimePassed(new Date(image.data.startDate))}</p>
@@ -98,12 +98,16 @@ const checkActive = (startDate: Date, endDate: Date) => {
                 }}
               ></div>
             </div>
+            ) : (
+              <div className="space-y-2 text-center text-gray-500 bg-white shadow-md border border-gray-300 rounded-lg p-8">
+                <p>No active promotions available</p>
+                </div>
             )
   
-          ))}
+          )))}
         </div>
       </div>
-      <div className="mt-10">
+      {/* <div className="mt-10">
       <div className="p-2 border border-gray-400 rounded text-center mb-4">
                 <p className="font-bold text-bluedark text-bodymedium">Keywords</p>
             </div>
@@ -118,7 +122,7 @@ const checkActive = (startDate: Date, endDate: Date) => {
             </div>
           ))}
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -147,7 +147,8 @@ const ResultCard: React.FC<ResultCardProps> = ({ imageSrc, name, place_location,
 
 const SearchResults: React.FC = () => {
   const location = useLocation();
-  const { query } = location.state;
+  const  query  = null;
+  // const { query } = location.state;
 
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
@@ -164,9 +165,11 @@ const SearchResults: React.FC = () => {
   
   // const page = 0;
   const size = 4;
+ 
 
   const fetchData = async (page: number) => {
     const url = `${BACKEND_URL}/search/${query}?page=${page-1}&size=${size}`;
+    // const url = `${BACKEND_URL}/search/${query}?page=${page-1}&size=${size}`;
 
     try {
       const response = await fetch(url);

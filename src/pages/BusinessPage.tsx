@@ -13,8 +13,10 @@ import FloatingBtnsbusiness from '../components/FlotingBtnsbusiness';
 import { BACKEND_URL } from '../../config';
 import image from '../assets/promo.lk-44253997837344f08aed5b131f0bd271.jpg';
 import { GridLoader } from 'react-spinners';
+import { useSearchParams } from 'react-router-dom';
 
-const businessId: number = 28;
+
+// const businessId: number = 28;
 
 interface WeeklySchedule {
   startTime: string;
@@ -57,10 +59,13 @@ interface BusinessPageProps {
 const BusinessPage: React.FC = () => {
   const StoredEmail = localStorage.getItem('email');
   const StoredClientId = parseInt(localStorage.getItem('user_id') || '0');
-  
+
+  const [searchParams] = useSearchParams();
   const [businessData, setBusinessData] = React.useState<BusinessPageProps | null>(null);
   const [loading, setLoading] = useState(true); // loading state
 
+  const businessId = parseInt(searchParams.get('businessId') || '28', 10);
+  
   const fetchBusinessData = async (businessId: number) => {
     const url = `${BACKEND_URL}/businessPage/businessData?businessId=${businessId}`;
 
@@ -108,7 +113,7 @@ const BusinessPage: React.FC = () => {
           <div className='w-fullflex flex-col'>
             <BusinessTitlenReview
               businessName={businessData?.name || 'business name'}
-              location={businessData?.address || 'business address'}
+              location={businessData?.address || 'No address is given'}
               rating={businessData?.avgRating || 0}
               totReviws={businessData?.reviewCount || 0}
               weeklySchedule={businessData?.weeklySchedule || undefined}
@@ -118,36 +123,56 @@ const BusinessPage: React.FC = () => {
                 <BusinessInfoCol
                   name={businessData?.name || 'business name'}
                   logo={businessData?.logo || image}
-                  address={businessData?.address || 'business address'}
-                  phone={businessData?.phone || 'phone number'}
-                  email={businessData?.email || 'email'}
+                  address={businessData?.address || 'no address is given'}
+                  phone={businessData?.phone || 'no phone number is given'}
+                  email={businessData?.email || 'no email is given'}
                   fbLink={businessData?.fblink || '#'}
                 />
-                <MainReview
-                  title={businessData?.latestReview.title || "sample name"}
-                  rating={businessData?.latestReview.rating || 0}
-                  description={businessData?.latestReview.description || "this is description"}
-                  date={businessData?.latestReview.date || "2024-10-14T04:46:49.097"}
-                  userId={businessData?.latestReview.userId || 0}
-                  businessId={businessData?.latestReview.businessId || 0}
-                  storedEmail={StoredEmail || 'nirashanelki@gmail.com'}
-                />
+                {businessData?.latestReview ? (
+                  <MainReview
+                    title={businessData.latestReview.title}
+                    rating={businessData.latestReview.rating}
+                    description={businessData.latestReview.description}
+                    date={businessData.latestReview.date}
+                    userId={businessData.latestReview.userId}
+                    businessId={businessData.latestReview.businessId}
+                    storedEmail={StoredEmail || "example@mail.com"}
+                  />
+                ):(
+                  <div className="max-w-sm pl-4 pt-4 pr-4 pb-2 bg-white rounded-lg shadow-md border border-gray-300 text-bodysmall">
+                    <div className="p-2 border border-gray-400 rounded text-center">
+                      <p className="font-bold text-bluedark text-bodymedium">Reviews</p>
+                    </div>
+                    <div className="mt-4 mb-2">
+                      <p className="text-center text-gray-500">No reviews yet</p>
+                    </div>
+                  </div>
+                )}
               </div>
               <div className='w-3/6 ml-20 mr-20 p-8 max-h-[130vh] overflow-y-auto scrollbar-hide'>
                 {businessData && <Column2 businessEmail={businessData.email} />}
               </div>
               <div className='flex flex-col w-2/6'>
-                <AboutBusiness about={businessData?.description || 'We offer a diverse range of high-quality electronic items...'} />
+                <AboutBusiness about={businessData?.description || 'No description yet'} />
                 {businessData && <BusinessLocation location={businessData.address} />}
-                <OpeningHrs
-                  Monday={businessData?.weeklySchedule.Monday || { startTime: '', endTime: '', specialNote: '', isOpen: false }}
-                  Tuesday={businessData?.weeklySchedule.Tuesday || { startTime: '', endTime: '', specialNote: '', isOpen: false }}
-                  Wednesday={businessData?.weeklySchedule.Wednesday || { startTime: '', endTime: '', specialNote: '', isOpen: false }}
-                  Thursday={businessData?.weeklySchedule.Thursday || { startTime: '', endTime: '', specialNote: '', isOpen: false }}
-                  Friday={businessData?.weeklySchedule.Friday || { startTime: '', endTime: '', specialNote: '', isOpen: false }}
-                  Saturday={businessData?.weeklySchedule.Saturday || { startTime: '', endTime: '', specialNote: '', isOpen: false }}
-                  Sunday={businessData?.weeklySchedule.Sunday || { startTime: '', endTime: '', specialNote: '', isOpen: false }}
-                />
+                {businessData?.weeklySchedule ? (<OpeningHrs
+                  Monday={businessData?.weeklySchedule.Monday}
+                  Tuesday={businessData?.weeklySchedule.Tuesday}
+                  Wednesday={businessData?.weeklySchedule.Wednesday}
+                  Thursday={businessData?.weeklySchedule.Thursday}
+                  Friday={businessData?.weeklySchedule.Friday}
+                  Saturday={businessData?.weeklySchedule.Saturday}
+                  Sunday={businessData?.weeklySchedule.Sunday}
+                />) : (
+                  <div className="bg-white p-4 rounded-md shadow-md mb-10 border border-gray-300">
+                    <div className="p-2 border border-gray-400 rounded text-center">
+                        <p className="font-bold text-bluedark text-bodymedium">Opening Hours</p>
+                    </div>
+                    <div className="p-4 text-gray-800 text-bodysmall">
+                        <p className="text-center text-gray-500">No opening hours available</p>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </div>
