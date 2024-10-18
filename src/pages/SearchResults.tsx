@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Customernavbar from '../components/Customernavbar';
 import { GridLoader } from 'react-spinners';
 import SortByDropdown from '../components/SortBy';
@@ -14,9 +14,10 @@ import Container2 from '../components/Container2';
 import Empty from '../components/Empty';
 import { BACKEND_URL } from '../../config';
 
-const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
-};
+
+// const useQuery = () => {
+//   return new URLSearchParams(useLocation().search);
+// };
 
 const starCountOptions = [
   "5 Star Reviews",
@@ -38,6 +39,7 @@ interface WeeklySchedule {
 }
 
 interface ResultCardProps {
+  businessId: number;
   imageSrc: string;
   name: string;
   place_location: string;
@@ -56,11 +58,11 @@ interface ResultCardProps {
   };
 }
 
-const ResultCard: React.FC<ResultCardProps> = ({ imageSrc, name, place_location, rating, badges, description, status, weeklySchedule }) => {
+const ResultCard: React.FC<ResultCardProps> = ({ imageSrc, name, place_location, rating, badges, description, status, weeklySchedule, businessId }) => {
   const navigate = useNavigate();
 
   function navigateToPage() {
-    navigate('/customer/business_page');
+    navigate('/customer/business_page?businessId=' + businessId);
   }
 
   // Helper function to convert time strings like "22:00" to Date objects
@@ -146,8 +148,9 @@ const ResultCard: React.FC<ResultCardProps> = ({ imageSrc, name, place_location,
 
 
 const SearchResults: React.FC = () => {
-  const location = useLocation();
-  const  query  = null;
+  // const location = useLocation();
+  // const  query  = null;
+  const [searchParams] = useSearchParams();
   // const { query } = location.state;
 
   const [results, setResults] = useState<any[]>([]);
@@ -161,16 +164,17 @@ const SearchResults: React.FC = () => {
   const [totalPagesS, setTotalPagesS] = useState(0);
   const [totalPagesC, setTotalPagesC] = useState(0);
 
-
-  
-  // const page = 0;
   const size = 4;
- 
+  const query = searchParams.get('search');
+  console.log(query);
+  
 
   const fetchData = async (page: number) => {
     const url = `${BACKEND_URL}/search/${query}?page=${page-1}&size=${size}`;
+    console.log(selectedCategoryId);
+    
     // const url = `${BACKEND_URL}/search/${query}?page=${page-1}&size=${size}`;
-
+    setLoading(true);
     try {
       const response = await fetch(url);
       const data = await response.json();
@@ -180,7 +184,7 @@ const SearchResults: React.FC = () => {
         setResults(data.content);  // Set the results to the fetched content
         starRating = 0;
         selectedCategoryId = 0
-        console.log(currentPageS);
+        console.log(data);
         
       } else {
         throw new Error('Failed to fetch data');
@@ -239,8 +243,11 @@ const SearchResults: React.FC = () => {
 
   useEffect(() => {
     document.title = "SpotBiz | Search Results";
-    loadBusinessByCategory(selectedCategoryId, currentPageC);
-  }, [currentPageC]);
+
+    if (selectedCategoryId !== 0) {
+      loadBusinessByCategory(selectedCategoryId, currentPageC);
+    }
+  }, [selectedCategoryId, currentPageC]);
 
   const onPageChangeS = (page: number) => setCurrentPageS(page);
   const onPageChangeC = (page: number) =>{ 
@@ -489,8 +496,8 @@ const SearchResults: React.FC = () => {
                   badges={result.tags} // You can replace with actual badges if available in your data
                   description={result.description}
                   status={result.status === "open now" ? "Open Now" : "Closed Now"}
-                  weeklySchedule={result.weeklySchedule}
-                />
+                  weeklySchedule={result.weeklySchedule} 
+                  businessId={result.businessId}                />
               ))}
               {results.length > 0 && starRating > 0 && sortedResults.map((result, index) => (
                 <ResultCard
@@ -502,8 +509,8 @@ const SearchResults: React.FC = () => {
                   badges={result.tags} // You can replace with actual badges if available in your data
                   description={result.description}
                   status={result.status === "open now" ? "Open Now" : "Closed Now"}
-                  weeklySchedule={result.weeklySchedule}
-                />
+                  weeklySchedule={result.weeklySchedule} 
+                  businessId={result.businessId}                />
               ))}
             </div>
           </div>
