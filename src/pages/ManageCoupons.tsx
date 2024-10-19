@@ -15,6 +15,8 @@ import { format } from 'date-fns';
 import { toast } from 'react-toastify';
 import SortByDropdown from "../components/SortBy";
 import { BACKEND_URL } from '../../config';
+import { useAuth } from '../utils/AuthProvider';
+import { HashLoader } from 'react-spinners';
 
 const dummyUsers = [
   { userId:1, name: "John Doe", email: "john@example.com", phone: "123-456-7890", score:90 },
@@ -62,6 +64,9 @@ function ManageCoupons() {
   useEffect(()=>{
     document.title = "SpotBiz | Coupons | Admin";
     fetchAllCoupons(null, null);
+    if(!checkAuthenticated() || user?.role != 'ADMIN'){
+      login();
+    }
   },[]);
 
   const fetchAllCoupons = async (statusFilter: string | null, discountFilter: string | null) => {
@@ -137,7 +142,8 @@ function ManageCoupons() {
     }
   };
   
-  
+  const { user, checkAuthenticated, login } = useAuth();
+  const [loading, setLoading] = useState(false);
   const [items, setItems] = useState<Coupon[]>(dummyCoupons);
   const [showForm, setShowForm] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
@@ -173,6 +179,7 @@ function ManageCoupons() {
   };
 
   const handleIssueCoupon = async () => {
+    setLoading(true);
     if(currentCouponId !== null && userId != null){
       try {
         const response = await fetch(`${BACKEND_URL}/coupon/issue/${userId}/${currentCouponId}`, {
@@ -200,11 +207,14 @@ function ManageCoupons() {
       } catch (error) {
         console.error('An error occurred:', error);
         toast.error('An unexpected error occurred');
+      } finally {
+        setLoading(false); 
       }
     }
   };
 
   const addCoupon = async () => {
+    // setLoading(true);
     const dateTime = newCoupon.dateTime
     const description = newCoupon.description
     const discount = newCoupon.discount
@@ -237,6 +247,8 @@ function ManageCoupons() {
     } catch (error) {
       console.error('An error occurred:', error);
       toast.error('An unexpected error occurred');
+    } finally {
+      setLoading(false); 
     }
   };
 
@@ -248,6 +260,7 @@ function ManageCoupons() {
 
   const handleDeleteCoupon = async() => {
     try {
+      // setLoading(true);
       const response = await fetch(`${BACKEND_URL}/coupon/delete/${currentCouponId}`, {
         method: 'DELETE',
         headers: {
@@ -271,10 +284,13 @@ function ManageCoupons() {
     } catch (error) {
       console.error('An error occurred:', error);
       toast.error('An unexpected error occurred');
+    } finally {
+      setLoading(false); 
     }
   };
 
   const handleEditCoupon = async() => {
+    // setLoading(true);
     const description = editCoupon?.description
     const discount = editCoupon?.discount
     try {
@@ -306,6 +322,8 @@ function ManageCoupons() {
     } catch (error) {
       console.error('An error occurred:', error);
       toast.error('An unexpected error occurred');
+    } finally {
+      setLoading(false); 
     }
   };
 
@@ -465,7 +483,7 @@ function ManageCoupons() {
         </div>
       </div>
 
-      <Modal show={showForm} onClose={() => setShowForm(false)} size="lg" className="flex items-center justify-center min-h-screen" theme={{
+      <Modal show={showForm} onClose={() => setShowForm(false)} size="lg" className="flex items-center justify-center min-h-screen  z-40" theme={{
         content: {
           base: "bg-white w-3/4 rounded-lg", 
           inner: "p-6 rounded-lg shadow-lg",
@@ -517,7 +535,7 @@ function ManageCoupons() {
         </Modal.Footer>
       </Modal>
 
-      <Modal show={showEditForm} onClose={() => setShowEditForm(false)} size="lg" className="flex items-center justify-center min-h-screen" theme={{
+      <Modal show={showEditForm} onClose={() => setShowEditForm(false)} size="lg" className="flex items-center justify-center min-h-screen  z-40" theme={{
         content: {
           base: "bg-white w-3/4 rounded-lg", 
           inner: "p-6 rounded-lg shadow-lg",
@@ -571,7 +589,7 @@ function ManageCoupons() {
         </Modal.Footer>
       </Modal>
 
-      <Modal show={showPopup} onClose={() => setShowPopup(false)} popup className="flex items-center justify-center inset-2/4 inset-y-1/2" theme={{
+      <Modal show={showPopup} onClose={() => setShowPopup(false)} popup className="flex items-center justify-center inset-2/4 inset-y-1/2 z-40" theme={{
         content: {
           base: "bg-white w-3/4 rounded-lg",
           inner: "p-6 rounded-lg shadow-lg",
@@ -596,7 +614,7 @@ function ManageCoupons() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showIssuePopup} onClose={() => setShowIssuePopup(false)} popup className="flex items-center justify-center inset-2/4 inset-y-1/2" theme={{
+      <Modal show={showIssuePopup} onClose={() => setShowIssuePopup(false)} popup className="flex items-center justify-center inset-2/4 inset-y-1/2 z-40" theme={{
         content: {
           base: "bg-white w-3/4 rounded-lg",
           inner: "p-6 rounded-lg shadow-lg",
@@ -621,7 +639,7 @@ function ManageCoupons() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showShareModal} onClose={() => setShowShareModal(false)} size="xl" className="flex items-center justify-center min-h-screen"  >
+      <Modal show={showShareModal} onClose={() => setShowShareModal(false)} size="xl" className="flex items-center justify-center min-h-screen z-40"  >
         <Modal.Header className="text-center">Share Coupon</Modal.Header>
         <Modal.Body>
           <div className="relative table-container overflow-x-auto overflow-y-auto sm:rounded-lg border border-gray-200">
@@ -672,6 +690,13 @@ function ManageCoupons() {
           <Button color="gray" onClick={() => setShowShareModal(false)}>Close</Button>
         </Modal.Footer>
       </Modal>
+      <div className="px-12 sm:ml-64 mt-20">
+        {loading && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <HashLoader color="#36d7b7" size={50} />
+          </div>
+        )}
+      </div>
     </Container>
   );
 }
