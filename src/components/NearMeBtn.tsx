@@ -1,10 +1,16 @@
 import React, { useState } from 'react';
 
-const NearMeBtn = () => {
+interface NearMeBtnProps {
+  // Add props here
+  filterNearBy: () => void;
+}
+
+const NearMeBtn: React.FC<NearMeBtnProps> = ({ filterNearBy }) => {
   const [isActive, setIsActive] = useState(false);
 
   const handleClick = () => {
     setIsActive(!isActive);
+    filterNearBy();
   };
 
   return (

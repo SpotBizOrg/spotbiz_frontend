@@ -33,8 +33,56 @@ import AdminPage from './pages/AdminPage';
 import BusinessPage from './pages/BusinessPage'; 
 import PackageListPage from './pages/PackageListPage'; 
 import "./App.css";
+import { useEffect } from 'react';
+import { messaging } from './firebase/firebaseConfig';
+import { getToken, onMessage } from 'firebase/messaging';
+import { toast} from "react-toastify";
+import Message from "./components/Message";
+import "react-toastify/dist/ReactToastify.css";
+import { setNotificationCount} from '../config';
 
 function App() {
+
+  const saveNotificationToDatabase = async (notification: { title: string; body: string; image?: string }) => {
+    try {
+      console.log("Notification saved successfully." + notification.body);
+    } catch (error) {
+      console.error("Error saving notification:", error);
+    }
+  };
+
+  onMessage(messaging, (payload) => {
+    const { title = "Default Title", body = "Default Body", image } = payload.notification || {};
+  
+    if (title && body) {
+      setNotificationCount();
+      const notificationData = { title, body, image };
+      toast(<Message notification={notificationData} />);
+      saveNotificationToDatabase(notificationData);
+    } else {
+      console.error("Notification payload is missing required fields.");
+    }
+  });
+
+  async function requestPermission() {
+    const permission = await Notification.requestPermission();
+
+    if (permission === "granted") {
+      const token = await getToken(messaging, {
+        vapidKey: import.meta.env.VITE_APP_VAPID_KEY,
+      });
+
+      localStorage.setItem("fcmToken", token);
+      console.log("Token generated : ", token);
+    } else if (permission === "denied") {
+      alert("You denied for the notification");
+    }
+  }
+
+  useEffect(() => {
+    requestPermission();
+  }, []);
+
   return (
       <Routes>
         <Route path="/" element={<Home />} />

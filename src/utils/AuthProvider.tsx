@@ -1,11 +1,13 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import {jwtDecode} from 'jwt-decode'; // Ensure jwt-decode is installed
+import {jwtDecode} from 'jwt-decode'; 
 import { useNavigate } from 'react-router-dom';
+import { HashLoader } from 'react-spinners';
 
 interface User {
   name: string;
   email: string;
   role: string;
+  user_id: string;
 }
 
 interface AuthContextType {
@@ -13,6 +15,7 @@ interface AuthContextType {
   user: User | null;
   localSave: (data: any) => void;
   logout: () => void;
+  login: () => void;
   checkAuthenticated: () => boolean;
 }
 
@@ -26,24 +29,26 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [token, setToken] = useState<string | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(true);
   const navigate = useNavigate();
 
-  // Function to load stored data
   const loadStoredData = () => {
     const storedToken = localStorage.getItem('token');
     const storedName = localStorage.getItem('name');
     const storedEmail = localStorage.getItem('email');
     const storedRole = localStorage.getItem('role');
+    const storedUserId = localStorage.getItem('user_id');
 
-    console.log('Stored data:', { storedToken, storedName, storedEmail, storedRole });
+    console.log('Stored data:', { storedToken, storedName, storedEmail, storedRole, storedUserId });
 
-    if (storedToken && storedName && storedEmail && storedRole) {
+    if (storedToken && storedName && storedEmail && storedRole && storedUserId) {
       setToken(storedToken);
-      setUser({ name: storedName, email: storedEmail, role: storedRole });
+      setUser({ name: storedName, email: storedEmail, role: storedRole, user_id: storedUserId });
       setIsAuthenticated(checkAuthenticated(storedToken));
     } else {
       setIsAuthenticated(false);
     }
+    setLoading(false); 
   };
 
   const localSave = (data: any) => {
@@ -52,8 +57,9 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     localStorage.setItem('name', data.name);
     localStorage.setItem('email', data.email);
     localStorage.setItem('role', data.role);
+    localStorage.setItem('user_id', data.user_id);
     setToken(data.token);
-    setUser({ name: data.name, email: data.email, role: data.role });
+    setUser({ name: data.name, email: data.email, role: data.role, user_id: data.user_id });
     setIsAuthenticated(true);
   };
 
@@ -69,13 +75,19 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     navigate('/login');
   };
 
+  const login = () => {
+    navigate('/login');
+  };
+
   const checkAuthenticated = (tokenToCheck?: string) => {
-    const currentToken = tokenToCheck || token;
-    if (!currentToken) {
-      console.log('No token found');
-      return false;
-    }
     try {
+      const currentToken = tokenToCheck || token;
+      console.log(currentToken);
+      if (!currentToken) {
+        console.log('No token found');
+        return false; 
+      }
+
       const { exp } = jwtDecode<{ exp: number }>(currentToken);
       const expInMilliseconds = exp * 1000;
       const currentTime = Date.now();
@@ -92,8 +104,18 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     loadStoredData();
   }, []);
 
+  if (loading) {
+    return <div className="px-12 sm:ml-64 mt-20">
+    {loading && (
+      <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+        <HashLoader color="#36d7b7" size={50} />
+      </div>
+    )}
+  </div>; 
+  }
+
   return (
-    <AuthContext.Provider value={{ token, user, localSave, logout, checkAuthenticated }}>
+    <AuthContext.Provider value={{ token, user, localSave, logout, checkAuthenticated, login }}>
       {children}
     </AuthContext.Provider>
   );

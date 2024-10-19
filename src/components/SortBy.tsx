@@ -47,7 +47,7 @@ const SortByDropdown: React.FC<SortByDropdownProps> = ({
       >
         {selectedOption}
         <svg
-          className="-mr-1 ml-2 h-5 w-5 inline-block"
+          className="-mr-1 ml-2 h-5 w-5"
           xmlns="http://www.w3.org/2000/svg"
           viewBox="0 0 25 25"
           fill="currentColor"
@@ -61,7 +61,7 @@ const SortByDropdown: React.FC<SortByDropdownProps> = ({
               fill="#0D0D0D"
             />
           )}
-          {defaultTitle === "Star Reviews" && (
+          {(defaultTitle === "Star Reviews" || defaultTitle === "Discount" || defaultTitle === "Status") && (
             <>
               <path
                 d="M2 4.17391C2 3.52558 2.49746 3 3.11111 3H20.8889C21.5025 3 22 3.52558 22 4.17391C22 4.82225 21.5025 5.34783 20.8889 5.34783L3.11111 5.34783C2.49746 5.34783 2 4.82225 2 4.17391Z"
