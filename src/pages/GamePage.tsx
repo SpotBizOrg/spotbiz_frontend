@@ -2,16 +2,33 @@ import React, { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 import AdComponent from '../components/AdComponent';
 import { format } from 'date-fns';
+import { useAuth } from '../utils/AuthProvider';
+import { toast } from 'react-toastify';
+import { BACKEND_URL } from '../../config';
+import { Modal, Button } from "flowbite-react";
+import { HiOutlineExclamationCircle } from 'react-icons/hi';
 
 interface LocationState {
+  gameId: string;
   gameUrl: string;
   startTime: string;
+  title: string;
 }
 
 const GamePage: React.FC = () => {
   const location = useLocation();
-  const { gameUrl, startTime } = location.state as LocationState;
+  const { gameId, gameUrl, startTime, title } = location.state as LocationState;
   const [showAd, setShowAd] = useState(true);
+  const { user, checkAuthenticated, login } = useAuth();
+  const [isModelOpen, setIsModelOpen] = useState(false);
+  const userId = user?.user_id;
+
+  useEffect(() => {
+    document.title = title;
+    if(!checkAuthenticated()){
+      login();
+    }
+  }, []);
 
   useEffect(() => {
     const startTimestamp = new Date(startTime);
@@ -21,28 +38,31 @@ const GamePage: React.FC = () => {
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       const endTimestamp = new Date();
       const duration = (endTimestamp.getTime() - startTimestamp.getTime()) / 1000; 
-      sendGameStatsToBackend('1', '2', startTimestamp, duration, 23.4); 
+      sendGameStatsToBackend(startTimestamp, duration); 
       event.preventDefault();
     };
 
     window.addEventListener('beforeunload', handleBeforeUnload);
 
     return () => {
-      document.body.style.overflow = 'auto';
-      
+      document.body.style.overflow = 'auto';      
       const endTimestamp = new Date();
       const duration = (endTimestamp.getTime() - startTimestamp.getTime()) / 1000; 
-      sendGameStatsToBackend('1', '2', startTimestamp, duration, 25.6); 
+      sendGameStatsToBackend(startTimestamp, duration); 
       window.removeEventListener('beforeunload', handleBeforeUnload);
     };
   }, [startTime]);
 
-  const sendGameStatsToBackend = async (userId: string, gameId: string, startDate: Date, duration: number, points: number) => {
+  const sendGameStatsToBackend = async (startDate: Date, duration: number) => {
+    for (let i = 0; i < duration; i++) {
+      console.log ("Block statement execution no." + i);
+    }
+    const points = 10;
     if(duration <= 10){
       return;
     }
     try {
-      const response = await fetch('http://localhost:8080/api/v1/game_progress/save_progress', {
+      const response = await fetch(`${BACKEND_URL}/game_progress/save_progress`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -64,10 +84,10 @@ const GamePage: React.FC = () => {
   
       const responseData = await response.json();
       console.log('Success:', responseData);
+      toast.success(`Congratulations🥳 You earned ${points} points!`);
   
     } catch (error) {
       console.error('An error occurred:', error);
-      alert('An error occurred while saving game progress. Please try again later.');
     }
   };
 
@@ -85,6 +105,33 @@ const GamePage: React.FC = () => {
         height="800px"
         allowFullScreen
       ></iframe>
+
+      {isModelOpen && (
+        <Modal show={isModelOpen} onClose={() => setIsModelOpen(false)} popup className="flex items-center justify-center inset-2/4 inset-y-1/2 z-40" theme={{
+            content: {
+              base: "bg-white w-3/4 rounded-lg",
+              inner: "p-6 rounded-lg shadow-lg",
+            },
+          }}>
+          <Modal.Header />
+          <Modal.Body>
+            <div className="text-center">
+              <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+              <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                Are you sure you want to get this action?
+              </h3>
+              <div className="flex justify-center gap-4 pb-6">
+                <Button className="bg-red-600 hover:bg-red-700">
+                  Yes, I'm sure
+                </Button>
+                <Button className="bg-gray-500 hover:bg-gray-600" onClick={() => setIsModelOpen(false)}>
+                  Continue Playing
+                </Button>
+              </div>
+            </div>
+          </Modal.Body>
+        </Modal>
+      )}
     </div>
   );
 };
