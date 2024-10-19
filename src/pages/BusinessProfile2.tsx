@@ -54,26 +54,18 @@ const BusinessProfile: React.FC = () => {
 
       const responseData = await response.json();
       setData(responseData);
-      setBusinessname(responseData.name);
-      setAddress(responseData.address);
-      setContactNo(responseData.contactNo);
-      setLocationUrl(responseData.locationUrl);
-      setDescription(responseData.description);
-      console.log(responseData.name)
-      if(responseData.name === "Abans "){
-        setSelectedAvatar(AbansImage)
-      }
-      else if(responseData.name === "Redline Technologies"){
-        setSelectedAvatar(RedlineImage)
-      }
-      else if(responseData.name === "iDealz Lanka Pvt Ltd"){
-        setSelectedAvatar(iDealzImage)
-      }
-      else if(responseData.name === "Softlogic Holdings"){
-        setSelectedAvatar(SoftlogicImage)
-      }
-      else{
-        setSelectedAvatar(DefaultImage)
+
+      console.log(responseData.name);
+      if (responseData.name === "Abans ") {
+        setSelectedAvatar(AbansImage);
+      } else if (responseData.name === "Redline Technologies") {
+        setSelectedAvatar(RedlineImage);
+      } else if (responseData.name === "iDealz Lanka Pvt Ltd") {
+        setSelectedAvatar(iDealzImage);
+      } else if (responseData.name === "Softlogic Holdings") {
+        setSelectedAvatar(SoftlogicImage);
+      } else {
+        setSelectedAvatar(DefaultImage);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -92,43 +84,6 @@ const BusinessProfile: React.FC = () => {
   //   const { name, value } = e.target;
   //   setBusinessDetails({ ...BusinessDetailsSubmit, [name]: value });
   // };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-  
-    if (!user || !token) {
-      console.error("User or token is missing");
-      return;
-    }
-  
-    const name = businessName;
-  
-    try {
-      const response = await fetch(
-        `http://localhost:8080/api/v1/business/register/${user.email}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({
-            name,
-            locationUrl,
-            contactNo,
-            address,
-            description,
-          }),
-        }
-      );
-  
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-    }
-  };
 
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
 
