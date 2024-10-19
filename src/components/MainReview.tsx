@@ -6,6 +6,7 @@ import { Button, Label, Modal, TextInput } from "flowbite-react";
 import { useState, useRef } from 'react';
 import { BACKEND_URL } from '../../config';
 import axios from 'axios';
+import { Bounce, toast } from 'react-toastify';
 
 
 interface MainReviewProps {
@@ -18,10 +19,6 @@ interface MainReviewProps {
     storedEmail: string;
 }
 
-
-
-
-
 const MainReview: React.FC<MainReviewProps> = ({ rating, description, date, userId, businessId, title, storedEmail }) => {
   const [openModal1, setOpenModal1] = useState(false);
   const titleInputRef1 = useRef<HTMLInputElement>(null);
@@ -30,7 +27,6 @@ const MainReview: React.FC<MainReviewProps> = ({ rating, description, date, user
   const [reviewTitle, setReviewTitle] = useState<string>('');
   const [reviewDescription, setReviewDescription] = useState<string>('');
   const [reportReason, setReportReason] = useState<string>('');
-
   const storedUserId = localStorage.getItem('user_id');
 
   const closeModal1 = () => {
@@ -68,10 +64,51 @@ const MainReview: React.FC<MainReviewProps> = ({ rating, description, date, user
     setOpenModal2(true);
   }
 
-  const saveReportRequest =  () => {
+  const saveReportRequest = async () => {
     console.log(reportReason);
-    setReportReason('');
-    closeModal2();
+
+    const url = `${BACKEND_URL}/reported-business/create`;
+
+    const body = JSON.stringify({
+      reportId: 0,
+      reason: reportReason,
+      userId: storedUserId,
+      businessId: businessId,
+    })
+
+    try{
+      const response = await axios.post(url, body, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log(response);
+      toast.info('Reported!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        });
+      closeModal2();
+    } catch (error) {
+      console.error(error);
+      toast.error('Error occured!', {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+        transition: Bounce,
+        });
+    }   
     
   }
 
