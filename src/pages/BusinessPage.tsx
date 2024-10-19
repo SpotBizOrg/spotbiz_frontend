@@ -142,7 +142,6 @@ const BusinessPage: React.FC = () => {
     </Container2>
       <Footer />
     </>
-
   );
 };
 
