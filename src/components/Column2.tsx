@@ -1,19 +1,69 @@
 // src/components/Column2.tsx
-import React from 'react';
-import prom1 from '../assets/prom1.jpg';
-import prom2 from '../assets/prom2.png';
-import prom3 from '../assets/prom3.jpg';
+import React, { useEffect } from 'react';
+import { BACKEND_URL } from '../../config';
 
-const Column2: React.FC = () => {
+interface Column2Props {
+  businessEmail: string;
+}
+
+interface ImageProps {
+  img: string;
+  endDate: string;
+  startDate: string;
+  description: string;
+}
+
+interface AdProps {
+  adsId: string;
+  data:ImageProps;
+  status: boolean;
+}
+
+const Column2: React.FC<Column2Props> = ({ businessEmail }) => {
+
+  const [AdsData, setAdsData] = React.useState<AdProps[]>([]);
+
   const handleClick = (keyword: string) => {
     console.log(`Clicked on ${keyword}`);
   };
 
-  const images = [
-    { src: prom1, date: new Date('2024-07-30'), aspectRatio: '100%', title: "Mega Stock Clearance Sale!" },
-    { src: prom2, date: new Date('2024-07-27'), aspectRatio: '100%', title: "Abans Home Kitchen Baking Champion" },
-    { src: prom3, date: new Date('2024-07-25'), aspectRatio: '100%', title: "Newest Arrival!" },
-  ];
+  const fetchData = async (email: string) => {
+    const url = `${BACKEND_URL}/business_owner/advertisements/${email}`;
+
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+
+      // Parse the 'data' field in each ad
+      const parsedAdsData = data.map((ad: AdProps) => ({
+        ...ad,
+        data: JSON.parse(ad.data as unknown as string),
+      }));
+
+      parsedAdsData.filter((ad: AdProps) => {
+        ad.status
+      });
+
+      setAdsData(parsedAdsData);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+useEffect(() => {
+  fetchData(businessEmail);
+}, []);
+
+const checkActive = (startDate: Date, endDate: Date) => {
+  const now = new Date();
+  return now > startDate && now < endDate;
+}
+
+  // const images = [
+  //   { src: prom1, date: new Date('2024-07-30'), aspectRatio: '100%', title: "Mega Stock Clearance Sale!" },
+  //   { src: prom2, date: new Date('2024-07-27'), aspectRatio: '100%', title: "Abans Home Kitchen Baking Champion" },
+  //   { src: prom3, date: new Date('2024-07-25'), aspectRatio: '100%', title: "Newest Arrival!" },
+  // ];
 
   const calculateTimePassed = (date: Date) => {
     const now = new Date();
@@ -33,20 +83,23 @@ const Column2: React.FC = () => {
           <p className="font-bold text-bluedark text-bodymedium">Latest Promotions</p>
         </div>
         <div className="space-y-4">
-          {images.map((image, index) => (
-            <div key={index} className="space-y-2 bg-white shadow-md border border-gray-300 rounded-lg p-8">
-              <p className='text-subsubheading'>{image.title}</p>
-              <p className="text-end text-gray-600 text-bodysmall">{calculateTimePassed(image.date)}</p>
-
+          {AdsData.map((image, index) => (
+            checkActive(new Date(image.data.startDate), new Date(image.data.endDate)) && (
+              <div key={index} className="space-y-2 bg-white shadow-md border border-gray-300 rounded-lg p-8">
+              <p className='text-subsubheading'>{image.data.description}</p>
+              <p className="text-end text-gray-600 text-bodysmall">{calculateTimePassed(new Date(image.data.startDate))}</p>
+         
               <div
                 className="relative bg-cover rounded-md mb-2"
                 style={{
-                  backgroundImage: `url(${image.src})`,
-                  paddingBottom: image.aspectRatio,
+                  backgroundImage: `url(${image.data.img})`,
+                  paddingBottom: '100%',
                   height: 0,
                 }}
               ></div>
             </div>
+            )
+  
           ))}
         </div>
       </div>
