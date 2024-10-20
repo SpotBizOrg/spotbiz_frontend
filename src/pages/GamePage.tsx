@@ -54,13 +54,17 @@ const GamePage: React.FC = () => {
   }, [startTime]);
 
   const sendGameStatsToBackend = async (startDate: Date, duration: number) => {
-    for (let i = 0; i < duration; i++) {
-      console.log ("Block statement execution no." + i);
-    }
-    const points = 10;
+ 
     if(duration <= 10){
       return;
     }
+
+    const points = Math.floor(Math.pow(duration / 3000, 1.5));  
+
+    if(points <= 0){
+      return;
+    }
+    
     try {
       const response = await fetch(`${BACKEND_URL}/game_progress/save_progress`, {
         method: 'POST',
@@ -84,7 +88,9 @@ const GamePage: React.FC = () => {
   
       const responseData = await response.json();
       console.log('Success:', responseData);
-      toast.success(`Congratulations🥳 You earned ${points} points!`);
+      if(points > 0){
+        toast.success(`Congratulations🥳 You earned ${points} points!`);
+      }
   
     } catch (error) {
       console.error('An error occurred:', error);
