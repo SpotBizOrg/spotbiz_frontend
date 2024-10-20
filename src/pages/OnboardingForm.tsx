@@ -9,6 +9,17 @@ import { Bounce, toast } from "react-toastify";
 import { BACKEND_URL } from "../../config";
 import axios from "axios";
 
+interface Tags {
+    keywords: string[];
+  }
+  
+  // Interface for category data
+  interface CategoryData {
+    categoryId: number;
+    categoryName: string;
+    tags: Tags;
+  }
+
 interface OpenDays {
     [key: string]: {
       isOpen: boolean;
@@ -17,6 +28,15 @@ interface OpenDays {
       specialNote: string;
     };
   }
+
+  interface BusinessDetails {
+    name: string;
+    businessRegNo: string;
+    logo: string;
+    description: string;
+    phone: string;
+    address: string;
+}
 
 const businessCategories = [
     "Hotel",
@@ -60,34 +80,48 @@ const foodKeywords = [
     "Dairy"
 ]
 
-const OnboardingForm: React.FC = () => {
-
-    const [openModal, setOpenModal] = useState(true);
+const OnboardingForm: React.FC<BusinessDetails> = () => {
+    const [busninessName, setBusinessName] = useState("")
+    const [regNo, setRegNo] = useState("")
     const [activeTab, setActiveTab] = useState('BusinessDetails');
     const emailInputRef = useRef<HTMLInputElement>(null);
     const [imageName, setImageName] = useState(''); // Store image file name
     const [imageFile, setImageFile] = useState<File | null>(null); // Store image file
     // const [openDays, setOpenDays] = useState<OpenDays | null>(null);
-    const [businessOpeningHours, setBusinessOpeningHours] = useState<OpenDays | null>(null);
+    const [businessOpeningHours, setBusinessOpeningHours] = useState<OpenDays>({
+        Monday: { isOpen: false, startTime: "00:00", endTime: "00:00", specialNote: "" },
+        Tuesday: { isOpen: false, startTime: "00:00", endTime: "00:00", specialNote: "" },
+        Wednesday: { isOpen: false, startTime: "00:00", endTime: "00:00", specialNote: "" },
+        Thursday: { isOpen: false, startTime: "00:00", endTime: "00:00", specialNote: "" },
+        Friday: { isOpen: false, startTime: "00:00", endTime: "00:00", specialNote: "" },
+        Saturday: { isOpen: false, startTime: "00:00", endTime: "00:00", specialNote: "" },
+        Sunday: { isOpen: false, startTime: "00:00", endTime: "00:00", specialNote: "" },
+    });
     const [selectedCategory, setSelectedCategory] = useState("")
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
-    const [businessDetails, setBusinessDetails] = useState({
-        name: '',
-        regNo: '',
-        logo: '',
-        description: '',
-        phone: '',
-        address: ''
+    const [businessDetails, setBusinessDetails] = useState<BusinessDetails>({
+        name: "",
+        businessRegNo: "",
+        logo: "",
+        description: "",
+        phone: "",
+        address: ""
     });
+    const [openModal, setOpenModal] = useState(false);
+    const [categoryData, setCategoryData] = useState<CategoryData[]>([]);
 
 
     const storedEmail = "yuhanga2001@gmail.com" // need to fetch from the local storage
-
+    
+    
 
     const handleSetOpeningHours = (openDays: OpenDays) => {
+        console.log("inside handle open hours");
         setBusinessOpeningHours(openDays); // update state with opening hours
-        setOpenModal(false); // close modal after setting the hours
+        
+        
+        
     };
 
     const isTagSelected = (tag: string) => selectedTags.includes(tag);
@@ -109,15 +143,15 @@ const OnboardingForm: React.FC = () => {
       
 
         // Handle file upload
-        // const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-        //     const file = event.target.files?.[0];
-        //     if (file) {
-        //         setImageFile(file); // Store the file in the state
-        //         setImageName(file.name); // Store the name of the uploaded file
-        //     }
+        const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+            const file = event.target.files?.[0];
+            if (file) {
+                setImageFile(file); // Store the file in the state
+                setImageName(file.name); // Store the name of the uploaded file
+            }
             
-        //     setBusinessDetails({...businessDetails, logo: file.name});
-        // };
+            setBusinessDetails({...businessDetails, logo: file ? file.name : ''});
+        };
 
 
     const handleNextBusinessCategories = () => {
@@ -135,6 +169,8 @@ const OnboardingForm: React.FC = () => {
 
     const handleNextBusinessDetails = () => {
         setActiveTab('OpeningHours');
+        businessDetails.name = busninessName;
+        businessDetails.businessRegNo = regNo;
         console.log(businessDetails);
 
         toast('Toggle button indicates whether your busienss is open or closed. You can enter open and closing times for each day and add a special note that you want your customers to know about the availability of your shop. Change anytime!', {
@@ -152,17 +188,50 @@ const OnboardingForm: React.FC = () => {
         
     }
 
-    const loadData = async (email: string) => {
-        const url = `${BACKEND_URL}/business_owner/business/${storedEmail}`
+    const fetchCategories = async() => {
+        const url = `${BACKEND_URL}/category/all`
 
         try{
             const response = await axios.get(url);
+            const data = response.data;
 
+            const parsedCategoryData = data.map((item: any) => {
+                return {
+                  categoryId: item.categoryId,
+                  categoryName: item.categoryName,
+                  tags: JSON.parse(item.tags) // Convert the string to a proper object
+                };
+              });
+              setCategoryData(parsedCategoryData)
+              console.log(categoryData);
+              
             
-        }catch (e){
-            console.error(e)
+        } catch (e){
+            console.error("Error fetching data:", e)
         }
     }
+
+    const loadData = async (email: string) => {
+        const url = `${BACKEND_URL}/business_owner/business/${email}`
+
+        try{
+            const response = await axios.get(url);
+            
+            const item = response.data;
+            
+            if (item.address == null || item.contactNo == null || item.description == null) {
+                setOpenModal(true)
+                console.log("hi");
+                setBusinessName(item.name)
+                setRegNo(item.businessRegNo)
+                
+            }
+            
+        }catch (e){
+            console.error("Error fetching data:", e)
+        }
+    }
+
 
     useEffect(() => {
         loadData(storedEmail)
@@ -208,7 +277,10 @@ const OnboardingForm: React.FC = () => {
                     </button>
                     <button
                     className={`px-0 py-2 pb-[calc(0.5rem - 4px)] rounded focus:outline-none ${activeTab === 'BusinessCategory' ? 'text-black border-b-4 border-black' : 'bg-transparent text-gray-500 border-b-4 border-transparent hover:border-b-4 hover:border-gray-300'}`}
-                    onClick={() => setActiveTab('BusinessCategory')}
+                    onClick={() => {
+                        setActiveTab('BusinessCategory');
+                        fetchCategories();
+                    }}
                     >
                     Business Category
                     </button>
@@ -222,21 +294,24 @@ const OnboardingForm: React.FC = () => {
 
                 {/* Handle business details */}
                 {activeTab == "BusinessDetails" && <div className="flex flex-col flex-start w-2/3">
+
                     <div className="mb-8">
                         <div className="mb-2 block">
                             <Label htmlFor="name" value="Business Name" />
                         </div>
                         <TextInput
+                            value={busninessName}
                             onChange={(e) => setBusinessDetails({...businessDetails, name: e.target.value})}
-                            id="name" ref={emailInputRef} placeholder="name@company.com" required />
+                            id="name" ref={emailInputRef} disabled />
                     </div>
                     <div className="mb-8">
                         <div className="mb-2 block">
                             <Label htmlFor="regno" value="Business Registration number" />
                         </div>
                         <TextInput 
-                            onChange={(e) => setBusinessDetails({...businessDetails, regNo: e.target.value})}
-                            id="regno" placeholder="name@company.com" required />
+                            value={regNo}
+                            onChange={(e) => setBusinessDetails({...businessDetails, businessRegNo: e.target.value})}
+                            id="regno" disabled />
                     </div>
                     {/* Business logo upload */}
                     <div className="mb-8">
@@ -253,7 +328,7 @@ const OnboardingForm: React.FC = () => {
                                         <p className="text-xs text-gray-500">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
                                     </div>
                                     <input
-                                        // onChange={handleImageUpload}
+                                        onChange={handleImageUpload}
                                         id="logo-upload"
                                         type="file"
                                         className="hidden"
@@ -307,7 +382,7 @@ const OnboardingForm: React.FC = () => {
 
                 {/* handle business hours */}
                {activeTab == "OpeningHours" && <div className="flex flex-col flex-start w-2/3">
-                    <OpeningHoursModal onSetOpeningHours={handleSetOpeningHours}/>
+                    <OpeningHoursModal onSetOpeningHours={handleSetOpeningHours} businessEmail={storedEmail}/>
                 </div>}
 
                 {
@@ -323,9 +398,9 @@ const OnboardingForm: React.FC = () => {
                                 onChange={(e) => setSelectedCategory(e.target.value)}
                                 >
                                 <option value="">Select an option</option>
-                                {businessCategories.map((category, index) => (
-                                    <option key={index} value={category}>
-                                        {category}
+                                {categoryData.map((category, index) => (
+                                    <option key={index} value={category.categoryName}>
+                                        {category.categoryName}
                                     </option>
         ))}
                             </Select>
@@ -335,39 +410,39 @@ const OnboardingForm: React.FC = () => {
                                 <div className="mb-2 block">
                                     <Label htmlFor="tags" value="Select upto five tags" />
                                 </div>
-                                {
-                                    selectedCategory == "Hotel" &&
                                     <ul className="grid w-full gap-2 md:grid-cols-3">
-                                    {hotelKeywords.map((tag, index) => (
-                                      <li key={index}>
-                                        <input
-                                          type="checkbox"
-                                          id={`${tag}-option`}
-                                          value={tag}
-                                          checked={isTagSelected(tag)}
-                                          onChange={() => handleTagChange(tag)}
-                                          className="hidden"
-                                        />
-                                        <label
-                                          htmlFor={`${tag}-option`}
-                                          className={`inline-flex items-center justify-between w-full p-2 border rounded-lg cursor-pointer 
-                              ${
-                                isTagSelected(tag)
-                                  ? "border-bluedark bg-bluegray text-blue-600 dark:bg-blue-600 dark:text-white"
-                                  : "border-gray-200 bg-white text-gray-500 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700"
-                              }
-                              hover:bg-gray-50 dark:hover:bg-gray-700`}
-                                        >
-                                          <div className="block">
-                                            <div className="w-full text-xs font-semibold">
-                                              {tag}
-                                            </div>
-                                          </div>
-                                        </label>
-                                      </li>
-                                    ))}
+                            {categoryData.map((item: any, index) => (
+                              item.categoryName === selectedCategory && item.tags.keywords.map((tag: string) => (
+                                <li key={tag}>
+                                  <input
+                                    type="checkbox"
+                                    id={`${tag}-option`}
+                                    value={tag}
+                                    checked={isTagSelected(tag)}
+                                    onChange={() => handleTagChange(tag)}
+                                    className="hidden"
+                                  />
+                                  <label
+                                    htmlFor={`${tag}-option`}
+                                    className={`inline-flex items-center justify-between w-full p-2 border rounded-lg cursor-pointer 
+                                      ${
+                                        isTagSelected(tag)
+                                          ? "border-bluedark bg-bluegray text-blue-600 dark:bg-blue-600 dark:text-white"
+                                          : "border-gray-200 bg-white text-gray-500 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-700"
+                                      }
+                                      hover:bg-gray-50 dark:hover:bg-gray-700`}
+                                  >
+                                    <div className="block">
+                                      <div className="w-full text-xs font-semibold">
+                                        {tag}
+                                      </div>
+                                    </div>
+                                  </label>
+                                </li>
+                              ))
+                            ))}
                                   </ul>
-                                }
+                                
                             </div>
                         }
                     </div>

@@ -16,11 +16,12 @@ interface OpenDay {
   }
 
   interface OpeningHoursModalProps {
-    onSetOpeningHours: (openDays: OpenDays) => void; // Prop type for callback
+    onSetOpeningHours: (openDays: OpenDays) => void;
+    businessEmail: string
   }
 
 
-const OpeningHoursModal: React.FC<OpeningHoursModalProps> = ({ onSetOpeningHours }) => {
+const OpeningHoursModal: React.FC<OpeningHoursModalProps> = ({ onSetOpeningHours, businessEmail }) => {
 //   const [openHoursModal, setOpenHoursModal] = useState(false);
   const { openDays, setOpenDays, validationErrors, handleUpdateOpeningHours } =
     useOpeningHoursModel();
@@ -67,8 +68,12 @@ const OpeningHoursModal: React.FC<OpeningHoursModalProps> = ({ onSetOpeningHours
   const handleSubmit = () => {
     handleUpdateOpeningHours();
     // Store the current openDays into finalOpeningHours state
+    console.log("from the component: ",openDays);
+    
     setFinalOpeningHours(openDays);
-    console.log(finalOpeningHours);
+    // console.log(finalOpeningHours);
+    onSetOpeningHours(openDays)
+
     
   };
 
