@@ -1,7 +1,7 @@
 import React from 'react';
 import { CheckIcon, XMarkIcon } from '@heroicons/react/20/solid';
 
-interface PackageCardProps {
+/*interface PackageCardProps {
   title: string;
   description: string;
   price: string;
@@ -10,6 +10,7 @@ interface PackageCardProps {
   isPopular?: boolean;
   onClick: () => void;
 }
+
 
 const PackageCard: React.FC<PackageCardProps> = ({
   title,
@@ -56,6 +57,65 @@ const PackageCard: React.FC<PackageCardProps> = ({
             )}
           </li>
         ))}
+      </ul>
+    </div>
+  );
+};
+
+export default PackageCard;*/
+
+
+interface PackageCardProps {
+  title: string;
+  description: string;
+  price: string;  // Pass price as a formatted string like "Rs. 100"
+  adsPerWeek: number;
+  displayBusinessDetails?: boolean;
+  profileAnalytics?: boolean;
+  interactWithCustomers?: boolean;
+  buttonText: string;
+  isPopular?: boolean;
+  onClick: () => void;
+}
+
+const PackageCard: React.FC<PackageCardProps> = ({
+  title,
+  description,
+  price,
+  adsPerWeek,
+  displayBusinessDetails = false,
+  profileAnalytics = false,
+  interactWithCustomers = false,
+  buttonText,
+  isPopular = false,
+  onClick,
+}) => {
+  return (
+    <div className={`flex flex-col p-4 bg-white border-2 border-gray-300 rounded-xl shadow-md transition transform hover:scale-105 duration-300 ${isPopular ? 'border-primary' : 'border-gray-200'}`}>
+      {isPopular && <div className="text-sm font-semibold text-gray-500">Most Popular Package</div>}
+      <h3 className="mt-2 text-xl font-bold text-gray-900">{title}</h3>
+      <p className="mt-2 text-sm text-gray-500">{description}</p>
+      <p className="mt-4 text-2xl font-bold text-gray-900">
+        {price.split('/')[0]}
+        <span className="text-xs font-medium text-gray-500">/month</span>
+      </p>
+      <button
+        className={`mt-4 w-full rounded-md bg-blue1 text-white hover:bg-bluedark py-2 text-sm font-semibold`}
+        onClick={onClick}
+      >
+        {buttonText}
+      </button>
+      <ul className="mt-4 space-y-1 text-sm text-gray-700">
+        <li>Ads Per Week: {adsPerWeek}</li>
+        <li>
+          Display Business Details: {displayBusinessDetails ? <CheckIcon className="w-4 h-4 text-blue1" /> : <XMarkIcon className="w-4 h-4 text-red-500" />}
+        </li>
+        <li>
+          Profile Analytics: {profileAnalytics ? <CheckIcon className="w-4 h-4 text-blue1" /> : <XMarkIcon className="w-4 h-4 text-red-500" />}
+        </li>
+        <li>
+          Interact With Customers: {interactWithCustomers ? <CheckIcon className="w-4 h-4 text-blue1" /> : <XMarkIcon className="w-4 h-4 text-red-500" />}
+        </li>
       </ul>
     </div>
   );
