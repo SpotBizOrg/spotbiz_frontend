@@ -102,6 +102,11 @@ function Customernavbar2(){
           >
             <span className="sr-only">View notifications</span>
             <BellIcon className="h-6 w-6" />
+            {NOTIFICATION_COUNT > 0 && (
+                <span className="h-4 w-2 absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                  {NOTIFICATION_COUNT}
+                </span>
+              )}
           </button>
         </Tooltip>
         {isNotificationMenuOpen && (
