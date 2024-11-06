@@ -8,6 +8,8 @@ import OpeningHoursModal from "../components/OpeningHoursModel";
 import { Bounce, toast } from "react-toastify";
 import { BACKEND_URL } from "../../config";
 import axios from "axios";
+import SubscriptionPkgs from '../components/PkgNew';
+import PackageListPage from "./PackageListPageNew";
 
 interface Tags {
     keywords: string[];
@@ -80,7 +82,7 @@ const foodKeywords = [
     "Dairy"
 ]
 
-const OnboardingForm: React.FC<BusinessDetails> = () => {
+const OnboardingForm: React.FC = () => {
     const [busninessName, setBusinessName] = useState("")
     const [regNo, setRegNo] = useState("")
     const [activeTab, setActiveTab] = useState('BusinessDetails');
@@ -447,6 +449,13 @@ const OnboardingForm: React.FC<BusinessDetails> = () => {
                         }
                     </div>
                 }
+
+                {
+                    activeTab == "Subscription" && <div className="flex flex-col flex-start">
+                        
+                        <PackageListPage />
+                    </div>
+                }
                     
             </div>
             </Modal.Body>
@@ -463,6 +472,9 @@ const OnboardingForm: React.FC<BusinessDetails> = () => {
                 {/* handle categories and tags */}
                 {activeTab == "BusinessCategory" && <Button color="dark" onClick={handleNextBusinessCategories}>
                     Next
+                </Button>}
+                {activeTab == "Subscription" && <Button color="dark" onClick={handleNextBusinessCategories}>
+                    Save all
                 </Button>}
                 
             {/* <Button color="gray" onClick={() => setOpenModal(false)}>
