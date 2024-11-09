@@ -50,30 +50,33 @@ const CustomerHome: React.FC = () => {
 
   const handleSearch = async () => {
     const searchQuery = query.trim();
+    console.log(searchQuery);
+    window.location.href = `/customer/search_results?search=${searchQuery}`;
+    
 
-    if (searchQuery) {
-      setLoading(true);
-      setError(null); // Reset error before starting the request
+  //   if (searchQuery) {
+  //     setLoading(true);
+  //     setError(null); // Reset error before starting the request
 
-      try {
-        // POST request to search
-        const response = await axios.post('http://localhost:8080/api/v1/search/post', searchQuery, {
-          params: { page: 0, size: 10 },
-        });
+  //     try {
+  //       // POST request to search
+  //       const response = await axios.post('http://localhost:8080/api/v1/search/post', searchQuery, {
+  //         params: { page: 0, size: 10 },
+  //       });
         
-        setResults(response.data); // Set the search results
-        setLoading(false);
+  //       setResults(response.data); // Set the search results
+  //       setLoading(false);
 
-        if (response.data.length === 0) {
-          setError("No results found");
-        }
-      } catch (error) {
-        setError("Failed to fetch search results");
-        setLoading(false);
-      }
-    } else {
-      setError("Please enter a valid search term");
-    }
+  //       if (response.data.length === 0) {
+  //         setError("No results found");
+  //       }
+  //     } catch (error) {
+  //       setError("Failed to fetch search results");
+  //       setLoading(false);
+  //     }
+  //   } else {
+  //     setError("Please enter a valid search term");
+  //   }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -116,7 +119,7 @@ const CustomerHome: React.FC = () => {
               />
             </div>
           </div>
-          {loading && <div className="text-white mt-4">Loading...</div>}
+          {/* {loading && <div className="text-white mt-4">Loading...</div>}
           {error && <div className="text-red-500 mt-4">{error}</div>}
           {results.length > 0 && (
             <div className="mt-8 bg-white rounded-lg shadow-lg text-gray-900 w-full max-w-2xl">
@@ -130,7 +133,7 @@ const CustomerHome: React.FC = () => {
                 ))}
               </ul>
             </div>
-          )}
+          )} */}
         </div>
       </header>
       <main className="flex-grow p-8">

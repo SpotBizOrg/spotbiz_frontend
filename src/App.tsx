@@ -40,6 +40,8 @@ import { toast} from "react-toastify";
 import Message from "./components/Message";
 import "react-toastify/dist/ReactToastify.css";
 import { setNotificationCount} from '../config';
+import OnboardingForm from "./pages/OnboardingForm";
+import PackageListPageNew from "./pages/PackageListPageNew";
 
 function App() {
 
@@ -118,6 +120,8 @@ function App() {
         <Route path="/business/banned" element={<Banned />} />
         <Route path="/admin/appeals_reports" element={<Reports />} />
         <Route path="/packages" element={<PackageListPage />} />
+        <Route path="/packages2" element={<PackageListPageNew />} />
+        <Route path="/onboard" element={<OnboardingForm />} />
       </Routes>
   );
 }
