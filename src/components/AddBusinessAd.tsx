@@ -41,15 +41,12 @@ const AddAdvertisementModal: React.FC<AddAdvertisementModalProps> = ({
     tags?: string;
   }>({});
   const [businessId, setBusinessId] = useState<number | null>(null);
-  const [category, setCategory] = useState<number | null>(null);
 
   const { token, user } = useAuth();
 
   useEffect(() => {
     fetchBusinessId();
-    if (show) {
-      fetchTags();
-    } else {
+    if (!show) {
       handleResetForm();
     }
   }, [show, user?.email]);
@@ -73,48 +70,19 @@ const AddAdvertisementModal: React.FC<AddAdvertisementModalProps> = ({
 
       const data = await response.json();
       console.log(data);
-      setCategory(data.categoryId);
+
       setBusinessId(data.businessId);
+      const options = data.tags.map((tag: string) => ({
+        value: tag,
+        label: tag,
+      }));
+      setTagOptions(options);
       setNewAd((prevState) => ({
         ...prevState,
         businessId: data.businessId,
       }));
     } catch (err: any) {
       setError(err.message || "Failed to fetch id");
-    }
-  };
-
-  const fetchTags = async () => {
-    if (!category) {
-      onClose();
-      handleResetForm();
-      return;
-    }
-    try {
-      const response = await fetch(
-        `http://localhost:8080/api/v1/business/tags/${category}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch tags");
-      }
-
-      const data = await response.json();
-      setBusinessId(data.businessId);
-      const options = data.keywords.map((tag: string) => ({
-        value: tag,
-        label: tag,
-      }));
-      setTagOptions(options);
-    } catch (err: any) {
-      setError(err.message || "Failed to fetch tags");
     }
   };
 
