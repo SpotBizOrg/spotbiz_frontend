@@ -21,6 +21,7 @@ import Chart from "./components/PerformanceChart";
 import SearchResults from "./pages/SearchResults";
 import BusinessDashboard from "./pages/BusinessDashboard";
 import CustomerGame from "./pages/CustomerGame";
+import AllRecommendations from "./pages/AllRecommendations";
 import ManageGames from "./pages/ManageGames";
 import GamePage from "./pages/GamePage";
 import CustomerProfile from "./pages/CustomerProfile2";
@@ -120,6 +121,7 @@ function App() {
         <Route path="/business/banned" element={<Banned />} />
         <Route path="/admin/appeals_reports" element={<Reports />} />
         <Route path="/packages" element={<PackageListPage />} />
+        <Route path="/allrecommendations" element={<AllRecommendations/>} />
         <Route path="/packages2" element={<PackageListPageNew />} />
         <Route path="/onboard" element={<OnboardingForm />} />
       </Routes>
