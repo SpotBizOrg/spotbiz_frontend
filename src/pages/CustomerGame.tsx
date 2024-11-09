@@ -17,13 +17,24 @@ interface Game_display {
   gameUrl: string;
 }
 
+interface Leaderboard {
+  userId: string;
+  email: string,
+  name: string;
+  phoneNo: string;
+  role: string;
+  status: string;
+  points: string;
+}
+
 function CustomerGame() {
 
   useEffect(() => {
-    document.title = "SpotBiz | Games | Admin";
+    document.title = "SpotBiz | Games | Customer";
     fetchRegularGames();
     fetchSeasonalGames();
     // fetchPlayedGames();
+    fetchLeaderboard();
     if(!checkAuthenticated()){
       login();
     }
@@ -35,6 +46,8 @@ function CustomerGame() {
   const [regularGames, setRegularGames] = useState<Game_display[]>([]);
   const [seasonalGames, setSeasonalGames] = useState<Game_display[]>([]);
   const [playedGames, setPlayedGames] = useState<Game_display[]>([]);
+  const [leaderboard, setLeaderboard] = useState<Leaderboard[]>([]);
+  const [isLeaderboardActivated, setIsLeaderboardActivated] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
 
   const fetchRegularGames = async () => {
@@ -87,6 +100,31 @@ function CustomerGame() {
       console.error('An error occurred:', error);
     }
   };   
+
+  const fetchLeaderboard = async () => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/game/leaderboard`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Error response:', errorData);
+        toast.error('An unexpected error occurred');
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || 'Unknown error'}`);
+      }
+  
+      const responseData = await response.json();
+      setLeaderboard(responseData);
+  
+    } catch (error) {
+      console.error('An error occurred:', error);
+      toast.error('An unexpected error occurred');
+    }
+  };
 
   const getDisplayedGames = (): Game_display[] => {
     switch (activeTab) {
@@ -146,21 +184,33 @@ function CustomerGame() {
           <div className="flex space-x-6 ">
             <button
               className={`px-0 py-2 pb-[calc(0.5rem - 4px)] rounded focus:outline-none ${activeTab === 'played' ? 'text-black border-b-4 border-black' : 'bg-transparent text-blue-500 border-b-4 border-transparent hover:border-b-4 hover:border-gray-300'}`}
-              onClick={() => setActiveTab('played')}
+              onClick={() => {setActiveTab('played'); setIsLeaderboardActivated(false);}}
             >
               Already Played
             </button>
             <button
               className={`px-0 py-2 pb-[calc(0.5rem - 4px)] rounded focus:outline-none ${activeTab === 'regular' ? 'text-black border-b-4 border-black' : 'bg-transparent text-blue-500 border-b-4 border-transparent hover:border-b-4 hover:border-gray-300'}`}
-              onClick={() => setActiveTab('regular')}
+              onClick={() => {setActiveTab('regular'); setIsLeaderboardActivated(false);}}
             >
               Regular Games
             </button>
             <button
               className={`px-0 py-2 pb-[calc(0.5rem - 4px)] rounded focus:outline-none ${activeTab === 'seasonal' ? 'text-black border-b-4 border-black' : 'bg-transparent text-blue-500 border-b-4 border-transparent hover:border-b-4 hover:border-gray-300'}`}
-              onClick={() => setActiveTab('seasonal')}
+              onClick={() => {setActiveTab('seasonal'); setIsLeaderboardActivated(false);}}
             >
               Seasonal Games
+            </button>
+            <button
+              className={`px-0 py-2 pb-[calc(0.5rem - 4px)] rounded focus:outline-none ${activeTab === 'leaderboard' ? 'text-black border-b-4 border-black' : 'bg-transparent text-blue-500 border-b-4 border-transparent hover:border-b-4 hover:border-gray-300'}`}
+              onClick={() => {setActiveTab('leaderboard'); setIsLeaderboardActivated(true);}}
+            >
+              Leaderboard
+            </button>
+            <button
+              className={`px-0 py-2 pb-[calc(0.5rem - 4px)] rounded focus:outline-none ${activeTab === 'howToPlay' ? 'text-black border-b-4 border-black' : 'bg-transparent text-blue-500 border-b-4 border-transparent hover:border-b-4 hover:border-gray-300'}`}
+              onClick={() => {setActiveTab('howToPlay'); setIsLeaderboardActivated(false);}}
+            >
+              How to play?
             </button>
           </div>
           <div className="flex items-center space-x-2 mb-1">
@@ -174,7 +224,7 @@ function CustomerGame() {
                   type="text"
                   id="simple-search"
                   className="bg-gray-50 border p-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                  placeholder={`Search for ${activeTab} games...`}
+                  placeholder={`Search for games...`}
                   value={searchQuery}
                   onChange={handleSearch}
                   onKeyDown={handleBackspace} 
@@ -197,7 +247,7 @@ function CustomerGame() {
           <div className="flex flex-row w-full overflow-x-auto overflow-y-hidden h-full space-x-4 scrollbar-hide">
           {displayedGames.length === 0 || displayedGames[0]?.gameId === '' || displayedGames[0]?.gameId === null ? (
           <div className="text-center text-gray-500">
-            { activeTab === 'seasonal' ? 'No seasonal games available.' : activeTab === 'regular' ? 'No regular games available.' : activeTab === 'played' ? 'No played games available. Try playing some games 🤗' : null }
+            { activeTab === 'seasonal' ? 'No seasonal games available.' : activeTab === 'regular' ? 'No regular games available.' : activeTab === 'played' ? 'No played games available. Try playing some games' : null }
             </div>
           ) : (
             displayedGames.map((game, index) => (
@@ -217,7 +267,37 @@ function CustomerGame() {
             ))
           )}
           </div>
-        </div>
+          <div className="">
+            {!isLeaderboardActivated || leaderboard.length === 0 || leaderboard[0]?.userId === '' || leaderboard[0]?.userId === null ? (
+            <div className="text-center text-gray-500">
+              { activeTab === 'leaderboard' ? 'Leaderboard is empty.': null }
+              </div>
+            ) : (
+              <div className="relative overflow-x-auto overflow-y-auto sm:rounded-lg border border-gray-200">
+                <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+                  <thead className="table-header text-xs text-gray-700 uppercase bg-gray-50">
+                    <tr>
+                      <th scope="col" className="px-6 py-3" style={{ minWidth: '150px' }}>Rank</th>
+                      <th scope="col" className="px-6 py-3" style={{ minWidth: '150px' }}>Name</th>
+                      <th scope="col" className="px-6 py-3" style={{ minWidth: '150px' }}>
+                        <div className="flex items-center">Score</div>
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {leaderboard.map((user, index) => (
+                      <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                        <td className="px-6 py-4">{index + 1 }</td>
+                        <td className="px-6 py-4">{user.name}</td>
+                        <td className="px-6 py-4">{user.points}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            )}
+          </div>
+          </div>
       </div>
     </Container>
   );
