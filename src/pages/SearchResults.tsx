@@ -148,7 +148,7 @@ const ResultCard: React.FC<ResultCardProps> = ({ imageSrc, name, place_location,
 
 
 const SearchResults: React.FC = () => {
-  // const location = useLocation();
+  const location = useLocation();
   // const  query  = null;
   const [searchParams] = useSearchParams();
   // const { query } = location.state;
@@ -167,11 +167,15 @@ const SearchResults: React.FC = () => {
   const size = 4;
   const query = searchParams.get('search');
   console.log(query);
+
+  
   
 
   const fetchData = async (page: number) => {
     const url = `${BACKEND_URL}/search/${query}?page=${page-1}&size=${size}`;
     console.log(selectedCategoryId);
+    // console.log(useQuery);
+    
     
     // const url = `${BACKEND_URL}/search/${query}?page=${page-1}&size=${size}`;
     setLoading(true);
@@ -239,7 +243,7 @@ const SearchResults: React.FC = () => {
   useEffect(() => {
     document.title = "SpotBiz | Search Results";
     fetchData(currentPageS);
-  }, [currentPageS]);
+  }, [query, currentPageS]);
 
   useEffect(() => {
     document.title = "SpotBiz | Search Results";

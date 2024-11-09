@@ -20,6 +20,7 @@ const LoginPage: React.FC = () => {
       performLogin();
     }
   };
+
   checkAuthenticated();
 
   const saveNotificationToken = async (userId: number) => {
@@ -45,10 +46,9 @@ const LoginPage: React.FC = () => {
       console.error('An error occurred:', error);
       toast.error('An unexpected error occurred');
     }
-  }
+  };
 
   const performLogin = async () => {
-  
     try {
       const response = await fetch( `${BACKEND_URL}/login` , {
         method: 'POST',
@@ -219,8 +219,7 @@ const LoginPage: React.FC = () => {
             <div className="flex items-center justify-between mb-6">
               <button
                 className="bg-bluedark hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none w-full"
-                type="button"
-                onClick={handleLogin}
+                type="submit" // Changed to submit to allow Enter key to trigger login
                 disabled={loading}
               >
                 {loading ? (

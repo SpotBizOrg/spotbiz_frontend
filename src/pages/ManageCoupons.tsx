@@ -18,12 +18,6 @@ import { BACKEND_URL } from '../../config';
 import { useAuth } from '../utils/AuthProvider';
 import { HashLoader } from 'react-spinners';
 
-const dummyUsers = [
-  { userId:1, name: "John Doe", email: "john@example.com", phone: "123-456-7890", score:90 },
-  { userId:2, name: "Jane Smith", email: "jane@example.com", phone: "098-765-4321", score:87 },
-  { userId:3, name: "Alice Johnson", email: "alice@example.com", phone: "555-555-5555", score:86 },
-];
-
 interface Business {
   businessId: string;
   name: string;
@@ -39,6 +33,16 @@ interface Customer {
   phoneNo: string;
   role: string;
   status: string;
+}
+
+interface Leaderboard {
+  userId: number;
+  email: string,
+  name: string;
+  phoneNo: string;
+  role: string;
+  status: string;
+  points: string;
 }
 
 interface Coupon {
@@ -57,13 +61,11 @@ interface AddCoupon {
   discount: number | null;
 }
 
-let dummyCoupons: Coupon[] = [
-];
-
 function ManageCoupons() {
   useEffect(()=>{
     document.title = "SpotBiz | Coupons | Admin";
     fetchAllCoupons(null, null);
+    fetchTopCustomers();
     if(!checkAuthenticated() || user?.role != 'ADMIN'){
       login();
     }
@@ -141,10 +143,36 @@ function ManageCoupons() {
       toast.error('An unexpected error occurred');
     }
   };
+
+  const fetchTopCustomers = async () => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/game/leaderboard`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Error response:', errorData);
+        toast.error('An unexpected error occurred');
+        throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || 'Unknown error'}`);
+      }
+  
+      const responseData = await response.json();
+      setLeaderboard(responseData);
+  
+    } catch (error) {
+      console.error('An error occurred:', error);
+      toast.error('An unexpected error occurred');
+    }
+  };
   
   const { user, checkAuthenticated, login } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [items, setItems] = useState<Coupon[]>(dummyCoupons);
+  const [items, setItems] = useState<Coupon[]>([]);
+  const [leaderboard, setLeaderboard] = useState<Leaderboard[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [showIssuePopup, setShowIssuePopup] = useState(false);
@@ -195,9 +223,7 @@ function ManageCoupons() {
           toast.error('An unexpected error occurred');
           throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || 'Unknown error'}`);
         }
-    
-        const responseData = await response.json();
-        console.log('Success:', responseData);
+
         toast.success("Coupon issued successfully!");
         fetchAllCoupons(null, null);
         setShowIssuePopup(false);
@@ -639,8 +665,13 @@ function ManageCoupons() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showShareModal} onClose={() => setShowShareModal(false)} size="xl" className="flex items-center justify-center min-h-screen z-40"  >
-        <Modal.Header className="text-center">Share Coupon</Modal.Header>
+      <Modal show={showShareModal} onClose={() => setShowShareModal(false)} size="xl" className="flex items-center justify-center min-h-screen z-40"  theme={{
+        content: {
+          base: "bg-white w-3/4 rounded-lg",
+          inner: "p-6 rounded-lg shadow-lg",
+        },
+      }}>
+        <Modal.Header className="text-center">Issue Coupon</Modal.Header>
         <Modal.Body>
           <div className="relative table-container overflow-x-auto overflow-y-auto sm:rounded-lg border border-gray-200">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -662,12 +693,12 @@ function ManageCoupons() {
                 </tr>
               </thead>
               <tbody>
-                {dummyUsers.map((user, index) => (
+                {leaderboard.map((user, index) => (
                   <tr key={index} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
                     <td className="px-6 py-4">{user.name}</td>
                     <td className="px-6 py-4">{user.email}</td>
-                    <td className="px-6 py-4">{user.phone}</td>
-                    <td className="px-6 py-4">{user.score}</td>
+                    <td className="px-6 py-4">{user.phoneNo}</td>
+                    <td className="px-6 py-4">{user.points}</td>
                     <td className="px-0 py-4 flex gap-0 justify-start ">
                       <Button
                         color="dark"
@@ -687,7 +718,6 @@ function ManageCoupons() {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button color="gray" onClick={() => setShowShareModal(false)}>Close</Button>
         </Modal.Footer>
       </Modal>
       <div className="px-12 sm:ml-64 mt-20">

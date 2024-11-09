@@ -67,7 +67,7 @@ function Customernavbar() {
   const handleSearch = () => {
     const searchQuery = searchTerm.trim();
     if (searchQuery) {
-      navigate('/customer/search_results', { state: { query: searchQuery } });
+      navigate('/customer/search_results?search=' + searchQuery);
     }
   };
 
