@@ -65,28 +65,6 @@ const PackageCard: React.FC<PackageCardProps> = ({
           <span className="ml-2 font-semibold">{listing} Listing </span>
         </li>
       </ul>
-      {/* <ul className="mt-4 space-y-1 text-sm text-gray-700">
-        {Object.entries(features).map(([feature, value], index) => (
-          <li key={index} className="flex items-center text-left">
-            {value === '❌' ? (
-              <>
-                <XMarkIcon className="w-4 h-4 text-red-500" aria-hidden="true" />
-                <span className="ml-2 font-semibold">{feature}</span>
-              </>
-            ) : value === '✅' ? (
-              <>
-                <CheckIcon className="w-4 h-4 text-blue1" aria-hidden="true" />
-                <span className="ml-2 font-semibold">{feature}</span>
-              </>
-            ) : (
-              <>
-                <CheckIcon className="w-4 h-4 text-blue1" aria-hidden="true" />
-                <span className="ml-2 font-semibold">{feature}: {value}</span>
-              </>
-            )}
-          </li>
-        ))}
-      </ul> */}
       <div className='flex flex-row items-center mt-4 justify-center'>
         {!isActive &&<button className='items-center justify-center bg-bluedark flex p-2 text-sm text-white rounded-md w-5/6' >Buy</button>}
         {isActive &&<button className='items-center justify-center bg-gray-800 flex p-2 text-sm text-white rounded-md w-5/6' disabled >Actiavated</button>}

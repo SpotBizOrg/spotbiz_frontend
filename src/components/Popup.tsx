@@ -1,5 +1,6 @@
 import React from 'react';
 import PackageCard from './PackageCard';
+import PackageListPage from '../pages/PackageListPageNew';
 
 interface PopupProps {
   isOpen: boolean;
@@ -72,7 +73,8 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
           <button onClick={onClose} className="text-xl font-bold">&times;</button>
         </div>
         <div className="mt-2">
-          <p className="text-subsubheading text-center">Subscription Plans</p>
+          <PackageListPage />
+          {/* <p className="text-subsubheading text-center">Subscription Plans</p>
           <div className="mt-8 grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
             {packagesData.map((pkg) => (
               <PackageCard
@@ -86,7 +88,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
                 onClick={() => {}} // Provide a dummy onClick handler
               />
             ))}
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

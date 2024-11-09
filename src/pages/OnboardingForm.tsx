@@ -114,8 +114,8 @@ const OnboardingForm: React.FC = () => {
     const [categoryData, setCategoryData] = useState<CategoryData[]>([]);
 
 
-    const storedEmail = "yuhanga2001@gmail.com" // need to fetch from the local storage
-    
+    // const storedEmail = "yuhanga2001@gmail.com" // need to fetch from the local storage
+    const storedEmail = localStorage.getItem("email")
     
 
     const handleSetOpeningHours = (openDays: OpenDays) => {
@@ -236,12 +236,14 @@ const OnboardingForm: React.FC = () => {
 
 
     useEffect(() => {
-        loadData(storedEmail)
-    },[])
+            if (storedEmail) {
+                loadData(storedEmail);
+            }
+        }, [])
     
     return (
         <>
-            <Container>
+            {/* <Container>
                 <Businessnavbar />
                 <Businesssidebar selectedTile="dashboard"/>
                 <div className="px-12 sm:ml-64 mt-20">
@@ -252,9 +254,9 @@ const OnboardingForm: React.FC = () => {
                         <p>hello</p>
                     </div>
                 </div>
-            </Container>
+            </Container> */}
 
-            <Modal size="5xl" position="center" show={openModal} onClose={() => setOpenModal(false)}>
+            <Modal size="7xl" position="center" show={openModal} onClose={() => setOpenModal(false)}>
             <Modal.Header>
                 Welcome to SpotBiz
                 <div className="flex text-sm text-gray-500 text mb-4 mt-2">
@@ -384,7 +386,7 @@ const OnboardingForm: React.FC = () => {
 
                 {/* handle business hours */}
                {activeTab == "OpeningHours" && <div className="flex flex-col flex-start w-2/3">
-                    <OpeningHoursModal onSetOpeningHours={handleSetOpeningHours} businessEmail={storedEmail}/>
+                    <OpeningHoursModal onSetOpeningHours={handleSetOpeningHours} businessEmail={storedEmail || ''}/>
                 </div>}
 
                 {
