@@ -2,36 +2,33 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
 interface GameCardProps {
+  gameId: string,
   image: string;  
   title: string;
   developer: string;
   description: string;
   gameUrl: string;
   usage: number;
+  onEdit: () => void;
+  onDelete: () => void;
 }
 
 const GameCard: React.FC<GameCardProps> = ({
+  gameId,
   image,
   title,
   developer,
   description,
   gameUrl,
   usage,
+  onEdit,
+  onDelete
 }) => {
-  console.log({ image, title, developer, description, gameUrl, usage });
   const navigate = useNavigate();
 
   const handleClick = () => {
     const startTime = new Date().toISOString();
-    navigate('/customer/play_game', { state: { gameUrl, startTime } });
-  };
-
-  const handleEditClick = () => {
-    console.log({gameUrl})
-  };
-
-  const handleDeleteClick = () => {
-    // Add your delete logic here
+    navigate('/customer/play_game', { state: { gameId, gameUrl, startTime, title } });
   };
 
   return (
@@ -42,9 +39,8 @@ const GameCard: React.FC<GameCardProps> = ({
         boxShadow: '0 0 10px rgba(0, 255, 255, 0.5)',
       }}
     >
-      {/* Display the image using the provided URL */}
       <img
-        src={image}  // URL to display the image
+        src={image}  
         alt={title}
         className="rounded-lg w-full transform transition-transform hover:scale-105 hover:z-10"
       />
@@ -64,13 +60,13 @@ const GameCard: React.FC<GameCardProps> = ({
           <>
             <button
               className="bg-green-500 text-white py-2 px-4 rounded transform transition-transform hover:scale-105 hover:z-10 ml-2 flex-grow"
-              onClick={handleEditClick}
+              onClick={onEdit}
             >
               Edit
             </button>
             <button
               className="bg-red-600 text-white py-2 px-4 rounded transform transition-transform hover:scale-105 hover:z-10 ml-2 flex-grow"
-              onClick={handleDeleteClick}
+              onClick={onDelete}
             >
               Delete
             </button>

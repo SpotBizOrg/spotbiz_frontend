@@ -7,6 +7,7 @@ import PkgCard from '../components/PkgCard';
 import Container from '../components/Container';
 import Popup from '../components/Popup';
 import CouponPopup from '../components/CouponPopup';
+import OnboardingForm from './OnboardingForm';
 
 const Dashboard: React.FC = () => {
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -25,6 +26,7 @@ const Dashboard: React.FC = () => {
   };
 
   return (
+    <>
     <Container>
       <Businessnavbar />
       {/* <div className="flex pt-3"> */}
@@ -40,17 +42,19 @@ const Dashboard: React.FC = () => {
           </div>
         </div>
       {/* </div> */}
-      <div className="fixed bottom-4 right-10">
+      {/* <div className="fixed bottom-4 right-10">
                     <button 
                     onClick={handleOpenPopup}
                     className="bg-gray-800 text-bodysmall text-white py-2 px-2 rounded-lg shadow-lg">
                         Check Cupoun Code
                     </button>
                 
-            </div>
-      <CouponPopup isOpen={isCPopupOpen} onClose={handleClosePopup} />
+            </div> */}
+      {/* <CouponPopup isOpen={isCPopupOpen} onClose={handleClosePopup} /> */}
       <Popup isOpen={isPopupOpen} onClose={togglePopup} /> {/* Include the Popup component */}
     </Container>
+    <OnboardingForm />
+    </>
   );
 };
 

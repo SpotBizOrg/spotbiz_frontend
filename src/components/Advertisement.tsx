@@ -1,9 +1,8 @@
-// src/components/Advertisement.tsx
-import React from 'react';
+import React from "react";
 
 interface AdvertisementProps {
   img: string;
-//   date: string;
+  //   date: string;
   details: string;
   description: string;
 }
