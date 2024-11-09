@@ -72,11 +72,11 @@ const TagsAndSocialLinks: React.FC<TagsAndSocialLinksProps> = ({
       if (isTagSelected(tag)) {
         setErrorMessage(null);
         return prevSelectedTags.filter((selectedTag) => selectedTag !== tag);
-      } else if (prevSelectedTags.length < 3) {
+      } else if (prevSelectedTags.length < 5) {
         setErrorMessage(null);
         return [...prevSelectedTags, tag];
       } else {
-        setErrorMessage("You can only select up to 3 tags.");
+        setErrorMessage("You can only select up to 5 tags.");
         return prevSelectedTags;
       }
     });

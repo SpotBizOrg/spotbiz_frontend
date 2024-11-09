@@ -219,27 +219,61 @@ const OpeningHoursPage: React.FC = () => {
   return (
     <div>
       <Card className="bg-white p-6 shadow-md border border-gray-200 overflow-y-auto max-h-screen">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          {Object.keys(openDays).map((day) => (
-            <div key={day} className="mb-2">
-              <p className="text-black text-sm font-medium p-2">{day}</p>
-              <p className="text-gray-600 p-2">
-                {openDays[day as Day].isOpen ? (
-                  <>
-                    {openDays[day as Day].startTime} -{" "}
-                    {openDays[day as Day].endTime}
-                  </>
-                ) : (
-                  "Opening hours not set yet"
-                )}
-              </p>
-
-              <p className="text-gray-600 p-2">
-                {openDays[day as Day].specialNote}
-              </p>
-            </div>
-          ))}
+        <div className="relative  overflow-x-auto overflow-y-auto sm:rounded-lg border border-gray-200">
+          <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+            <thead className="table-header text-xs text-gray-700 uppercase bg-gray-50">
+              <tr>
+                <th
+                  scope="col"
+                  className="px-6 py-3"
+                  style={{ minWidth: "100px" }}
+                >
+                  Day
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3"
+                  style={{ minWidth: "150px" }}
+                >
+                  <div className="flex items-center">Open Hours</div>
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3"
+                  style={{ minWidth: "150px" }}
+                >
+                  <div className="flex items-center">Special Note</div>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              {Object.keys(openDays).map((day) => (
+                <tr className="bg-white border-b hover:bg-gray-50">
+                  <th
+                    scope="row"
+                    className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
+                  >
+                    {day}
+                  </th>
+                  <td className="px-6 py-4">
+                    {openDays[day as Day].isOpen ? (
+                      <>
+                        {openDays[day as Day].startTime} -{" "}
+                        {openDays[day as Day].endTime}
+                      </>
+                    ) : (
+                      "Opening hours not set yet"
+                    )}
+                  </td>
+                  <td className="px-6 py-4">
+                    {openDays[day as Day].specialNote}
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
+
         <div className="fixed bottom-40 right-8 w-12 h-12">
           <div className="relative w-full h-full">
             <div

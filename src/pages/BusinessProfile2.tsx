@@ -72,19 +72,6 @@ const BusinessProfile: React.FC = () => {
     }
   };
 
-  // const [BusinessDetailsSubmit, setBusinessDetails] = useState<BusinessDetailsSubmit>({
-  //   businessName: 'hello',
-  //   locationUrl: '',
-  //   contactNumber: '',
-  //   address: '',
-  //   description: '',
-  // });
-
-  // const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-  //   const { name, value } = e.target;
-  //   setBusinessDetails({ ...BusinessDetailsSubmit, [name]: value });
-  // };
-
   const [isAvatarModalOpen, setIsAvatarModalOpen] = useState(false);
 
   const [uploadedAvatar, setUploadedAvatar] = useState<
