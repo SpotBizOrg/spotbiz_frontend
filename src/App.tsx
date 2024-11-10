@@ -122,7 +122,7 @@ function App() {
         <Route path="/admin/appeals_reports" element={<Reports />} />
         <Route path="/packages" element={<PackageListPage />} />
         <Route path="/allrecommendations" element={<AllRecommendations/>} />
-        <Route path="/packages2" element={<PackageListPageNew />} />
+        {/* <Route path="/packages2" element={<PackageListPageNew />} /> */}
         <Route path="/onboard" element={<OnboardingForm />} />
       </Routes>
   );

@@ -40,47 +40,6 @@ interface OpenDays {
     address: string;
 }
 
-const businessCategories = [
-    "Hotel",
-    "Computer",
-    "Electronic",
-    "Food",
-    "Stationary"
-]
-
-const hotelKeywords = [
-    "Luxury",
-    "Budget",
-    "Family",
-    "Business",
-    "Boutique",
-    "Spa",
-    "Resort",
-    "Suite",
-    "Hostel",
-    "Villa",
-    "Conference",
-    "Penthouse",
-    "Staycation",
-    "Motel",
-    "Bungalow"
-]
-
-const foodKeywords = [
-    "Fruits",
-    "Vegetables",
-    "Meats",
-    "Snacks",
-    "cake",
-    "breakfast",
-    "lunch",
-    "Desserts",
-    "Bakery",
-    "Beverages",
-    "Spices",
-    "Grains",
-    "Dairy"
-]
 
 const OnboardingForm: React.FC = () => {
     const [busninessName, setBusinessName] = useState("")
@@ -112,16 +71,17 @@ const OnboardingForm: React.FC = () => {
     });
     const [openModal, setOpenModal] = useState(false);
     const [categoryData, setCategoryData] = useState<CategoryData[]>([]);
+    const [selectedSubPackage, setSeletectedSubPackage] = useState<number>(0)
+    const selectedPackageRef = useRef<number>(selectedSubPackage);
 
-
-    // const storedEmail = "yuhanga2001@gmail.com" // need to fetch from the local storage
-    const storedEmail = localStorage.getItem("email")
+    const storedEmail = "yuhanga2001@gmail.com" // need to fetch from the local storage
+    // const storedEmail = localStorage.getItem("email")
     
 
     const handleSetOpeningHours = (openDays: OpenDays) => {
         console.log("inside handle open hours");
         setBusinessOpeningHours(openDays); // update state with opening hours
-        
+        fetchCategories();
         
         
     };
@@ -223,7 +183,6 @@ const OnboardingForm: React.FC = () => {
             
             if (item.address == null || item.contactNo == null || item.description == null) {
                 setOpenModal(true)
-                console.log("hi");
                 setBusinessName(item.name)
                 setRegNo(item.businessRegNo)
                 
@@ -234,6 +193,30 @@ const OnboardingForm: React.FC = () => {
         }
     }
 
+    const storeAllLocalStorage= () => {
+
+        const data = {
+            selectedSubPackage : selectedPackageRef.current,
+            category: selectedCategory,
+            tags : selectedTags,
+            businessDetails: businessDetails,
+            openHours: businessOpeningHours
+        }
+        localStorage.setItem("data", JSON.stringify(data))
+        
+        console.log(localStorage.getItem("data"));
+        
+    }
+
+    const setSelectedPackageId = (packageId: number): void => {
+        selectedPackageRef.current = packageId; // Update ref synchronously
+        setSeletectedSubPackage(packageId);       // Set state (asynchronously)
+        console.log("Updated Package ID (ref):", selectedPackageRef.current);
+        console.log(selectedSubPackage);
+        
+        storeAllLocalStorage()
+      };
+    
 
     useEffect(() => {
             if (storedEmail) {
@@ -455,7 +438,7 @@ const OnboardingForm: React.FC = () => {
                 {
                     activeTab == "Subscription" && <div className="flex flex-col flex-start">
                         
-                        <PackageListPage />
+                        <PackageListPage passId={setSelectedPackageId} />
                     </div>
                 }
                     
