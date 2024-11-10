@@ -56,6 +56,11 @@ const CustomerHome: React.FC = () => {
 
         setResults(response.data);
         setLoading(false);
+      } catch (error) {
+          setError("Failed to fetch search results");
+          setLoading(false);
+        }
+      }
   //   if (searchQuery) {
   //     setLoading(true);
   //     setError(null); // Reset error before starting the request
