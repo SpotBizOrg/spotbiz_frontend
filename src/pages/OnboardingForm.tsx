@@ -42,6 +42,7 @@ interface OpenDays {
 
 
 const OnboardingForm: React.FC = () => {
+    const [userId, setUserId] = useState<number>(0)
     const [busninessName, setBusinessName] = useState("")
     const [regNo, setRegNo] = useState("")
     const [activeTab, setActiveTab] = useState('BusinessDetails');
@@ -185,6 +186,7 @@ const OnboardingForm: React.FC = () => {
                 setOpenModal(true)
                 setBusinessName(item.name)
                 setRegNo(item.businessRegNo)
+                setUserId(item.userId)
                 
             }
             
@@ -200,7 +202,8 @@ const OnboardingForm: React.FC = () => {
             category: selectedCategory,
             tags : selectedTags,
             businessDetails: businessDetails,
-            openHours: businessOpeningHours
+            openHours: businessOpeningHours,
+            userId: userId
         }
         localStorage.setItem("data", JSON.stringify(data))
         
