@@ -2,154 +2,101 @@ import { useEffect, useState } from 'react';
 import Adminnavbar from '../components/Adminnavbar';
 import Adminsidebar from '../components/Adminsidebar';
 import PackageCard from '../components/PackageCard';
-import Modal from '../components/modal';
 import Container from '../components/Container';
 import { FaPlus } from 'react-icons/fa';
+import { Modal, TextInput, Label } from "flowbite-react";
 
+// Package interface and empty package template
 interface Package {
-  id: number;
-  title: string;
-  description: string;
-  monthlyPrice: number;
-  features: { [key: string]: string | number };
-  buttonText: string;
-  isPopular?: boolean;
+  packageId: number;
+  feature: string;
+  adsPerWeek: number;
+  analytics?: boolean;
+  fakereviews?: boolean;
+  recommendations?: boolean;
+  messaging?: boolean;
+  price: number;
+  listing?: string;
+  isActive?: boolean;
 }
 
-const packagesData: Package[] = [
-  {
-    id: 1,
-    title: 'Free',
-    description: 'Get started with basic features for small businesses.',
-    monthlyPrice: 0,
-    features: {
-      'Advertisements & promotions per week': 1,
-      'Display business details to customer': '❌',
-      'Profile analytics': '❌',
-      'Interact with customers': '❌'
-    },
-    buttonText: 'Edit Package',
-  },
-  {
-    id: 2,
-    title: 'Standard',
-    description: 'A suitable plan for growing businesses with essential features.',
-    monthlyPrice: 300,
-    features: {
-      'Advertisements & promotions per week': 3,
-      'Display business details to customer': 'Only basic details',
-      'Profile analytics': '❌',
-      'Interact with customers': '✅'
-    },
-    buttonText: 'Edit Package',
-    isPopular: true,
-  },
-  {
-    id: 3,
-    title: 'Moderate',
-    description: 'Comprehensive plan including advanced features and extended support.',
-    monthlyPrice: 500,
-    features: {
-      'Advertisements & promotions per week': 5,
-      'Display business details to customer': 'All excluding business hours',
-      'Profile analytics': 'Only reviews',
-      'Interact with customers': '✅'
-    },
-    buttonText: 'Edit Package',
-  },
-  {
-    id: 4,
-    title: 'Premium',
-    description: 'The ultimate plan for businesses needing full access and premium support.',
-    monthlyPrice: 1000,
-    features: {
-      'Advertisements & promotions per week': 7,
-      'Display business details to customer': 'All',
-      'Profile analytics': 'Visit count and reviews',
-      'Interact with customers': '✅'
-    },
-    buttonText: 'Edit Package',
-  },
-];
-
 const emptyPackage: Package = {
-  id: Date.now(),
-  title: '',
-  description: '',
-  monthlyPrice: 0,
-  features: {
-    'Advertisements & promotions per week': 0,
-    'Display business details to customer': '❌',
-    'Profile analytics': '❌',
-    'Interact with customers': '❌'
-  },
-  buttonText: 'Add Package',
+  packageId: Date.now(),
+  feature: '',
+  adsPerWeek: 0,
+  fakereviews: false,
+  recommendations: false,
+  messaging: false,
+  price: 0,
+  listing: '',
+  isActive: false,
 };
 
+// Updated AdminPackages component with corrected input handlers
+
 export default function AdminPackages() {
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "SpotBiz | Packages | Admin";
-  },[]);
-  
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedPackage, setSelectedPackage] = useState<Package | null>(null);
+  }, []);
+
+  const [packagesData, setPackagesData] = useState<Package[]>([]);
+  const [editPackage, setEditPackage] = useState<Package | null>(null);
+  const [showEditForm, setShowEditForm] = useState(false);
+  const [notification, setNotification] = useState<string | null>(null);
+
+  const fetchPackages = async () => {
+    const response = await fetch('/api/packages'); // Adjust URL according to your backend
+    const data = await response.json();
+    setPackagesData(data);
+  };
 
   const handleEdit = (pkg: Package) => {
-    setSelectedPackage(pkg);
-    setIsModalOpen(true);
+    setEditPackage(pkg);
+    setShowEditForm(true);
   };
 
   const handleAddPackage = () => {
-    setSelectedPackage(emptyPackage);
-    setIsModalOpen(true);
+    setEditPackage(emptyPackage);
+    setShowEditForm(true);
   };
 
   const handleModalClose = () => {
-    setIsModalOpen(false);
-    setSelectedPackage(null);
+    setShowEditForm(false);
+    setEditPackage(null);
   };
 
-  const handleUpdate = (updatedPackage: Package) => {
-    // Implement update logic here
-    console.log('Package updated:', updatedPackage);
-    setIsModalOpen(false);
-    setSelectedPackage(null);
-  };
+  const handleUpdate = async (updatedPackage: Package | null) => {
+    if (!updatedPackage) return;
+    try {
+      const response = await fetch('/api/packages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(updatedPackage),
+      });
 
-  // return (
-  //   <div className="bg-gray-100 min-h-screen flex flex-col">
-  //     <Adminnavbar />
-  //     <div className="flex flex-1 mt-6">
-  //       <div className="flex-none w-64">
-  //         <Adminsidebar selectedTile={'Subscription Packages'} />
-  //       </div>
-  //       <div className="flex-1 px-2 sm:px-4 lg:px-6 py-4 sm:py-6">
-  //         <div className="max-w-7xl mx-auto">
-  //           <div className="flex justify-between items-center mt-12">
-  //             <div className="w-fit mb-5 border-b-gray-900">
-  //           <h1 className="text-subsubheading text-bluedark">Business Verify Requests</h1>
-  //         </div>
-  //             <button
-  //               onClick={handleAddPackage}
-  //               className="px-6 py-2 mr-7 bg-blue1 text-white rounded-lg hover:bg-bluedark"
-  //             >
-  //               Add Package
-  //             </button>
-  //           </div>
-            
-  //         </div>
-  //       </div>
-  //     </div>
-  //     <Modal isOpen={isModalOpen} onClose={handleModalClose} onUpdate={handleUpdate} packageData={selectedPackage} />
-  //   </div>
-  // );
+      if (response.ok) {
+        await fetchPackages(); // Refresh package list
+        handleModalClose(); // Close the modal
+        setNotification("Package updated successfully!");
+        setTimeout(() => setNotification(null), 3000); // Clear notification after 3 seconds
+      } else {
+        console.error('Failed to save package:', await response.json());
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
 
   return (
     <Container>
       <Adminnavbar />
-      {/* <div className="flex min-h-screen bg-gray-100 font-body"> */}
       <Adminsidebar selectedTile="Subscription Packages" />
       <div className="px-12 sm:ml-64 mt-20">
+        {notification && (
+          <div className="mb-4 p-4 text-sm text-white bg-green-500 rounded-lg">
+            {notification}
+          </div>
+        )}
         <div className="flex justify-between items-center w-full mb-10">
           <h1 className="text-subsubheading text-bluedark">Subscription Packages</h1>
           <div
@@ -159,22 +106,116 @@ export default function AdminPackages() {
             <FaPlus className="text-xl text-gray-500" />
           </div>
         </div>
+
         <div className="mt-9 grid gap-4 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
           {packagesData.map((pkg) => (
             <PackageCard
-              key={pkg.id}
-              title={pkg.title}
-              description={pkg.description}
-              price={`Rs. ${pkg.monthlyPrice}`}
-              features={pkg.features}
+              key={pkg.packageId}
+              feature={pkg.feature}
+              adsPerWeek={pkg.adsPerWeek}
+              fakereviews={pkg.fakereviews}
+              recommendations={pkg.recommendations}
+              messaging={pkg.messaging}
+              price={`Rs. ${pkg.price}`}
+              listing={pkg.listing}
+              isActive={pkg.isActive}
               buttonText="Edit Package"
-              isPopular={pkg.isPopular}
               onClick={() => handleEdit(pkg)}
             />
           ))}
         </div>
       </div>
-      <Modal isOpen={isModalOpen} onClose={handleModalClose} onUpdate={handleUpdate} packageData={selectedPackage} />
+
+      <Modal show={showEditForm} onClose={handleModalClose} size="lg" className="flex items-center justify-center min-h-screen">
+        <Modal.Header className="text-center">Edit Package</Modal.Header>
+        <Modal.Body>
+          {editPackage && (
+            <div className="space-y-4">
+              <div className="w-full">
+                <Label htmlFor="feature">Feature</Label>
+                <TextInput
+                  id="feature"
+                  type="text"
+                  value={editPackage.feature}
+                  onChange={(e) => setEditPackage({ ...editPackage, feature: e.target.value })}
+                  className="w-full"
+                />
+              </div>
+
+              <div className="w-full">
+                <Label htmlFor="adsPerWeek">Advertisements per Week</Label>
+                <TextInput
+                  id="adsPerWeek"
+                  type="number"
+                  value={editPackage.adsPerWeek.toString()}
+                  onChange={(e) => setEditPackage({ ...editPackage, adsPerWeek: parseInt(e.target.value) || 0 })}
+                  className="w-full"
+                />
+              </div>
+
+              <div className="w-full">
+                <Label htmlFor="price">Price</Label>
+                <TextInput
+                  id="price"
+                  type="number"
+                  value={editPackage.price.toString()}
+                  onChange={(e) => setEditPackage({ ...editPackage, price: parseFloat(e.target.value) || 0 })}
+                  className="w-full"
+                />
+              </div>
+
+              {/* Additional Features with Updated Button Styles */}
+              <div className="grid grid-cols-2 gap-4">
+                {['analytics', 'fakereviews', 'recommendations', 'messaging'].map((feature) => (
+                  <div key={feature} className="flex items-center space-x-2">
+                    <button
+                      className={`w-6 h-6 rounded-md border-2 border-blue-500 ${
+                        editPackage[feature as keyof Package] ? 'text-blue-500' : 'text-transparent'
+                      }`}
+                      onClick={() =>
+                        setEditPackage({
+                          ...editPackage,
+                          [feature]: !editPackage[feature as keyof Package],
+                        })
+                      }
+                    >
+                      ✔️
+                    </button>
+                    <span>{feature.charAt(0).toUpperCase() + feature.slice(1)}</span>
+                  </div>
+                ))}
+              </div>
+
+              {/* Is Active Toggle */}
+              <div className="flex items-center space-x-2 mt-4">
+                <button
+                  className={`w-6 h-6 rounded-md border-2 border-blue-500 ${
+                    editPackage.isActive ? 'text-blue-500' : 'text-transparent'
+                  }`}
+                  onClick={() => setEditPackage({ ...editPackage, isActive: !editPackage.isActive })}
+                >
+                  ✔️
+                </button>
+                <span>Is Active</span>
+              </div>
+            </div>
+          )}
+        </Modal.Body>
+        <Modal.Footer>
+          <button
+            onClick={() => handleUpdate(editPackage)}
+            className="p-2 text-white bg-bluedark rounded-lg"
+          >
+            Done
+          </button>
+          <button
+            onClick={handleModalClose}
+            className="p-2 text-white bg-gray-500 rounded-lg"
+          >
+            Cancel
+          </button>
+        </Modal.Footer>
+      </Modal>
     </Container>
   );
 }
