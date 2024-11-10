@@ -1,9 +1,9 @@
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 interface GameCardProps {
-  gameId: string,
-  image: string;  
+  gameId: string;
+  image: string;
   title: string;
   developer: string;
   description: string;
@@ -22,25 +22,27 @@ const GameCard: React.FC<GameCardProps> = ({
   gameUrl,
   usage,
   onEdit,
-  onDelete
+  onDelete,
 }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
     const startTime = new Date().toISOString();
-    navigate('/customer/play_game', { state: { gameId, gameUrl, startTime, title } });
+    navigate("/customer/play_game", {
+      state: { gameId, gameUrl, startTime, title },
+    });
   };
 
   return (
     <div
       className="p-4 rounded-lg shadow-md text-white"
       style={{
-        background: 'linear-gradient(135deg, #0f52ba, #000000)',
-        boxShadow: '0 0 10px rgba(0, 255, 255, 0.5)',
+        background: "linear-gradient(135deg, #0f52ba, #000000)",
+        boxShadow: "0 0 10px rgba(0, 255, 255, 0.5)",
       }}
     >
       <img
-        src={image}  
+        src={image}
         alt={title}
         className="rounded-lg w-full transform transition-transform hover:scale-105 hover:z-10"
       />
@@ -54,7 +56,7 @@ const GameCard: React.FC<GameCardProps> = ({
           className={`bg-bluedark text-white py-2 px-4 rounded transform transition-transform hover:scale-105 hover:z-10 flex-grow`}
           onClick={handleClick}
         >
-          {usage === 0 ? 'Play' : 'Play Game'}
+          {usage === 0 ? "Play" : "Play Game"}
         </button>
         {usage === 0 && (
           <>

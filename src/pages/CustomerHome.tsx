@@ -39,7 +39,6 @@ const CustomerHome: React.FC = () => {
     const searchQuery = query.trim();
     console.log(searchQuery);
     window.location.href = `/customer/search_results?search=${searchQuery}`;
-    
 
     if (searchQuery) {
       setLoading(true);
@@ -56,29 +55,30 @@ const CustomerHome: React.FC = () => {
 
         setResults(response.data);
         setLoading(false);
-  //   if (searchQuery) {
-  //     setLoading(true);
-  //     setError(null); // Reset error before starting the request
+        //   if (searchQuery) {
+        //     setLoading(true);
+        //     setError(null); // Reset error before starting the request
 
-  //     try {
-  //       // POST request to search
-  //       const response = await axios.post('http://localhost:8080/api/v1/search/post', searchQuery, {
-  //         params: { page: 0, size: 10 },
-  //       });
-        
-  //       setResults(response.data); // Set the search results
-  //       setLoading(false);
+        //     try {
+        //       // POST request to search
+        //       const response = await axios.post('http://localhost:8080/api/v1/search/post', searchQuery, {
+        //         params: { page: 0, size: 10 },
+        //       });
 
-  //       if (response.data.length === 0) {
-  //         setError("No results found");
-  //       }
-  //     } catch (error) {
-  //       setError("Failed to fetch search results");
-  //       setLoading(false);
-  //     }
-  //   } else {
-  //     setError("Please enter a valid search term");
-  //   }
+        //       setResults(response.data); // Set the search results
+        //       setLoading(false);
+
+        //       if (response.data.length === 0) {
+        //         setError("No results found");
+        //       }
+      } catch (error) {
+        setError("Failed to fetch search results");
+        setLoading(false);
+      }
+    }
+    //   } else {
+    //     setError("Please enter a valid search term");
+    //   }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
@@ -201,7 +201,10 @@ const CustomerHome: React.FC = () => {
             </div>
             {/* "See More" Link */}
             <div className="mt-8 text-center">
-              <Link to="/allrecommendations" className="text-slate-600 hover:underline text-lg font-semibold">
+              <Link
+                to="/allrecommendations"
+                className="text-slate-600 hover:underline text-lg font-semibold"
+              >
                 See More
               </Link>
             </div>
