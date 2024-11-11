@@ -142,15 +142,6 @@ const BusinessTypesTable: React.FC<BusinessTypesTableProps> = ({
 
   return (
     <div className="relative">
-      <div className="flex justify-end mb-4">
-        <button
-          className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-          onClick={() => setShowAddBusinessModal(true)}
-        >
-          Add Business Type
-        </button>
-      </div>
-
       <div className="relative overflow-x-auto sm:rounded-lg border border-gray-200">
         {loading ? (
           <div className="text-center py-4">Loading...</div>
@@ -240,66 +231,23 @@ const BusinessTypesTable: React.FC<BusinessTypesTableProps> = ({
             </div>
           </Modal.Body>
           <Modal.Footer>
+          <div className="flex justify-center space-x-4 w-full">
             <button
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+              type="button"
+              className="px-6 py-3 text-sm font-medium text-white bg-gray-800 rounded-xl"
               onClick={handleAddTag}
             >
               Add Tag
             </button>
-          </Modal.Footer>
-        </Modal>
-      )}
-
-      {/* Add Business Type Modal */}
-      {showAddBusinessModal && (
-        <Modal show={showAddBusinessModal} size="lg" onClose={() => setShowAddBusinessModal(false)}>
-          <Modal.Header>Add Business Type</Modal.Header>
-          <Modal.Body>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Business Type</label>
-              <input
-                type="text"
-                className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm"
-                placeholder="Enter business type"
-                value={newBusinessType}
-                onChange={(e) => setNewBusinessType(e.target.value)}
-              />
-            </div>
-            <div className="mb-4">
-              <label className="block text-sm font-medium text-gray-700 mb-2">Tags</label>
-              <input
-                type="text"
-                className="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm mb-2"
-                placeholder="Enter a tag and press Enter"
-                value={newTag}
-                onChange={(e) => setNewTag(e.target.value)}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" && newTag.trim() !== "") {
-                    setNewTags([...newTags, newTag]);
-                    setNewTag("");
-                  }
-                }}
-              />
-              <div className="flex flex-wrap space-x-2">
-                {newTags.map((tag, index) => (
-                  <span
-                    key={index}
-                    className="inline-block bg-gray-200 text-gray-700 rounded-full px-4 py-1.5 text-sm font-medium mb-2"
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </Modal.Body>
-          <Modal.Footer>
             <button
-              className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-              onClick={handleAddBusinessType}
+              type="button"
+              className="px-6 py-3 text-sm font-medium text-white bg-gray-500 rounded-xl"
+              onClick={() => setShowModal(false)}
             >
-              Add Business Type
+              Cancel
             </button>
-          </Modal.Footer>
+          </div>
+        </Modal.Footer>
         </Modal>
       )}
     </div>
