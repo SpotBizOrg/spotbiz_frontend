@@ -4,9 +4,8 @@ import Adminsidebar from '../components/Adminsidebar';
 import PackageCard from '../components/PackageCard';
 import Container from '../components/Container';
 import { FaPlus } from 'react-icons/fa';
-import { Modal, TextInput, Label } from "flowbite-react";
+import { Modal, TextInput, Label, Button } from "flowbite-react";
 
-// Package interface and empty package template
 interface Package {
   packageId: number;
   feature: string;
@@ -24,6 +23,7 @@ const emptyPackage: Package = {
   packageId: Date.now(),
   feature: '',
   adsPerWeek: 0,
+  analytics: false,
   fakereviews: false,
   recommendations: false,
   messaging: false,
@@ -31,8 +31,6 @@ const emptyPackage: Package = {
   listing: '',
   isActive: false,
 };
-
-// Updated AdminPackages component with corrected input handlers
 
 export default function AdminPackages() {
   useEffect(() => {
@@ -43,12 +41,15 @@ export default function AdminPackages() {
   const [editPackage, setEditPackage] = useState<Package | null>(null);
   const [showEditForm, setShowEditForm] = useState(false);
   const [notification, setNotification] = useState<string | null>(null);
-
   const fetchPackages = async () => {
-    const response = await fetch('/api/packages'); // Adjust URL according to your backend
+    const response = await fetch('http://localhost:8080/api/v1/packages/get_all');
     const data = await response.json();
     setPackagesData(data);
   };
+
+  useEffect(() => {
+    fetchPackages();
+  }, []);
 
   const handleEdit = (pkg: Package) => {
     setEditPackage(pkg);
@@ -56,79 +57,41 @@ export default function AdminPackages() {
   };
 
   const handleAddPackage = () => {
-    setEditPackage(emptyPackage);
-    setShowEditForm(true);
+    setEditPackage(emptyPackage); // Reset the form with an empty package
+    setShowEditForm(true); // Show the form
   };
 
   const handleModalClose = () => {
     setShowEditForm(false);
-    setEditPackage(null);
+    setEditPackage(null); // Reset the package data when closing the form
   };
 
-  const handleUpdate = async (updatedPackage: Package | null) => {
-    if (!updatedPackage) return;
-  
+  const handleSubmitPackage = async () => {
+    if (!editPackage) return;
+    console.log("Submitting package:", editPackage);  // Log the package data
+    
     try {
-      const response = await fetch('/api/packages', {
+      const response = await fetch('http://localhost:8080/api/v1/packages/add', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(updatedPackage),
+        body: JSON.stringify(editPackage),
       });
-  
+
       if (response.ok) {
-        fetchPackages(); // Refresh package list
-        handleModalClose(); // Close the modal
-        setNotification("Successfully added the new package!"); // Show success message
+        setNotification("Successfully added the new package!");
+        setTimeout(() => setNotification(null), 3000);
+        handleModalClose(); // Close the modal after success
+        await fetchPackages(); // Refresh the list of packages
       } else {
-        setNotification("Something went wrong. Please try again."); // Show error message
+        setNotification("Something went wrong.");
       }
     } catch (error) {
-      console.error('Error:', error);
-      setNotification("Something went wrong. Please try again.");
+      console.error("Error:", error);
+      setNotification("Something went wrong.");
     }
-  
   };
-
-  const handleSubmitPackage = async () => {
-    if (!editPackage) return; // Ensure the form has data
-
-    try {
-        const response = await fetch('/api/v1/packages/add', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                packageId: editPackage.packageId,
-                feature: editPackage.feature,
-                adsPerWeek: editPackage.adsPerWeek,
-                analytics: editPackage.analytics,
-                fakeReviews: editPackage.fakereviews,
-                recommendation: editPackage.recommendations,
-                messaging: editPackage.messaging,
-                price: editPackage.price,
-                listing: editPackage.listing,
-                isActive: editPackage.isActive
-            })
-        });
-
-        if (response.ok) {
-            setNotification("Successfully added the new package!");
-            setTimeout(() => setNotification(null), 3000); // Clear notification after 3 seconds
-            handleModalClose(); // Close the modal after successful submission
-            await fetchPackages(); // Refresh the packages list if needed
-        } else {
-            setNotification("Something went wrong.");
-        }
-    } catch (error) {
-        console.error("Error:", error);
-        setNotification("Something went wrong.");
-    }
-};
-
-  
 
   return (
     <Container>
@@ -169,11 +132,13 @@ export default function AdminPackages() {
         </div>
       </div>
 
-      <Modal show={showEditForm} onClose={handleModalClose} size="lg" className="flex items-center justify-center min-h-screen">
-        <Modal.Header className="text-center">Edit Package</Modal.Header>
+      {/* Modal for Edit/Add Package */}
+      <Modal show={showEditForm} onClose={handleModalClose} size="lg">
+        <Modal.Header>{editPackage?.packageId ? "Edit Package" : "Add New Package"}</Modal.Header>
         <Modal.Body>
           {editPackage && (
             <div className="space-y-4">
+              {/* Feature Input */}
               <div className="w-full">
                 <Label htmlFor="feature">Feature</Label>
                 <TextInput
@@ -181,10 +146,10 @@ export default function AdminPackages() {
                   type="text"
                   value={editPackage.feature}
                   onChange={(e) => setEditPackage({ ...editPackage, feature: e.target.value })}
-                  className="w-full"
                 />
               </div>
 
+              {/* Ads Per Week */}
               <div className="w-full">
                 <Label htmlFor="adsPerWeek">Advertisements per Week</Label>
                 <TextInput
@@ -192,10 +157,10 @@ export default function AdminPackages() {
                   type="number"
                   value={editPackage.adsPerWeek.toString()}
                   onChange={(e) => setEditPackage({ ...editPackage, adsPerWeek: parseInt(e.target.value) || 0 })}
-                  className="w-full"
                 />
               </div>
 
+              {/* Price Input */}
               <div className="w-full">
                 <Label htmlFor="price">Price</Label>
                 <TextInput
@@ -203,38 +168,37 @@ export default function AdminPackages() {
                   type="number"
                   value={editPackage.price.toString()}
                   onChange={(e) => setEditPackage({ ...editPackage, price: parseFloat(e.target.value) || 0 })}
-                  className="w-full"
                 />
               </div>
 
-              {/* Additional Features with Updated Button Styles */}
-              <div className="grid grid-cols-2 gap-4">
-                {['analytics', 'fakereviews', 'recommendations', 'messaging'].map((feature) => (
-                  <div key={feature} className="flex items-center space-x-2">
-                    <button
-                      className={`w-6 h-6 rounded-md border-2 border-blue-500 ${
-                        editPackage[feature as keyof Package] ? 'text-blue-500' : 'text-transparent'
-                      }`}
-                      onClick={() =>
-                        setEditPackage({
-                          ...editPackage,
-                          [feature]: !editPackage[feature as keyof Package],
-                        })
-                      }
-                    >
-                      ✔️
-                    </button>
-                    <span>{feature.charAt(0).toUpperCase() + feature.slice(1)}</span>
-                  </div>
-                ))}
+              {/* Toggle Buttons for Features */}
+              {["analytics", "fakereviews", "recommendations", "messaging"].map((feature) => (
+                <div key={feature} className="flex items-center space-x-2 mt-4">
+                  <button
+                    className={`w-6 h-6 rounded-md border-2 border-blue-500 ${editPackage[feature as keyof Package] ? 'bg-blue-500 text-white' : 'bg-white'}`}
+                    onClick={() => setEditPackage({ ...editPackage, [feature]: !editPackage[feature as keyof Package] })}
+                  >
+                    ✔️
+                  </button>
+                  <span>{feature.charAt(0).toUpperCase() + feature.slice(1)}</span>
+                </div>
+              ))}
+
+              {/* Listing Input */}
+              <div className="w-full">
+                <Label htmlFor="listing">Listing</Label>
+                <TextInput
+                  id="listing"
+                  type="text"
+                  value={editPackage.listing || ''}
+                  onChange={(e) => setEditPackage({ ...editPackage, listing: e.target.value })}
+                />
               </div>
 
-              {/* Is Active Toggle */}
+              {/* Active Toggle Button */}
               <div className="flex items-center space-x-2 mt-4">
                 <button
-                  className={`w-6 h-6 rounded-md border-2 border-blue-500 ${
-                    editPackage.isActive ? 'text-blue-500' : 'text-transparent'
-                  }`}
+                  className={`w-6 h-6 rounded-md border-2 border-blue-500 ${editPackage.isActive ? 'bg-blue-500 text-white' : 'bg-white'}`}
                   onClick={() => setEditPackage({ ...editPackage, isActive: !editPackage.isActive })}
                 >
                   ✔️
@@ -244,21 +208,111 @@ export default function AdminPackages() {
             </div>
           )}
         </Modal.Body>
+        {/* Modal Footer with Submit and Cancel Buttons */}
         <Modal.Footer>
-        <button
-            type="button"
-            onClick={handleSubmitPackage} // Calls the handleSubmitPackage function
-            className="p-2 text-sm font-medium text-white bg-bluedark rounded-lg border border-bluedark hover:bg-gray-900"
+          <Button
+            onClick={handleSubmitPackage}
+            className="bg-blue-500 text-white"
           >
-            Done
-          </button>
-
-          <button
+            Submit
+          </Button>
+          <Button
             onClick={handleModalClose}
-            className="p-2 text-white bg-gray-500 rounded-lg"
+            className="bg-gray-500 text-white"
           >
             Cancel
-          </button>
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      <Modal show={showEditForm} onClose={handleModalClose} size="lg">
+        <Modal.Header>{editPackage?.packageId ? "Edit Package" : "Add New Package"}</Modal.Header>
+        <Modal.Body>
+          {editPackage && (
+            <div className="space-y-4">
+              {/* Feature Input */}
+              <div className="w-full">
+                <Label htmlFor="feature">Feature</Label>
+                <TextInput
+                  id="feature"
+                  type="text"
+                  value={editPackage.feature}
+                  onChange={(e) => setEditPackage({ ...editPackage, feature: e.target.value })}
+                />
+              </div>
+
+              {/* Ads Per Week */}
+              <div className="w-full">
+                <Label htmlFor="adsPerWeek">Advertisements per Week</Label>
+                <TextInput
+                  id="adsPerWeek"
+                  type="number"
+                  value={editPackage.adsPerWeek.toString()}
+                  onChange={(e) => setEditPackage({ ...editPackage, adsPerWeek: parseInt(e.target.value) || 0 })}
+                />
+              </div>
+
+              {/* Price Input */}
+              <div className="w-full">
+                <Label htmlFor="price">Price</Label>
+                <TextInput
+                  id="price"
+                  type="number"
+                  value={editPackage.price.toString()}
+                  onChange={(e) => setEditPackage({ ...editPackage, price: parseFloat(e.target.value) || 0 })}
+                />
+              </div>
+
+              {/* Toggle Buttons for Features */}
+              {["analytics", "fakereviews", "recommendations", "messaging"].map((feature) => (
+                <div key={feature} className="flex items-center space-x-2 mt-4">
+                  <button
+                    className={`w-6 h-6 rounded-md border-2 border-blue-500 ${editPackage[feature as keyof Package] ? 'bg-blue-500 text-white' : 'bg-white'}`}
+                    onClick={() => setEditPackage({ ...editPackage, [feature]: !editPackage[feature as keyof Package] })}
+                  >
+                    ✔️
+                  </button>
+                  <span>{feature.charAt(0).toUpperCase() + feature.slice(1)}</span>
+                </div>
+              ))}
+
+              {/* Listing Input */}
+              <div className="w-full">
+                <Label htmlFor="listing">Listing</Label>
+                <TextInput
+                  id="listing"
+                  type="text"
+                  value={editPackage.listing || ''}
+                  onChange={(e) => setEditPackage({ ...editPackage, listing: e.target.value })}
+                />
+              </div>
+
+              {/* Active Toggle Button */}
+              <div className="flex items-center space-x-2 mt-4">
+                <button
+                  className={`w-6 h-6 rounded-md border-2 border-blue-500 ${editPackage.isActive ? 'bg-blue-500 text-white' : 'bg-white'}`}
+                  onClick={() => setEditPackage({ ...editPackage, isActive: !editPackage.isActive })}
+                >
+                  ✔️
+                </button>
+                <span>Is Active</span>
+              </div>
+            </div>
+          )}
+        </Modal.Body>
+        {/* Modal Footer with Submit and Cancel Buttons */}
+        <Modal.Footer>
+          <Button
+            onClick={handleSubmitPackage}
+            className="bg-blue-500 text-white"
+          >
+            Submit
+          </Button>
+          <Button
+            onClick={handleModalClose}
+            className="bg-gray-500 text-white"
+          >
+            Cancel
+          </Button>
         </Modal.Footer>
       </Modal>
     </Container>
