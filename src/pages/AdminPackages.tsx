@@ -67,25 +67,68 @@ export default function AdminPackages() {
 
   const handleUpdate = async (updatedPackage: Package | null) => {
     if (!updatedPackage) return;
+  
     try {
       const response = await fetch('/api/packages', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+        },
         body: JSON.stringify(updatedPackage),
       });
-
+  
       if (response.ok) {
-        await fetchPackages(); // Refresh package list
+        fetchPackages(); // Refresh package list
         handleModalClose(); // Close the modal
-        setNotification("Package updated successfully!");
-        setTimeout(() => setNotification(null), 3000); // Clear notification after 3 seconds
+        setNotification("Successfully added the new package!"); // Show success message
       } else {
-        console.error('Failed to save package:', await response.json());
+        setNotification("Something went wrong. Please try again."); // Show error message
       }
     } catch (error) {
       console.error('Error:', error);
+      setNotification("Something went wrong. Please try again.");
     }
+  
   };
+
+  const handleSubmitPackage = async () => {
+    if (!editPackage) return; // Ensure the form has data
+
+    try {
+        const response = await fetch('/api/v1/packages/add', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                packageId: editPackage.packageId,
+                feature: editPackage.feature,
+                adsPerWeek: editPackage.adsPerWeek,
+                analytics: editPackage.analytics,
+                fakeReviews: editPackage.fakereviews,
+                recommendation: editPackage.recommendations,
+                messaging: editPackage.messaging,
+                price: editPackage.price,
+                listing: editPackage.listing,
+                isActive: editPackage.isActive
+            })
+        });
+
+        if (response.ok) {
+            setNotification("Successfully added the new package!");
+            setTimeout(() => setNotification(null), 3000); // Clear notification after 3 seconds
+            handleModalClose(); // Close the modal after successful submission
+            await fetchPackages(); // Refresh the packages list if needed
+        } else {
+            setNotification("Something went wrong.");
+        }
+    } catch (error) {
+        console.error("Error:", error);
+        setNotification("Something went wrong.");
+    }
+};
+
+  
 
   return (
     <Container>
@@ -202,12 +245,14 @@ export default function AdminPackages() {
           )}
         </Modal.Body>
         <Modal.Footer>
-          <button
-            onClick={() => handleUpdate(editPackage)}
-            className="p-2 text-white bg-bluedark rounded-lg"
+        <button
+            type="button"
+            onClick={handleSubmitPackage} // Calls the handleSubmitPackage function
+            className="p-2 text-sm font-medium text-white bg-bluedark rounded-lg border border-bluedark hover:bg-gray-900"
           >
             Done
           </button>
+
           <button
             onClick={handleModalClose}
             className="p-2 text-white bg-gray-500 rounded-lg"
