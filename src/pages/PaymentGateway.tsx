@@ -4,6 +4,8 @@ import visaCardImage from "../assets/CardImages/visaCard.png";
 import { toast } from "react-toastify";
 import { useLocation } from "react-router-dom";
 import { HashLoader } from "react-spinners";
+import { BACKEND_URL } from "../../config";
+import axios from "axios";
 
 // const handleClick = () => {
 //   const selectedPlanId = 1;
@@ -19,13 +21,24 @@ interface Payment {
   amount: number;
 }
 
+interface BillingDetails{
+  subscriptionBillingId:number;
+  subscriptionId:number;
+  amount:number;
+  billingStatus:string;
+  billingDate:string;
+  businessId:number;
+}
+
 interface PaymentPageProps {
   selectedPlanId: number;
+  subscriptionBillingId:number;
 }
 
 const PaymentGateway: React.FC = () => {
   const location = useLocation();
   const { selectedPlanId } = location.state as PaymentPageProps;
+  const {subscriptionBillingId} = location.state as PaymentPageProps;
   const [selectedPlan, setSelectedPlan] = useState<string>("Standerd");
   const [price, setPrice] = useState<number>(300);
   const [loading, setloading] = useState(false);
@@ -39,11 +52,26 @@ const PaymentGateway: React.FC = () => {
   });
   const [isDeclarationChecked, setIsDeclarationChecked] =
     useState<boolean>(false);
+    const [billingDetails,setBillingDetails] = useState<BillingDetails>();
   const currentTime = new Date();
 
   useEffect(() => {
     fetchPlanDetails();
+    fetchBillingDetails();
+    
   }, []);
+
+  const fetchBillingDetails = async () => {
+    const url = `${BACKEND_URL}/subscription-billing/${subscriptionBillingId}`;
+    try {
+      const response = await axios.get(url);
+      setBillingDetails(response.data);
+      console.log("billing", billingDetails);
+      
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const fetchPlanDetails = async () => {
     setloading(true);
@@ -101,14 +129,41 @@ const PaymentGateway: React.FC = () => {
     }
   };
 
+  const markPaymentAsPaid = async () => {
+
+    const url = `${BACKEND_URL}/subscription-billing/${subscriptionBillingId}`;
+    if (billingDetails) {
+      billingDetails.billingStatus = "Paid";
+    }
+    try {
+      const response = await axios.put(url, billingDetails);
+      if (response.status === 200) {
+        toast.success("Payment Successful");
+        saveLocalStorageData()
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Payment Failed");
+    }
+  }
+
+  const saveLocalStorageData =async () => {
+    const data = JSON.parse(localStorage.getItem("data")!);
+    console.log(data);
+    
+  }
+
   const handlePayment = () => {
     if (validateInputs()) {
       console.log(payment);
       setloading(true);
-      setTimeout(() => {
-        setloading(false);
-        toast.success("Payment Successful");
-      }, 2000);
+      markPaymentAsPaid();
+      setloading(false);
+      // setTimeout(() => {
+      //   setloading(false);
+      //   toast.success("Payment Successful");
+        
+      // }, 2000);
     }
   };
 

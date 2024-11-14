@@ -1,15 +1,13 @@
-import { act, useEffect, useRef, useState } from "react";
-import Businessnavbar from "../components/Businessnavbar";
-import Businesssidebar from "../components/Businesssidebar";
-import Container from "../components/Container"
+import { useEffect, useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { Modal } from "flowbite-react/components/Modal";
 import { Button, Label, Select, TextInput } from "flowbite-react";
 import OpeningHoursModal from "../components/OpeningHoursModel";
 import { Bounce, toast } from "react-toastify";
 import { BACKEND_URL } from "../../config";
 import axios from "axios";
-import SubscriptionPkgs from '../components/PkgNew';
 import PackageListPage from "./PackageListPageNew";
+import { HashLoader } from "react-spinners";
 
 interface Tags {
     keywords: string[];
@@ -42,6 +40,8 @@ interface OpenDays {
 
 
 const OnboardingForm: React.FC = () => {
+    const [businessId, setBusinessId] = useState<number>(0);
+    const [imagePreview, setImagePreview] = useState<string>("");
     const [userId, setUserId] = useState<number>(0)
     const [busninessName, setBusinessName] = useState("")
     const [regNo, setRegNo] = useState("")
@@ -74,6 +74,11 @@ const OnboardingForm: React.FC = () => {
     const [categoryData, setCategoryData] = useState<CategoryData[]>([]);
     const [selectedSubPackage, setSeletectedSubPackage] = useState<number>(0)
     const selectedPackageRef = useRef<number>(selectedSubPackage);
+    const [loading, setloading] = useState(false);
+
+
+    const navigate = useNavigate();
+
 
     const storedEmail = "yuhanga2001@gmail.com" // need to fetch from the local storage
     // const storedEmail = localStorage.getItem("email")
@@ -89,6 +94,7 @@ const OnboardingForm: React.FC = () => {
 
     const isTagSelected = (tag: string) => selectedTags.includes(tag);
 
+    // handle tag change
     const handleTagChange = (tag: string) => {
         setSelectedTags((prevSelectedTags) => {
           if (isTagSelected(tag)) {
@@ -98,22 +104,72 @@ const OnboardingForm: React.FC = () => {
             setErrorMessage(null);
             return [...prevSelectedTags, tag];
           } else {
-            setErrorMessage("You can only select up to 3 tags.");
+            setErrorMessage("You can only select up to 5 tags.");
             return prevSelectedTags;
           }
         });
       };
+
+      // Upload image to the server
+      const uploadImage = async (imageFile: string | Blob) => {
+        const formData = new FormData();
+        formData.append("file", imageFile);
+    
+        try {
+          const response = await fetch(`${BACKEND_URL}/upload_image`, {
+            method: "POST",
+            body: formData,
+          });
+    
+          if (!response.ok) {
+            const errorData = await response.json();
+            console.error("Error uploading image:", errorData);
+            throw new Error(
+              `HTTP error! status: ${response.status}, message: ${
+                errorData.message || "Unknown error"
+              }`
+            );
+          }
+    
+          const imageUrl = await response.text();
+          console.log("Image URL:", imageUrl);
+          return imageUrl;
+        } catch (error) {
+          console.error("An error occurred during image upload:", error);
+          throw error;
+        }
+      };
       
 
         // Handle file upload
-        const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-            const file = event.target.files?.[0];
-            if (file) {
-                setImageFile(file); // Store the file in the state
-                setImageName(file.name); // Store the name of the uploaded file
-            }
+        const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+
+            if (e.target.files && e.target.files.length > 0) {
+                const file = e.target.files[0];
+                setImageFile(file);
+                console.log("Image file:", file);
+                
+                setImagePreview(URL.createObjectURL(file));
+
+                let imageUrl = ""
+
+                if (file) {
+                    console.log("Uploading image...");
+                    
+                    setImageName(file.name);
+                    imageUrl = await uploadImage(file);
+                    console.log("Image URL:", imageUrl);
+        
+                } else{
+                    console.log("No image file found");
+                }
+                
+                setBusinessDetails({...businessDetails, logo: imageUrl=='' ? '' : imageUrl});
+              }
+
+              
+
             
-            setBusinessDetails({...businessDetails, logo: file ? file.name : ''});
         };
 
 
@@ -131,11 +187,65 @@ const OnboardingForm: React.FC = () => {
     }
 
     const handleNextBusinessDetails = () => {
+
+        // check null
+        if (businessDetails.logo == "" || businessDetails.description == "" || businessDetails.phone == "" || businessDetails.address == "") {
+            toast.error('Fields cannot be empty', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+                });
+            return;
+        }
+
+        //check phone no digits
+        if (businessDetails.phone.length < 10) {
+            toast.error('Phone number should have 10 digits', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+                });
+            return;
+            
+        }
+
+        //check phone no format
+        if (businessDetails.phone.match(/^\+?([0-9]{2})\(/)) {
+            toast.error('Phone number should follow the given format', {
+                position: "top-right",
+                autoClose: 5000,
+                hideProgressBar: false,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "light",
+                transition: Bounce,
+                });
+            return;
+            
+        }
+
+        // go to the next tab
         setActiveTab('OpeningHours');
+
         businessDetails.name = busninessName;
         businessDetails.businessRegNo = regNo;
         console.log(businessDetails);
 
+        // a guide to the user
         toast('Toggle button indicates whether your busienss is open or closed. You can enter open and closing times for each day and add a special note that you want your customers to know about the availability of your shop. Change anytime!', {
             position: "top-center",
             autoClose: false,
@@ -151,6 +261,7 @@ const OnboardingForm: React.FC = () => {
         
     }
 
+    // fetch the categories from the backend
     const fetchCategories = async() => {
         const url = `${BACKEND_URL}/category/all`
 
@@ -174,6 +285,8 @@ const OnboardingForm: React.FC = () => {
         }
     }
 
+    // check whether the user has already entered the business details
+    // if not, prompt the user to enter the details - open a modal
     const loadData = async (email: string) => {
         const url = `${BACKEND_URL}/business_owner/business/${email}`
 
@@ -182,11 +295,13 @@ const OnboardingForm: React.FC = () => {
             
             const item = response.data;
             
+            // new users will have null values for the following fields
             if (item.address == null || item.contactNo == null || item.description == null) {
                 setOpenModal(true)
                 setBusinessName(item.name)
                 setRegNo(item.businessRegNo)
                 setUserId(item.userId)
+                setBusinessId(item.businessId)
                 
             }
             
@@ -195,6 +310,19 @@ const OnboardingForm: React.FC = () => {
         }
     }
 
+    // nagigation upon selecting a package
+    const handleClick = (selectedPlanId: number, subscriptionBillingId:number) => {
+
+        if (selectedPlanId === 0) {
+            navigate("/business/dashboard");
+        } else {
+            navigate("/packages/payment", { state: { selectedPlanId, subscriptionBillingId } });
+            
+        }
+    };
+
+    // store all the data in the local storage to be used in the payment page 
+    // save there if the payment is success
     const storeAllLocalStorage= () => {
 
         const data = {
@@ -205,23 +333,82 @@ const OnboardingForm: React.FC = () => {
             openHours: businessOpeningHours,
             userId: userId
         }
-        localStorage.setItem("data", JSON.stringify(data))
-        
-        console.log(localStorage.getItem("data"));
+        localStorage.setItem("data", JSON.stringify(data));
         
     }
 
-    const setSelectedPackageId = (packageId: number): void => {
+    // get the price of the selected package
+    const getPrice = async (packageId: number) => {
+        const url = `${BACKEND_URL}/packages/get/${packageId}`
+
+        try{
+            const response = await axios.get(url);
+            const item = response.data;
+            console.log(item);
+            return item.price;
+        }catch (e){
+            console.error("Error fetching data:", e)
+        }
+    }
+
+    // save the purchase in the database - pending state
+    const savePurchase = async (packageId: number) => {
+
+        const price = await getPrice(packageId);
+        console.log(price);
+        
+
+        const url = `${BACKEND_URL}/subscription-billing/subscription-billing`
+        const data = {
+            subscriptionBillingId: 0,
+            subscriptionId: packageId,
+            businessId: businessId,
+            billingDate: "2024-11-12T13:32:20.827Z",
+            billingStatus: "PENDING",
+            amount: price
+          }
+        console.log(data);
+        
+
+        try{
+            const response = await axios.post(url, data);
+            const item = response.data;
+            console.log(item);
+            return item.subscriptionBillingId;
+        }catch (e){
+            console.error("Error fetching data:", e)
+        }
+    }
+
+    // set the selected subscription package id
+    const setSelectedPackageId = async (packageId: number): Promise<void> => {
+        
         selectedPackageRef.current = packageId; // Update ref synchronously
         setSeletectedSubPackage(packageId);       // Set state (asynchronously)
         console.log("Updated Package ID (ref):", selectedPackageRef.current);
         console.log(selectedSubPackage);
         
+        //set loader
+        setloading(true);
+    
+        // store all the data in the local storage to be used in the payment page
         storeAllLocalStorage()
+
+        // save the purchase in the database
+        const billingId = await savePurchase(packageId);
+        console.log("Billing ID:", billingId);
+
+        setloading(false);
+        
+        // navigate to the next page
+        handleClick(packageId, billingId);
       };
+
     
 
     useEffect(() => {
+
+            // fetch the business details based on the token to check if it's a new user or not
             if (storedEmail) {
                 loadData(storedEmail);
             }
@@ -242,6 +429,11 @@ const OnboardingForm: React.FC = () => {
                 </div>
             </Container> */}
 
+        {loading && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <HashLoader color="#36d7b7" size={50} />
+          </div>
+        )}
             <Modal size="7xl" position="center" show={openModal} onClose={() => setOpenModal(false)}>
             <Modal.Header>
                 Welcome to SpotBiz
@@ -249,9 +441,11 @@ const OnboardingForm: React.FC = () => {
                 <p>To get the best experience we recommend you to follow these process</p>
                 </div>
             </Modal.Header>
+
             <Modal.Body>
             <div className="p-3 flex flex-col items-center mb-6 space-y-6 overflow-y-auto">
                 
+                {/* the tabs */}
                 <div className="flex items-center space-x-6 mb-10 border-b border-gray-200">
                     <button
                     className={`px-0 py-2 pb-[calc(0.5rem - 4px)] rounded focus:outline-none ${activeTab === 'BusinessDetails' ? 'text-black border-b-4 border-black' : 'bg-transparent text-gray-500 border-b-4 border-transparent hover:border-b-4 hover:border-gray-300'}`}
@@ -303,12 +497,13 @@ const OnboardingForm: React.FC = () => {
                             onChange={(e) => setBusinessDetails({...businessDetails, businessRegNo: e.target.value})}
                             id="regno" disabled />
                     </div>
+
                     {/* Business logo upload */}
                     <div className="mb-8">
                             <div className="mb-2 block">
                                 <Label htmlFor="logo" value="Business logo/related image" />
                             </div>
-                            <div className="flex items-center justify-center w-full">
+                            <div className="flex flex-col items-center justify-center w-full">
                                 <label htmlFor="logo-upload" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 hover:bg-gray-100">
                                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
                                         <svg className="w-8 h-8 mb-4 text-gray-500" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
@@ -321,33 +516,31 @@ const OnboardingForm: React.FC = () => {
                                         onChange={handleImageUpload}
                                         id="logo-upload"
                                         type="file"
+                                        accept="image/*"
                                         className="hidden"
                                     />
+                                    
                                 </label>
-                            </div>
-                            {imageName && <p className="mt-2 text-sm text-gray-600">Uploaded: {imageName}</p>}
-                        </div>
-                        {/* <div className="flex items-center justify-center w-full">
-                            <label htmlFor="dropzone-file" className="flex flex-col items-center justify-center w-full h-64 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 dark:hover:bg-gray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600">
-                                <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                                    <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
-                                    </svg>
-                                    <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or drag and drop</p>
-                                    <p className="text-xs text-gray-500 dark:text-gray-400">SVG, PNG, JPG or GIF (MAX. 800x400px)</p>
+                                <div className="flex flex-row gap-4 items-center">
+                                {imagePreview && (
+                                        <img
+                                            src={imagePreview}
+                                            alt="Image Preview"
+                                            className="w-24 h-24 object-cover mt-2 border border-gray-300 rounded"
+                                        />
+                                        )}
+                                {imageName && <p className="mt-2 text-sm text-gray-600">Uploaded: {imageName}</p>}
+
                                 </div>
-                                <input 
-                                    onChange={(e) => setBusinessDetails({...businessDetails, logo: e.target.value})}
-                                    id="dropzone-file" type="file" className="hidden" />
-                            </label>
-                        </div>  */}
-                        {/* <TextInput id="name" ref={emailInputRef} placeholder="name@company.com" required /> */}
-                    
+                                
+                            </div>
+                        </div>
                     <div className="mb-8">
                         <div className="mb-2 block">
                             <Label htmlFor="name" value="Description" />
                         </div>
                         <textarea 
+                            value={businessDetails.description}
                             onChange={(e) => setBusinessDetails({...businessDetails, description: e.target.value})}
                             id="message" rows={4} className="block p-2.5 w-full text-sm text-gray-900 bg-gray-50 rounded-lg border border-gray-300 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Tell something about your business..."></textarea>
                     </div>
@@ -356,6 +549,7 @@ const OnboardingForm: React.FC = () => {
                             <Label htmlFor="phone" value="Business Contact No" />
                         </div>
                         <TextInput 
+                            value={businessDetails.phone}
                             onChange={(e) => setBusinessDetails({...businessDetails, phone: e.target.value})}
                             id="phone" placeholder="+94xxxxxxxxx" required />
                     </div>
@@ -364,6 +558,7 @@ const OnboardingForm: React.FC = () => {
                             <Label htmlFor="address" value="Business Address" />
                         </div>
                         <TextInput 
+                            value={businessDetails.address}
                             onChange={(e) => setBusinessDetails({...businessDetails, address: e.target.value})}
                             id="address"  placeholder="Your business address" required />
                     </div>
@@ -375,8 +570,11 @@ const OnboardingForm: React.FC = () => {
                     <OpeningHoursModal onSetOpeningHours={handleSetOpeningHours} businessEmail={storedEmail || ''}/>
                 </div>}
 
+                {/* handle business categories and tags*/}
                 {
                     activeTab == "BusinessCategory" && <div className="flex flex-col flex-start w-2/3">
+
+                       {/* previously fetched category list is loaded */}
                        <div className="mb-8">
                             <div className="mb-2 block">
                                 <Label htmlFor="category" value="Choose the category that your busienss would fit into" />
@@ -395,13 +593,15 @@ const OnboardingForm: React.FC = () => {
         ))}
                             </Select>
                         </div>
+
+                        {/* tags are loaded according to the category */}
                         {
                             selectedCategory != "" && <div className="mb-8">
                                 <div className="mb-2 block">
                                     <Label htmlFor="tags" value="Select upto five tags" />
                                 </div>
                                     <ul className="grid w-full gap-2 md:grid-cols-3">
-                            {categoryData.map((item: any, index) => (
+                            {categoryData.map((item: any) => (
                               item.categoryName === selectedCategory && item.tags.keywords.map((tag: string) => (
                                 <li key={tag}>
                                   <input
@@ -438,6 +638,7 @@ const OnboardingForm: React.FC = () => {
                     </div>
                 }
 
+                {/* subscription packages tab */}
                 {
                     activeTab == "Subscription" && <div className="flex flex-col flex-start">
                         
@@ -447,6 +648,7 @@ const OnboardingForm: React.FC = () => {
                     
             </div>
             </Modal.Body>
+
             <Modal.Footer className="flex flex-row justify-end">
 
                 {/* handle business details */}
@@ -461,16 +663,14 @@ const OnboardingForm: React.FC = () => {
                 {activeTab == "BusinessCategory" && <Button color="dark" onClick={handleNextBusinessCategories}>
                     Next
                 </Button>}
-                {activeTab == "Subscription" && <Button color="dark" onClick={handleNextBusinessCategories}>
+                {/* {activeTab == "Subscription" && <Button color="dark" onClick={handleNextBusinessCategories}>
                     Save all
-                </Button>}
-                
-            {/* <Button color="gray" onClick={() => setOpenModal(false)}>
-                Decline
-            </Button> */}
+                </Button>} */}
             </Modal.Footer>
             
             </Modal>
+
+                
         </>
         
     );
