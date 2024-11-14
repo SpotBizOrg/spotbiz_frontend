@@ -131,25 +131,48 @@ const PaymentGateway: React.FC = () => {
 
   const markPaymentAsPaid = async () => {
 
-    const url = `${BACKEND_URL}/subscription-billing/${subscriptionBillingId}`;
-    if (billingDetails) {
-      billingDetails.billingStatus = "Paid";
-    }
-    try {
-      const response = await axios.put(url, billingDetails);
-      if (response.status === 200) {
-        toast.success("Payment Successful");
-        saveLocalStorageData()
-      }
-    } catch (error) {
-      console.error(error);
-      toast.error("Payment Failed");
-    }
+    getLocalStorageData()
+
+    // const url = `${BACKEND_URL}/subscription-billing/${subscriptionBillingId}`;
+    // if (billingDetails) {
+    //   billingDetails.billingStatus = "Paid";
+    // }
+    // try {
+    //   const response = await axios.put(url, billingDetails);
+    //   if (response.status === 200) {
+    //     toast.success("Payment Successful");
+    //     getLocalStorageData()
+    //   }
+    // } catch (error) {
+    //   console.error(error);
+    //   toast.error("Payment Failed");
+    // }
   }
 
-  const saveLocalStorageData =async () => {
+  const saveOpnHours = async (data: any) => {
+    console.log(data);
+  }
+
+  const saveBusinessData = async (data: JSON, category: string, tags: Array<string>) => {
+    console.log(data);
+    console.log(category);
+    console.log(tags);
+
+    const body = {...data, category: category, tags: tags}
+    
+  }
+
+  const saveLocalStorageData = (data: any) => {
+
+    saveBusinessData(data.businessDetails, data.category, data.tags)
+    saveOpnHours(data.openHours)
+    // saveCategory({category: data.category, tags: data.tags})
+  }
+
+  const getLocalStorageData =async () => {
     const data = JSON.parse(localStorage.getItem("data")!);
     console.log(data);
+    saveLocalStorageData(data);
     
   }
 
