@@ -28,6 +28,7 @@ interface BillingDetails{
   billingStatus:string;
   billingDate:string;
   businessId:number;
+  isActive:boolean;
 }
 
 interface PaymentPageProps {
@@ -149,6 +150,7 @@ const PaymentGateway: React.FC = () => {
     const url = `${BACKEND_URL}/subscription-billing/${subscriptionBillingId}`;
     if (billingDetails) {
       billingDetails.billingStatus = "PAID";
+      billingDetails.isActive = true;
     }
     try {
       const response = await axios.put(url, billingDetails);
@@ -186,7 +188,6 @@ const PaymentGateway: React.FC = () => {
       profileCover:null,
       locationUrl:null,
       status: "APPROVED",
-      subscriptionBillingId: subscriptionBillingId,
       businessId: busienssId
     
     }

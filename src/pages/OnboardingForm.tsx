@@ -317,11 +317,78 @@ const OnboardingForm: React.FC = () => {
         }
     }
 
+    const saveOpnHours = async (data: JSON) => {
+        console.log(data);
+    
+        try{
+          const url = `${BACKEND_URL}/businessOpening/${storedEmail}`;
+    
+          const response = await axios.post(url, data);
+          console.log(response.data);
+        } catch (error) {
+          console.error(error);
+        }
+    
+      }
+
+    const saveBusinessData = async (data: JSON, category: string, tags: Array<string>, busienssId:number) => {
+
+        const body = {
+          ...data, 
+          categoryId: parseInt(category), 
+          tags: tags,
+          userId: userId,
+          profileCover:null,
+          locationUrl:null,
+          status: "APPROVED",
+          businessId: busienssId
+        
+        }
+    
+        console.log(body);
+        
+    
+        try{
+          const url = `${BACKEND_URL}/business/update/${storedEmail}`;
+    
+          const response = await axios.put(url, body);
+          console.log(response.data);
+    
+        } catch (error) {
+          console.error(error);
+        }
+    }
+
+    const saveLocalStorageData = async (data: any) => {
+
+        try {
+            await saveBusinessData(data.businessDetails, data.category, data.tags, data.businessId); // Wait for this to complete
+            await saveOpnHours(data.openHours); // Wait for this to complete
+        } catch (error) {
+            console.error("Error saving data:", error);
+        } 
+    };
+
+    const getLocalStorageData = async () => {
+        const data = JSON.parse(localStorage.getItem("data")!);
+        console.log("from local storage", data);
+        saveLocalStorageData(data);
+        
+      }
+
     // nagigation upon selecting a package
-    const handleClick = (selectedPlanId: number, subscriptionBillingId:number) => {
+    const handleClick = async (selectedPlanId: number, subscriptionBillingId:number) => {
 
         if (selectedPlanId === 0) {
-            navigate("/business/dashboard");
+            try{
+                setloading(true);
+                await getLocalStorageData();
+            } catch (e){
+                console.error("Error fetching data:", e)
+            } finally {
+                setloading(false);
+                navigate("/business/dashboard");
+            }
         } else {
             navigate("/packages/payment", { state: { selectedPlanId, subscriptionBillingId } });
             
