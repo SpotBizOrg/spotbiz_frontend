@@ -34,7 +34,7 @@ interface OpenDays {
     businessRegNo: string;
     logo: string;
     description: string;
-    phone: string;
+    contactNo: string;
     address: string;
 }
 
@@ -59,7 +59,7 @@ const OnboardingForm: React.FC = () => {
         Saturday: { isOpen: false, startTime: "00:00", endTime: "00:00", specialNote: "" },
         Sunday: { isOpen: false, startTime: "00:00", endTime: "00:00", specialNote: "" },
     });
-    const [selectedCategory, setSelectedCategory] = useState("")
+    const [selectedCategory, setSelectedCategory] = useState<string>("")
     const [selectedTags, setSelectedTags] = useState<string[]>([]);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [businessDetails, setBusinessDetails] = useState<BusinessDetails>({
@@ -67,7 +67,7 @@ const OnboardingForm: React.FC = () => {
         businessRegNo: "",
         logo: "",
         description: "",
-        phone: "",
+        contactNo: "",
         address: ""
     });
     const [openModal, setOpenModal] = useState(false);
@@ -151,13 +151,13 @@ const OnboardingForm: React.FC = () => {
                 
                 setImagePreview(URL.createObjectURL(file));
 
-                let imageUrl = ""
+                let imageUrl = "https://iili.io/2zgRy8u.jpg"
 
                 if (file) {
                     console.log("Uploading image...");
                     
                     setImageName(file.name);
-                    imageUrl = await uploadImage(file);
+                    // imageUrl = await uploadImage(file);
                     console.log("Image URL:", imageUrl);
         
                 } else{
@@ -189,7 +189,7 @@ const OnboardingForm: React.FC = () => {
     const handleNextBusinessDetails = () => {
 
         // check null
-        if (businessDetails.logo == "" || businessDetails.description == "" || businessDetails.phone == "" || businessDetails.address == "") {
+        if (businessDetails.logo == "" || businessDetails.description == "" || businessDetails.contactNo == "" || businessDetails.address == "") {
             toast.error('Fields cannot be empty', {
                 position: "top-right",
                 autoClose: 5000,
@@ -204,8 +204,8 @@ const OnboardingForm: React.FC = () => {
             return;
         }
 
-        //check phone no digits
-        if (businessDetails.phone.length < 10) {
+        //check contactNo no digits
+        if (businessDetails.contactNo.length < 10) {
             toast.error('Phone number should have 10 digits', {
                 position: "top-right",
                 autoClose: 5000,
@@ -221,8 +221,8 @@ const OnboardingForm: React.FC = () => {
             
         }
 
-        //check phone no format
-        if (businessDetails.phone.match(/^\+?([0-9]{2})\(/)) {
+        //check contactNo no format
+        if (!businessDetails.contactNo.match(/^\+94\d{9}$/)) {
             toast.error('Phone number should follow the given format', {
                 position: "top-right",
                 autoClose: 5000,
@@ -285,6 +285,13 @@ const OnboardingForm: React.FC = () => {
         }
     }
 
+    const handleSelectCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        console.log(e.target.value);
+        
+        setSelectedCategory((e.target.value));
+        // console.log(selectedCategory);
+    }
+
     // check whether the user has already entered the business details
     // if not, prompt the user to enter the details - open a modal
     const loadData = async (email: string) => {
@@ -325,15 +332,21 @@ const OnboardingForm: React.FC = () => {
     // save there if the payment is success
     const storeAllLocalStorage= () => {
 
+        console.log("businessId", businessId);
+        
+
         const data = {
             selectedSubPackage : selectedPackageRef.current,
             category: selectedCategory,
             tags : selectedTags,
             businessDetails: businessDetails,
             openHours: businessOpeningHours,
-            userId: userId
+            userId: userId,
+            businessId: businessId
         }
         localStorage.setItem("data", JSON.stringify(data));
+        console.log("Data stored in the local storage: ", data);
+        
         
     }
 
@@ -363,7 +376,7 @@ const OnboardingForm: React.FC = () => {
             subscriptionBillingId: 0,
             subscriptionId: packageId,
             businessId: businessId,
-            billingDate: "2024-11-12T13:32:20.827Z",
+            billingDate: (new Date()).toISOString(),
             billingStatus: "PENDING",
             amount: price
           }
@@ -546,12 +559,12 @@ const OnboardingForm: React.FC = () => {
                     </div>
                     <div className="mb-8">
                         <div className="mb-2 block">
-                            <Label htmlFor="phone" value="Business Contact No" />
+                            <Label htmlFor="contactNo" value="Business Contact No" />
                         </div>
                         <TextInput 
-                            value={businessDetails.phone}
-                            onChange={(e) => setBusinessDetails({...businessDetails, phone: e.target.value})}
-                            id="phone" placeholder="+94xxxxxxxxx" required />
+                            value={businessDetails.contactNo}
+                            onChange={(e) => setBusinessDetails({...businessDetails, contactNo: e.target.value})}
+                            id="contactNo" placeholder="+94xxxxxxxxx" required />
                     </div>
                     <div className="mb-8">
                         <div className="mb-2 block">
@@ -583,11 +596,12 @@ const OnboardingForm: React.FC = () => {
                                 id="category"
                                 required={true}
                                 value={selectedCategory}
-                                onChange={(e) => setSelectedCategory(e.target.value)}
+                                onChange={(e) => handleSelectCategory(e)}
+                                // onChange={(e) => setSelectedCategory(Number(e.target.value))}
                                 >
                                 <option value="">Select an option</option>
                                 {categoryData.map((category, index) => (
-                                    <option key={index} value={category.categoryName}>
+                                    <option key={index} value={category.categoryId}>
                                         {category.categoryName}
                                     </option>
         ))}
@@ -596,13 +610,13 @@ const OnboardingForm: React.FC = () => {
 
                         {/* tags are loaded according to the category */}
                         {
-                            selectedCategory != "" && <div className="mb-8">
+                            parseInt(selectedCategory) > 0 && <div className="mb-8">
                                 <div className="mb-2 block">
                                     <Label htmlFor="tags" value="Select upto five tags" />
                                 </div>
                                     <ul className="grid w-full gap-2 md:grid-cols-3">
                             {categoryData.map((item: any) => (
-                              item.categoryName === selectedCategory && item.tags.keywords.map((tag: string) => (
+                              item.categoryId == parseInt(selectedCategory) && item.tags.keywords.map((tag: string) => (
                                 <li key={tag}>
                                   <input
                                     type="checkbox"
