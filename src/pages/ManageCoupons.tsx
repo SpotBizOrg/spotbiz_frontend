@@ -61,12 +61,6 @@ interface AddCoupon {
   discount: number | null;
 }
 
-let dummyCoupons: Coupon[] = [
-];
-
-let topCustomers: Leaderboard[] = [
-];
-
 function ManageCoupons() {
   useEffect(()=>{
     document.title = "SpotBiz | Coupons | Admin";
@@ -177,8 +171,8 @@ function ManageCoupons() {
   
   const { user, checkAuthenticated, login } = useAuth();
   const [loading, setLoading] = useState(false);
-  const [items, setItems] = useState<Coupon[]>(dummyCoupons);
-  const [leaderboard, setLeaderboard] = useState<Leaderboard[]>(topCustomers);
+  const [items, setItems] = useState<Coupon[]>([]);
+  const [leaderboard, setLeaderboard] = useState<Leaderboard[]>([]);
   const [showForm, setShowForm] = useState(false);
   const [showPopup, setShowPopup] = useState(false);
   const [showIssuePopup, setShowIssuePopup] = useState(false);
@@ -671,8 +665,13 @@ function ManageCoupons() {
         </Modal.Body>
       </Modal>
 
-      <Modal show={showShareModal} onClose={() => setShowShareModal(false)} size="xl" className="flex items-center justify-center min-h-screen z-40"  >
-        <Modal.Header className="text-center">Share Coupon</Modal.Header>
+      <Modal show={showShareModal} onClose={() => setShowShareModal(false)} size="xl" className="flex items-center justify-center min-h-screen z-40"  theme={{
+        content: {
+          base: "bg-white w-3/4 rounded-lg",
+          inner: "p-6 rounded-lg shadow-lg",
+        },
+      }}>
+        <Modal.Header className="text-center">Issue Coupon</Modal.Header>
         <Modal.Body>
           <div className="relative table-container overflow-x-auto overflow-y-auto sm:rounded-lg border border-gray-200">
             <table className="w-full text-sm text-left rtl:text-right text-gray-500">
@@ -719,7 +718,6 @@ function ManageCoupons() {
           </div>
         </Modal.Body>
         <Modal.Footer>
-          <Button color="gray" onClick={() => setShowShareModal(false)}>Close</Button>
         </Modal.Footer>
       </Modal>
       <div className="px-12 sm:ml-64 mt-20">

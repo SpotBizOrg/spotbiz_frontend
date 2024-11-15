@@ -11,10 +11,10 @@ import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
 const API_URL = "http://localhost:8080/api/v1/admin/customers";
 
 interface Customer {
-  id: number;
+  userId: number;
   name: string;
   email: string;
-  phone: string;
+  phoneNo: string;
   score: number;
 }
 
@@ -30,10 +30,10 @@ const AdminPage: React.FC = () => {
   const [showEditForm, setShowEditForm] = useState(false);
   const [currentCustomerId, setCurrentCustomerId] = useState<number | null>(null);
   const [newCustomer, setNewCustomer] = useState<Customer>({
-    id: customers.length + 1,
+    userId: customers.length + 1,
     name: "",
     email: "",
-    phone: "",
+    phoneNo: "",
     score: 0,
   });
   const [editCustomer, setEditCustomer] = useState<Customer | null>(null);
@@ -70,7 +70,7 @@ const AdminPage: React.FC = () => {
       method: 'DELETE',
     })
     .then(() => {
-      setCustomers(customers.filter(customer => customer.id !== currentCustomerId));
+      setCustomers(customers.filter(customer => customer.userId !== currentCustomerId));
       setShowPopup(false);
       setCurrentCustomerId(null);
     })
@@ -79,7 +79,7 @@ const AdminPage: React.FC = () => {
 
   // Edit a customer via the API
   const handleEditCustomer = () => {
-    fetch(`${API_URL}/${editCustomer?.id}`, {
+    fetch(`${API_URL}/${editCustomer?.userId}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
@@ -88,7 +88,7 @@ const AdminPage: React.FC = () => {
     })
     .then(response => response.json())
     .then(updatedCustomer => {
-      setCustomers(customers.map(customer => customer.id === updatedCustomer.id ? updatedCustomer : customer));
+      setCustomers(customers.map(customer => customer.userId === updatedCustomer.userId ? updatedCustomer : customer));
       setShowEditForm(false);
       setEditCustomer(null);
     })
@@ -158,11 +158,11 @@ const AdminPage: React.FC = () => {
             </thead>
             <tbody>
               {filteredCustomers.map((customer) => (
-                <tr key={customer.id} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
-                  <td className="px-6 py-4">{customer.id}</td>
+                <tr key={customer.userId} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                  <td className="px-6 py-4">{customer.userId}</td>
                   <td className="px-6 py-4">{customer.name}</td>
                   <td className="px-6 py-4">{customer.email}</td>
-                  <td className="px-6 py-4">{customer.phone}</td>
+                  <td className="px-6 py-4">{customer.phoneNo}</td>
                   <td className="px-6 py-4">{customer.score}</td>
                   <td className="px-0 py-4 flex gap-0 justify-start">
                     <IconButton
@@ -177,7 +177,7 @@ const AdminPage: React.FC = () => {
                     <IconButton
                       color="error"
                       onClick={() => {
-                        setCurrentCustomerId(customer.id);
+                        setCurrentCustomerId(customer.userId);
                         setShowPopup(true);
                       }}
                     >
@@ -225,8 +225,8 @@ const AdminPage: React.FC = () => {
               <TextInput
                 id="phone"
                 type="text"
-                value={newCustomer.phone}
-                onChange={(e) => setNewCustomer({ ...newCustomer, phone: e.target.value })}
+                value={newCustomer.phoneNo}
+                onChange={(e) => setNewCustomer({ ...newCustomer, phoneNo: e.target.value })}
                 className="w-full"
               />
             </div>
@@ -295,8 +295,8 @@ const AdminPage: React.FC = () => {
                 <TextInput
                   id="phone"
                   type="text"
-                  value={editCustomer.phone}
-                  onChange={(e) => setEditCustomer({ ...editCustomer, phone: e.target.value })}
+                  value={editCustomer.phoneNo}
+                  onChange={(e) => setEditCustomer({ ...editCustomer, phoneNo: e.target.value })}
                   className="w-full"
                 />
               </div>
