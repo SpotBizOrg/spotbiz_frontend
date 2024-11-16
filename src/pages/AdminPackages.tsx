@@ -6,6 +6,7 @@ import Container from '../components/Container';
 import { FaPlus } from 'react-icons/fa';
 import { Modal, TextInput, Label, Button } from "flowbite-react";
 
+// Package interface and empty package template
 interface Package {
   packageId: number;
   feature: string;
@@ -31,6 +32,8 @@ const emptyPackage: Package = {
   listing: '',
   isActive: false,
 };
+
+// Updated AdminPackages component with corrected input handlers
 
 export default function AdminPackages() {
   useEffect(() => {
