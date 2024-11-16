@@ -7,12 +7,13 @@ interface PackageCardProps {
   feature: string;
   adPerWeek: number;
   price: string;
-  analytics: string;
-  fakeReviews: string;
+  analytics: boolean;
+  fakeReviews: boolean;
   listing: string;
-  messaging: string;
-  recommondation: string;
+  messaging: boolean;
+  recommondation: boolean;
   isActive?: boolean;
+  selectOption?: () => void;
 }
 
 const PackageCard: React.FC<PackageCardProps> = ({
@@ -25,7 +26,10 @@ const PackageCard: React.FC<PackageCardProps> = ({
   messaging,
   recommondation,
   isActive = false,
+  selectOption
+
 }) => {
+
   return (
     <div className={`flex flex-col p-4 bg-white border-2 rounded-xl shadow-md transition transform hover:scale-105 duration-300 ${isActive ? 'border-primary' : 'border-gray-200'}`}>
       {isActive && <div className="text-sm font-semibold text-gray-500">Activated</div>}
@@ -43,21 +47,21 @@ const PackageCard: React.FC<PackageCardProps> = ({
           <span className="ml-2 font-semibold">Ads & Promos per week</span>
         </li>
         <li className="flex items-center text-left">
-          {analytics == 'none' ? <XMarkIcon className="w-4 h-4 text-red-500" aria-hidden="true" />:<CheckIcon className="w-4 h-4 text-blue1" aria-hidden="true" />}
-          {analytics == 'none' && <span className="ml-2 font-semibold">Profile analytics</span>}
-          {analytics == 'Only reviews' && <span className="ml-2 font-semibold">Profile analytics(limited)</span>}
-          {analytics == 'all' && <span className="ml-2 font-semibold">Profile analytics</span>}
+          {analytics == false ? <XMarkIcon className="w-4 h-4 text-red-500" aria-hidden="true" />:<CheckIcon className="w-4 h-4 text-blue1" aria-hidden="true" />}
+          {analytics == false && <span className="ml-2 font-semibold">Profile analytics</span>}
+          {analytics == true && <span className="ml-2 font-semibold">Profile analytics(limited)</span>}
+          {/* {analytics == 't && <span className="ml-2 font-semibold">Profile analytics</span>} */}
         </li>
         <li className="flex items-center text-left">
-          {fakeReviews == 'none' ? <XMarkIcon className="w-4 h-4 text-red-500" aria-hidden="true" />:<CheckIcon className="w-4 h-4 text-blue1" aria-hidden="true" />}
+          {fakeReviews == false ? <XMarkIcon className="w-4 h-4 text-red-500" aria-hidden="true" />:<CheckIcon className="w-4 h-4 text-blue1" aria-hidden="true" />}
           <span className="ml-2 font-semibold">Report Fake reviews</span>
         </li>
         <li className="flex items-center text-left">
-          {recommondation == 'none' ? <XMarkIcon className="w-4 h-4 text-red-500" aria-hidden="true" />:<CheckIcon className="w-4 h-4 text-blue1" aria-hidden="true" />}
+          {recommondation == false ? <XMarkIcon className="w-4 h-4 text-red-500" aria-hidden="true" />:<CheckIcon className="w-4 h-4 text-blue1" aria-hidden="true" />}
           <span className="ml-2 font-semibold">Customer Recommondation</span>
         </li>
         <li className="flex items-center text-left">
-          {messaging == 'none' ? <XMarkIcon className="w-4 h-4 text-red-500" aria-hidden="true" />:<CheckIcon className="w-4 h-4 text-blue1" aria-hidden="true" />}
+          {messaging == false ? <XMarkIcon className="w-4 h-4 text-red-500" aria-hidden="true" />:<CheckIcon className="w-4 h-4 text-blue1" aria-hidden="true" />}
           <span className="ml-2 font-semibold">Interact with customers</span>
         </li>
         <li className="flex items-center text-left">
@@ -66,8 +70,9 @@ const PackageCard: React.FC<PackageCardProps> = ({
         </li>
       </ul>
       <div className='flex flex-row items-center mt-4 justify-center'>
-        {!isActive &&<button className='items-center justify-center bg-bluedark flex p-2 text-sm text-white rounded-md w-5/6' >Buy</button>}
-        {isActive &&<button className='items-center justify-center bg-gray-800 flex p-2 text-sm text-white rounded-md w-5/6' disabled >Actiavated</button>}
+        {/* {!isActive &&<button className='items-center justify-center bg-bluedark flex p-2 text-sm text-white rounded-md w-5/6' >Buy</button>} */}
+        {!isActive &&<button onClick={selectOption} className='items-center justify-center bg-bluedark flex p-2 text-sm text-white rounded-md w-5/6' >Buy</button>}
+        {/* {isActive &&<button onClick={() => selectOption && selectOption(1)} className='items-center justify-center bg-gray-800 flex p-2 text-sm text-white rounded-md w-5/6' disabled >Actiavated</button>} */}
       </div>
     </div>
   );
