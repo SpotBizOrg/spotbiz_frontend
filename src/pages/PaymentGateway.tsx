@@ -2,8 +2,10 @@ import React, { useEffect, useState } from "react";
 import MasterCardImage from "../assets/CardImages/masterCard.png";
 import visaCardImage from "../assets/CardImages/visaCard.png";
 import { toast } from "react-toastify";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { HashLoader } from "react-spinners";
+import { BACKEND_URL } from "../../config";
+import axios from "axios";
 
 // const handleClick = () => {
 //   const selectedPlanId = 1;
@@ -19,13 +21,26 @@ interface Payment {
   amount: number;
 }
 
+interface BillingDetails{
+  subscriptionBillingId:number;
+  subscriptionId:number;
+  amount:number;
+  billingStatus:string;
+  billingDate:string;
+  businessId:number;
+  isActive:boolean;
+}
+
 interface PaymentPageProps {
   selectedPlanId: number;
+  subscriptionBillingId:number;
 }
 
 const PaymentGateway: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const { selectedPlanId } = location.state as PaymentPageProps;
+  const {subscriptionBillingId} = location.state as PaymentPageProps;
   const [selectedPlan, setSelectedPlan] = useState<string>("Standerd");
   const [price, setPrice] = useState<number>(300);
   const [loading, setloading] = useState(false);
@@ -39,11 +54,38 @@ const PaymentGateway: React.FC = () => {
   });
   const [isDeclarationChecked, setIsDeclarationChecked] =
     useState<boolean>(false);
+    const [billingDetails,setBillingDetails] = useState<BillingDetails>();
   const currentTime = new Date();
+
+  const storedEmail = localStorage.getItem('email');
+  const storedUserId = localStorage.getItem('user_id');
+
+  // //for testing
+  // const storedEmail = "yuhanga2001@gmail.com";
+  // const storedUserId = 8;
+
 
   useEffect(() => {
     fetchPlanDetails();
+    fetchBillingDetails();
+
+    console.log(selectedPlanId);
+    console.log(subscriptionBillingId);
+    
+    
   }, []);
+
+  const fetchBillingDetails = async () => {
+    const url = `${BACKEND_URL}/subscription-billing/${subscriptionBillingId}`;
+    try {
+      const response = await axios.get(url);
+      setBillingDetails(response.data);
+      console.log("billing", billingDetails);
+      
+    } catch (error) {
+      console.error(error);
+    }
+  }
 
   const fetchPlanDetails = async () => {
     setloading(true);
@@ -101,14 +143,124 @@ const PaymentGateway: React.FC = () => {
     }
   };
 
-  const handlePayment = () => {
+  const markPaymentAsPaid = async () => {
+
+    // getLocalStorageData();
+
+    const url = `${BACKEND_URL}/subscription-billing/${subscriptionBillingId}`;
+    if (billingDetails) {
+      billingDetails.billingStatus = "PAID";
+      billingDetails.isActive = true;
+    }
+    try {
+      const response = await axios.put(url, billingDetails);
+      if (response.status === 200) {
+        toast.success("Payment Successful");
+        getLocalStorageData()
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("Payment Failed");
+    }
+  }
+
+  const saveOpnHours = async (data: JSON) => {
+    console.log(data);
+
+    try{
+      const url = `${BACKEND_URL}/businessOpening/${storedEmail}`;
+
+      const response = await axios.post(url, data);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    }
+
+  }
+
+  const saveBusinessData = async (data: JSON, category: string, tags: Array<string>, busienssId:number) => {
+
+    const body = {
+      ...data, 
+      categoryId: parseInt(category), 
+      tags: tags,
+      userId: storedUserId,
+      profileCover:null,
+      locationUrl:null,
+      status: "APPROVED",
+      businessId: busienssId
+    
+    }
+
+    console.log(body);
+    
+
+    try{
+      const url = `${BACKEND_URL}/business/update/${storedEmail}`;
+
+      const response = await axios.put(url, body);
+      console.log(response.data);
+
+    } catch (error) {
+      console.error(error);
+    }
+    
+  }
+
+  const saveLocalStorageData = async (data: any) => {
+
+    try {
+        await saveBusinessData(data.businessDetails, data.category, data.tags, data.businessId); // Wait for this to complete
+        await saveOpnHours(data.openHours); // Wait for this to complete
+    } catch (error) {
+        console.error("Error saving data:", error);
+    } 
+};
+
+
+  const getLocalStorageData = () => {
+    const data = JSON.parse(localStorage.getItem("data")!);
+    console.log("from local storage", data);
+    saveLocalStorageData(data);
+    
+  }
+
+  const handlePayment = async() => {
     if (validateInputs()) {
       console.log(payment);
-      setloading(true);
-      setTimeout(() => {
-        setloading(false);
+
+      try{
+        setloading(true);
+        await markPaymentAsPaid();
+      } catch (error) {
+        console.error(error)
+      } finally{
+        setloading(false)
         toast.success("Payment Successful");
-      }, 2000);
+        navigate("/business/dashboard")
+      }
+      
+      
+      // setTimeout(() => {
+      //   setloading(false);
+      //   toast.success("Payment Successful");
+        
+      // }, 2000);
+    }
+  };
+
+  const handleBack =async () => {
+    try{
+      setloading(true);
+      const url = `${BACKEND_URL}/subscription-billing/delete/${subscriptionBillingId}`;
+      
+      const response = await axios.put(url, billingDetails);
+      console.log(response.data);
+    } catch (error) {
+      console.error(error);
+    } finally{
+      setloading(false);
+      navigate("/business/dashboard");
     }
   };
 
@@ -283,7 +435,7 @@ const PaymentGateway: React.FC = () => {
 
             <div className="flex justify-center gap-4 mt-4">
               <button
-                onClick={() => alert("Back")}
+                onClick={handleBack}
                 className=" bg-gray-400 hover:bg-blue-700 text-white font-bold px-6 py-2 rounded focus:outline-none"
               >
                 Back
