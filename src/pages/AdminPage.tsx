@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import Adminnavbar from '../components/Adminnavbar';
-import Adminsidebar from '../components/Adminsidebar';
-import Container from '../components/Container';
-import { Modal, TextInput, Label } from "flowbite-react";
-import { HiOutlineExclamationCircle } from "react-icons/hi";
-import { IconButton } from "@mui/material";
-import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
+import React, { useEffect, useState } from "react";
+import Adminnavbar from "../components/Adminnavbar";
+import Adminsidebar from "../components/Adminsidebar";
+import Container from "../components/Container";
+// import { Modal, TextInput, Label } from "flowbite-react";
+// import { HiOutlineExclamationCircle } from "react-icons/hi";
+// import { IconButton } from "@mui/material";
+// import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
 import { useAuth } from "../utils/AuthProvider";
 import { BACKEND_URL } from "../../config";
 
@@ -21,20 +21,22 @@ interface Customer {
 }
 
 const AdminPage: React.FC = () => {
-  useEffect(()=>{
+  useEffect(() => {
     document.title = "SpotBiz | Customer List | Admin";
     fetchCustomers();
     if (!checkAuthenticated() || user?.role != "ADMIN") {
       login();
     }
   },[]);
-  
+
   const { user, checkAuthenticated, login } = useAuth();
   const [customers, setCustomers] = useState<Customer[]>([]);
-  const [showForm, setShowForm] = useState(false);
-  const [showPopup, setShowPopup] = useState(false);
-  const [showEditForm, setShowEditForm] = useState(false);
-  const [currentCustomerId, setCurrentCustomerId] = useState<number | null>(null);
+  // const [showForm, setShowForm] = useState(false);
+  // const [showPopup, setShowPopup] = useState(false);
+  // const [showEditForm, setShowEditForm] = useState(false);
+  const [currentCustomerId, setCurrentCustomerId] = useState<number | null>(
+    null
+  );
   const [newCustomer, setNewCustomer] = useState<Customer>({
     userId: customers.length + 1,
     name: "",
@@ -43,65 +45,73 @@ const AdminPage: React.FC = () => {
     score: 0,
   });
   const [editCustomer, setEditCustomer] = useState<Customer | null>(null);
-  const [searchQuery, setSearchQuery] = useState('');
+  const [searchQuery, setSearchQuery] = useState("");
 
   // Fetch customers from the API
   const fetchCustomers = () => {
     fetch(API_URL)
-      .then(response => response.json())
-      .then(data => setCustomers(data))
-      .catch(error => console.error('Error fetching customers:', error));
+      .then((response) => response.json())
+      .then((data) => setCustomers(data))
+      .catch((error) => console.error("Error fetching customers:", error));
   };
 
   // Add a new customer to the API
   const handleAddCustomer = () => {
     fetch(API_URL, {
-      method: 'POST',
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(newCustomer),
     })
-    .then(response => response.json())
-    .then(data => {
-      setCustomers([...customers, data]);
-      setShowForm(false);
-    })
-    .catch(error => console.error('Error adding customer:', error));
+      .then((response) => response.json())
+      .then((data) => {
+        setCustomers([...customers, data]);
+        // setShowForm(false);
+      })
+      .catch((error) => console.error("Error adding customer:", error));
   };
 
   // Delete a customer via the API
   const handleDeleteCustomer = () => {
     fetch(`${API_URL}/${currentCustomerId}`, {
-      method: 'DELETE',
+      method: "DELETE",
     })
-    .then(() => {
-      setCustomers(customers.filter(customer => customer.userId !== currentCustomerId));
-      setShowPopup(false);
-      setCurrentCustomerId(null);
-    })
-    .catch(error => console.error('Error deleting customer:', error));
+      .then(() => {
+        setCustomers(
+          customers.filter((customer) => customer.userId !== currentCustomerId)
+        );
+        // setShowPopup(false);
+        setCurrentCustomerId(null);
+      })
+      .catch((error) => console.error("Error deleting customer:", error));
   };
 
   // Edit a customer via the API
   const handleEditCustomer = () => {
     fetch(`${API_URL}/${editCustomer?.userId}`, {
-      method: 'PUT',
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(editCustomer),
     })
-    .then(response => response.json())
-    .then(updatedCustomer => {
-      setCustomers(customers.map(customer => customer.userId === updatedCustomer.userId ? updatedCustomer : customer));
-      setShowEditForm(false);
-      setEditCustomer(null);
-    })
-    .catch(error => console.error('Error editing customer:', error));
+      .then((response) => response.json())
+      .then((updatedCustomer) => {
+        setCustomers(
+          customers.map((customer) =>
+            customer.userId === updatedCustomer.userId
+              ? updatedCustomer
+              : customer
+          )
+        );
+        // setShowEditForm(false);
+        setEditCustomer(null);
+      })
+      .catch((error) => console.error("Error editing customer:", error));
   };
 
-  const filteredCustomers = customers.filter(customer =>
+  const filteredCustomers = customers.filter((customer) =>
     customer.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
@@ -113,64 +123,97 @@ const AdminPage: React.FC = () => {
         <div className="flex justify-between items-center w-full mb-5 border-b border-gray-300">
           <h1 className="text-subsubheading text-bluedark">Customer List</h1>
         </div>
-        <div className="flex items-center justify-between w-full mb-5">
-          <div className="flex w-full max-w-xs relative">
-            <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-              <svg className="w-4 h-4 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
-              </svg>
-            </div>
-            <input 
-              type="text" 
-              id="simple-search" 
-              className="bg-gray-50 border p-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-10 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" 
-              placeholder="Search for customers..." 
+        <div className="flex justify-end mb-5">
+          <div className="flex items-center">
+            <input
+              type="text"
+              id="simple-search"
+              className="bg-gray-50 border p-2 border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              placeholder="Search for customers..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              required 
+              required
             />
-            <button 
-              type="submit" 
-              className="p-2 ml-2 text-sm font-medium text-white bg-bluedark rounded-lg border border-bluedark hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+            <button
+              type="submit"
+              className="ml-2 p-2 text-sm font-medium text-white bg-bluedark rounded-lg border border-bluedark hover:bg-gray-900 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
             >
-              <svg className="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
-                <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"/>
+              <svg
+                className="w-4 h-4"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 20 20"
+              >
+                <path
+                  stroke="currentColor"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth="2"
+                  d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
+                />
               </svg>
               <span className="sr-only">Search</span>
             </button>
           </div>
         </div>
+
         <div className="relative overflow-x-auto overflow-y-auto sm:rounded-lg border border-gray-200">
           <table className="w-full text-sm text-left rtl:text-right text-gray-500">
             <thead className="table-header text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
-                <th scope="col" className="px-6 py-3" style={{ minWidth: '100px' }}>ID</th>
-                <th scope="col" className="px-6 py-3" style={{ minWidth: '150px' }}>
+                <th
+                  scope="col"
+                  className="px-6 py-3"
+                  style={{ minWidth: "100px" }}
+                >
+                  ID
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3"
+                  style={{ minWidth: "150px" }}
+                >
                   <div className="flex items-center">Name</div>
                 </th>
-                <th scope="col" className="px-6 py-3" style={{ minWidth: '150px' }}>
+                <th
+                  scope="col"
+                  className="px-6 py-3"
+                  style={{ minWidth: "150px" }}
+                >
                   <div className="flex items-center">Email</div>
                 </th>
-                <th scope="col" className="px-6 py-3" style={{ minWidth: '100px' }}>
+                <th
+                  scope="col"
+                  className="px-6 py-3"
+                  style={{ minWidth: "100px" }}
+                >
                   <div className="flex items-center">Phone</div>
                 </th>
-                <th scope="col" className="px-6 py-3" style={{ minWidth: '100px' }}>
+                <th
+                  scope="col"
+                  className="px-6 py-3"
+                  style={{ minWidth: "100px" }}
+                >
                   <div className="flex items-center">Score</div>
                 </th>
-                <th scope="col" className="px-6 py-3 " style={{ minWidth: '150px' }}>
-                  <div className="flex items-center">Action</div>
-                </th>
+                {/* <th scope="col" className="px-6 py-3 " style={{ minWidth: '150px' }}>
+                <div className="flex items-center">Action</div>
+                </th> */}
               </tr>
             </thead>
             <tbody>
               {filteredCustomers.map((customer) => (
-                <tr key={customer.userId} className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+                <tr
+                  key={customer.userId}
+                  className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
+                >
                   <td className="px-6 py-4">{customer.userId}</td>
                   <td className="px-6 py-4">{customer.name}</td>
                   <td className="px-6 py-4">{customer.email}</td>
                   <td className="px-6 py-4">{customer.phoneNo}</td>
                   <td className="px-6 py-4">{customer.score}</td>
-                  <td className="px-0 py-4 flex gap-0 justify-start">
+                  {/* <td className="px-0 py-4 flex gap-0 justify-start">
                     <IconButton
                       color="default"
                       onClick={() => {
@@ -189,7 +232,7 @@ const AdminPage: React.FC = () => {
                     >
                       <DeleteIcon />
                     </IconButton>
-                  </td>
+                  </td> */}
                 </tr>
               ))}
             </tbody>
@@ -197,7 +240,7 @@ const AdminPage: React.FC = () => {
         </div>
       </div>
 
-      <Modal show={showForm} onClose={() => setShowForm(false)} size="lg" className="flex items-center justify-center min-h-screen" theme={{
+      {/* <Modal show={showForm} onClose={() => setShowForm(false)} size="lg" className="flex items-center justify-center min-h-screen" theme={{
         content: {
           base: "bg-white w-3/4 rounded-lg", 
           inner: "p-6 rounded-lg shadow-lg",
@@ -360,7 +403,7 @@ const AdminPage: React.FC = () => {
             </div>
           </div>
         </Modal.Body>
-      </Modal>
+      </Modal> */}
     </Container>
   );
 };

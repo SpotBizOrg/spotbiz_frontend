@@ -5,10 +5,10 @@ interface PackageCardProps {
   feature: string;
   price: string;
   adsPerWeek: number;
-  fakereviews?: boolean;
-  recommendations?: boolean;
+  fakeReviews?: boolean;
+  recommendation?: boolean;
   messaging?: boolean;
-  profileAnalytics?: boolean;
+  analytics?: boolean;
   buttonText: string;
   onClick: () => void;
   isActive?: boolean;
@@ -19,10 +19,10 @@ const PackageCard: React.FC<PackageCardProps> = ({
   feature,
   price,
   adsPerWeek,
-  fakereviews = false,
-  recommendations = false,
+  fakeReviews = false,
+  recommendation = false,
   messaging = false,
-  profileAnalytics = false,
+  analytics = false,
   buttonText,
   isActive = false,
   listing,
@@ -45,13 +45,13 @@ const PackageCard: React.FC<PackageCardProps> = ({
       <ul className="mt-4 space-y-1 text-sm text-gray-700">
         <li>Ads Per Week: {adsPerWeek}</li>
         <li>
-          Profile Analytics: {profileAnalytics ? <CheckIcon className="w-4 h-4 text-blue1" /> : <XMarkIcon className="w-4 h-4 text-red-500" />}
+          Profile Analytics: {analytics ? <CheckIcon className="w-4 h-4 text-blue1" /> : <XMarkIcon className="w-4 h-4 text-red-500" />}
         </li>
         <li>
-          Fake Reviews: {fakereviews ? <CheckIcon className="w-4 h-4 text-blue1" /> : <XMarkIcon className="w-4 h-4 text-red-500" />}
+          Fake Reviews: {fakeReviews ? <CheckIcon className="w-4 h-4 text-blue1" /> : <XMarkIcon className="w-4 h-4 text-red-500" />}
         </li>
         <li>
-          Recommendations: {recommendations ? <CheckIcon className="w-4 h-4 text-blue1" /> : <XMarkIcon className="w-4 h-4 text-red-500" />}
+          Recommendation: {recommendation ? <CheckIcon className="w-4 h-4 text-blue1" /> : <XMarkIcon className="w-4 h-4 text-red-500" />}
         </li>
         <li>
           Messaging: {messaging ? <CheckIcon className="w-4 h-4 text-blue1" /> : <XMarkIcon className="w-4 h-4 text-red-500" />}
