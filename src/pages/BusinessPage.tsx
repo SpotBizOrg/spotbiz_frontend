@@ -16,6 +16,8 @@ import { GridLoader } from 'react-spinners';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { Button, Modal } from 'flowbite-react';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
+import { messaging } from '../firebase/firebaseConfig';
+import OnlyAddReviewMain from '../components/OnlyAddReviewMain';
 
 
 // const businessId: number = 0;
@@ -56,6 +58,19 @@ interface BusinessPageProps {
     businessId: number;
     title: string;
   };
+  pkg:{
+    packageId: number;
+    feture: string;
+    adsPerWeek: number;
+    analytics: boolean;
+    fakeReviews: boolean;
+    recommendation: boolean;
+    messaging: boolean;
+    price: number;
+    listing: string;
+    isActive: boolean;
+
+  }
 }
 
 const BusinessPage: React.FC = () => {
@@ -63,7 +78,6 @@ const BusinessPage: React.FC = () => {
   const StoredClientId = parseInt(localStorage.getItem('user_id') || '0');
 
   const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
   const [businessData, setBusinessData] = React.useState<BusinessPageProps | null>(null);
   const [loading, setLoading] = useState(true); // loading state
   const businessId = parseInt(searchParams.get('businessId') || '0', 10);
@@ -83,6 +97,8 @@ const BusinessPage: React.FC = () => {
       if (response.ok) {
         console.log("success fetch");
         setBusinessData(data);
+        console.log(businessData);
+        
       } else if (response.status === 400) {
         console.error("Invalide business Id");
         // navigate('/error'); // uncomment this line to redirect to error page
@@ -151,14 +167,7 @@ const BusinessPage: React.FC = () => {
                     storedEmail={StoredEmail || "example@mail.com"}
                   />
                 ):(
-                  <div className="max-w-sm pl-4 pt-4 pr-4 pb-2 bg-white rounded-lg shadow-md border border-gray-300 text-bodysmall">
-                    <div className="p-2 border border-gray-400 rounded text-center">
-                      <p className="font-bold text-bluedark text-bodymedium">Reviews</p>
-                    </div>
-                    <div className="mt-4 mb-2">
-                      <p className="text-center text-gray-500">No reviews yet</p>
-                    </div>
-                  </div>
+                  <OnlyAddReviewMain businessId={businessId} />
                 )}
               </div>
               <div className='w-3/6 ml-20 mr-20 p-8 max-h-[130vh] overflow-y-auto scrollbar-hide'>
@@ -189,7 +198,7 @@ const BusinessPage: React.FC = () => {
             </div>
           </div>
         </div>
-        <FloatingBtnsbusiness businessMobile={businessData?.phone || ''} clientId={StoredClientId || 0} businessId={businessData?.businessId || 0} />
+        <FloatingBtnsbusiness businessMobile={businessData?.phone || ''} clientId={StoredClientId || 0} businessId={businessData?.businessId || 0} messaging={businessData?.pkg.messaging ?? false} />
       </Container2>
       <Footer />
     </>
