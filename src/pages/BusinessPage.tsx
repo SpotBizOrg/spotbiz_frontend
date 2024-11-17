@@ -13,10 +13,12 @@ import FloatingBtnsbusiness from '../components/FlotingBtnsbusiness';
 import { BACKEND_URL } from '../../config';
 import image from '../assets/promo.lk-44253997837344f08aed5b131f0bd271.jpg';
 import { GridLoader } from 'react-spinners';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { Button, Modal } from 'flowbite-react';
+import { HiOutlineExclamationCircle } from 'react-icons/hi';
 
 
-// const businessId: number = 28;
+// const businessId: number = 0;
 
 interface WeeklySchedule {
   startTime: string;
@@ -61,10 +63,10 @@ const BusinessPage: React.FC = () => {
   const StoredClientId = parseInt(localStorage.getItem('user_id') || '0');
 
   const [searchParams] = useSearchParams();
+  const navigate = useNavigate();
   const [businessData, setBusinessData] = React.useState<BusinessPageProps | null>(null);
   const [loading, setLoading] = useState(true); // loading state
-
-  const businessId = parseInt(searchParams.get('businessId') || '28', 10);
+  const businessId = parseInt(searchParams.get('businessId') || '0', 10);
   
   const fetchBusinessData = async (businessId: number) => {
     const url = `${BACKEND_URL}/businessPage/businessData?businessId=${businessId}`;
@@ -74,12 +76,22 @@ const BusinessPage: React.FC = () => {
       const response = await fetch(url);
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message);
+      // if (!response.ok) {
+      //   throw new Error(data.message);
+      // }
+
+      if (response.ok) {
+        console.log("success fetch");
+        setBusinessData(data);
+      } else if (response.status === 400) {
+        console.error("Invalide business Id");
+        // navigate('/error'); // uncomment this line to redirect to error page
+      } else{
+        throw new Error(data.message)
       }
 
-      console.log("success fetch");
-      setBusinessData(data);
+      // console.log("success fetch");
+      // setBusinessData(data);
     } catch (error) {
       console.error(error);
     } finally {

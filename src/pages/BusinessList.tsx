@@ -3,13 +3,15 @@ import React, { useEffect, useState } from 'react';
 import Adminnavbar from '../components/Adminnavbar';
 import Adminsidebar from '../components/Adminsidebar';
 import Container from '../components/Container';
+import { BACKEND_URL } from '../../config';
+import { useAuth } from "../utils/AuthProvider";
 // import { Modal, TextInput, Label } from "flowbite-react";
 // import { HiOutlineExclamationCircle } from "react-icons/hi";
 // import { IconButton } from "@mui/material";
 // import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
 
 // Define the API endpoint (adjust this if needed)
-const API_URL = "http://localhost:8080/api/v1/admin/business";
+const API_URL = `${BACKEND_URL}/admin/business`;
 
 interface BusinessList {
   businessId: number;
@@ -21,6 +23,7 @@ interface BusinessList {
 }
 
 const BusinessListPage: React.FC = () => {
+  const { user, checkAuthenticated, login } = useAuth();
   const [business, setBusiness] = useState<BusinessList[]>([]);
   // const [showForm, setShowForm] = useState(false);
   // const [showPopup, setShowPopup] = useState(false);
@@ -52,6 +55,10 @@ const BusinessListPage: React.FC = () => {
   useEffect(() => {
     document.title = "SpotBiz | Business List | Admin";
     fetchBusinesses();
+
+    if (!checkAuthenticated() || user?.role != "ADMIN") {
+      login();
+    }
   }, []);
 
   // Add a new business
