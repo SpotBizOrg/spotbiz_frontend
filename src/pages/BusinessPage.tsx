@@ -14,8 +14,6 @@ import { BACKEND_URL } from '../../config';
 import image from '../assets/promo.lk-44253997837344f08aed5b131f0bd271.jpg';
 import { GridLoader } from 'react-spinners';
 import { useSearchParams, useNavigate } from 'react-router-dom';
-import { Button, Modal } from 'flowbite-react';
-import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import { messaging } from '../firebase/firebaseConfig';
 import OnlyAddReviewMain from '../components/OnlyAddReviewMain';
 
@@ -70,7 +68,8 @@ interface BusinessPageProps {
     listing: string;
     isActive: boolean;
 
-  }
+  };
+  subscribed: boolean;
 }
 
 const BusinessPage: React.FC = () => {
@@ -83,7 +82,7 @@ const BusinessPage: React.FC = () => {
   const businessId = parseInt(searchParams.get('businessId') || '0', 10);
   
   const fetchBusinessData = async (businessId: number) => {
-    const url = `${BACKEND_URL}/businessPage/businessData?businessId=${businessId}`;
+    const url = `${BACKEND_URL}/businessPage/businessData?businessId=${businessId}&clientId=${StoredClientId}`;
 
     try {
       console.log('fetching business data');
@@ -198,7 +197,13 @@ const BusinessPage: React.FC = () => {
             </div>
           </div>
         </div>
-        <FloatingBtnsbusiness businessMobile={businessData?.phone || ''} clientId={StoredClientId || 0} businessId={businessData?.businessId || 0} messaging={businessData?.pkg.messaging ?? false} />
+        <FloatingBtnsbusiness 
+          businessMobile={businessData?.phone || ''} 
+          clientId={StoredClientId || 0} 
+          businessId={businessData?.businessId || 0} 
+          messaging={businessData?.pkg.messaging ?? false} 
+          isSubscribed={businessData?.subscribed || false}
+        />
       </Container2>
       <Footer />
     </>
