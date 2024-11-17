@@ -2,6 +2,8 @@ import { Tooltip } from "flowbite-react";
 import { HiBell } from "react-icons/hi";
 import { IoLogoWhatsapp } from "react-icons/io";
 import { Bounce, toast } from "react-toastify";
+import { BACKEND_URL } from "../../config";
+import axios from "axios";
 
 interface FlotingBtnsbusinessProps {
     businessMobile: string;
@@ -12,23 +14,42 @@ interface FlotingBtnsbusinessProps {
 
 const FlotingBtnsbusiness: React.FC<FlotingBtnsbusinessProps> = ({ businessMobile, clientId, businessId, messaging }) => {
 
-    const markSubscribe = () => {
-        console.log('Subscribed');
-        console.log('Client ID:', clientId);
-        console.log('Business ID:', businessId);
-        toast('🎉 Subscribed!', {
-            position: "top-right",
-            autoClose: 5000,
-            hideProgressBar: false,
-            closeOnClick: true,
-            pauseOnHover: true,
-            draggable: true,
-            progress: undefined,
-            theme: "light",
-            transition: Bounce,
-            });
+    const markSubscribe =async () => {
+        try{
+            const url = `${BACKEND_URL}/sub_business/subscribe`
+
+            const body = {
+                subscribeId: 0,
+                dateTime:  new Date().toISOString().split('.')[0],
+                businessId: businessId,
+                userId: clientId,
+            }
+
+            const response  = await axios.post(url, body);
+            console.log(response.data);
+
+            if(response.status === 200){
+                toast('🎉 Subscribed!', {
+                    position: "top-right",
+                    autoClose: 5000,
+                    hideProgressBar: false,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "light",
+                    transition: Bounce,
+                });
+            }else{
+                toast.error('An unexpected error occurred');
+            }
+        }catch(error){
+            console.error('An error occurred:', error);
+        }
         
     }
+
+
     return (
         <>
             <div className="fixed bottom-6 right-2">
