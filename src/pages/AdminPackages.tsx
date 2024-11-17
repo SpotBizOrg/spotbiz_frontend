@@ -5,6 +5,7 @@ import PackageCard from '../components/PackageCard';
 import Container from '../components/Container';
 import { FaPlus } from 'react-icons/fa';
 import { Modal, TextInput, Label } from "flowbite-react";
+import { useAuth } from "../utils/AuthProvider";
 
 // Package interface and empty package template
 interface Package {
@@ -37,12 +38,16 @@ const emptyPackage: Package = {
 export default function AdminPackages() {
   useEffect(() => {
     document.title = "SpotBiz | Packages | Admin";
+    if (!checkAuthenticated() || user?.role != "ADMIN") {
+      login();
+    }
   }, []);
 
   const [packagesData, setPackagesData] = useState<Package[]>([]);
   const [editPackage, setEditPackage] = useState<Package | null>(null);
   const [showEditForm, setShowEditForm] = useState(false);
   const [notification, setNotification] = useState<string | null>(null);
+  const { user, checkAuthenticated, login } = useAuth();
 
   const fetchPackages = async () => {
     const response = await fetch('/api/packages'); // Adjust URL according to your backend

@@ -11,7 +11,8 @@ interface PackageCardProps {
   profileAnalytics?: boolean;
   buttonText: string;
   onClick: () => void;
-  isPopular?: boolean;
+  isActive?: boolean;
+  listing?: string;
 }
 
 const PackageCard: React.FC<PackageCardProps> = ({
@@ -23,12 +24,13 @@ const PackageCard: React.FC<PackageCardProps> = ({
   messaging = false,
   profileAnalytics = false,
   buttonText,
-  isPopular = false,
+  isActive = false,
+  listing,
   onClick,
 }) => {
   return (
-    <div className={`flex flex-col p-4 bg-white border-2 border-gray-300 rounded-xl shadow-md transition transform hover:scale-105 duration-300 ${isPopular ? 'border-primary' : 'border-gray-200'}`}>
-      {isPopular && <div className="text-sm font-semibold text-gray-500">Most Popular Package</div>}
+    <div className={`flex flex-col p-4 bg-white border-2 border-gray-300 rounded-xl shadow-md transition transform hover:scale-105 duration-300 ${isActive ? 'border-primary' : 'border-gray-200'}`}>
+      {isActive && <div className="text-sm font-semibold text-gray-500">Most Popular Package</div>}
       <h3 className="mt-2 text-xl font-bold text-gray-900">{feature}</h3>
       <p className="mt-4 text-2xl font-bold text-gray-900">
         {price.split('/')[0]}

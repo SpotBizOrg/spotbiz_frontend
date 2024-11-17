@@ -4,10 +4,18 @@ import Adminsidebar from "../components/Adminsidebar";
 import PerformanceChart from "../components/PerformanceChart";
 import LatestBusiness from "../components/LatetBusiness"; // Assuming there's a typo in the import name
 import Container from "../components/Container";
+import { useAuth } from "../utils/AuthProvider";
 
 const AdminDashboard: React.FC = () => {
+
+  const { user, checkAuthenticated, login } = useAuth();
+
+
   useEffect(() => {
     document.title = "SpotBiz | Dashboard | Admin";
+    if (!checkAuthenticated() || user?.role != "ADMIN") {
+      login();
+    }
   }, []);
 
   return (

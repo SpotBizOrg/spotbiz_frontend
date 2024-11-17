@@ -13,6 +13,7 @@ import HomeImage from "../assets/Background.png";
 import Advertisement from "../components/Advertisement";
 import Footer from "../components/Footer";
 import axios from "axios";
+import { useAuth } from "../utils/AuthProvider";
 
 interface SearchResult {
   name: string;
@@ -33,6 +34,7 @@ const CustomerHome: React.FC = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const [recommendations, setRecommendations] = useState<any[]>([]);
+  const { user, checkAuthenticated, login } = useAuth();
   const navigate = useNavigate();
 
   const handleSearch = async () => {
@@ -120,7 +122,12 @@ const CustomerHome: React.FC = () => {
   };
 
   useEffect(() => {
+    document.title = "SpotBiz | Home";
     fetchRecommendations();
+
+    if (!checkAuthenticated() || user?.role != "CUSTOMER") {
+      login();
+    }
   }, []);
 
   return (

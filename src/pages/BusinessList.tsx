@@ -6,6 +6,8 @@ import Container from '../components/Container';
 import { Modal } from 'flowbite-react';
 import { HiOutlineExclamationCircle } from 'react-icons/hi';
 import BusinessList from '../components/BusinessList';
+import { useAuth } from "../utils/AuthProvider";
+import { BACKEND_URL } from '../../config';
 
 interface Business {
   id: string;
@@ -18,6 +20,7 @@ interface Business {
 }
 
 const BusinessPage: React.FC = () => {
+  const { user, checkAuthenticated, login } = useAuth();
   const [businesses, setBusinesses] = useState<Business[]>([]);
   const [showPopup, setShowPopup] = useState(false);
   const [currentBusinessId, setCurrentBusinessId] = useState<string | null>(null);
@@ -26,12 +29,16 @@ const BusinessPage: React.FC = () => {
     document.title = 'SpotBiz | Business List | Admin';
 
     // Fetch business owners from the backend API
-    fetch('http://localhost:8080/api/v1/admin/users/business-owners')
+    fetch(`${BACKEND_URL}/admin/users/business-owners`)
       .then((response) => response.json())
       .then((data) => {
         console.log(data)
         setBusinesses(data)})
       .catch((error) => console.error('Error fetching business owners:', error));
+      
+      if (!checkAuthenticated() || user?.role != "ADMIN") {
+        login();
+      }
   }, []);
 
   const handleDeleteBusiness = () => {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Businessnavbar from '../components/Businessnavbar';
 import Businesssidebar from '../components/Businesssidebar';
 import PerformanceChart from '../components/DashboardGraph';
@@ -8,8 +8,10 @@ import Container from '../components/Container';
 import Popup from '../components/Popup';
 import CouponPopup from '../components/CouponPopup';
 import OnboardingForm from './OnboardingForm';
+import { useAuth } from "../utils/AuthProvider";
 
 const Dashboard: React.FC = () => {
+  // const { user, checkAuthenticated, login } = useAuth();
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [isCPopupOpen, setIsCPopupOpen] = useState(false);
 
@@ -24,6 +26,13 @@ const Dashboard: React.FC = () => {
   const togglePopup = () => {
     setIsPopupOpen(!isPopupOpen);
   };
+
+  useEffect(() => {
+    document.title = 'SpotBiz | Dashboard | Business';
+    // if (!checkAuthenticated() || user?.role != "BUSINESS_OWNER") {
+    //   login();
+    // }
+  }, []);
 
   return (
     <>
