@@ -5,6 +5,7 @@ import PerformanceChart from "../components/PerformanceChart";
 import LatestBusiness from "../components/LatetBusiness"; // Assuming there's a typo in the import name
 import Container from "../components/Container";
 import { useAuth } from "../utils/AuthProvider";
+import AdminDashboardStats from "../components/AdminDashboardStats";
 
 const AdminDashboard: React.FC = () => {
 
@@ -23,7 +24,11 @@ const AdminDashboard: React.FC = () => {
       <Adminnavbar />
       <Adminsidebar selectedTile="Dashboard" />
       <div className="px-12 sm:ml-64 mt-20">
-        <div className="flex-grow  mt-10">
+        <AdminDashboardStats />
+        <div className="flex flex-row max-w-full">
+          
+        </div>
+        {/* <div className="flex-grow  mt-10">
           <h1 className="text-subsubheading text-bluedark mb-10">
             Admin Dashboard
           </h1>
@@ -35,7 +40,7 @@ const AdminDashboard: React.FC = () => {
               <LatestBusiness />
             </div>
           </div>
-        </div>
+        </div> */}
       </div>
     </Container>
   );
