@@ -124,10 +124,11 @@ interface Subscribe {
 }
 
 interface SubscriptionChartProps {
-  data: Subscribe[] | null; // Allow null as a possible value
+  data: Subscribe[] | null;
+  analytics:boolean;
 }
 
-const SubscriptionChart: React.FC<SubscriptionChartProps> = ({ data }) => {
+const SubscriptionChart: React.FC<SubscriptionChartProps> = ({ data, analytics }) => {
   if (!data || data.length === 0) {
     return (
       <div className="bg-white w-full pt-3 pb-2 rounded-lg shadow-lg pl-8 pr-8 mt-8"> {/* Increased height to h-96 */}
@@ -193,10 +194,18 @@ const SubscriptionChart: React.FC<SubscriptionChartProps> = ({ data }) => {
   };
 
   return (
-    <div className="bg-white basis-3/5 pt-3 pb-2 rounded-lg shadow-lg pl-8 pr-8 mt-8"> {/* Increased height to h-96 */}
+    <div className="bg-white w-full pt-3 pb-2 rounded-lg shadow-lg pl-8 pr-8 mt-8"> {/* Increased height to h-96 */}
     <h3 className="mt-2 text-xl font-bold text-gray-900 text-center">Business Subscribers</h3>
 
-    <Bar data={chartData} options={options} />
+    { analytics == true ?
+      (<Bar data={chartData} options={options} />):(
+        <>
+        <Bar data={chartData} options={options} className='blur-sm' />
+        <p className='text-sm text-gray-500 text-center'>Upgrade the package to see the analytics</p>
+        </>
+        
+        
+      )}
     </div>
   
   );
