@@ -55,22 +55,6 @@ const CustomerHome: React.FC = () => {
 
         setResults(response.data);
         setLoading(false);
-        //   if (searchQuery) {
-        //     setLoading(true);
-        //     setError(null); // Reset error before starting the request
-
-        //     try {
-        //       // POST request to search
-        //       const response = await axios.post('http://localhost:8080/api/v1/search/post', searchQuery, {
-        //         params: { page: 0, size: 10 },
-        //       });
-
-        //       setResults(response.data); // Set the search results
-        //       setLoading(false);
-
-        //       if (response.data.length === 0) {
-        //         setError("No results found");
-        //       }
       } catch (error) {
         setError("Failed to fetch search results");
         setLoading(false);

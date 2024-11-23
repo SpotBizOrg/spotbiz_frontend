@@ -12,24 +12,24 @@ const BusinessLocation: React.FC<BusinessLocationProps> = ({ location }) => {
   const [coordinates, setCoordinates] = useState<[number, number] | null>(null);
 
   const fetchCoordinates = async (address: string) => {
-    // const api_key = '1a8fbbeaffdd467db7e42bd66702aad1'; // Add your OpenCage API key here
-    // const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(address)}&key=${api_key}`;
+    const api_key = '1a8fbbeaffdd467db7e42bd66702aad1'; // Add your OpenCage API key here
+    const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(address)}&key=${api_key}`;
     
-    // try {
-    //   const response = await axios.get(url);
-    //   const data = response.data;
+    try {
+      const response = await axios.get(url);
+      const data = response.data;
 
-    //   if (data && data.results && data.results.length > 0) {
-    //     const { lat, lng } = data.results[0].geometry;
-    //     setCoordinates([ lat, lng ]);
-    //     console.log(`Coordinates for ${address}:`, { lat, lng });
+      if (data && data.results && data.results.length > 0) {
+        const { lat, lng } = data.results[0].geometry;
+        setCoordinates([ lat, lng ]);
+        console.log(`Coordinates for ${address}:`, { lat, lng });
         
-    //   } else {
-    //     console.error("No coordinates found for the location.");
-    //   }
-    // } catch (error) {
-    //   console.error(`Error fetching coordinates for address ${address}:`, error);
-    // }
+      } else {
+        console.error("No coordinates found for the location.");
+      }
+    } catch (error) {
+      console.error(`Error fetching coordinates for address ${address}:`, error);
+    }
 
     try {
       // Update the query with the full address
@@ -50,7 +50,7 @@ const BusinessLocation: React.FC<BusinessLocationProps> = ({ location }) => {
 
   useEffect(() => {
     if (location) {
-      // fetchCoordinates(location); // Uncomment this line to fetch coordinates
+      fetchCoordinates(location); // Uncomment this line to fetch coordinates
     }
   }, [location]);
 
