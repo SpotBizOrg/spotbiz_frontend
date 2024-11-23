@@ -4,6 +4,8 @@ import Customernavbar from "../components/Customernavbar";
 import Advertisement from "../components/Advertisement";
 import Footer from "../components/Footer";
 import axios from "axios";
+import { useAuth } from "../utils/AuthProvider";
+import { BACKEND_URL } from "../../config";
 
 interface Recommendation {
   adsId: number;
@@ -14,16 +16,19 @@ interface Recommendation {
 }
 
 const AllRecommendations: React.FC = () => {
+  const { user, checkAuthenticated, login } = useAuth();
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
   const navigate = useNavigate();
 
   const fetchAllRecommendations = async () => {
-    const userId = 39; // Replace with dynamic user ID as needed
-    const email = "shalini20020109@gmail.com";
+    // const userId = 39; // Replace with dynamic user ID as needed
+    // const email = "shalini20020109@gmail.com";
+    const userId = localStorage.getItem("user_id");
+    const email = localStorage.getItem("email");
 
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/v1/recommendation?userId=${userId}&email=${email}`
+        `${BACKEND_URL}/recommendation?userId=${userId}&email=${email}`
       );
       const data = response.data;
 
@@ -47,6 +52,9 @@ const AllRecommendations: React.FC = () => {
 
   useEffect(() => {
     fetchAllRecommendations();
+    if (!checkAuthenticated() || user?.role != "CUSTOMER") {
+      login();
+    }
   }, []);
 
   return (

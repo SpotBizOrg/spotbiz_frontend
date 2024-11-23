@@ -80,7 +80,7 @@ export default function BusinessPackages() {
               </Button>
             </div>
             <div className="mt-16 grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-              {packagesData.map((pkg) => (
+              {/* {packagesData.map((pkg) => (
                 <PackageCard
                   key={pkg.id}
                   title={pkg.title}
@@ -91,7 +91,7 @@ export default function BusinessPackages() {
                   isPopular={pkg.isPopular}
                   onClick={() => {}} // Add a dummy onClick handler
                 />
-              ))}
+              ))} */}
             </div>
           </div>
         </div>
