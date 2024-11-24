@@ -30,35 +30,11 @@ const BusinessAd: React.FC = () => {
 
   useEffect(() => {
     if (checkAuthenticated() && user?.email && token) {
-      fetchAdvertisementData(user.email, token);
+      handleAddAd();
     } else {
       console.log("User is not authenticated or email/token is missing");
     }
   }, [user, token]);
-
-  const fetchAdvertisementData = (email: string, token: string) => {
-    fetch(
-      `http://localhost:8080/api/v1/business_owner/advertisements/${email}`,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    )
-      .then((response) => response.json())
-      .then((data) => {
-        const parsedAdvertisements = data.map((ad: any) => ({
-          id: ad.adsId,
-          img: JSON.parse(ad.data).img,
-          description: JSON.parse(ad.data).description,
-          startDate: JSON.parse(ad.data).startDate,
-          endDate: JSON.parse(ad.data).endDate,
-          isActive: ad.status,
-        }));
-        setAdvertisements(parsedAdvertisements);
-      })
-      .catch((error) => console.error(error));
-  };
 
   const openPopup = (image: string, details: Advertisement, id: Number) => {
     setSelectedImage(image);
@@ -116,7 +92,6 @@ const BusinessAd: React.FC = () => {
         {
           method: "GET",
           headers: {
-            "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
         }
@@ -129,7 +104,7 @@ const BusinessAd: React.FC = () => {
         })
         .then((data) => {
           const parsedAdvertisements = data.map((ad: any) => ({
-            id: JSON.parse(ad.data).adsId,
+            id: ad.adsId,
             img: JSON.parse(ad.data).img,
             description: JSON.parse(ad.data).description,
             startDate: JSON.parse(ad.data).startDate,
@@ -161,7 +136,7 @@ const BusinessAd: React.FC = () => {
         </div>
         <div className="flex items-center justify-between w-full mb-5">
           <p className="text-gray-400 text-bodysmall font-semibold">
-            Advertisements posted on last two weeks
+            Advertisements posted on last 30 days
           </p>
           <div
             className="relative flex items-center justify-center w-[40px] h-[40px] mt-0 border-2 border-dashed border-gray-400 rounded-lg bg-white/50 backdrop-blur-md hover:bg-white/80 hover:border-gray-600 transition-all duration-300 ease-in-out cursor-pointer"
