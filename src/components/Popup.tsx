@@ -1,69 +1,108 @@
-import React from 'react';
+import React, { useRef, useState } from 'react';
 import PackageCard from './PackageCard';
-import PackageListPage from '../pages/PackageListPageNew';
+import PackageListPage from '../pages/PackageListPagePopup';
+import axios from 'axios';
+import { BACKEND_URL } from '../../config';
+import { useNavigate } from 'react-router-dom';
+import { HashLoader } from 'react-spinners';
 
 interface PopupProps {
   isOpen: boolean;
   onClose: () => void;
+  boughtPackage: number;
+  businessId: number
+
 }
 
-const packagesData = [
-  {
-    id: 1,
-    title: 'Free',
-    description: 'Get started with basic features for small businesses.',
-    monthlyPrice: 0,
-    features: {
-      'Advertisements & promotions per week': 1,
-      'Display business details to customer': '❌',
-      'Profile analytics': '❌',
-      'Interact with customers': '❌'
-    },
-    buttonText: 'Upgrade Plan',
-  },
-  {
-    id: 2,
-    title: 'Standard',
-    description: 'A suitable plan for growing businesses with essential features.',
-    monthlyPrice: 300,
-    features: {
-      'Advertisements & promotions per week': 3,
-      'Display business details to customer': 'Only basic details',
-      'Profile analytics': '❌',
-      'Interact with customers': '✅'
-    },
-    buttonText: 'Purchased',
-    isPopular: true,
-  },
-  {
-    id: 3,
-    title: 'Moderate',
-    description: 'Comprehensive plan including advanced features and extended support.',
-    monthlyPrice: 500,
-    features: {
-      'Advertisements & promotions per week': 5,
-      'Display business details to customer': 'All excluding business hours',
-      'Profile analytics': 'Only reviews',
-      'Interact with customers': '✅'
-    },
-    buttonText: 'Upgrade Plan',
-  },
-  {
-    id: 4,
-    title: 'Premium',
-    description: 'The ultimate plan for businesses needing full access and premium support.',
-    monthlyPrice: 1000,
-    features: {
-      'Advertisements & promotions per week': 7,
-      'Display business details to customer': 'All',
-      'Profile analytics': 'Visit count and reviews',
-      'Interact with customers': '✅'
-    },
-    buttonText: 'Upgrade Plan',
-  },
-];
 
-const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
+const Popup: React.FC<PopupProps> = ({ isOpen, onClose, boughtPackage, businessId }) => {
+
+  const [selectedSubPackage, setSeletectedSubPackage] = useState<number>(0)
+  const selectedPackageRef = useRef<number>(selectedSubPackage);
+  const [loading, setloading] = useState(false);
+  const navigate = useNavigate();
+
+
+      // nagigation upon selecting a package
+      const handleClick = async (selectedPlanId: number, subscriptionBillingId:number) => {
+
+        if (selectedPlanId === 0) {
+          window.location.reload()
+        } else {
+            navigate("/packages/payment", { state: { selectedPlanId, subscriptionBillingId } });
+            
+        }
+    };
+
+
+      // get the price of the selected package
+      const getPrice = async (packageId: number) => {
+        const url = `${BACKEND_URL}/packages/get/${packageId}`
+
+        try{
+            const response = await axios.get(url);
+            const item = response.data;
+            console.log(item);
+            return item.price;
+        }catch (e){
+            console.error("Error fetching data:", e)
+        }
+    }
+
+      // save the purchase in the database - pending state
+      const savePurchase = async (packageId: number) => {
+
+        const price = await getPrice(packageId);
+        console.log(price);
+        
+
+        const url = `${BACKEND_URL}/subscription-billing/subscription-billing`
+        const data = {
+            subscriptionBillingId: 0,
+            subscriptionId: packageId,
+            businessId: businessId,
+            billingDate: (new Date()).toISOString(),
+            billingStatus: "PENDING",
+            amount: price,
+            isActive: true
+          }
+        console.log(data);
+        
+
+        try{
+            const response = await axios.post(url, data);
+            const item = response.data;
+            console.log(item);
+            return item.subscriptionBillingId;
+        }catch (e){
+            console.error("Error fetching data:", e)
+        }
+    }
+
+    // set the selected subscription package id
+    const setSelectedPackageId = async (packageId: number): Promise<void> => {
+      
+      selectedPackageRef.current = packageId; // Update ref synchronously
+      setSeletectedSubPackage(packageId);       // Set state (asynchronously)
+      console.log("Updated Package ID (ref):", selectedPackageRef.current);
+      console.log(selectedSubPackage);
+      
+      //set loader
+      setloading(true);
+
+      // save the purchase in the database
+      const billingId = await savePurchase(packageId);
+      console.log("Billing ID:", billingId);
+
+      setloading(false)
+
+      // navigate to the next page
+      handleClick(packageId, billingId);
+
+
+    };
+  
+
   if (!isOpen) return null;
 
   return (
@@ -73,7 +112,7 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
           <button onClick={onClose} className="text-xl font-bold">&times;</button>
         </div>
         <div className="mt-2">
-          <PackageListPage />
+          <PackageListPage passId={setSelectedPackageId} boughtPackage={boughtPackage} />
           {/* <p className="text-subsubheading text-center">Subscription Plans</p>
           <div className="mt-8 grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
             {packagesData.map((pkg) => (
@@ -90,6 +129,11 @@ const Popup: React.FC<PopupProps> = ({ isOpen, onClose }) => {
             ))}
           </div> */}
         </div>
+        {loading && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+            <HashLoader color="#36d7b7" size={50} />
+          </div>
+        )}
       </div>
     </div>
   );
