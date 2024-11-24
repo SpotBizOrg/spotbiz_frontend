@@ -50,10 +50,19 @@ const AdminPage: React.FC = () => {
   // Fetch customers from the API
   const fetchCustomers = () => {
     fetch(API_URL)
-      .then((response) => response.json())
-      .then((data) => setCustomers(data))
-      .catch((error) => console.error("Error fetching customers:", error));
+      .then((response) => {
+        console.log("Response object:", response); // Log the raw response object
+        return response.json(); // Parse the JSON from the response
+      })
+      .then((data) => {
+        console.log("Parsed data:", data); // Log the parsed JSON data
+        setCustomers(data); // Update the state with the data
+      })
+      .catch((error) => {
+        console.error("Error fetching customers:", error); // Log any error that occurs
+      });
   };
+  
 
   // Add a new customer to the API
   const handleAddCustomer = () => {

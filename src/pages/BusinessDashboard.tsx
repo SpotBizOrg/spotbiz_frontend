@@ -83,8 +83,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     document.title = 'SpotBiz | Dashboard | Business';
 
-    fetchData();
-    
+    fetchData();    
     
     if (!checkAuthenticated() || user?.role != "BUSINESS_OWNER") {
       login();
@@ -107,7 +106,7 @@ const Dashboard: React.FC = () => {
               {/* <div className='basis-1/4'></div> */}
               {dashboardData?.pkg ? (<PkgCard 
               onUpgradeClick={togglePopup} 
-              packageId={dashboardData?.pkg.packageId || 0} 
+              packageId={dashboardData?.pkg.packageId || 1} 
               feature={dashboardData?.pkg.feature || 'Free'} 
               adsPerWeek={dashboardData?.pkg.adsPerWeek || 1} 
               analytics={dashboardData?.pkg.analytics ||false} 
@@ -119,7 +118,7 @@ const Dashboard: React.FC = () => {
 
                 <PkgCard 
               onUpgradeClick={togglePopup} 
-              packageId={0} 
+              packageId={1} 
               feature={'Free'} 
               adsPerWeek={1} 
               analytics={false} 
@@ -133,20 +132,10 @@ const Dashboard: React.FC = () => {
             </div>
           </div>
         </div>
-      {/* </div> */}
-      {/* <div className="fixed bottom-4 right-10">
-                    <button 
-                    onClick={handleOpenPopup}
-                    className="bg-gray-800 text-bodysmall text-white py-2 px-2 rounded-lg shadow-lg">
-                        Check Cupoun Code
-                    </button>
-                
-            </div> */}
-      {/* <CouponPopup isOpen={isCPopupOpen} onClose={handleClosePopup} /> */}
-      <Popup isOpen={isPopupOpen} onClose={togglePopup} /> {/* Include the Popup component */}
+      <Popup isOpen={isPopupOpen} onClose={togglePopup} boughtPackage={dashboardData?.pkg.packageId || 1} businessId={dashboardData?.businessId || 0} /> {/* Include the Popup component */}
       <div className="px-12 sm:ml-64 mt-20">
         {loading && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
             <HashLoader color="#36d7b7" size={50} />
           </div>
         )}

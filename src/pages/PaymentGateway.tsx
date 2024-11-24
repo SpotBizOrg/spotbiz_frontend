@@ -89,18 +89,34 @@ const PaymentGateway: React.FC = () => {
 
   const fetchPlanDetails = async () => {
     setloading(true);
+    const url = `${BACKEND_URL}/packages/get/${selectedPlanId}`;
     try {
-      console.log(selectedPlanId);
-      setSelectedPlan("Standerd");
-      setPrice(1000);
+      const response = await axios.get(url);
+      setSelectedPlan(response.data.feature);
+      setPrice(response.data.price);
       setPayment((prevPayment) => ({
         ...prevPayment,
-        amount: 1000,
+        amount: response.data.price,
       }));
-      setloading(false);
+      
     } catch (error) {
       console.error(error);
     }
+    finally{
+      setloading(false)
+    }
+    // try {
+    //   console.log(selectedPlanId);
+    //   setSelectedPlan("Standerd");
+    //   setPrice(1000);
+    //   setPayment((prevPayment) => ({
+    //     ...prevPayment,
+    //     amount: 1000,
+    //   }));
+    //   setloading(false);
+    // } catch (error) {
+    //   console.error(error);
+    // }
   };
 
   const validateInputs = () => {
@@ -236,7 +252,7 @@ const PaymentGateway: React.FC = () => {
         console.error(error)
       } finally{
         setloading(false)
-        toast.success("Payment Successful");
+        // toast.success("Payment Successful");
         navigate("/business/dashboard")
       }
       
