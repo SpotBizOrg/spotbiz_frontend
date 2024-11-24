@@ -47,6 +47,10 @@ export default function AdminPackages() {
   const [addPackage, setAddPackage] = useState<Package | null>(null);
   const [showAddForm, setShowAddForm] = useState(false);
   const [notification, setNotification] = useState<string | null>(null);
+  const [adsPerWeekError, setAdsPerWeekError] = useState<string | null>(null);
+  const [price, setPrice] = useState<number | string>(""); // Starting with an empty string or number
+  const [priceError, setPriceError] = useState<string>("");
+
   
 
   const fetchPackages = async () => {
@@ -78,15 +82,19 @@ export default function AdminPackages() {
   
       if (response.ok) {
         setPackagesData((prevData) => prevData.filter((pkg) => pkg.packageId !== packageId));
-        alert("Package deleted successfully.");
+        setNotification("Package deleted successfully.");
+        setTimeout(() => setNotification(null), 3000);
       } else if (response.status === 404) {
-        alert("Package not found.");
+        setNotification("Package not found.");
+        setTimeout(() => setNotification(null), 3000);
       } else {
-        alert("Failed to delete package.");
+        setNotification("Failed to delete package.");
+        setTimeout(() => setNotification(null), 3000);
       }
     } catch (error) {
       console.error("Error deleting package:", error);
-      alert("An error occurred while deleting the package.");
+      setNotification("An error occurred while deleting the package.");
+      setTimeout(() => setNotification(null), 3000);
     }
   };
   
@@ -100,6 +108,11 @@ export default function AdminPackages() {
 
   const handleSubmitPackage = async () => {
     if (!editPackage) return;
+
+    if (editPackage.price < 0) {
+      setPriceError("Price cannot be negative.");
+      return;
+    }
 
     try {
       const response = await fetch('http://localhost:8080/api/v1/packages/add', {
@@ -117,15 +130,23 @@ export default function AdminPackages() {
         await fetchPackages(); // Refresh the list of packages
       } else {
         setNotification("Something went wrong while updating the package.");
+        setTimeout(() => setNotification(null), 3000);
       }
     } catch (error) {
       console.error("Error:", error);
       setNotification("An error occurred while updating the package.");
+      setTimeout(() => setNotification(null), 3000);
     }
   };
 
   const handleAddPackagesubmit = async () => {
     if (!addPackage) return;
+
+    // Validate price
+  if (addPackage.price < 0) {
+    setPriceError("Price cannot be negative.");
+    return;
+  }
 
     try {
       setAddPackage({ ... addPackage, packageId:0})
@@ -147,10 +168,12 @@ export default function AdminPackages() {
         await fetchPackages(); // Refresh the list of packages
       } else {
         setNotification("Something went wrong while adding the package.");
+        setTimeout(() => setNotification(null), 3000);
       }
     } catch (error) {
       console.error("Error:", error);
       setNotification("An error occurred while adding the package.");
+      setTimeout(() => setNotification(null), 3000);
     }
   };
 
@@ -214,25 +237,51 @@ export default function AdminPackages() {
 
               {/* Ads Per Week */}
               <div className="w-full">
-                <Label htmlFor="adsPerWeek">Advertisements per Week</Label>
-                <TextInput
-                  id="adsPerWeek"
-                  type="number"
-                  value={editPackage.adsPerWeek.toString()}
-                  onChange={(e) => setEditPackage({ ...editPackage, adsPerWeek: parseInt(e.target.value) || 0 })}
-                />
-              </div>
+              <Label htmlFor="adsPerWeek">Advertisements per Week</Label>
+              <TextInput
+                id="adsPerWeek"
+                type="text"
+                value={editPackage.adsPerWeek.toString()}
+                onChange={(e) => {
+                  const value = e.target.value;
+                  if (/^\d*$/.test(value)) { // Allow only digits
+                    setEditPackage({ ...editPackage, adsPerWeek: parseInt(value) || 0 });
+                    setAdsPerWeekError(null); // Clear error
+                  } else {
+                    setAdsPerWeekError('Only numbers are allowed.');
+                  }
+                }}
+                className={adsPerWeekError ? "border-red-500" : ""}
+              />
+              {adsPerWeekError && (
+                <p className="mt-1 text-sm text-red-500">{adsPerWeekError}</p>
+              )}
+            </div>
+
 
               {/* Price Input */}
               <div className="w-full">
-                <Label htmlFor="price">Price</Label>
-                <TextInput
-                  id="price"
-                  type="number"
-                  value={editPackage.price.toString()}
-                  onChange={(e) => setEditPackage({ ...editPackage, price: parseFloat(e.target.value) || 0 })}
-                />
-              </div>
+                  <Label htmlFor="price">Price</Label>
+                  <TextInput
+  id="price"
+  type="text"  // Change from "number" to "text" to allow typing and deletion
+  value={editPackage.price.toString()}  // Ensure it remains a string for proper display
+  onChange={(e) => {
+    const value = e.target.value;
+    // Allow only numbers and handle deletion properly
+    if (/^\d*\.?\d*$/.test(value)) {
+      setEditPackage({ ...editPackage, price: value ? parseFloat(value) : 0 });
+      setPriceError(""); // Clear any existing error
+    } else {
+      setPriceError("Please enter a valid non-negative price.");
+    }
+  }}
+  className={priceError ? "border-red-500" : ""}
+/>
+{priceError && <p className="mt-1 text-sm text-red-500">{priceError}</p>}
+
+                </div>
+
 
               {/* Toggle Buttons for Features */}
               {["analytics", "fakeReviews", "recommendation", "messaging"].map((feature) => (
@@ -263,7 +312,7 @@ export default function AdminPackages() {
                 />
               </div>
 
-              {/* Active Toggle Button */}
+              {/* Active Toggle Button 
           <div className="flex items-center space-x-2 mt-4">
             <button
               className={`w-6 h-6 rounded-md border-2 border-blue-500 ${editPackage.isActive ? 'bg-blue-500 text-white' : 'bg-white'}`}
@@ -276,7 +325,7 @@ export default function AdminPackages() {
             <span className="text-sm text-gray-600">
               {editPackage.isActive ? 'Enabled' : 'Disabled'}
             </span>
-          </div>
+          </div>*/}
 
             </div>
           )}
@@ -312,34 +361,49 @@ export default function AdminPackages() {
 
         {/* Ads Per Week Input */}
         <div className="w-full">
-          <Label htmlFor="add-adsPerWeek">Advertisements per Week</Label>
-          <TextInput
-            id="add-adsPerWeek"
-            type="number"
-            value={addPackage.adsPerWeek.toString()}
-            onChange={(e) =>
-              setAddPackage({
-                ...addPackage,
-                adsPerWeek: parseInt(e.target.value) || 0,
-              })
-            }
-          />
-        </div>
+  <Label htmlFor="add-adsPerWeek">Advertisements per Week</Label>
+  <TextInput
+    id="add-adsPerWeek"
+    type="text"
+    value={addPackage.adsPerWeek.toString()}
+    onChange={(e) => {
+      const value = e.target.value;
+      if (/^\d*$/.test(value)) { // Allow only digits
+        setAddPackage({ ...addPackage, adsPerWeek: parseInt(value) || 0 });
+        setAdsPerWeekError(null); // Clear error
+      } else {
+        setAdsPerWeekError('Only numbers are allowed.');
+      }
+    }}
+    className={adsPerWeekError ? "border-red-500" : ""}
+  />
+  {adsPerWeekError && (
+    <p className="mt-1 text-sm text-red-500">{adsPerWeekError}</p>
+  )}
+</div>
 
         {/* Price Input */}
         <div className="w-full">
-          <Label htmlFor="add-price">Price</Label>
-          <TextInput
-            id="add-price"
-            type="number"
-            value={addPackage.price.toString()}
-            onChange={(e) =>
-              setAddPackage({
-                ...addPackage,
-                price: parseFloat(e.target.value) || 0,
-              })
-            }
-          />
+        <Label htmlFor="price">Price</Label>
+        <TextInput
+        id="add-price"
+        type="text"
+        value={addPackage.price.toString()}
+        onChange={(e) => {
+          const value = parseFloat(e.target.value);
+          if (!isNaN(value) && value >= 0) {
+            setAddPackage({
+              ...addPackage,
+              price: value,
+            });
+            setPriceError(""); // Clear any existing error
+          } else {
+            setPriceError("Please enter a valid non-negative price.");
+          }
+        }}
+        className={priceError ? "border-red-500" : ""}
+      />
+      {priceError && <p className="mt-1 text-sm text-red-500">{priceError}</p>}
         </div>
 
         {/* Toggle Buttons for Features */}
@@ -384,7 +448,7 @@ export default function AdminPackages() {
         </div>
 
         {/* Active Toggle Button */}
-        <div className="flex items-center space-x-2 mt-4">
+       {/* <div className="flex items-center space-x-2 mt-4">
           <button
             className={`w-6 h-6 rounded-md border-2 border-blue-500 ${
               addPackage.isActive ? "bg-blue-500 text-white" : "bg-white"
@@ -403,7 +467,7 @@ export default function AdminPackages() {
           <span className="text-sm text-gray-600">
             {addPackage.isActive ? "Enabled" : "Disabled"}
           </span>
-        </div>
+        </div>*/}
       </div>
     )}
   </Modal.Body>

@@ -5,7 +5,7 @@ interface PackageCardProps {
   feature: string;
   price: string;
   listing: string | undefined;
-  adsPerWeek: number;
+  adsPerWeek: number | string;
   fakeReviews?: boolean;
   recommendation?: boolean;
   messaging?: boolean;
