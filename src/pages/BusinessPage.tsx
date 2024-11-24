@@ -16,6 +16,7 @@ import { GridLoader } from 'react-spinners';
 import { useSearchParams, useNavigate } from 'react-router-dom';
 import { messaging } from '../firebase/firebaseConfig';
 import OnlyAddReviewMain from '../components/OnlyAddReviewMain';
+import axios from 'axios';
 
 
 // const businessId: number = 0;
@@ -114,10 +115,27 @@ const BusinessPage: React.FC = () => {
     }
   };
 
+  const markClick = (businessId: number) => {
+
+      const url = `${BACKEND_URL}//business-clicks/click`
+      const body = {
+        businessClickId: 0,
+        businessId: businessId,
+        clicks: 1
+      }
+      // Fire-and-forget PUT request using axios
+      axios.put(url, body)
+      .catch(error => console.error('Request failed', error));
+
+  }
+
   useEffect(() => {
     document.title = "SpotBiz | Business";
     console.log("Component mounted, starting fetchBusinessData...");
     fetchBusinessData(businessId);
+
+    markClick(businessId)
+    
   }, []);
 
   if (loading) {

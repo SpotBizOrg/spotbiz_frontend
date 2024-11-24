@@ -64,21 +64,6 @@ function Businessnavbar(){
         setSelectedAvatar(
           "https://images.freeimages.com/365/images/istock/previews/9734/97343531-businessman-profile-icon-man-avatar-picture-flat-design-vector-icon.jpg"
         );      }
-      // if(responseData.name === "Abans "){
-      //   setSelectedAvatar(AbansImage)
-      // }
-      // else if(responseData.name === "Redline Technologies"){
-      //   setSelectedAvatar(RedlineImage)
-      // }
-      // else if(responseData.name === "iDealz Lanka Pvt Ltd"){
-      //   setSelectedAvatar(iDealzImage)
-      // }
-      // else if(responseData.name === "Softlogic Holdings"){
-      //   setSelectedAvatar(SoftlogicImage)
-      // }
-      // else{
-      //   setSelectedAvatar(DefaultImage)
-      // }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
