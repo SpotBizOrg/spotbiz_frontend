@@ -83,8 +83,7 @@ const Dashboard: React.FC = () => {
   useEffect(() => {
     document.title = 'SpotBiz | Dashboard | Business';
 
-    fetchData();
-    
+    fetchData();    
     
     if (!checkAuthenticated() || user?.role != "BUSINESS_OWNER") {
       login();
@@ -146,7 +145,7 @@ const Dashboard: React.FC = () => {
       <Popup isOpen={isPopupOpen} onClose={togglePopup} /> {/* Include the Popup component */}
       <div className="px-12 sm:ml-64 mt-20">
         {loading && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
             <HashLoader color="#36d7b7" size={50} />
           </div>
         )}
