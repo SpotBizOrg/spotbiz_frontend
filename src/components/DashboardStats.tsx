@@ -4,7 +4,13 @@ import CouponPopup from './CouponPopup';
 import { Card } from 'flowbite-react';
 import BadgeImg from "../assets/badge.png";
 
-const DashboardStats: React.FC = () => {
+interface DashboardStatsProps{
+  subscriberCount: number;
+  clicks: number;
+
+}
+
+const DashboardStats: React.FC<DashboardStatsProps> = ({ subscriberCount, clicks }) => {
   const [isCPopupOpen, setIsCPopupOpen] = useState(false);
 
   const handleOpenPopup = () => {
@@ -21,12 +27,12 @@ const DashboardStats: React.FC = () => {
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-10 flex-1">
         <div className="bg-white p-8 rounded shadow-lg shadow-grey text-center flex-col w-full sm:w-60 md:w-80 lg:w-96 flex  justify-center">
           <h2 className="text-xl font-medium">Subscribers</h2>
-          <div className="text-3xl font-bold">20</div>
+          <div className="text-3xl font-bold">{subscriberCount}</div>
           <div className="text-gray-500">Total Subscribers</div>
         </div>
         <div className="flex flex-col justify-center bg-white p-8 rounded shadow-lg shadow-grey text-center w-full sm:w-60 md:w-80 lg:w-96">
           <h2 className="text-xl font-medium">Views</h2>
-          <div className="text-3xl font-bold">100</div>
+          <div className="text-3xl font-bold">{clicks}</div>
           <div className="text-gray-500">Total Views</div>
         </div>
         <div className="bg-white flex flex-col p-8 rounded shadow-lg shadow-grey w-full sm:w-60 md:w-80 lg:w-96">
