@@ -350,9 +350,10 @@ function CustomerGame() {
                 {activeTab === "leaderboard" ? "Leaderboard is empty." : null}
               </div>
             ) : (
-              <div className="relative overflow-x-auto overflow-y-auto sm:rounded-lg border border-gray-200">
-                <table className="w-full text-sm text-left rtl:text-right text-gray-500">
-                  <thead className="table-header text-xs text-gray-700 uppercase bg-gray-50">
+              <div className="relative overflow-x-auto overflow-y-auto sm:rounded-lg border-2 border-black p-8 bg-gradient-to-r from-cyan-500 to-blue5">
+              {/* <div className="relative overflow-x-auto overflow-y-auto sm:rounded-lg border border-black hover:translate-x-1 hover:shadow-md"> */}
+              <table className="w-full font-mono text-md text-left rtl:text-right text-black outline outline-offset-2 outline-indigo-800">
+                  <thead className="table-header text-xs text-white uppercase bg-black">
                     <tr>
                       <th
                         scope="col"
@@ -378,18 +379,35 @@ function CustomerGame() {
                     </tr>
                   </thead>
                   <tbody>
-                    {leaderboard.map((user, index) => (
+                  {leaderboard.map((user, index) => {
+                    // Determine styles based on index (even or odd)
+                    const isEven = index % 2 === 0;
+                    const baseClass = isEven
+                      ? "bg-slate-100 border-indigo-700"
+                      : "bg-slate-300 border-slate-700";
+                    const hoverClass = isEven
+                      ? "hover:bg-blue9 dark:hover:bg-blue-700"
+                      : "hover:bg-purple-200 dark:hover:bg-green-700";
+                      // const transformClass = "hover:scale-100 hover:shadow-lg";
+                      const transformClass = "hover:translate-x-1 hover:shadow-md";
+
+
+                    return (
                       <tr
                         key={index}
-                        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700"
-                      >
-                        <td className="px-6 py-4">{index + 1}</td>
-                        <td className="px-6 py-4">{user.name}</td>
-                        <td className="px-6 py-4">{user.points}</td>
+                        className={`${baseClass} ${hoverClass} ${transformClass} border-b dark:bg-gray-800 dark:border-gray-700 transition duration-300`}                      >
+                        <td className="px-6 py-6">{index + 1}</td>
+                        <td className="px-6 py-6">{user.name}</td>
+                        <td className="px-6 py-6">{user.points}</td>
                       </tr>
-                    ))}
+                    );
+                  })}
+
+
                   </tbody>
                 </table>
+              {/* </div> */}
+                
               </div>
             )}
           </div>
