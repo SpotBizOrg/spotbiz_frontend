@@ -201,7 +201,7 @@ export default function AdminPackages() {
           </div>
         </div>
 
-        <div className="mt-9 grid gap-4 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-4">
+        <div className="mt-9 grid gap-4 sm:grid-cols-1 md:grid-cols-3 lg:grid-cols-3">
           {packagesData && packagesData.map((pkg) => (
             <PackageCard
               key={pkg.packageId}
