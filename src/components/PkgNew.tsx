@@ -49,7 +49,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
         <li className="flex items-center text-left">
           {analytics == false ? <XMarkIcon className="w-4 h-4 text-red-500" aria-hidden="true" />:<CheckIcon className="w-4 h-4 text-blue1" aria-hidden="true" />}
           {analytics == false && <span className="ml-2 font-semibold">Profile analytics</span>}
-          {analytics == true && <span className="ml-2 font-semibold">Profile analytics(limited)</span>}
+          {analytics == true && <span className="ml-2 font-semibold">Profile analytics</span>}
           {/* {analytics == 't && <span className="ml-2 font-semibold">Profile analytics</span>} */}
         </li>
         <li className="flex items-center text-left">
