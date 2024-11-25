@@ -5,6 +5,7 @@ import Container from "../components/Container";
 import { Button, Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 import { BACKEND_URL } from "../../config";
+import { useAuth } from "../utils/AuthProvider";
 
 interface User {
   userId: Number;
@@ -23,7 +24,8 @@ function BusinessVerify() {
   const [items, setItems] = useState<Business[]>([]);
   const [showPopup, setShowPopup] = useState(false);
   const [currentBusinessId, setCurrentBusinessId] = useState<Number | null>(null);
-
+  const { user, checkAuthenticated, login } = useAuth();
+  
   const fetchBusinessData = () => {
     fetch(`${BACKEND_URL}/admin/check_registration`)
       .then((response) => response.json())
@@ -37,6 +39,10 @@ function BusinessVerify() {
   useEffect(() => {
     document.title = "SpotBiz | Business Verify | Admin";
     fetchBusinessData();
+
+    if (!checkAuthenticated() || user?.role != "ADMIN") {
+      login();
+    }
   }, []);
 
   const handleVerify = () => {
@@ -73,7 +79,8 @@ function BusinessVerify() {
           </div>
 
           <div className="relative  overflow-x-auto overflow-y-auto sm:rounded-lg border border-gray-200">
-            <table className="w-full text-sm text-left rtl:text-right text-gray-500">
+            {items ?(
+              <table className="w-full text-sm text-left rtl:text-right text-gray-500">
               <thead className="table-header text-xs text-gray-700 uppercase bg-gray-50">
                 <tr>
                   <th scope="col" className="px-6 py-3" style={{ minWidth: '100px' }}>Business ID</th>
@@ -122,7 +129,11 @@ function BusinessVerify() {
                   </tr>
                 ))}
               </tbody>
-            </table>
+            </table>):(
+              <div className="flex items-center justify-center h-32">
+                No business verification requests
+              </div>
+            )}
           </div>
         </div>
       </Container>

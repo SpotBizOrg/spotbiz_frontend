@@ -9,6 +9,7 @@ import RedlineImage from "../assets/profPicRedline.jpg";
 import iDealzImage from "../assets/profPiciDealz.png";
 import SoftlogicImage from "../assets/profPicSoftlogic.png";
 import DefaultImage from "../assets/profPicDefault.jpg";
+import { BACKEND_URL } from '../../config';
 
 function classNames(...classes: string[]): string {
     return classes.filter(Boolean).join(' ');
@@ -40,7 +41,7 @@ function Businessnavbar(){
   const fetchData = async (email: string, token: string) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/business_owner/business/${email}`,
+        `${BACKEND_URL}/business_owner/business/${email}`,
         {
           method: "GET",
           headers: {
@@ -56,21 +57,13 @@ function Businessnavbar(){
 
       const responseData = await response.json();
       setData(responseData);
-      if(responseData.name === "Abans "){
-        setSelectedAvatar(AbansImage)
-      }
-      else if(responseData.name === "Redline Technologies"){
-        setSelectedAvatar(RedlineImage)
-      }
-      else if(responseData.name === "iDealz Lanka Pvt Ltd"){
-        setSelectedAvatar(iDealzImage)
-      }
-      else if(responseData.name === "Softlogic Holdings"){
-        setSelectedAvatar(SoftlogicImage)
-      }
-      else{
-        setSelectedAvatar(DefaultImage)
-      }
+
+      if (responseData.logo != null) {
+        setSelectedAvatar(responseData.logo)
+      } else {
+        setSelectedAvatar(
+          "https://images.freeimages.com/365/images/istock/previews/9734/97343531-businessman-profile-icon-man-avatar-picture-flat-design-vector-icon.jpg"
+        );      }
     } catch (error) {
       console.error("Error fetching data:", error);
     }

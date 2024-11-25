@@ -9,6 +9,7 @@ interface ReviewProps {
   reviewText: string;
   reviewerAvatar: string;
   rating: number;
+  isReported: string;
 }
 
 const Review: React.FC<ReviewProps> = ({
@@ -19,6 +20,7 @@ const Review: React.FC<ReviewProps> = ({
   reviewText,
   reviewerAvatar,
   rating,
+  isReported,
 }) => {
   const [isFullReviewShown, setIsFullReviewShown] = useState(false);
 
@@ -74,12 +76,21 @@ const Review: React.FC<ReviewProps> = ({
       {userType === "business" && (
         <aside>
           <div className="flex items-center mt-3">
-            <a
-              href="#"
-              className="px-2 py-1.5 text-xs font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-            >
-              Report abuse
-            </a>
+            {isReported === "REPORTED" ? (
+              <button
+                className="px-2 py-1.5 text-xs font-medium text-gray-900 focus:outline-none bg-red-200 rounded-lg border border-red-300 hover:bg-red-300 hover:text-gray-800 focus:z-10 focus:ring-4 focus:ring-red-200 dark:focus:ring-red-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+                disabled // Optional: Disable the button if reported
+              >
+                Reported
+              </button>
+            ) : (
+              <a
+                href="#"
+                className="px-2 py-1.5 text-xs font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
+              >
+                Report abuse
+              </a>
+            )}
           </div>
         </aside>
       )}

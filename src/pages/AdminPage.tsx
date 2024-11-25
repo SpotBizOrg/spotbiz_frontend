@@ -6,9 +6,11 @@ import Container from "../components/Container";
 // import { HiOutlineExclamationCircle } from "react-icons/hi";
 // import { IconButton } from "@mui/material";
 // import { Edit as EditIcon, Delete as DeleteIcon } from "@mui/icons-material";
+import { useAuth } from "../utils/AuthProvider";
+import { BACKEND_URL } from "../../config";
 
 // Dummy API endpoint (replace this with your real API endpoint)
-const API_URL = "http://localhost:8080/api/v1/admin/customers";
+const API_URL = `${BACKEND_URL}/admin/customers`;
 
 interface Customer {
   userId: number;
@@ -22,8 +24,12 @@ const AdminPage: React.FC = () => {
   useEffect(() => {
     document.title = "SpotBiz | Customer List | Admin";
     fetchCustomers();
-  }, []);
+    if (!checkAuthenticated() || user?.role != "ADMIN") {
+      login();
+    }
+  },[]);
 
+  const { user, checkAuthenticated, login } = useAuth();
   const [customers, setCustomers] = useState<Customer[]>([]);
   // const [showForm, setShowForm] = useState(false);
   // const [showPopup, setShowPopup] = useState(false);
@@ -44,10 +50,19 @@ const AdminPage: React.FC = () => {
   // Fetch customers from the API
   const fetchCustomers = () => {
     fetch(API_URL)
-      .then((response) => response.json())
-      .then((data) => setCustomers(data))
-      .catch((error) => console.error("Error fetching customers:", error));
+      .then((response) => {
+        console.log("Response object:", response); // Log the raw response object
+        return response.json(); // Parse the JSON from the response
+      })
+      .then((data) => {
+        console.log("Parsed data:", data); // Log the parsed JSON data
+        setCustomers(data); // Update the state with the data
+      })
+      .catch((error) => {
+        console.error("Error fetching customers:", error); // Log any error that occurs
+      });
   };
+  
 
   // Add a new customer to the API
   const handleAddCustomer = () => {
@@ -192,7 +207,7 @@ const AdminPage: React.FC = () => {
                   <div className="flex items-center">Score</div>
                 </th>
                 {/* <th scope="col" className="px-6 py-3 " style={{ minWidth: '150px' }}>
-                  <div className="flex items-center">Action</div>
+                <div className="flex items-center">Action</div>
                 </th> */}
               </tr>
             </thead>

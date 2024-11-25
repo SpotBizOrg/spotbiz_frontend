@@ -21,7 +21,10 @@ interface BusinessDetailsTabProps {
 
 const BusinessDetailsTab: React.FC<BusinessDetailsTabProps> = () => {
   const [openBusinessModal, setOpenBusinessModal] = useState(false);
-  const [error, setError] = useState<string | null>(null);
+  const [errors, setErrors] = useState<{
+    name?: string;
+    contactNo?: string;
+  }>({});
 
   const [businessDetails, setBusinessDetails] = useState({
     name: "",
@@ -85,7 +88,7 @@ const BusinessDetailsTab: React.FC<BusinessDetailsTabProps> = () => {
         });
       } catch (err) {
         if (err instanceof Error) {
-          setError(err.message);
+          toast.error(err.message);
         } else {
           toast.error("An unexpected error occurred");
         }
@@ -104,12 +107,41 @@ const BusinessDetailsTab: React.FC<BusinessDetailsTabProps> = () => {
       [name]: value,
     }));
   };
-  const handleSubmit = async () => {
+  const validateForm = () => {
+    const newErrors: {
+      name?: string;
+      contactNo?: string;
+      address?: string;
+      description?: string;
+    } = {};
+
+    // Business name validation
     if (!formBusinessDetails.name.trim()) {
-      setError("Business name cannot be empty");
-      return;
+      newErrors.name = "Business name cannot be empty";
     }
-    setError("");
+
+    // Phone number validation
+    const phoneNumberRegex = /^\+[1-9]\d{1,3}\d{7,12}$/;
+    if (!phoneNumberRegex.test(formBusinessDetails.contactNo)) {
+      newErrors.contactNo =
+        "Phone number must be in a valid international format like +94XXXXXXXXX";
+    }
+
+    // Address validation
+    if (!formBusinessDetails.address.trim()) {
+      newErrors.address = "Address cannot be empty";
+    }
+
+    // Description validation
+    if (!formBusinessDetails.description.trim()) {
+      newErrors.description = "Description cannot be empty";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // If no errors, return true
+  };
+  const handleSubmit = async () => {
+    if (!validateForm()) return;
     try {
       const response = await fetch(
         `http://localhost:8080/api/v1/business/update/${user?.email}`,
@@ -130,6 +162,7 @@ const BusinessDetailsTab: React.FC<BusinessDetailsTabProps> = () => {
       const updatedBusinessDetails = await response.json();
       setBusinessDetails(updatedBusinessDetails);
       setOpenBusinessModal(false);
+      toast.success("Business details updated successfully!");
     } catch (error) {
       toast.error("Error updating business details:" + error);
     }
@@ -165,14 +198,6 @@ const BusinessDetailsTab: React.FC<BusinessDetailsTabProps> = () => {
               <p className="text-black text-sm font-medium">Status</p>
               <p className="text-gray-800">{businessDetails.status}</p>
             </div>
-            <div className="mb-2 flex-grow">
-              <p className="text-black text-sm font-medium">
-                Subscription Package
-              </p>
-              <p className="text-gray-800">
-                {businessDetails.subscriptionPackage}
-              </p>
-            </div>
           </Card>
         </div>
 
@@ -188,17 +213,6 @@ const BusinessDetailsTab: React.FC<BusinessDetailsTabProps> = () => {
         <div className="w-full md:w-1/3 px-2 mb-4 flex">
           <Card className="flex-1 bg-white p-6 shadow-md border border-gray-200 flex flex-col">
             <div className="mb-2 flex-grow">
-              <p className="text-black text-sm font-medium">Location URL</p>
-              <a
-                href={businessDetails.locationUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500 hover:underline"
-              >
-                {businessDetails.locationUrl}
-              </a>
-            </div>
-            <div className="mb-2 flex-grow">
               <p className="text-black text-sm font-medium">Contact Number</p>
               <p className="text-gray-800">
                 {businessDetails.contactNo || "No contact available"}
@@ -209,6 +223,12 @@ const BusinessDetailsTab: React.FC<BusinessDetailsTabProps> = () => {
               <p className="text-gray-800">
                 {businessDetails.address || "No address available"}
               </p>
+            </div>
+            <div className="mb-2 flex-grow">
+              <p className="text-black text-sm font-medium">
+                Subscription Package
+              </p>
+              <p className="text-gray-800">{"FREE"}</p>
             </div>
           </Card>
         </div>
@@ -244,63 +264,53 @@ const BusinessDetailsTab: React.FC<BusinessDetailsTabProps> = () => {
                   className="block w-full"
                   onChange={handleInputChange}
                 />
-                {error && <p className="text-red-500 text-sm mt-1">{error}</p>}
+                {errors.name && (
+                  <p className="text-red-500 text-sm mt-1">{errors.name}</p>
+                )}
               </div>
-              <div className="flex flex-col">
-                <label
-                  htmlFor="locationUrl"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Location URL
-                </label>
-                <TextInput
-                  id="locationUrl"
-                  name="locationUrl"
-                  value={businessDetails.locationUrl}
-                  placeholder="No location URL available"
-                  required
-                  className="block w-full"
-                  onChange={handleInputChange}
-                />
+              <div className="grid grid-cols-1 md:grid-cols-1 md:gap-4">
+                <div className="flex flex-col">
+                  <label
+                    htmlFor="contactNo"
+                    className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+                  >
+                    Contact Number
+                  </label>
+                  <TextInput
+                    id="contactNo"
+                    name="contactNo"
+                    value={formBusinessDetails.contactNo}
+                    placeholder="No contact available"
+                    required
+                    className="block w-full"
+                    onChange={handleInputChange}
+                  />
+                  {errors.contactNo && (
+                    <p className="text-red-500 text-sm mt-1">
+                      {errors.contactNo}
+                    </p>
+                  )}
+                </div>
               </div>
+            </div>
+            <div className="flex flex-col">
+              <label
+                htmlFor="address"
+                className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+              >
+                Address
+              </label>
+              <TextInput
+                id="address"
+                name="address"
+                value={formBusinessDetails.address}
+                placeholder="No address available"
+                required
+                className="block w-full"
+                onChange={handleInputChange}
+              />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 md:gap-4">
-              <div className="flex flex-col">
-                <label
-                  htmlFor="contactNo"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Contact Number
-                </label>
-                <TextInput
-                  id="contactNo"
-                  name="contactNo"
-                  value={formBusinessDetails.contactNo}
-                  placeholder="No contact available"
-                  required
-                  className="block w-full"
-                  onChange={handleInputChange}
-                />
-              </div>
-              <div className="flex flex-col">
-                <label
-                  htmlFor="address"
-                  className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-                >
-                  Address
-                </label>
-                <TextInput
-                  id="address"
-                  name="address"
-                  value={formBusinessDetails.address}
-                  placeholder="No address available"
-                  required
-                  className="block w-full"
-                  onChange={handleInputChange}
-                />
-              </div>
-            </div>
             <div className="flex flex-col">
               <label
                 htmlFor="description"

@@ -1,7 +1,6 @@
 // src/components/PackageCard.tsx
 import React from 'react';
 import { CheckIcon, XMarkIcon } from '@heroicons/react/20/solid';
-import Button from './Button';
 
 interface PackageCardProps {
   feature: string;
@@ -49,7 +48,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
         <li className="flex items-center text-left">
           {analytics == false ? <XMarkIcon className="w-4 h-4 text-red-500" aria-hidden="true" />:<CheckIcon className="w-4 h-4 text-blue1" aria-hidden="true" />}
           {analytics == false && <span className="ml-2 font-semibold">Profile analytics</span>}
-          {analytics == true && <span className="ml-2 font-semibold">Profile analytics(limited)</span>}
+          {analytics == true && <span className="ml-2 font-semibold">Profile analytics</span>}
           {/* {analytics == 't && <span className="ml-2 font-semibold">Profile analytics</span>} */}
         </li>
         <li className="flex items-center text-left">
@@ -69,11 +68,6 @@ const PackageCard: React.FC<PackageCardProps> = ({
           <span className="ml-2 font-semibold">{listing} Listing </span>
         </li>
       </ul>
-      <div className='flex flex-row items-center mt-4 justify-center'>
-        {/* {!isActive &&<button className='items-center justify-center bg-bluedark flex p-2 text-sm text-white rounded-md w-5/6' >Buy</button>} */}
-        {!isActive &&<button onClick={selectOption} className='items-center justify-center bg-bluedark flex p-2 text-sm text-white rounded-md w-5/6' >Buy</button>}
-        {isActive &&<button className='items-center justify-center bg-gray-800 flex p-2 text-sm text-white rounded-md w-5/6' disabled >Actiavated</button>}
-      </div>
     </div>
   );
 };

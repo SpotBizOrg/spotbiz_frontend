@@ -39,7 +39,7 @@ const BusinessTitlenReview: React.FC<BusinessTitlenReviewProps> = ({ businessNam
   // Get the current day and time in Sri Lanka time zone
   const today = new Date();
   const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
-  const currentDay = daysOfWeek[today.getDay()];
+  const currentDay = daysOfWeek[today.getDay()];  
 
   // Convert the Sri Lankan time to a comparable Date object
   const currentTime = new Date().toLocaleString("en-US", { 
@@ -61,7 +61,7 @@ const BusinessTitlenReview: React.FC<BusinessTitlenReviewProps> = ({ businessNam
 
     if (todaySchedule && todaySchedule.isOpen) {
       const startTime = getTimeAsDate(todaySchedule.startTime);
-      const endTime = getTimeAsDate(todaySchedule.endTime);
+      const endTime = getTimeAsDate(todaySchedule.endTime);      
       
 
       // Check if current time is within startTime and endTime
