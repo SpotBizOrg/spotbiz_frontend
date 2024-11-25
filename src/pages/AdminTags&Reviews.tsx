@@ -5,6 +5,7 @@ import BusinessTypesTable from "../components/BusinessTypesTable";
 import Container from "../components/Container";
 import { FaPlus, FaTimes } from "react-icons/fa";
 import { Modal } from "flowbite-react";
+import { BACKEND_URL } from "../../config";
 
 let globalTags: string[] = [];
 
@@ -24,6 +25,8 @@ const AdminTagsReviews: React.FC = () => {
   const [businessCategoryWithTagstoAdd, setBusinessCategoryWithTagstoAdd] = useState<BusinessTypeWithTags>(
     {categoryName:"", tags: []} 
   );
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   useEffect(() => {
     document.title = "SpotBiz | Business Types & Tags | Admin";
@@ -67,25 +70,98 @@ const AdminTagsReviews: React.FC = () => {
     setNewTags(updatedTags);
   };
 
-  const handleAddBusinessType = () => {
+  const handleAddBusinessType = async () => {
     console.log(businessCategoryWithTagstoAdd)
-    if (newBusinessType.trim() !== "" && newTags.length > 0) {
+    if (newTags.length > 0) {
       // Add new business type with its tags to the array
       console.log("global tags here " + globalTags);
       
-      setBusinessTypesWithTags([
-        ...businessTypesWithTags,
-        { categoryName: newBusinessType, tags: globalTags }
-      ]);
-      
-      console.log(businessTypesWithTags);
+      try{
+        console.log(businessCategoryWithTagstoAdd);
+        
+        const response = await fetch(`${BACKEND_URL}/admin/business_type/add`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(businessCategoryWithTagstoAdd),
+        });
+
+        if (!response.ok) {
+          console.error("error occured")
+        } else{
+          console.log("i am here");
+          
+          setBusinessTypesWithTags([
+            ...businessTypesWithTags,
+            { categoryName: newBusinessType, tags: globalTags }
+          ]);
+          
+          console.log(businessTypesWithTags);
+        }
+  
+        
+        
+        
+      } catch(e){
+        console.error(e)
+      }
     }
+    console.log("end if");
+    
     // Reset modal inputs and close modal
     setShowAddBusinessModal(false);
     setNewBusinessType("");
     setNewTags([]);
     
   };
+
+
+  // const handleAddBusinessType = async () => {
+  //   if (newBusinessType.trim() !== "" && newTags.length > 0) {
+  //     setLoading(true);
+  //     try {
+  //       // Prepare the data to be sent
+  //       const businessCategoryWithTagstoAdd = {
+  //         categoryName: newBusinessType,
+  //         tags: newTags,
+  //       };
+  
+  //       const response = await fetch("/add", {
+  //         method: "POST",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //         },
+  //         body: JSON.stringify(businessCategoryWithTagstoAdd),
+  //       });
+  
+  //       setLoading(false);
+  
+  //       if (response.ok) {
+  //         const result = await response.json();
+  //         console.log("Category added successfully:", result);
+  
+  //         // Update local state with the new business type and tags
+  //         setBusinessTypesWithTags((prev) => [
+  //           ...prev,
+  //           { categoryName: newBusinessType, tags: newTags },
+  //         ]);
+  
+  //         // Reset modal inputs and close modal
+  //         setShowAddBusinessModal(false);
+  //         setNewBusinessType("");
+  //         setNewTags([]);
+  //       } else {
+  //         const errorData = await response.json();
+  //         setError(`Failed to add category: ${errorData.error}`);
+  //       }
+  //     } catch (err) {
+  //       setLoading(false);
+  //       setError("Error adding category. Please try again.");
+  //     }
+  //   } 
+  // };
+  
 
   return (
     <Container>
