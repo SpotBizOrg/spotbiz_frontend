@@ -73,7 +73,38 @@ const BusinessAd: React.FC = () => {
   };
 
   const openFormPopup = () => {
-    setFormPopupOpen(true);
+    const validationUrl = `http://localhost:8080/api/v1/advertisement/add_validation/${user?.email}`;
+    setLoading(true);
+    fetch(validationUrl, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to validate advertisement addition");
+        }
+        return response.json();
+      })
+      .then((data) => {
+        if (data) {
+          setFormPopupOpen(true);
+        } else {
+          toast.error(
+            "You have reached the advertisement limit for this week. Please upgrade your package to add more ads."
+          );
+        }
+      })
+      .catch((error) => {
+        console.error("Validation error:", error);
+        toast.error(
+          "An error occurred while validating. Please try again later."
+        );
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const closeFormPopup = () => {
