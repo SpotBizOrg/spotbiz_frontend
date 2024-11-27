@@ -9,14 +9,14 @@ import SortByDropdown from "../components/SortBy";
 import { useAuth } from "../utils/AuthProvider";
 
 interface Review {
-  reviewId: Key | null | undefined;
+  reviewId: number;
   title: string;
   description: string;
   date: string | number | Date;
   username: string;
   businessId: number;
   rating: number;
-  Status: string;
+  status: string;
 }
 
 function Reviews() {
@@ -38,7 +38,6 @@ function Reviews() {
   const timeOptions = ["Newest First", "Oldest First"];
   const handleSelectOption = (option: string) => {
     setSelectedOption(option);
-    // Handle whatever logic you need here based on the selected option
   };
 
   const fetchReviews = async () => {
@@ -104,8 +103,9 @@ function Reviews() {
               reviewTitle={review.title}
               rating={review.rating}
               reviewerAvatar={""}
-              isReported={review.Status}
+              isReported={review.status}
               reviewText={review.description}
+              reviewId={review.reviewId}
             />
           ))}
         </div>
