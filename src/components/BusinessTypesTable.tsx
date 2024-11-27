@@ -151,7 +151,7 @@ const BusinessTypesTable: React.FC<BusinessTypesTableProps> = ({
           <table className="w-full text-sm text-left text-gray-500">
             <thead className="table-header text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
-                <th scope="col" className="px-10 py-6"><center>Business_Type</center></th>
+                <th scope="col" className="px-10 py-6"><center>Category Name</center></th>
                 <th scope="col" className="px-8 py-6"><center>Tags</center></th>
               </tr>
             </thead>
