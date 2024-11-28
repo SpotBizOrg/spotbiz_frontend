@@ -1,7 +1,6 @@
 // src/components/PackageCard.tsx
 import React from 'react';
 import { CheckIcon, XMarkIcon } from '@heroicons/react/20/solid';
-import Button from './Button';
 
 interface PackageCardProps {
   feature: string;
@@ -69,11 +68,6 @@ const PackageCard: React.FC<PackageCardProps> = ({
           <span className="ml-2 font-semibold">{listing} Listing </span>
         </li>
       </ul>
-      <div className='flex flex-row items-center mt-4 justify-center'>
-        {/* {!isActive &&<button className='items-center justify-center bg-bluedark flex p-2 text-sm text-white rounded-md w-5/6' >Buy</button>} */}
-        {!isActive &&<button onClick={selectOption} className='items-center justify-center bg-bluedark flex p-2 text-sm text-white rounded-md w-5/6' >Buy</button>}
-        {isActive &&<button className='items-center justify-center bg-gray-800 flex p-2 text-sm text-white rounded-md w-5/6' disabled >Actiavated</button>}
-      </div>
     </div>
   );
 };

@@ -43,8 +43,8 @@ const BusinessAndReviewTables: React.FC = () => {
 
       const formattedData = response.data.map((item: any) => ({
         reportId: item.reportId,
-        BusinessId: item.business.businessId,
-        BusinessName: item.business.name,
+        BusinessId: item.businessId,
+        BusinessName: item.businessName,
         reason: item.reason,
       }));
       
@@ -66,8 +66,8 @@ const BusinessAndReviewTables: React.FC = () => {
 
       const formattedData = response.data.map((item: any) => ({
         appealId: item.appealId,
-        id: item.reportedBusiness.reportId,
-        name: item.business.name,
+        id: item.reportId,
+        name: item.businessName,
         reason: item.reason,
       }));
 
@@ -89,8 +89,8 @@ const BusinessAndReviewTables: React.FC = () => {
 
       const formattedData = response.data.map((item: any) => ({
         id: item.reviewId,
-        reviewerId: item.user.userId,
-        name: item.business.name,
+        reviewerId: item.userId,
+        name: item.businessName,
         reason: item.description,
 
       }));

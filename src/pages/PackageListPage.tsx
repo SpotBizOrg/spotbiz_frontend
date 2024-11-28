@@ -1,86 +1,77 @@
 // src/pages/PackageListPage.tsx
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import Container from '../components/Container1';
-import PackageCard from '../components/Pkg';
+import PackageCard from '../components/PkgNewNoBtn';
 import { useNavigate } from 'react-router-dom';
 import NoUserNav from '../components/NoUserNav';
 import Footer from '../components/Footer';
 import Container2 from '../components/Container2';
+import { BACKEND_URL } from '../../config';
+import axios from 'axios';
 
-const packagesData = [
-  {
-    id: 1,
-    title: 'Free',
-    description: 'Get started with basic features for small businesses.',
-    monthlyPrice: 0,
-    features: {
-      'Advertisements & promotions per week': 1,
-      'Display business details to customer': '❌',
-      'Profile analytics': '❌',
-      'Interact with customers': '❌'
-    },
-    buttonText: 'Upgrade Plan',
-  },
-  {
-    id: 2,
-    title: 'Standard',
-    description: 'A suitable plan for growing businesses with essential features.',
-    monthlyPrice: 300,
-    features: {
-      'Advertisements & promotions per week': 3,
-      'Display business details to customer': 'Only basic details',
-      'Profile analytics': '❌',
-      'Interact with customers': '✅'
-    },
-    buttonText: 'Purchased',
-    isPopular: true,
-  },
-  {
-    id: 3,
-    title: 'Moderate',
-    description: 'Comprehensive plan including advanced features and extended support.',
-    monthlyPrice: 500,
-    features: {
-      'Advertisements & promotions per week': 5,
-      'Display business details to customer': 'All excluding business hours',
-      'Profile analytics': 'Only reviews',
-      'Interact with customers': '✅'
-    },
-    buttonText: 'Upgrade Plan',
-  },
-  {
-    id: 4,
-    title: 'Premium',
-    description: 'The ultimate plan for businesses needing full access and premium support.',
-    monthlyPrice: 1000,
-    features: {
-      'Advertisements & promotions per week': 7,
-      'Display business details to customer': 'All',
-      'Profile analytics': 'Visit count and reviews',
-      'Interact with customers': '✅'
-    },
-    buttonText: 'Upgrade Plan',
-  },
-];
+interface PackageProps {
+  packageId: number,
+    feature: string,
+    adsPerWeek: number,
+    analytics: boolean,
+    fakeReviews: boolean,
+    recommondation: boolean,
+    messaging: boolean,
+    listing: string,
+    price: number,
+    isActive: boolean,
+}
+
 
 const PackageListPage: React.FC = () => {
   const navigate = useNavigate();
+  const [subscriptionPackages, setSubscriptionPackages] = useState<PackageProps[]>([])
+
+  const fetchData = async () =>{
+    const url = `${BACKEND_URL}/packages/get_all`;
+  
+  
+    try{
+      const response = await axios.get(url)
+      // console.log(response.data);
+      setSubscriptionPackages(response.data)
+      console.log(subscriptionPackages);
+      
+      
+    } catch (error){
+      console.log(error)
+    }
+  
+  
+  }
+  
+  useEffect(() => {
+    fetchData()
+    console.log(subscriptionPackages);
+    
+  }, [])
 
   return (
     <div>
       <NoUserNav />
       <Container2>
-        <div className="flex flex-col items-center justify-center min-h-screens pt-8">
+        <div className="flex flex-col items-center justify-center h-full pt-8">
           <h1 className="text-3xl font-bold text-center mb-4 mt-8">Subscription Plans</h1>
-          <div className="mt-3 grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 ml-8 mr-8">
-            {packagesData.map((pkg) => (
+          <div className="mt-3 grid gap-8 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ml-8 mr-8">
+          {subscriptionPackages.map((pkg) => (
               <PackageCard
-                key={pkg.id}
-                title={pkg.title}
-                description={pkg.description}
-                price={"Rs. " + pkg.monthlyPrice.toString()}
-                features={pkg.features}
-                isPopular={pkg.isPopular}
+                key={pkg.packageId}
+                feature={pkg.feature}
+                price={"Rs. " + pkg.price}
+                adPerWeek={pkg.adsPerWeek}
+                analytics={pkg.analytics}
+                fakeReviews={pkg.fakeReviews}
+                listing={pkg.listing}
+                messaging={pkg.messaging}
+                recommondation={pkg.recommondation}
+                isActive={pkg.isActive}
+                // selectOption={() => handleClick(pkg.packageId)}
+
               />
             ))}
           </div>

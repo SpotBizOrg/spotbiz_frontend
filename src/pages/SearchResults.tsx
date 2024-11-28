@@ -153,6 +153,7 @@ const SearchResults: React.FC = () => {
   const [searchParams] = useSearchParams();
   // const { query } = location.state;
 
+  const userId = (localStorage.getItem('user_id')) ? parseInt(localStorage.getItem('user_id') as string) : 0;
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [sortedResults, setSortedResults] = useState<any[]>([]);
@@ -169,15 +170,11 @@ const SearchResults: React.FC = () => {
   console.log(query);
 
   
-  
 
   const fetchData = async (page: number) => {
-    const url = `${BACKEND_URL}/search/${query}?page=${page-1}&size=${size}`;
+    const url = `${BACKEND_URL}/search/${query}?page=${page-1}&size=${size}&userId=${userId}`; // user id was added to the request
     console.log(selectedCategoryId);
-    // console.log(useQuery);
-    
-    
-    // const url = `${BACKEND_URL}/search/${query}?page=${page-1}&size=${size}`;
+   
     setLoading(true);
     try {
       const response = await fetch(url);
@@ -212,6 +209,7 @@ const SearchResults: React.FC = () => {
   
   
   const handleSelectOption = (option: string) => {
+
     // Handle whatever logic you need here based on the selected option
     starRating = parseInt(option.charAt(0));
     console.log(starRating);
@@ -459,7 +457,7 @@ const SearchResults: React.FC = () => {
         <Customernavbar />
         <div className="flex flex-col justify-start px-20 mt-20 pt-5 w-full mb-20">
           <div className="w-full">
-            <h1 className="text-3xl font-bold mb-1 pt-4">Search for "{ selectedCategory != null ? selectedCategory : (query ? query : 'computers')}"</h1>
+            <h1 className="text-3xl font-bold mb-1 pt-4">Search for "{ selectedCategory != null ? selectedCategory : (query ? query : '')}"</h1>
             <p className="text-gray-700 mb-6 pt-1">{results.length} Search results</p>
             <div className='flex flex-row justify-center'>
               <CategoryPills loadCategory={(categoryId: number) => {

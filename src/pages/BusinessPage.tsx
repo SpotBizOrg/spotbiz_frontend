@@ -13,10 +13,13 @@ import FloatingBtnsbusiness from '../components/FlotingBtnsbusiness';
 import { BACKEND_URL } from '../../config';
 import image from '../assets/promo.lk-44253997837344f08aed5b131f0bd271.jpg';
 import { GridLoader } from 'react-spinners';
-import { useSearchParams } from 'react-router-dom';
+import { useSearchParams, useNavigate } from 'react-router-dom';
+import { messaging } from '../firebase/firebaseConfig';
+import OnlyAddReviewMain from '../components/OnlyAddReviewMain';
+import axios from 'axios';
 
 
-// const businessId: number = 28;
+// const businessId: number = 0;
 
 interface WeeklySchedule {
   startTime: string;
@@ -54,6 +57,20 @@ interface BusinessPageProps {
     businessId: number;
     title: string;
   };
+  pkg:{
+    packageId: number;
+    feture: string;
+    adsPerWeek: number;
+    analytics: boolean;
+    fakeReviews: boolean;
+    recommendation: boolean;
+    messaging: boolean;
+    price: number;
+    listing: string;
+    isActive: boolean;
+
+  };
+  subscribed: boolean;
 }
 
 const BusinessPage: React.FC = () => {
@@ -63,23 +80,34 @@ const BusinessPage: React.FC = () => {
   const [searchParams] = useSearchParams();
   const [businessData, setBusinessData] = React.useState<BusinessPageProps | null>(null);
   const [loading, setLoading] = useState(true); // loading state
-
-  const businessId = parseInt(searchParams.get('businessId') || '28', 10);
+  const businessId = parseInt(searchParams.get('businessId') || '0', 10);
   
   const fetchBusinessData = async (businessId: number) => {
-    const url = `${BACKEND_URL}/businessPage/businessData?businessId=${businessId}`;
+    const url = `${BACKEND_URL}/businessPage/businessData?businessId=${businessId}&clientId=${StoredClientId}`;
 
     try {
       console.log('fetching business data');
       const response = await fetch(url);
       const data = await response.json();
 
-      if (!response.ok) {
-        throw new Error(data.message);
+      // if (!response.ok) {
+      //   throw new Error(data.message);
+      // }
+
+      if (response.ok) {
+        console.log("success fetch");
+        setBusinessData(data);
+        console.log(businessData);
+        
+      } else if (response.status === 400) {
+        console.error("Invalide business Id");
+        // navigate('/error'); // uncomment this line to redirect to error page
+      } else{
+        throw new Error(data.message)
       }
 
-      console.log("success fetch");
-      setBusinessData(data);
+      // console.log("success fetch");
+      // setBusinessData(data);
     } catch (error) {
       console.error(error);
     } finally {
@@ -87,10 +115,27 @@ const BusinessPage: React.FC = () => {
     }
   };
 
+  const markClick = (businessId: number) => {
+
+      const url = `${BACKEND_URL}//business-clicks/click`
+      const body = {
+        businessClickId: 0,
+        businessId: businessId,
+        clicks: 1
+      }
+      // Fire-and-forget PUT request using axios
+      axios.put(url, body)
+      .catch(error => console.error('Request failed', error));
+
+  }
+
   useEffect(() => {
     document.title = "SpotBiz | Business";
     console.log("Component mounted, starting fetchBusinessData...");
     fetchBusinessData(businessId);
+
+    markClick(businessId)
+    
   }, []);
 
   if (loading) {
@@ -139,14 +184,7 @@ const BusinessPage: React.FC = () => {
                     storedEmail={StoredEmail || "example@mail.com"}
                   />
                 ):(
-                  <div className="max-w-sm pl-4 pt-4 pr-4 pb-2 bg-white rounded-lg shadow-md border border-gray-300 text-bodysmall">
-                    <div className="p-2 border border-gray-400 rounded text-center">
-                      <p className="font-bold text-bluedark text-bodymedium">Reviews</p>
-                    </div>
-                    <div className="mt-4 mb-2">
-                      <p className="text-center text-gray-500">No reviews yet</p>
-                    </div>
-                  </div>
+                  <OnlyAddReviewMain businessId={businessId} />
                 )}
               </div>
               <div className='w-3/6 ml-20 mr-20 p-8 max-h-[130vh] overflow-y-auto scrollbar-hide'>
@@ -177,7 +215,13 @@ const BusinessPage: React.FC = () => {
             </div>
           </div>
         </div>
-        <FloatingBtnsbusiness businessMobile={businessData?.phone || ''} clientId={StoredClientId || 0} businessId={businessData?.businessId || 0} />
+        <FloatingBtnsbusiness 
+          businessMobile={businessData?.phone || ''} 
+          clientId={StoredClientId || 0} 
+          businessId={businessData?.businessId || 0} 
+          messaging={businessData?.pkg.messaging ?? false} 
+          isSubscribed={businessData?.subscribed || false}
+        />
       </Container2>
       <Footer />
     </>

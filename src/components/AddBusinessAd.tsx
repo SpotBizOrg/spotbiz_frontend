@@ -40,16 +40,13 @@ const AddAdvertisementModal: React.FC<AddAdvertisementModalProps> = ({
     img?: string;
     tags?: string;
   }>({});
-  const [businessId, setBusinessId] = useState<number | null>(null);
-  const [category, setCategory] = useState<number | null>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   const { token, user } = useAuth();
 
   useEffect(() => {
     fetchBusinessId();
-    if (show) {
-      fetchTags();
-    } else {
+    if (!show) {
       handleResetForm();
     }
   }, [show, user?.email]);
@@ -72,49 +69,15 @@ const AddAdvertisementModal: React.FC<AddAdvertisementModalProps> = ({
       }
 
       const data = await response.json();
-      console.log(data);
-      setCategory(data.categoryId);
-      setBusinessId(data.businessId);
+      setTagOptions(
+        data.tags.map((tag: string) => ({ value: tag, label: tag }))
+      );
       setNewAd((prevState) => ({
         ...prevState,
         businessId: data.businessId,
       }));
     } catch (err: any) {
       setError(err.message || "Failed to fetch id");
-    }
-  };
-
-  const fetchTags = async () => {
-    if (!category) {
-      onClose();
-      handleResetForm();
-      return;
-    }
-    try {
-      const response = await fetch(
-        `http://localhost:8080/api/v1/business/tags/${category}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error("Failed to fetch tags");
-      }
-
-      const data = await response.json();
-      setBusinessId(data.businessId);
-      const options = data.keywords.map((tag: string) => ({
-        value: tag,
-        label: tag,
-      }));
-      setTagOptions(options);
-    } catch (err: any) {
-      setError(err.message || "Failed to fetch tags");
     }
   };
 
@@ -136,7 +99,7 @@ const AddAdvertisementModal: React.FC<AddAdvertisementModalProps> = ({
       hasError = true;
     }
 
-    if (!newAd.img) {
+    if (!imageFile) {
       tempErrors.img = "Advertisement image is required";
       hasError = true;
     }
@@ -149,12 +112,35 @@ const AddAdvertisementModal: React.FC<AddAdvertisementModalProps> = ({
     setNewAd({
       description: "",
       img: "",
-      businessId: businessId ?? 0,
+      businessId: 0,
       tags: [],
     });
+    setImageFile(null);
     setErrors({});
     setError(null);
   };
+
+  const uploadImage = async (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await fetch("http://localhost:8080/api/v1/upload_image", {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        `HTTP error! status: ${response.status}, message: ${
+          errorData.message || "Unknown error"
+        }`
+      );
+    }
+
+    return response.text();
+  };
+
   const handleAddAd = async () => {
     setLoading(true);
     setError(null);
@@ -164,11 +150,11 @@ const AddAdvertisementModal: React.FC<AddAdvertisementModalProps> = ({
       return;
     }
 
-    const transformedTags = newAd.tags
-      ? newAd.tags.map((tag) => tag.value)
-      : [];
-
     try {
+      const imageUrl = await uploadImage(imageFile!);
+      const transformedTags = newAd.tags?.map((tag) => tag.value) || [];
+      const adData = { ...newAd, img: imageUrl, tags: transformedTags };
+
       const response = await fetch(
         "http://localhost:8080/api/v1/advertisement/add",
         {
@@ -177,22 +163,16 @@ const AddAdvertisementModal: React.FC<AddAdvertisementModalProps> = ({
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({ ...newAd, tags: transformedTags }),
+          body: JSON.stringify(adData),
         }
       );
 
       if (!response.ok) {
-        if (response.status === 401) {
-          throw new Error("Unauthorized: Your session might have expired.");
-        } else if (response.status === 404) {
-          throw new Error("Not found: The requested resource was not found.");
-        }
-        throw new Error("An unexpected error occurred.");
-      } else {
-        toast.success("Advertisement added successfully!");
+        throw new Error("Failed to add advertisement");
       }
 
       const data = await response.json();
+      toast.success("Advertisement added successfully!");
       onAdd(data);
       onClose();
       handleResetForm();
@@ -204,18 +184,7 @@ const AddAdvertisementModal: React.FC<AddAdvertisementModalProps> = ({
   };
 
   return (
-    <Modal
-      dismissible
-      show={show}
-      onClose={onClose}
-      size="lg"
-      theme={{
-        content: {
-          base: "bg-white w-3/4 rounded-lg",
-          inner: "rounded-lg shadow-lg",
-        },
-      }}
-    >
+    <Modal dismissible show={show} onClose={onClose} size="lg">
       <Modal.Header>Add New Advertisement</Modal.Header>
       <Modal.Body>
         <form className="space-y-6">
@@ -263,13 +232,7 @@ const AddAdvertisementModal: React.FC<AddAdvertisementModalProps> = ({
               type="file"
               onChange={(e) => {
                 const file = e.target.files?.[0];
-                if (file) {
-                  const reader = new FileReader();
-                  reader.onloadend = () => {
-                    setNewAd({ ...newAd, img: reader.result as string });
-                  };
-                  reader.readAsDataURL(file);
-                }
+                setImageFile(file || null);
               }}
               className="mt-1"
             />
@@ -282,9 +245,9 @@ const AddAdvertisementModal: React.FC<AddAdvertisementModalProps> = ({
       </Modal.Body>
       <Modal.Footer>
         <Button
-          className="bg-bluedark"
           onClick={handleAddAd}
           disabled={loading}
+          className="bg-bluedark"
         >
           {loading ? "Adding..." : "Add Advertisement"}
         </Button>
