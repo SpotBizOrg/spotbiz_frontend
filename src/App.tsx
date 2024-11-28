@@ -45,7 +45,7 @@ import OnboardingForm from "./pages/OnboardingForm";
 import PackageListPageNew from "./pages/PackageListPageNew";
 import PaymentGateway from "./pages/PaymentGateway";
 import OopsPage from "./pages/OopsPage";
-import AdminCuponReimburse from "./pages/AdminCuponreimburse";
+import AdminCuponReimburse from "./pages/AdminCuponReimburse";
 
 function App() {
   const saveNotificationToDatabase = async (notification: {
