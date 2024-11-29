@@ -80,8 +80,8 @@ const AllRecommendations: React.FC = () => {
                   key={index}
                   img={imageUrl}
                   details={adData.details || undefined}
-                  description={adData.description || undefined}
-                />
+                  description={adData.description || undefined} 
+                  businessId={rec.businessId}                />
               );
             })}
           </div>
