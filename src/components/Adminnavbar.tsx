@@ -1,10 +1,17 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
 import Logo from "../assets/logo.png";
+import { useAuth } from "../utils/AuthProvider";
 function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(" ");
 }
 
 function Adminnavbar() {
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+  };
+
   return (
     <nav className="fixed top-0 z-40 w-full bg-white border-b border-gray-200">
       <div className="px-3 py-3 lg:px-5 lg:pl-3">
@@ -97,7 +104,11 @@ function Adminnavbar() {
                 <MenuItem>
                   {({ active }) => (
                     <a
-                      href="#"
+                      href="/login"
+                      onClick={(e) => {
+                        e.preventDefault(); 
+                        handleLogout();
+                      }}
                       className={classNames(
                         active ? "bg-gray-100" : "",
                         "block px-4 py-2 text-sm text-gray-900"
