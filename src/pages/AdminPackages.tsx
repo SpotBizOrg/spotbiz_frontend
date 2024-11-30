@@ -23,7 +23,7 @@ interface Package {
 }
 
 const emptyPackage: Package = {
-  packageId: Date.now(),
+  packageId:0,
   feature: '',
   adsPerWeek: 0,
   analytics: false,
