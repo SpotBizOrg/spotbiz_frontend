@@ -6,64 +6,76 @@ import { CheckCircle as CheckCircleIcon, Cancel as CancelIcon } from "@mui/icons
 import { IconButton } from "@mui/material";
 import { useEffect, useState } from "react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { BACKEND_URL } from "../../config";
+import axios from "axios";
+import { toast } from "react-toastify";
+
+interface ReimbursementsProps {
+    requestedDate: Date;
+    amount: number;
+    status: string;
+    id: number;
+    businessName: string;
+}
 
 const AdminCuponReimburse: React.FC = () =>{
 
     const [currentItemId, setCurrentItemId] = useState(0)
     const [acceptPopup, setAcceptPopup] = useState(false)
     const [declinePopup, setDeclinePopup] = useState(false)
+    const [reimbursements, setReimbursements] = useState<ReimbursementsProps[]>([])
 
-    const data = [
-        {
-            ticketId:1,
-            requestedDate: '2024-11-20',
-            businessName: 'Nano Tech',
-            amount: 250,
-            status: 'PENDING',
-        },
-        {
-            ticketId:1,
-            requestedDate: '2024-11-20',
-            businessName: 'Nano Tech',
-            amount: 250,
-            status: 'PENDING',
-        },
-        {
-            ticketId:1,
-            requestedDate: '2024-11-20',
-            businessName: 'Nano Tech',
-            amount: 250,
-            status: 'PENDING',
-        },
-        {
-            ticketId:1,
-            requestedDate: '2024-11-20',
-            businessName: 'Nano Tech',
-            amount: 250,
-            status: 'PENDING',
-        },
-        {
-            ticketId:1,
-            requestedDate: '2024-11-20',
-            businessName: 'Nano Tech',
-            amount: 250,
-            status: 'PENDING',
-        },
 
-    ]
-
-    const handleAccept =() => {
-        alert("accept button was cliked")
-        setAcceptPopup(false)
-    }
+    // const handleAccept =() => {
+    //     alert("accept button was cliked")
+    //     setAcceptPopup(false)
+    // }
 
     const handleDecline = () => {
         alert("decline button was clicked")
         setDeclinePopup(false)
     }
 
+    const fetchData = async () => {
+        const url = `${BACKEND_URL}/reimbursements`
+
+        try{
+            const response = await axios.get(url)
+            console.log("Response received:", response.data)
+
+              // Transform the response data to match the ReimbursementsProps interface
+            const transformedData: ReimbursementsProps[] = response.data.map((item: any) => ({
+                requestedDate: item.dateTime, // Use a default date if dateTime is null
+                amount: item.amount,
+                status: item.status,
+                id: item.id,
+                businessName: item.business.name,
+            }));
+
+            setReimbursements(transformedData);
+            
+        
+        } catch (error) {
+            console.error("Error fetching data:", error)
+        }
+    }
+
+    const payTo = () => () => {
+        const url = `${BACKEND_URL}/reimbursements/${currentItemId}/PAYED`
+
+        try{
+            const response = axios.patch(url)
+            toast.success("Mark as PAID")
+
+        }catch (error) {
+            console.error("Error occured", error)
+        }
+    }
+
     useEffect(() => {
         document.title = "SpotBiz | Admin | Coupons"
+
+        fetchData()
     }, [])
 
     return(
@@ -101,23 +113,32 @@ const AdminCuponReimburse: React.FC = () =>{
                             </tr>
                         </thead>
                         <tbody>
-                            {data.map((item, index) => (
+                            {reimbursements.map((item, index) => (
                             <tr key={index} className="bg-white border-b hover:bg-gray-50">
                                 <th
                                 scope="row"
                                 className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
                                 >
-                                {item.ticketId.toString()}
+                                {item.id.toString()}
                                 </th>
-                                <td className="px-6 py-4">{item.businessName}</td>
-                                <td className="px-6 py-4">{item.requestedDate}</td>
-                                <td className="px-6 py-4">{item.amount}</td>
-                                <td className="px-6 py-4">{item.status}</td>
-                                <td className="px-0 py-4 flex gap-0 justify-start">
-                                <IconButton
+                                <td className="px-6 py-3">{item.businessName}</td>
+                                <td className="px-6 py-3">{item.requestedDate == null ? new Date().toLocaleDateString() : new Date(item.requestedDate).toLocaleDateString()}</td>
+                                <td className="px-6 py-3">{item.amount}</td>
+                                <td className="px-6 py-3">{item.status}</td>
+                                <td className="px-6 py-3 flex gap-0 justify-start">
+                                    <Button 
+                                    color="dark" 
+                                    size="xs" 
+                                    onClick={() => {
+                                        setCurrentItemId(item.id);
+                                        setAcceptPopup(true);
+                                    }}>
+                                        Pay
+                                    </Button>
+                                {/* <IconButton
                                     color="default"
                                     onClick={() => {
-                                        setCurrentItemId(item.ticketId);
+                                        setCurrentItemId(item.id);
                                         setAcceptPopup(true);
                                     }}
                                     >
@@ -126,12 +147,12 @@ const AdminCuponReimburse: React.FC = () =>{
                                     <IconButton
                                     color="error"
                                     onClick={() => {
-                                        setCurrentItemId(item.ticketId);
+                                        setCurrentItemId(item.id);
                                         setDeclinePopup(true);
                                     }}
                                     >
                                     <CancelIcon />
-                                    </IconButton>
+                                    </IconButton> */}
                                 </td>
                             </tr>
                             ))}
@@ -159,10 +180,10 @@ const AdminCuponReimburse: React.FC = () =>{
                 <div className="text-center">
                     <HiOutlineExclamationCircle className="mx-auto h-14 w-14 text-gray-400 dark:text-gray-200" />
                     <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                    Are you sure you want to accept this cupon?
+                    Are you sure?
                     </h3>
                     <div className="flex justify-center gap-4">
-                    <Button className="bg-red-600 hover:bg-red-700" onClick={handleAccept}>
+                    <Button className="bg-red-600 hover:bg-red-700" onClick={payTo()}>
                         {"Yes, I'm sure"}
                     </Button>
                     <Button className="bg-gray-500 hover:bg-gray-600" onClick={() => setAcceptPopup(false)}>
