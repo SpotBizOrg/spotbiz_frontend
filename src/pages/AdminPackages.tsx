@@ -6,6 +6,7 @@ import Container from '../components/Container';
 import { FaPlus } from 'react-icons/fa';
 import { Modal, TextInput, Label, Button } from "flowbite-react";
 import { useAuth } from "../utils/AuthProvider";
+import { toast } from "react-toastify";
 
 // Package interface and empty package template
 interface Package {
@@ -86,19 +87,15 @@ export default function AdminPackages() {
 
       if (response.ok) {
         setPackagesData((prevData) => prevData.filter((pkg) => pkg.packageId !== packageId));
-        setNotification("Package deleted successfully.");
-        setTimeout(() => setNotification(null), 3000);
+        toast.success("Package deleted successfully!"); // Use toast for success
       } else if (response.status === 404) {
-        setNotification("Package not found.");
-        setTimeout(() => setNotification(null), 3000);
+        toast.error("Package not found!"); // Use toast for error
       } else {
-        setNotification("Failed to delete package.");
-        setTimeout(() => setNotification(null), 3000);
+        toast.error("Failed to delete package.");
       }
     } catch (error) {
       console.error("Error deleting package:", error);
-      setNotification("An error occurred while deleting the package.");
-      setTimeout(() => setNotification(null), 3000);
+      toast.error("An error occurred while deleting the package.");
     }
   };
 
@@ -128,18 +125,15 @@ export default function AdminPackages() {
       });
 
       if (response.ok) {
-        setNotification("Successfully updated the package!");
-        setTimeout(() => setNotification(null), 3000);
+        toast.success("Successfully updated the package!"); // Toast for success
         handleModalClose(); // Close the modal after success
         await fetchPackages(); // Refresh the list of packages
       } else {
-        setNotification("Something went wrong while updating the package.");
-        setTimeout(() => setNotification(null), 3000);
+        toast.error("Something went wrong while updating the package.");
       }
     } catch (error) {
       console.error("Error:", error);
-      setNotification("An error occurred while updating the package.");
-      setTimeout(() => setNotification(null), 3000);
+      toast.error("An error occurred while updating the package.");
     }
   };
 
@@ -166,18 +160,15 @@ export default function AdminPackages() {
       });
 
       if (response.ok) {
-        setNotification("Successfully added the new package!");
-        setTimeout(() => setNotification(null), 3000);
+        toast.success("Successfully added the new package!"); // Success toast
         handleModalClose(); // Close the modal after success
         await fetchPackages(); // Refresh the list of packages
       } else {
-        setNotification("Something went wrong while adding the package.");
-        setTimeout(() => setNotification(null), 3000);
+        toast.error("Something went wrong while adding the package.");
       }
     } catch (error) {
       console.error("Error:", error);
-      setNotification("An error occurred while adding the package.");
-      setTimeout(() => setNotification(null), 3000);
+      toast.error("An error occurred while adding the package.");
     }
   };
 

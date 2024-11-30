@@ -36,7 +36,7 @@
     "react-router-dom": "^6.24.1",
     "react-select": "^5.8.2",
     "react-spinners": "^0.14.1",
-    "react-toastify": "^10.0.5"
+    "react-toastify": "^10.0.6"
   },
   "devDependencies": {
     "@types/firebase": "^2.4.32",
