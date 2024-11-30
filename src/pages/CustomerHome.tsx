@@ -15,6 +15,7 @@ import Footer from "../components/Footer";
 import axios from "axios";
 import { useAuth } from "../utils/AuthProvider";
 import { BACKEND_URL } from "../../config";
+import Categories from "../components/Categories";
 
 interface SearchResult {
   name: string;
@@ -171,6 +172,14 @@ const CustomerHome: React.FC = () => {
           )} */}
         </div>
       </header>
+
+      <Categories />
+      <div className="text-center my-8">
+        <p className="mt-6 text-gray-500 italic">
+          Discover the latest offers and win vouchers in Sri Lankan shops from
+          the comfort of your home.
+        </p>
+      </div>
 
       {/* Conditional Recommendations Section */}
       {recommendations.length >= 4 && (
