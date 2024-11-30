@@ -5,7 +5,7 @@ import Container from "../components/Container";
 import BadgeImg from "../assets/badge.png";
 import "./custom-datepicker.css";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Button, Card, Modal, Label, TextInput } from "flowbite-react";
 
 import "react-datepicker/dist/react-datepicker.css";

@@ -1,8 +1,41 @@
-import React from "react";
+import { useEffect, useState } from "react";
 import AppMockup from "../assets/AppMockup.png";
 import CountUp from "react-countup";
+import { BACKEND_URL } from "../../config";
+import axios from "axios";
+
+interface Details{
+  customerCount: 42;
+  businessCount: 100;
+  categoryCount: 5;
+}
 
 const AboutUs = () => {
+
+  const [details, setDetails] = useState<Details | null>(null);
+
+  const fetchData = async () => {
+    const url = `${BACKEND_URL}/landingPageData`;
+
+    try {
+      const response = await axios.get(url);
+      console.log(response.data);
+      setDetails(response.data);
+    } catch (error) {
+      console.error("Error fetching landing page data:", error);
+    }
+  }
+
+  useEffect(() => {
+
+    fetchData();
+    // setDetails({
+    //   customerCount: 42,
+    //   businessCount: 100,
+    //   categoryCount: 5,
+    // });
+  }, []);
+
   return (
     <div className="flex flex-col md:flex-row items-center bg-blue11 p-8 rounded-lg shadow-lg mx-4 md:mx-8 lg:mx-16 text-black">
       <div className="md:w-1/2 flex items-end -mb-8 -ml-16">
@@ -28,21 +61,21 @@ const AboutUs = () => {
           <div className="text-right mb-4 md:mb-0 md:mr-8">
             <h3 className="text-sm uppercase">Categories</h3>
             <p className="text-2xl font-bold">
-              <CountUp end={5} duration={2} />
+              <CountUp end={details?.categoryCount || 5} duration={2} />
             </p>
             <p className="text-sm">Explore a wide range of categories.</p>
           </div>
           <div className="text-right mb-4 md:mb-0 md:mr-8">
             <h3 className="text-sm uppercase">Businesses</h3>
             <p className="text-2xl font-bold">
-              <CountUp end={500} duration={2} separator="," />
+              <CountUp end={details?.businessCount || 156} duration={2} separator="," />
             </p>
             <p className="text-sm">Verified businesses listed.</p>
           </div>
           <div className="text-right mb-4 md:mb-0 md:mr-8">
             <h3 className="text-sm uppercase">Customers</h3>
             <p className="text-2xl font-bold">
-              <CountUp end={1200} duration={2} separator="," />
+              <CountUp end={details?.customerCount || 200} duration={2} separator="," />
             </p>
             <p className="text-sm">are in the platform.</p>
           </div>
