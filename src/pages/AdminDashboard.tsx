@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Adminnavbar from "../components/Adminnavbar";
 import Adminsidebar from "../components/Adminsidebar";
 import PerformanceChart from "../components/PerformanceChart";
@@ -12,6 +12,9 @@ import { HashLoader } from "react-spinners";
 import SubscriptionChart from "../components/DashboardGraph";
 import BillingChart from "../components/BillingDetailsChart";
 import PieChart from "../components/BusinessCategoryChart";
+import { Button } from "flowbite-react";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
 
 interface SubscriptionBilling {
   subscriptionBillingId: number;
@@ -38,6 +41,7 @@ const AdminDashboard: React.FC = () => {
   const { user, checkAuthenticated, login } = useAuth();
   const [loading, setLoading] = useState(true)
   const [dashboardData, setDashboardData] = useState<DashboardProps | null>(null)
+  const pageRef = useRef<HTMLDivElement>(null);
 
   const fetchData = async() =>{
     const url = `${BACKEND_URL}/admin-dashboard`
@@ -67,17 +71,47 @@ const AdminDashboard: React.FC = () => {
     }
   }, []);
 
+// Function to generate PDF
+const generatePDF = () => {
+  const input = pageRef.current;
+  if (input) {
+    html2canvas(input, { useCORS: true }).then((canvas) => {
+      const imgData = canvas.toDataURL("image/png");
+
+      const doc = new jsPDF("landscape", "mm", "a4");  // "landscape" orientation, A4 size
+      const currentDate = new Date().toLocaleDateString();
+
+      // Adding the header and date
+      doc.setFontSize(18);
+      doc.text("Admin Dashboard Report", 14, 20);
+      doc.setFontSize(12);
+      doc.text(`Generated on: ${currentDate}`, 14, 30);
+
+      // Adding the captured content of the page with smaller image size
+      const imageWidth = 300; // Smaller width for the image (in mm)
+      const imageHeight = (canvas.height * imageWidth) / canvas.width; // Scale the height proportionally
+      doc.addImage(imgData, "PNG", 10, 40, imageWidth, imageHeight);  // Adjusted to fit landscape and smaller size
+
+
+      // Save the PDF
+      doc.save("admin_dashboard_report.pdf");
+    });
+  }
+};
+
   return (
     <Container>
       <Adminnavbar />
       <Adminsidebar selectedTile="Dashboard" />
-      <div className="px-12 sm:ml-64 mt-20">
+      <div className="px-12 sm:ml-64 mt-20" ref={pageRef}>
         <AdminDashboardStats customerCount={dashboardData?.customerCount || 45} businessCount={dashboardData?.businessCount || 102} totalRevenue={dashboardData?.totalRevenue || 14500} />
         <div className="flex flex-row gap-4 w-full">
           <BillingChart billingList={dashboardData?.billingList || null}/>
           {dashboardData?.businessCategoryCount &&
             <PieChart businessCategoryCount={dashboardData?.businessCategoryCount}/>}
         </div>
+        
+
         {/* <div className="flex-grow  mt-10">
           <h1 className="text-subsubheading text-bluedark mb-10">
             Admin Dashboard
@@ -92,6 +126,10 @@ const AdminDashboard: React.FC = () => {
           </div>
         </div> */}
       </div>
+      <div className="fixed bottom-6 right-2">
+            <Button color="dark" size="sm" onClick={generatePDF}>Generate Report</Button>
+
+        </div>
       <div className="px-12 sm:ml-64 mt-20">
         {loading && (
           <div className="fixed inset-0 z-50 flex items-center justify-center bg-white">
@@ -104,3 +142,5 @@ const AdminDashboard: React.FC = () => {
 };
 
 export default AdminDashboard;
+
+
