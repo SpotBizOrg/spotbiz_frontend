@@ -157,7 +157,7 @@ const SearchResults: React.FC = () => {
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [sortedResults, setSortedResults] = useState<any[]>([]);
-  const [locationFilter, setLocationFilter] = useState(false);
+  const [locationFilter, setLocationFilter] = useState(true);
   // const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [currentPageS, setCurrentPageS] = useState(1);
   const [currentPageC, setCurrentPageC] = useState(1);

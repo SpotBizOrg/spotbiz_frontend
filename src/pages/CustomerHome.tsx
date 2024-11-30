@@ -14,6 +14,7 @@ import Advertisement from "../components/Advertisement";
 import Footer from "../components/Footer";
 import axios from "axios";
 import { useAuth } from "../utils/AuthProvider";
+import { BACKEND_URL } from "../../config";
 
 interface SearchResult {
   name: string;
@@ -74,12 +75,14 @@ const CustomerHome: React.FC = () => {
   };
 
   const fetchRecommendations = async () => {
-    const userId = 39;
-    const email = "shalini20020109@gmail.com";
+    const userId = localStorage.getItem("user_id");
+    const email = localStorage.getItem('email');
+    // const userId = 39;
+    // const email = "shalini20020109@gmail.com";
 
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/v1/recommendation?userId=${userId}&email=${email}`
+        `${BACKEND_URL}/recommendation?userId=${userId}&email=${email}`
       );
       const data = response.data;
 
@@ -108,6 +111,9 @@ const CustomerHome: React.FC = () => {
   useEffect(() => {
     document.title = "SpotBiz | Home";
     fetchRecommendations();
+
+    console.log();
+    
 
     if (!checkAuthenticated() || user?.role != "CUSTOMER") {
       login();
@@ -185,19 +191,22 @@ const CustomerHome: React.FC = () => {
                     key={index}
                     img={imageUrl}
                     details={adData.details || undefined}
-                    description={adData.description || undefined}
-                  />
+                    description={adData.description || undefined} 
+                    businessId={rec.businessId}                  />
                 );
               })}
             </div>
             {/* "See More" Link */}
             <div className="mt-8 text-center">
-              <Link
-                to="/allrecommendations"
-                className="text-slate-600 hover:underline text-lg font-semibold"
-              >
-                See More
-              </Link>
+            <Link
+              to="/allrecommendations"
+              className="text-slate-600 hover:underline text-lg font-semibold"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              See More
+            </Link>
+
             </div>
           </section>
           <Footer />
