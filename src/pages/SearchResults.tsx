@@ -273,6 +273,7 @@ const SearchResults: React.FC = () => {
   }
 
   const geocodeAddress = async (address: string): Promise<any | null> => {
+    // const api_key = import.meta.env.VITE_OPENCAGE_API_KEY;
     const api_key = '1a8fbbeaffdd467db7e42bd66702aad1'; // Add your OpenCage API key here
     const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(address)}&key=${api_key}`;
   
