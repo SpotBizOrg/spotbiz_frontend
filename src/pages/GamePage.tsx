@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-import AdComponent from '../components/AdComponent';
-import { format } from 'date-fns';
-import { useAuth } from '../utils/AuthProvider';
-import { toast } from 'react-toastify';
-import { BACKEND_URL } from '../../config';
+import React, { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import AdComponent from "../components/AdComponent";
+import { format } from "date-fns";
+import { useAuth } from "../utils/AuthProvider";
+import { toast } from "react-toastify";
+import { BACKEND_URL } from "../../config";
 import { Modal, Button } from "flowbite-react";
-import { HiOutlineExclamationCircle } from 'react-icons/hi';
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 interface LocationState {
   gameId: string;
@@ -25,75 +25,116 @@ const GamePage: React.FC = () => {
 
   useEffect(() => {
     document.title = title;
-    if(!checkAuthenticated()){
+    if (!checkAuthenticated()) {
       login();
     }
   }, []);
 
   useEffect(() => {
     const startTimestamp = new Date(startTime);
-    console.log(gameUrl)
-    document.body.style.overflow = 'hidden';
+    console.log(gameUrl);
+    document.body.style.overflow = "hidden";
 
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       const endTimestamp = new Date();
-      const duration = (endTimestamp.getTime() - startTimestamp.getTime()) / 1000; 
-      sendGameStatsToBackend(startTimestamp, duration); 
+      const duration =
+        (endTimestamp.getTime() - startTimestamp.getTime()) / 1000;
+      sendGameStatsToBackend(startTimestamp, duration);
       event.preventDefault();
     };
 
-    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener("beforeunload", handleBeforeUnload);
 
     return () => {
-      document.body.style.overflow = 'auto';      
+      document.body.style.overflow = "auto";
       const endTimestamp = new Date();
-      const duration = (endTimestamp.getTime() - startTimestamp.getTime()) / 1000; 
-      sendGameStatsToBackend(startTimestamp, duration); 
-      window.removeEventListener('beforeunload', handleBeforeUnload);
+      const duration =
+        (endTimestamp.getTime() - startTimestamp.getTime()) / 1000;
+      sendGameStatsToBackend(startTimestamp, duration);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [startTime]);
 
   const sendGameStatsToBackend = async (startDate: Date, duration: number) => {
- 
-    if(duration <= 10){
+    sendAlreadyPlayedGame();
+    if (duration <= 10) {
       return;
     }
 
-    const points = Math.floor(Math.pow(duration / 3000, 1.5));  
+    const points = Math.floor(Math.pow(duration / 30, 1.5));
 
-    if(points <= 0){
+    if (points <= 0) {
+      console.log("No points earned");
       return;
     }
-    
+
     try {
-      const response = await fetch(`${BACKEND_URL}/game_progress/save_progress`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          userId,
-          gameId,
-          dateTime: format(startDate, "yyyy-MM-dd'T'HH:mm:ss.SSSX"),
-          duration,
-          points,
-        }),
-      });
-  
+      const response = await fetch(
+        `${BACKEND_URL}/game_progress/save_progress`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            userId,
+            gameId,
+            dateTime: format(startDate, "yyyy-MM-dd'T'HH:mm:ss.SSSX"),
+            duration,
+            points,
+          }),
+        }
+      );
+
       if (!response.ok) {
         const errorData = await response.json();
-        console.error('Error response:', errorData);
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || 'Unknown error'}`);
+        console.error("Error response:", errorData);
+        throw new Error(
+          `HTTP error! status: ${response.status}, message: ${
+            errorData.message || "Unknown error"
+          }`
+        );
       }
-  
+
       const responseData = await response.json();
-      console.log('Success:', responseData);
-      if(points > 0){
+      console.log("Success:", responseData);
+      if (points > 0) {
         toast.success(`Congratulations🥳 You earned ${points} points!`);
       }
-  
     } catch (error) {
-      console.error('An error occurred:', error);
+      console.error("An error occurred:", error);
+    }
+  };
+
+  const sendAlreadyPlayedGame = async () => {
+    if (!userId || !gameId) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${BACKEND_URL}/already_played_games/${userId}/${gameId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Error response:", errorData);
+        throw new Error(
+          `HTTP error! status: ${response.status}, message: ${
+            errorData.message || "Unknown error"
+          }`
+        );
+      }
+      const responseData = await response.json();
+      console.log("Success:", responseData);
+    } catch (error) {
+      console.error("An error occurred:", error);
     }
   };
 
@@ -113,12 +154,18 @@ const GamePage: React.FC = () => {
       ></iframe>
 
       {isModelOpen && (
-        <Modal show={isModelOpen} onClose={() => setIsModelOpen(false)} popup className="flex items-center justify-center inset-2/4 inset-y-1/2 z-40" theme={{
+        <Modal
+          show={isModelOpen}
+          onClose={() => setIsModelOpen(false)}
+          popup
+          className="flex items-center justify-center inset-2/4 inset-y-1/2 z-40"
+          theme={{
             content: {
               base: "bg-white w-3/4 rounded-lg",
               inner: "p-6 rounded-lg shadow-lg",
             },
-          }}>
+          }}
+        >
           <Modal.Header />
           <Modal.Body>
             <div className="text-center">
@@ -130,7 +177,10 @@ const GamePage: React.FC = () => {
                 <Button className="bg-red-600 hover:bg-red-700">
                   Yes, I'm sure
                 </Button>
-                <Button className="bg-gray-500 hover:bg-gray-600" onClick={() => setIsModelOpen(false)}>
+                <Button
+                  className="bg-gray-500 hover:bg-gray-600"
+                  onClick={() => setIsModelOpen(false)}
+                >
                   Continue Playing
                 </Button>
               </div>

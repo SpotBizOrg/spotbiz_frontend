@@ -276,7 +276,7 @@ function ManageCoupons() {
   };
 
   const addCoupon = async () => {
-    // setLoading(true);
+    setLoading(true);
     const dateTime = newCoupon.dateTime;
     const description = newCoupon.description;
     const discount = newCoupon.discount;
@@ -326,7 +326,7 @@ function ManageCoupons() {
 
   const handleDeleteCoupon = async () => {
     try {
-      // setLoading(true);
+      setLoading(true);
       const response = await fetch(
         `${BACKEND_URL}/coupon/delete/${currentCouponId}`,
         {
@@ -363,7 +363,7 @@ function ManageCoupons() {
   };
 
   const handleEditCoupon = async () => {
-    // setLoading(true);
+    setLoading(true);
     const description = editCoupon?.description;
     const discount = editCoupon?.discount;
 
@@ -782,7 +782,7 @@ function ManageCoupons() {
           <button
             type="button"
             className="p-2 text-sm font-medium text-white bg-gray-500 rounded-lg border border-gray-500 hover:bg-gray-600 focus:ring-4 focus:outline-none focus:ring-gray-300"
-            onClick={() => setShowForm(false)}
+            onClick={() => setShowEditForm(false)}
           >
             Cancel
           </button>
