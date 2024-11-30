@@ -2,10 +2,6 @@ import React, { useEffect, useState } from "react";
 import Businessnavbar from "../components/Businessnavbar";
 import Businesssidebar from "../components/Businesssidebar";
 import { Button, Card, Modal } from "flowbite-react";
-import AbansImage from "../assets/profPicAbans.png";
-import RedlineImage from "../assets/profPicRedline.jpg";
-import iDealzImage from "../assets/profPiciDealz.png";
-import SoftlogicImage from "../assets/profPicSoftlogic.png";
 import DefaultImage from "../assets/profPicDefault.jpg";
 import { FaCamera, FaMapMarkerAlt, FaStar } from "react-icons/fa";
 import { Tab, Tabs } from "../components/CustomTabs";
@@ -14,10 +10,12 @@ import BusinessDetailsTab from "../components/BusinessDetailsTab";
 import OwnerDetailsTab from "../components/OwnerDetailsTab";
 import OpeningHoursPage from "../components/OpeningHours";
 import TagsAndSocialLinks from "../components/TagsAndSocialLinks";
+import { toast } from "react-toastify";
 
 const BusinessProfile: React.FC = () => {
   const { token, user, checkAuthenticated } = useAuth();
   const [data, setData] = useState<any>(null);
+  const [imageFile, setImageFile] = useState<File | null>(null);
 
   useEffect(() => {
     document.title = "SpotBiz | Profile | Business";
@@ -54,19 +52,6 @@ const BusinessProfile: React.FC = () => {
 
       const responseData = await response.json();
       setData(responseData);
-
-      console.log(responseData.name);
-      if (responseData.name === "Abans ") {
-        setSelectedAvatar(AbansImage);
-      } else if (responseData.name === "Redline Technologies") {
-        setSelectedAvatar(RedlineImage);
-      } else if (responseData.name === "iDealz Lanka Pvt Ltd") {
-        setSelectedAvatar(iDealzImage);
-      } else if (responseData.name === "Softlogic Holdings") {
-        setSelectedAvatar(SoftlogicImage);
-      } else {
-        setSelectedAvatar(DefaultImage);
-      }
     } catch (error) {
       console.error("Error fetching data:", error);
     }
@@ -78,24 +63,73 @@ const BusinessProfile: React.FC = () => {
     string | ArrayBuffer | null
   >(null);
 
-  const [selectedAvatar, setSelectedAvatar] = useState("");
+  const uploadImage = async (file: File) => {
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const response = await fetch("http://localhost:8080/api/v1/upload_image", {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(
+        `HTTP error! status: ${response.status}, message: ${
+          errorData.message || "Unknown error"
+        }`
+      );
+    }
+
+    return response.text();
+  };
+  const updateLogo = async () => {
+    if (!uploadedAvatar || !user?.email || !token) {
+      console.error("Missing data for updating logo");
+      return;
+    }
+
+    const imageUrl = await uploadImage(imageFile!);
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/v1/business/update/${user.email}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ logo: imageUrl }),
+        }
+      );
+
+      if (response.ok) {
+        const updatedData = { ...data, logo: uploadedAvatar };
+        setData(updatedData);
+        setIsAvatarModalOpen(false);
+        toast.success("Logo updated successfully");
+      } else {
+        toast.error("Failed to update logo");
+      }
+    } catch (error) {
+      toast.error(`Error updating logo: ${error || "Unknown error"}`);
+    }
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
+      setImageFile(file);
       const reader = new FileReader();
       reader.onloadend = () => {
         setUploadedAvatar(reader.result);
       };
       reader.readAsDataURL(file);
     }
-  };
-
-  const handleUpdateAvatar = () => {
-    if (uploadedAvatar) {
-      setSelectedAvatar(uploadedAvatar as string);
-    }
-    setIsAvatarModalOpen(false);
   };
 
   const handleCancel = () => {
@@ -117,6 +151,7 @@ const BusinessProfile: React.FC = () => {
     subscriptionPackage: data?.subscriptionPackage,
     businessSocialLinks: data?.businessSocialLinks,
     choosenTags: choosenTags,
+    logo: data?.logo || DefaultImage,
   };
 
   return (
@@ -133,7 +168,7 @@ const BusinessProfile: React.FC = () => {
                 <div className="relative mr-6">
                   <img
                     className="h-[160px] w-[160px] bg-white p-1 rounded-full shadow-lg"
-                    src={selectedAvatar}
+                    src={businessDetails.logo}
                     alt="Profile"
                   />
                   <div
@@ -195,8 +230,8 @@ const BusinessProfile: React.FC = () => {
                   Cancel
                 </Button>
                 <Button
-                  onClick={handleUpdateAvatar}
                   className="text-white bg-bluedark hover:bg-bluedark/90 focus:ring-4 focus:outline-none focus:ring-bluedark/50 font-medium rounded-lg inline-flex items-center transition duration-200"
+                  onClick={updateLogo}
                 >
                   Update
                 </Button>

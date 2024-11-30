@@ -9,17 +9,14 @@ import SortByDropdown from "../components/SortBy";
 import { useAuth } from "../utils/AuthProvider";
 
 interface Review {
-  reviewId: Key | null | undefined;
-  user: any;
-  date: string | number | Date;
+  reviewId: number;
   title: string;
   description: string;
+  date: string | number | Date;
+  username: string;
+  businessId: number;
   rating: number;
-  reviewerName: string;
-  reviewDate: string;
-  reviewTitle: string;
-  reviewText: string;
-  reviewerAvatar: string;
+  status: string;
 }
 
 function Reviews() {
@@ -41,7 +38,6 @@ function Reviews() {
   const timeOptions = ["Newest First", "Oldest First"];
   const handleSelectOption = (option: string) => {
     setSelectedOption(option);
-    // Handle whatever logic you need here based on the selected option
   };
 
   const fetchReviews = async () => {
@@ -100,15 +96,16 @@ function Reviews() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
           {reviews.map((review) => (
             <Review
-              key={review.reviewId}
+              key={""}
               userType="business"
-              reviewerName={review.user.name}
+              reviewerName={review.username}
               reviewDate={new Date(review.date).toLocaleDateString()}
               reviewTitle={review.title}
               rating={review.rating}
               reviewerAvatar={""}
-              isReported={""}
+              isReported={review.status}
               reviewText={review.description}
+              reviewId={review.reviewId}
             />
           ))}
         </div>
