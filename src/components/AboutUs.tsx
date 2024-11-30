@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import AppMockup from "../assets/AppMockup.png";
 import CountUp from "react-countup";
 import { BACKEND_URL } from "../../config";
