@@ -32,7 +32,7 @@ function CustomerGame() {
     document.title = "SpotBiz | Games | Customer";
     fetchRegularGames();
     fetchSeasonalGames();
-    // fetchPlayedGames();
+    fetchPlayedGames();
     fetchLeaderboard();
     if (!checkAuthenticated()) {
       login();
@@ -56,7 +56,6 @@ function CustomerGame() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       if (!response.ok) {
-        toast.error("An unexpected error occurred");
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
@@ -86,17 +85,27 @@ function CustomerGame() {
   const fetchPlayedGames = async () => {
     try {
       const response = await fetch(
-        `${BACKEND_URL}/game/played_games/${userId}`
+        `${BACKEND_URL}/already_played_games/${userId}`
       );
       if (response.status == 404) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       if (!response.ok) {
-        toast.error("An unexpected error occurred");
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      setPlayedGames(data);
+      console.log("Played games:", data);
+      const games: Game_display[] = data.map((item: any) => ({
+        gameId: item.game.gameId,
+        imageUrl: item.game.imageUrl || "",
+        gameName: item.game.gameName,
+        gameType: item.game.gameType,
+        developer: item.game.developer,
+        description: item.game.description,
+        gameUrl: item.game.gameUrl || "",
+      }));
+
+      setPlayedGames(games);
     } catch (error) {
       console.error("An error occurred:", error);
     }
@@ -114,7 +123,6 @@ function CustomerGame() {
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error response:", errorData);
-        toast.error("An unexpected error occurred");
         throw new Error(
           `HTTP error! status: ${response.status}, message: ${
             errorData.message || "Unknown error"
@@ -126,7 +134,6 @@ function CustomerGame() {
       setLeaderboard(responseData);
     } catch (error) {
       console.error("An error occurred:", error);
-      toast.error("An unexpected error occurred");
     }
   };
 
