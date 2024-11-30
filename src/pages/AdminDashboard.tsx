@@ -1,15 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import Adminnavbar from "../components/Adminnavbar";
 import Adminsidebar from "../components/Adminsidebar";
-import PerformanceChart from "../components/PerformanceChart";
-import LatestBusiness from "../components/LatetBusiness"; // Assuming there's a typo in the import name
 import Container from "../components/Container";
 import { useAuth } from "../utils/AuthProvider";
 import AdminDashboardStats from "../components/AdminDashboardStats";
 import { BACKEND_URL } from "../../config";
 import axios from "axios";
 import { HashLoader } from "react-spinners";
-import SubscriptionChart from "../components/DashboardGraph";
 import BillingChart from "../components/BillingDetailsChart";
 import PieChart from "../components/BusinessCategoryChart";
 import { Button } from "flowbite-react";

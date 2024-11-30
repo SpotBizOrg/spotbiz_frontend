@@ -17,6 +17,7 @@ import { useSearchParams, useNavigate } from 'react-router-dom';
 import { messaging } from '../firebase/firebaseConfig';
 import OnlyAddReviewMain from '../components/OnlyAddReviewMain';
 import axios from 'axios';
+import BusinessBadge from '../components/BusinessBadge';
 
 
 // const businessId: number = 0;
@@ -26,6 +27,14 @@ interface WeeklySchedule {
   endTime: string;
   specialNote: string;
   isOpen: boolean;
+}
+
+interface BusinessBadge{
+  badgeId: number,
+  businessId: number,
+  businessName: string,
+  issuedDate: Date,
+  rating: number
 }
 
 interface BusinessPageProps {
@@ -71,6 +80,7 @@ interface BusinessPageProps {
 
   };
   subscribed: boolean;
+  businessBadgeDto: BusinessBadge | null;
 }
 
 const BusinessPage: React.FC = () => {
@@ -89,7 +99,8 @@ const BusinessPage: React.FC = () => {
       console.log('fetching business data');
       const response = await fetch(url);
       const data = await response.json();
-
+      console.log(data);
+      
       // if (!response.ok) {
       //   throw new Error(data.message);
       // }
@@ -117,7 +128,7 @@ const BusinessPage: React.FC = () => {
 
   const markClick = (businessId: number) => {
 
-      const url = `${BACKEND_URL}//business-clicks/click`
+      const url = `${BACKEND_URL}/business-clicks/click`
       const body = {
         businessClickId: 0,
         businessId: businessId,
@@ -134,9 +145,15 @@ const BusinessPage: React.FC = () => {
     console.log("Component mounted, starting fetchBusinessData...");
     fetchBusinessData(businessId);
 
-    markClick(businessId)
+    
     
   }, []);
+
+  useEffect(() => {
+    if (businessData) {
+      markClick(businessData.businessId);
+    }
+  }, [businessData]);
 
   if (loading) {
     return (
@@ -173,6 +190,11 @@ const BusinessPage: React.FC = () => {
                   email={businessData?.email || 'no email is given'}
                   fbLink={businessData?.fblink || '#'}
                 />
+                {
+                  businessData?.businessBadgeDto &&
+                  <BusinessBadge month={new Date(businessData.businessBadgeDto.issuedDate).toLocaleString("default", { month: "long" })} year={new Date(businessData.businessBadgeDto.issuedDate).getFullYear().toString()}/>
+                  }
+
                 {businessData?.latestReview ? (
                   <MainReview
                     title={businessData.latestReview.title}
