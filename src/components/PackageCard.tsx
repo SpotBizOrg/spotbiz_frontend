@@ -66,7 +66,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
           <span className="ml-2 font-semibold">Interact with customers</span>
         </li>
         <li className="flex items-center text-left">
-          <CheckIcon className="w-4 h-4 text-blue1" aria-hidden="true" />
+          
           <span className="ml-2 font-semibold">{listing} Listing </span>
         </li>
       </ul>
