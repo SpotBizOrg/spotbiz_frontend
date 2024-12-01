@@ -659,7 +659,7 @@ function ManageCoupons() {
         show={showForm}
         onClose={() => setShowForm(false)}
         size="lg"
-        className="flex items-center justify-center min-h-screen  z-40"
+        className="flex items-center justify-center min-h-screen z-40"
         theme={{
           content: {
             base: "bg-white w-3/4 rounded-lg",
