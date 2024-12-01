@@ -47,6 +47,7 @@ import PaymentGateway from "./pages/PaymentGateway";
 import OopsPage from "./pages/OopsPage";
 import AdminCuponReimburse from "./pages/AdminCuponReimburse";
 import BusinessCupon from "./pages/BusinessCoupon";
+import AdminTransactions from "./pages/AdminTransactions";
 
 function App() {
   const saveNotificationToDatabase = async (notification: {
@@ -145,6 +146,7 @@ function App() {
       <Route path="/error" element={<OopsPage />} />
       <Route path="/admin/reimburse" element={<AdminCuponReimburse />} />
       <Route path="/business/reimburse" element={<BusinessCupon />} />
+      <Route path="/admin/transactions" element={<AdminTransactions />} />
 
 
     </Routes>

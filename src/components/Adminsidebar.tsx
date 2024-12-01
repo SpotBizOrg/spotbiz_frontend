@@ -65,6 +65,10 @@ const navigation: NavigationItem[] = [
     label:<span className="ms-3">Coupon Reimburse</span>
 
 },
+  { name: 'Transactions', href: '/admin/transactions', current: false, ico:<PaymentsIcon />,
+    label:<span className="ms-3">Transactions</span>
+
+},
 ];
 
 function classNames(...classes: string[]): string {
