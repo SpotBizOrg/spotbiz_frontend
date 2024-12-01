@@ -7,6 +7,7 @@ import { FaPlus } from 'react-icons/fa';
 import { Modal, TextInput, Label, Button } from "flowbite-react";
 import { useAuth } from "../utils/AuthProvider";
 import { toast } from "react-toastify";
+import { BACKEND_URL } from '../../config';
 
 // Package interface and empty package template
 interface Package {
@@ -59,7 +60,7 @@ export default function AdminPackages() {
 
 
   const fetchPackages = async () => {
-    const response = await fetch('http://localhost:8080/api/v1/packages/get_all');
+    const response = await fetch(`${BACKEND_URL}/packages/get_all`);
     const data = await response.json();
     setPackagesData(data);
   };
@@ -81,7 +82,7 @@ export default function AdminPackages() {
 
   const handleDelete = async (packageId: number) => {
     try {
-      const response = await fetch(`http://localhost:8080/api/v1/packages/delete/${packageId}`, {
+      const response = await fetch(`${BACKEND_URL}/packages/delete/${packageId}`, {
         method: 'DELETE',
       });
 
@@ -116,7 +117,7 @@ export default function AdminPackages() {
     }
 
     try {
-      const response = await fetch('http://localhost:8080/api/v1/packages/add', {
+      const response = await fetch(`${BACKEND_URL}/packages/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -151,7 +152,7 @@ export default function AdminPackages() {
       console.log(addPackage);
       console.log(addPackage.packageId)
 
-      const response = await fetch('http://localhost:8080/api/v1/packages/add', {
+      const response = await fetch(`${BACKEND_URL}/packages/add`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -258,22 +259,22 @@ export default function AdminPackages() {
               <div className="w-full">
                   <Label htmlFor="price">Price</Label>
                   <TextInput
-  id="price"
-  type="text"  // Change from "number" to "text" to allow typing and deletion
-  value={editPackage.price.toString()}  // Ensure it remains a string for proper display
-  onChange={(e) => {
-    const value = e.target.value;
-    // Allow only numbers and handle deletion properly
-    if (/^\d*\.?\d*$/.test(value)) {
-      setEditPackage({ ...editPackage, price: value ? parseFloat(value) : 0 });
-      setPriceError(""); // Clear any existing error
-    } else {
-      setPriceError("Please enter a valid non-negative price.");
-    }
-  }}
-  className={priceError ? "border-red-500" : ""}
-/>
-{priceError && <p className="mt-1 text-sm text-red-500">{priceError}</p>}
+                      id="price"
+                      type="text"  // Change from "number" to "text" to allow typing and deletion
+                      value={editPackage.price.toString()}  // Ensure it remains a string for proper display
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        // Allow only numbers and handle deletion properly
+                        if (/^\d*\.?\d*$/.test(value)) {
+                          setEditPackage({ ...editPackage, price: value ? parseFloat(value) : 0 });
+                          setPriceError(""); // Clear any existing error
+                        } else {
+                          setPriceError("Please enter a valid non-negative price.");
+                        }
+                      }}
+                      className={priceError ? "border-red-500" : ""}
+                    />
+                    {priceError && <p className="mt-1 text-sm text-red-500">{priceError}</p>}
 
                 </div>
 
@@ -356,26 +357,26 @@ export default function AdminPackages() {
 
         {/* Ads Per Week Input */}
         <div className="w-full">
-  <Label htmlFor="add-adsPerWeek">Advertisements per Week</Label>
-  <TextInput
-    id="add-adsPerWeek"
-    type="text"
-    value={addPackage.adsPerWeek.toString()}
-    onChange={(e) => {
-      const value = e.target.value;
-      if (/^\d*$/.test(value)) { // Allow only digits
-        setAddPackage({ ...addPackage, adsPerWeek: parseInt(value) || 0 });
-        setAdsPerWeekError(null); // Clear error
-      } else {
-        setAdsPerWeekError('Only numbers are allowed.');
-      }
-    }}
-    className={adsPerWeekError ? "border-red-500" : ""}
-  />
-  {adsPerWeekError && (
-    <p className="mt-1 text-sm text-red-500">{adsPerWeekError}</p>
-  )}
-</div>
+        <Label htmlFor="add-adsPerWeek">Advertisements per Week</Label>
+        <TextInput
+            id="add-adsPerWeek"
+            type="text"
+            value={addPackage.adsPerWeek.toString()}
+            onChange={(e) => {
+              const value = e.target.value;
+              if (/^\d*$/.test(value)) { // Allow only digits
+                setAddPackage({ ...addPackage, adsPerWeek: parseInt(value) || 0 });
+                setAdsPerWeekError(null); // Clear error
+              } else {
+                setAdsPerWeekError('Only numbers are allowed.');
+              }
+            }}
+            className={adsPerWeekError ? "border-red-500" : ""}
+          />
+          {adsPerWeekError && (
+            <p className="mt-1 text-sm text-red-500">{adsPerWeekError}</p>
+          )}
+        </div>
 
         {/* Price Input */}
         <div className="w-full">
