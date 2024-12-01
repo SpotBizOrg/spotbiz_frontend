@@ -1,33 +1,42 @@
-import React from 'react';
+import React from "react";
 import { FaFlag, FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
 import { HiPencilAlt } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
 import { Button, Label, Modal, TextInput } from "flowbite-react";
-import { useState, useRef } from 'react';
-import { BACKEND_URL } from '../../config';
-import axios from 'axios';
-import { Bounce, toast } from 'react-toastify';
-
+import { useState, useRef } from "react";
+import { BACKEND_URL } from "../../config";
+import axios from "axios";
+import { Bounce, toast } from "react-toastify";
 
 interface MainReviewProps {
-    rating: number;
-    description: string;
-    date: string;
-    userId: number;
-    businessId: number;
-    title: string;
-    storedEmail: string;
+  rating: number;
+  description: string;
+  date: string;
+  userId: number;
+  businessId: number;
+  title: string;
+  storedEmail: string;
+  businessEmail: string;
 }
 
-const MainReview: React.FC<MainReviewProps> = ({ rating, description, date, userId, businessId, title, storedEmail }) => {
+const MainReview: React.FC<MainReviewProps> = ({
+  rating,
+  description,
+  date,
+  userId,
+  businessId,
+  title,
+  storedEmail,
+  businessEmail,
+}) => {
   const [openModal1, setOpenModal1] = useState(false);
   const titleInputRef1 = useRef<HTMLInputElement>(null);
   const [openModal2, setOpenModal2] = useState(false);
   const titleInputRef2 = useRef<HTMLInputElement>(null);
-  const [reviewTitle, setReviewTitle] = useState<string>('');
-  const [reviewDescription, setReviewDescription] = useState<string>('');
-  const [reportReason, setReportReason] = useState<string>('');
-  const storedUserId = localStorage.getItem('user_id');
+  const [reviewTitle, setReviewTitle] = useState<string>("");
+  const [reviewDescription, setReviewDescription] = useState<string>("");
+  const [reportReason, setReportReason] = useState<string>("");
+  const storedUserId = localStorage.getItem("user_id");
 
   const closeModal1 = () => {
     setOpenModal1(false);
@@ -39,30 +48,30 @@ const MainReview: React.FC<MainReviewProps> = ({ rating, description, date, user
   const navigate = useNavigate();
 
   function navigateToPage() {
-    navigate('/customer/reviews');
+    navigate(`/customer/reviews?business=${businessEmail}`);
   }
 
   const formatDate = (inputDate: string): string => {
     const date = new Date(inputDate);
-  
+
     // Define options for formatting the date
     const options: Intl.DateTimeFormatOptions = {
       year: "numeric",
       month: "long", // Full month name like 'July'
       day: "numeric", // Day of the month like '26'
     };
-  
+
     // Format the date
     return date.toLocaleDateString("en-US", options);
   };
 
   const openAddReviwModal = () => {
     setOpenModal1(true);
-  }
+  };
 
   const openReportModal = () => {
     setOpenModal2(true);
-  }
+  };
 
   const saveReportRequest = async () => {
     console.log(reportReason);
@@ -74,16 +83,16 @@ const MainReview: React.FC<MainReviewProps> = ({ rating, description, date, user
       reason: reportReason,
       userId: storedUserId,
       businessId: businessId,
-    })
+    });
 
-    try{
+    try {
       const response = await axios.post(url, body, {
         headers: {
           "Content-Type": "application/json",
         },
       });
       console.log(response);
-      toast.info('Reported!', {
+      toast.info("Reported!", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -93,11 +102,11 @@ const MainReview: React.FC<MainReviewProps> = ({ rating, description, date, user
         progress: undefined,
         theme: "light",
         transition: Bounce,
-        });
+      });
       closeModal2();
     } catch (error) {
       console.error(error);
-      toast.error('Error occured!', {
+      toast.error("Error occured!", {
         position: "top-right",
         autoClose: 3000,
         hideProgressBar: false,
@@ -107,10 +116,9 @@ const MainReview: React.FC<MainReviewProps> = ({ rating, description, date, user
         progress: undefined,
         theme: "light",
         transition: Bounce,
-        });
-    }   
-    
-  }
+      });
+    }
+  };
 
   const saveReview = async () => {
     const url = `${BACKEND_URL}/review/create/${storedEmail}`;
@@ -121,10 +129,10 @@ const MainReview: React.FC<MainReviewProps> = ({ rating, description, date, user
       rating: 0,
       userId: storedUserId,
       businessId: businessId,
-      date: new Date().toISOString()
-    })
+      date: new Date().toISOString(),
+    });
 
-    try{
+    try {
       const response = await axios.post(url, body, {
         headers: {
           "Content-Type": "application/json",
@@ -137,10 +145,7 @@ const MainReview: React.FC<MainReviewProps> = ({ rating, description, date, user
     } catch (error) {
       console.error(error);
     }
-    
-
-  }
-  
+  };
 
   return (
     <>
@@ -151,22 +156,18 @@ const MainReview: React.FC<MainReviewProps> = ({ rating, description, date, user
         <div className="mt-4 mb-2">
           <p className="font-semibold text-gray-800">{title}</p>
           <div className="flex items-center text-yellow-400">
-          {
-              Array.from({ length: 5 }).map((_, index) => {
-                if (index < Math.floor(rating)) {
-                  return <FaStar key={index} className="text-gray-800" />;
-                } else if (index === Math.floor(rating) && rating % 1 !== 0) {
-                  return <FaStarHalfAlt key={index} className="text-gray-800" />;
-                } else {
-                  return <FaRegStar key={index} className="text-gray-800" />;
-                }
-              })
-            }
+            {Array.from({ length: 5 }).map((_, index) => {
+              if (index < Math.floor(rating)) {
+                return <FaStar key={index} className="text-gray-800" />;
+              } else if (index === Math.floor(rating) && rating % 1 !== 0) {
+                return <FaStarHalfAlt key={index} className="text-gray-800" />;
+              } else {
+                return <FaRegStar key={index} className="text-gray-800" />;
+              }
+            })}
           </div>
         </div>
-        <p className="text-gray-700 mb-4">
-          {description}
-        </p>
+        <p className="text-gray-700 mb-4">{description}</p>
         <div className="flex justify-between items-center border-b border-gray-200 pb-4">
           <span className="text-gray-500 text-body">{formatDate(date)}</span>
           <button
@@ -177,7 +178,10 @@ const MainReview: React.FC<MainReviewProps> = ({ rating, description, date, user
           </button>
         </div>
         <div className="flex p-2 gap-6 flex-row justify-center text-bodysmall text-gray-600 mt-2">
-          <div onClick={openAddReviwModal} className="flex flex-row items-center gap-2 cursor-pointer">
+          <div
+            onClick={openAddReviwModal}
+            className="flex flex-row items-center gap-2 cursor-pointer"
+          >
             <HiPencilAlt />
             <p>Add</p>
           </div>
@@ -249,7 +253,9 @@ const MainReview: React.FC<MainReviewProps> = ({ rating, description, date, user
                     onChange={(e) => setReviewDescription(e.target.value)}
                   ></textarea>
                 </div>
-                <p className='text-xs text-gray-500'>*Ratings will be automatically calculated based on your review</p>
+                <p className="text-xs text-gray-500">
+                  *Ratings will be automatically calculated based on your review
+                </p>
                 <div className="flex justify-between">
                   <Button onClick={closeModal1} className="bg-bluedark">
                     Cancel
@@ -261,7 +267,10 @@ const MainReview: React.FC<MainReviewProps> = ({ rating, description, date, user
               </div>
             </div>
           </Modal>
-          <div onClick={openReportModal} className="flex flex-row items-center gap-2 cursor-pointer">
+          <div
+            onClick={openReportModal}
+            className="flex flex-row items-center gap-2 cursor-pointer"
+          >
             <FaFlag />
             <p>Report</p>
           </div>
@@ -308,7 +317,10 @@ const MainReview: React.FC<MainReviewProps> = ({ rating, description, date, user
               </div>
               <div className="space-y-6">
                 <div>
-                  <Label htmlFor="review" value="Why do you want to report this business?" />
+                  <Label
+                    htmlFor="review"
+                    value="Why do you want to report this business?"
+                  />
                   <textarea
                     id="report"
                     rows={4}
