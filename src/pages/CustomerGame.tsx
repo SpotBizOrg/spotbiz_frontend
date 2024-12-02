@@ -6,6 +6,13 @@ import { toast } from "react-toastify";
 import { BACKEND_URL } from "../../config";
 import { HashLoader } from "react-spinners";
 import { useAuth } from "../utils/AuthProvider";
+import axios from "axios";
+
+interface UserDetails{
+  userId: number;
+  name: string;
+  points: number;
+}
 
 interface Game_display {
   gameId: string;
@@ -30,6 +37,8 @@ interface Leaderboard {
 function CustomerGame() {
   useEffect(() => {
     document.title = "SpotBiz | Games | Customer";
+    fetchUserDetails();
+    fetchProfilePic();
     fetchRegularGames();
     fetchSeasonalGames();
     fetchPlayedGames();
@@ -48,6 +57,40 @@ function CustomerGame() {
   const [leaderboard, setLeaderboard] = useState<Leaderboard[]>([]);
   const [isLeaderboardActivated, setIsLeaderboardActivated] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
+  const [profilePic, setProfilePic] = useState<string | null>(null);
+
+  const fetchProfilePic = async () => {
+    const url = `${BACKEND_URL}/customer/pics/${userId}`;
+
+    try {
+      const response = await axios.get(url);
+      console.log(response.data);
+      setProfilePic(response.data.imageUrl);
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  }
+
+  const fetchUserDetails = async () => {
+    const url = `${BACKEND_URL}/game/details/${userId}`;
+
+    try{
+      const response = await axios.get(url);
+      console.log(response.data);
+
+      const transformedData = {
+        userId: response.data.userId,
+        name: response.data.name,
+        points: response.data.points
+      }
+
+      setUserDetails(transformedData);
+
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
 
   const fetchRegularGames = async () => {
     try {
@@ -187,11 +230,12 @@ function CustomerGame() {
         <div className="flex items-center mb-6 ">
           <img
             className="ring-offset-2 ring h-40 w-40 rounded-full"
-            src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
+            src={profilePic || "https://flowbite.com/docs/images/people/profile-picture-3.jpg"}
+            // src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
           />
           <div>
-            <p className="text-black text-xl ml-4">Shalini</p>
-            <p className="text-gray-400 ml-4">Points: 95</p>
+            <p className="text-black text-xl ml-4">{userDetails?.name || "Nirasha Nelki"}</p>
+            <p className="text-gray-400 ml-4">Points: {userDetails?.points || 95}</p>
           </div>
         </div>
         <div className="flex items-center justify-between w-full mb-5 border-b border-gray-300 mb-8">
@@ -417,6 +461,22 @@ function CustomerGame() {
                 
               </div>
             )}
+          </div>
+
+          <div>
+            {
+              activeTab === "howToPlay" && (
+                <div className="flex flex-col w-full mt-8">
+                  <div className="text-xl font-semibold">How to play?</div>
+                  <div className="mt-4">
+                    <p className="text-lg">1. Choose a game from the list</p>
+                    <p className="text-lg">2. Click on the game card</p>
+                    <p className="text-lg">3. Play the game</p>
+                    <p className="text-lg">4. Earn points</p>
+                  </div>
+                </div>
+              )
+            }
           </div>
         </div>
       </div>
