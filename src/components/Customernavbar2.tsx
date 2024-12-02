@@ -20,7 +20,7 @@ function Customernavbar2(){
   const [isNotificationMenuOpen, setNotificationMenuOpen] = useState(false);
   const NOTIFICATION_COUNT = getNotificationCount();
   const storedUserId = localStorage.getItem('user_id');
-  const [profilePic, setProfilePic] = useState('');
+  const [profilePic, setProfilePic] = useState<string | null>(null);
 
   const handleNotification = async () => {
     if (user_id != null) {
@@ -67,6 +67,8 @@ function Customernavbar2(){
 
     try{
       const response = await axios.get(url);
+      console.log(response.data);
+      
       setProfilePic(response.data.imageUrl);
     } catch (error) {
       console.error('An error occurred:', error);
@@ -152,7 +154,7 @@ function Customernavbar2(){
                 <span className="sr-only">Open user menu</span>
                 <img
                   className="h-8 w-8 rounded-full"
-                  src={profilePic != '' ? profilePic :"https://flowbite.com/docs/images/people/profile-picture-3.jpg"}
+                  src={profilePic || "https://flowbite.com/docs/images/people/profile-picture-3.jpg"}
                   // src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
                   alt=""
                 />
