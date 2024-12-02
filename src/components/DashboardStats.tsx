@@ -1,5 +1,5 @@
 // src/components/DashboardStats.tsx
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import CouponPopup from './CouponPopup';
 import { Card } from 'flowbite-react';
 import BadgeImg from "../assets/badge.png";
@@ -8,7 +8,7 @@ interface BusinessBadgeProps{
   badgeId: number,
   businessId: number,
   businessName: string,
-  issuedDate: Date,
+  issuedDate: string,
   rating: number
 }
 
@@ -30,6 +30,12 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ subscriberCount, clicks
   const handleClosePopup = () => {
     setIsCPopupOpen(false);
   };
+
+  useEffect(() => {
+    console.log(businessBadge?.issuedDate);
+    console.log(businessBadge?.businessName);
+    
+  }, []);
 
 
 
@@ -79,7 +85,7 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ subscriberCount, clicks
             <div className="flex flex-col justify-center  w-1/2">
             <p className="text-md font-medium">{businessBadge.businessName}</p>
 
-              <p className="text-sm text-gray-500">{businessBadge.issuedDate.toLocaleString("default", { month: "long" })+" "+ businessBadge.issuedDate.getFullYear().toString()}</p>
+              <p className="text-sm text-gray-500">{new Date(businessBadge.issuedDate).toLocaleString("default", { month: "long" })+" "+ new Date(businessBadge.issuedDate).getFullYear().toString()}</p>
             </div>
         </div>):(
           <div className='flex flex-row items-center justify-between mt-4'>

@@ -1,11 +1,12 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { BellIcon, PuzzlePieceIcon } from '@heroicons/react/24/outline';
 import Logo from '../assets/logo.png';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useEffect, useState } from 'react';
 import { useAuth } from '../utils/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { Tooltip } from 'flowbite-react';
 import { BACKEND_URL, resetNotificationCount, getNotificationCount} from '../../config';
+import axios from 'axios';
 
 function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(' ');
@@ -18,6 +19,8 @@ function Customernavbar() {
   const [notifications, setNotifications] = useState([]);
   const [isNotificationMenuOpen, setNotificationMenuOpen] = useState(false);
   const NOTIFICATION_COUNT = getNotificationCount();
+  const storedUserId = localStorage.getItem('user_id');
+  const [profilePic, setProfilePic] = useState<string | null>(null);
 
   const handleNotification = async () => {
     if (user_id != null) {
@@ -70,6 +73,22 @@ function Customernavbar() {
       navigate('/customer/search_results?search=' + searchQuery);
     }
   };
+
+  const getProfilePic = async () => {
+    const url = `${BACKEND_URL}/customer/pics/${storedUserId}`;
+
+    try{
+      const response = await axios.get(url);
+      setProfilePic(response.data.imageUrl);
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
+
+  useEffect(() => {
+    getProfilePic()
+    
+  }, []);
 
     return(
     <nav className="fixed top-0 z-40 w-full bg-white border-b border-gray-200">
@@ -200,8 +219,8 @@ function Customernavbar() {
                   <span className="sr-only">Open user menu</span>
                   <img
                     className="h-8 w-8 rounded-full"
-                    src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
-                    alt=""
+                    src={profilePic || "https://flowbite.com/docs/images/people/profile-picture-3.jpg"}
+                    // src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"                    alt=""
                   />
                 </MenuButton>
               </div>

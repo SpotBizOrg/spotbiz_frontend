@@ -1,8 +1,9 @@
-import { act, useState } from "react";
+import { useState } from "react";
 import Adminnavbar from "../components/Adminnavbar";
 import Adminsidebar from "../components/Adminsidebar";
 import Container from "../components/Container";
 import SubscriptionTransactions from "../components/SubscriptionTransactions";
+import ReimbursementTransactions from "../components/ReimbursementTransactions";
 
 const AdminTransactions = () => {
     const [activeTab, setActiveTab] = useState('subscription');
@@ -20,7 +21,7 @@ const AdminTransactions = () => {
 
                 <div className="relative  overflow-x-auto overflow-y-auto sm:rounded-lg">
                     {/* the tabs */}
-                <div className="flex items-center space-x-6 mb-10 border-b border-gray-200">
+                <div className="flex items-center space-x-6 mb-5 border-b border-gray-200">
                     <button
                     className={`px-0 py-2 pb-[calc(0.5rem - 4px)] rounded focus:outline-none ${activeTab === 'subscription' ? 'text-black border-b-4 border-black' : 'bg-transparent text-gray-500 border-b-4 border-transparent hover:border-b-4 hover:border-gray-300'}`}
                     onClick={() => setActiveTab('subscription')}
@@ -28,8 +29,8 @@ const AdminTransactions = () => {
                     Subscription Billings
                     </button>
                     <button
-                    className={`px-0 py-2 pb-[calc(0.5rem - 4px)] rounded focus:outline-none ${activeTab === 'Coupon' ? 'text-black border-b-4 border-black' : 'bg-transparent text-gray-500 border-b-4 border-transparent hover:border-b-4 hover:border-gray-300'}`}
-                    onClick={() => setActiveTab('Coupon')}
+                    className={`px-0 py-2 pb-[calc(0.5rem - 4px)] rounded focus:outline-none ${activeTab === 'reimburse' ? 'text-black border-b-4 border-black' : 'bg-transparent text-gray-500 border-b-4 border-transparent hover:border-b-4 hover:border-gray-300'}`}
+                    onClick={() => setActiveTab('reimburse')}
                     >
                     Coupon Reimburse
                     </button>
@@ -40,6 +41,10 @@ const AdminTransactions = () => {
                 {activeTab === 'subscription' &&
                     <div className="relative overflow-x-auto overflow-y-auto sm:rounded-lg border border-gray-200">
                     <SubscriptionTransactions/>
+                </div>}
+                {activeTab === 'reimburse' &&
+                    <div className="relative overflow-x-auto overflow-y-auto sm:rounded-lg border border-gray-200">
+                    <ReimbursementTransactions/>
                 </div>}
 
 
