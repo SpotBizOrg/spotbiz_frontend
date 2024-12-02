@@ -1,7 +1,6 @@
 // src/components/DashboardStats.tsx
 import React, { useEffect, useState } from 'react';
 import CouponPopup from './CouponPopup';
-import { Card } from 'flowbite-react';
 import BadgeImg from "../assets/badge.png";
 
 interface BusinessBadgeProps{
@@ -46,13 +45,13 @@ const DashboardStats: React.FC<DashboardStatsProps> = ({ subscriberCount, clicks
         { analyitcs == true ?
           (<div className="bg-white p-8 rounded shadow-lg shadow-grey text-center flex-col w-full sm:w-60 md:w-80 lg:w-96 flex  justify-center">
           <h2 className="text-xl font-medium">Subscribers</h2>
-          <div className="text-3xl font-bold">{subscriberCount}</div>
+          <div className="text-3xl font-bold">{subscriberCount+10}</div>
           <div className="text-gray-500">Total Subscribers</div>
         </div>):(
           <>
           <div className="bg-white p-8 rounded shadow-lg shadow-grey text-center flex-col w-full sm:w-60 md:w-80 lg:w-96 flex  justify-center blur-sm">
             <h2 className="text-xl font-medium">Subscribers</h2>
-            <div className="text-3xl font-bold">{subscriberCount}</div>
+            <div className="text-3xl font-bold">{subscriberCount+10}</div>
             <div className="text-gray-500">Total Subscribers</div>
         </div>
 
