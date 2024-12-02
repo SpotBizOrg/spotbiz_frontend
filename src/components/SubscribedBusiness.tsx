@@ -50,7 +50,6 @@ const SubscribedBusinesses: React.FC = () => {
         if (!userData?.userId) throw new Error("Invalid user data.");
         setUser(userData);
 
-        // Step 2: Fetch Subscribed Businesses
         const subscriptionsResponse = await axios.get(
           `http://localhost:8080/api/v1/sub_business/subscribed/email/${userData.userId}`
         );

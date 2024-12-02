@@ -11,10 +11,14 @@ import OwnerDetailsTab from "../components/OwnerDetailsTab";
 import OpeningHoursPage from "../components/OpeningHours";
 import TagsAndSocialLinks from "../components/TagsAndSocialLinks";
 import { toast } from "react-toastify";
+import StarRating from "../components/StarRating";
 
 const BusinessProfile: React.FC = () => {
   const { token, user, checkAuthenticated } = useAuth();
   const [data, setData] = useState<any>(null);
+  const [SubscriberCount, setSubscriberCount] = useState<number>(0);
+  const [reviewCount, setReviewCount] = useState<number>(0);
+  const [avgReview, setAvgReview] = useState<number>(0);
   const [imageFile, setImageFile] = useState<File | null>(null);
 
   useEffect(() => {
@@ -28,6 +32,53 @@ const BusinessProfile: React.FC = () => {
       console.log("User is not authenticated or email/token is missing");
     }
   }, [user, token]);
+
+  useEffect(() => {
+    if (data?.businessId && token) {
+      fetchSubscribeCount(data.businessId);
+      fetchReviewStats(data.businessId);
+    }
+  }, [data, token]);
+
+  const fetchSubscribeCount = async (businessId: number) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/v1/sub_business/subscribe_count/${businessId}`
+      );
+
+      if (!response.ok) {
+        console.error("Failed to fetch subscriber count:", response.status);
+        return;
+      }
+
+      const responseData = await response.json();
+      console.log("Subscriber count response:", responseData);
+      setSubscriberCount(responseData);
+    } catch (error) {
+      console.error("Error fetching subscriber count:", error);
+    }
+  };
+  const fetchReviewStats = async (businessId: number) => {
+    try {
+      const response = await fetch(
+        `http://localhost:8080/api/v1/review/statistics/${businessId}`
+      );
+
+      if (!response.ok) {
+        console.error("Failed to fetch:", response.status);
+        return;
+      }
+
+      const responseData = await response.json();
+      setAvgReview(responseData.averageRating);
+      setReviewCount(responseData.numberOfRatings);
+    } catch (error) {
+      console.error(
+        `Error fetching review statistics for business ID ${businessId}:`,
+        error
+      );
+    }
+  };
 
   const fetchData = async (email: string, token: string) => {
     try {
@@ -140,6 +191,7 @@ const BusinessProfile: React.FC = () => {
   const choosenTags = data?.tags || "[]";
 
   const businessDetails = {
+    businessId: data?.businessId,
     name: data?.name,
     businessRegNo: data?.businessRegNo,
     description: data?.description,
@@ -189,15 +241,19 @@ const BusinessProfile: React.FC = () => {
                     <FaMapMarkerAlt className="mr-2 text-red-500" />
                     {businessDetails.address}
                   </p>
-                  <p className="mt-2">Subscriber Count: 3</p>
+                  <p className="mt-2">Subscriber Count: {SubscriberCount}</p>
                   <p className="mt-2 flex items-center">
-                    4.0 &nbsp;
-                    <FaStar className="text-yellow-500 ml-1" />
+                    {avgReview} &nbsp;
+                    <StarRating
+                      avgReview={avgReview}
+                      reviewCount={reviewCount}
+                    />
+                    {/* <FaStar className="text-yellow-500 ml-1" />
                     <FaStar className="text-yellow-500" />
                     <FaStar className="text-yellow-500" />
                     <FaStar className="text-yellow-500" />
-                    <FaStar className="text-gray-400" />
-                    &nbsp; (4)
+                    <FaStar className="text-gray-400" /> */}
+                    &nbsp; ({reviewCount})
                   </p>
                 </div>
               </div>
