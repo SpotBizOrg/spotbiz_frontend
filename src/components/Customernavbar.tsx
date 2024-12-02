@@ -20,7 +20,7 @@ function Customernavbar() {
   const [isNotificationMenuOpen, setNotificationMenuOpen] = useState(false);
   const NOTIFICATION_COUNT = getNotificationCount();
   const storedUserId = localStorage.getItem('user_id');
-  const [profilePic, setProfilePic] = useState('');
+  const [profilePic, setProfilePic] = useState<string | null>(null);
 
   const handleNotification = async () => {
     if (user_id != null) {
@@ -219,7 +219,7 @@ function Customernavbar() {
                   <span className="sr-only">Open user menu</span>
                   <img
                     className="h-8 w-8 rounded-full"
-                    src={profilePic != '' ? profilePic :"https://flowbite.com/docs/images/people/profile-picture-3.jpg"}
+                    src={profilePic || "https://flowbite.com/docs/images/people/profile-picture-3.jpg"}
                     // src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"                    alt=""
                   />
                 </MenuButton>
