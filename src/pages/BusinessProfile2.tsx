@@ -189,7 +189,7 @@ const BusinessProfile: React.FC = () => {
                     <FaMapMarkerAlt className="mr-2 text-red-500" />
                     {businessDetails.address}
                   </p>
-                  <p className="mt-2">Subscriber Count: 242</p>
+                  <p className="mt-2">Subscriber Count: 3</p>
                   <p className="mt-2 flex items-center">
                     4.0 &nbsp;
                     <FaStar className="text-yellow-500 ml-1" />
@@ -197,7 +197,7 @@ const BusinessProfile: React.FC = () => {
                     <FaStar className="text-yellow-500" />
                     <FaStar className="text-yellow-500" />
                     <FaStar className="text-gray-400" />
-                    &nbsp; (50)
+                    &nbsp; (4)
                   </p>
                 </div>
               </div>

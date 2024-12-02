@@ -228,7 +228,7 @@ const BusinessDetailsTab: React.FC<BusinessDetailsTabProps> = () => {
               <p className="text-black text-sm font-medium">
                 Subscription Package
               </p>
-              <p className="text-gray-800">{"FREE"}</p>
+              <p className="text-gray-800">{"PREMIUM"}</p>
             </div>
           </Card>
         </div>
