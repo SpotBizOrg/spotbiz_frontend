@@ -1,6 +1,7 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { BellIcon, PuzzlePieceIcon } from '@heroicons/react/24/outline';
 import Logo from '../assets/logo.png';
+import default_user_icon from '../assets/default_user_icon.png';
 import { useEffect, useState } from 'react';
 import { useAuth } from '../utils/AuthProvider';
 import { useNavigate } from 'react-router-dom';
@@ -21,6 +22,8 @@ function Customernavbar2(){
   const NOTIFICATION_COUNT = getNotificationCount();
   const storedUserId = localStorage.getItem('user_id');
   const [profilePic, setProfilePic] = useState<string | null>(null);
+  const [defaultPic, setDefaultPic] = useState<string | null>(null);
+
 
   const handleNotification = async () => {
     if (user_id != null) {
@@ -75,8 +78,23 @@ function Customernavbar2(){
     }
   }
 
+  const getAllProfilePics = async () => {
+    const url = `${BACKEND_URL}/customer_pic/all`;
+
+    try{
+      const response = await axios.get(url);
+      
+      const defaultPic = response.data.find((pic: any) => pic.picId === 1).imageUrl;
+      setDefaultPic(defaultPic);
+
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
+
   useEffect(() => {
     getProfilePic()
+    getAllProfilePics()
     
   }, []);
 
@@ -154,8 +172,7 @@ function Customernavbar2(){
                 <span className="sr-only">Open user menu</span>
                 <img
                   className="h-8 w-8 rounded-full"
-                  src={profilePic || "https://flowbite.com/docs/images/people/profile-picture-3.jpg"}
-                  // src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
+                  src={profilePic || defaultPic ||  default_user_icon}                  // src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
                   alt=""
                 />
               </MenuButton>

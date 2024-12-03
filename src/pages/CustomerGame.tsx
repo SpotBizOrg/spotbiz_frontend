@@ -7,6 +7,7 @@ import { BACKEND_URL } from "../../config";
 import { HashLoader } from "react-spinners";
 import { useAuth } from "../utils/AuthProvider";
 import axios from "axios";
+import default_user_icon from "../assets/default_user_icon.png"; // Add this line
 
 interface UserDetails{
   userId: number;
@@ -39,6 +40,7 @@ function CustomerGame() {
     document.title = "SpotBiz | Games | Customer";
     fetchUserDetails();
     fetchProfilePic();
+    getAllProfilePics();
     fetchRegularGames();
     fetchSeasonalGames();
     fetchPlayedGames();
@@ -59,7 +61,22 @@ function CustomerGame() {
   const [searchQuery, setSearchQuery] = useState("");
   const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
   const [profilePic, setProfilePic] = useState<string | null>(null);
+  const [defaultPic, setDefaultPic] = useState<string | null>(null);
 
+  const getAllProfilePics = async () => {
+    const url = `${BACKEND_URL}/customer_pic/all`;
+
+    try{
+      const response = await axios.get(url);
+      
+      const defaultPic = response.data.find((pic: any) => pic.picId === 1).imageUrl;
+      setDefaultPic(defaultPic);
+
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
+  
   const fetchProfilePic = async () => {
     const url = `${BACKEND_URL}/customer/pics/${userId}`;
 
@@ -230,8 +247,7 @@ function CustomerGame() {
         <div className="flex items-center mb-6 ">
           <img
             className="ring-offset-2 ring h-40 w-40 rounded-full"
-            src={profilePic || "https://flowbite.com/docs/images/people/profile-picture-3.jpg"}
-            // src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
+            src={profilePic || defaultPic ||  default_user_icon}            // src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
           />
           <div>
             <p className="text-black text-xl ml-4">{userDetails?.name || "Nirasha Nelki"}</p>
