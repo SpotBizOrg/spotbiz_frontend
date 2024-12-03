@@ -20,24 +20,31 @@ function Customernavbar() {
   const [notifications, setNotifications] = useState([]);
   const [isNotificationMenuOpen, setNotificationMenuOpen] = useState(false);
   const NOTIFICATION_COUNT = getNotificationCount();
-  const storedUserId = localStorage.getItem('user_id');
+  const storedUserId = localStorage.getItem("user_id");
   const [profilePic, setProfilePic] = useState<string | null>(null);
   const [defaultPic, setDefaultPic] = useState<string | null>(null);
 
   const handleNotification = async () => {
     if (user_id != null) {
       try {
-        const response = await fetch(`${BACKEND_URL}/notification/all/${user_id}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+        const response = await fetch(
+          `${BACKEND_URL}/notification/all/${user_id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (!response.ok) {
           const errorData = await response.json();
-          console.error('Error response:', errorData);
-          throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || 'Unknown error'}`);
+          console.error("Error response:", errorData);
+          throw new Error(
+            `HTTP error! status: ${response.status}, message: ${
+              errorData.message || "Unknown error"
+            }`
+          );
         }
 
         const responseData = await response.json();
@@ -85,14 +92,14 @@ function Customernavbar() {
     } catch (error) {
       console.error('An error occurred:', error);
     }
-  }
+  };
 
   const getAllProfilePics = async () => {
     const url = `${BACKEND_URL}/customer_pic/all`;
 
     try{
       const response = await axios.get(url);
-      
+
       const defaultPic = response.data.find((pic: any) => pic.picId === 1).imageUrl;
       setDefaultPic(defaultPic);
 
@@ -104,7 +111,7 @@ function Customernavbar() {
   useEffect(() => {
     getProfilePic()
     getAllProfilePics()
-    
+
   }, []);
 
     return(
@@ -132,7 +139,7 @@ function Customernavbar() {
                 ></path>
               </svg>
             </button>
-            <a href="/" className="flex ms-2 md:me-24">
+            <a href="/home" className="flex ms-2 md:me-24">
               <img src={Logo} className="h-8 me-3" alt="SpotBiz Logo" />
             </a>
           </div>
@@ -189,47 +196,54 @@ function Customernavbar() {
             </button>
           </div>
           <div className="absolute z-50 inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-          <Tooltip content="Games">
-            <button onClick={navigateToPage} className="relative rounded-full p-1 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-              <PuzzlePieceIcon className="h-6 w-6 mr-2" />
-            </button>
-          </Tooltip>
+            <Tooltip content="Games">
+              <button
+                onClick={navigateToPage}
+                className="relative rounded-full p-1 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+              >
+                <PuzzlePieceIcon className="h-6 w-6 mr-2" />
+              </button>
+            </Tooltip>
 
-          <Tooltip content="Notifications">
-            <button
-              type="button"
-              onClick={toggleNotificationMenu}
-              className="relative rounded-full p-1 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-            >
-              <span className="sr-only">View notifications</span>
-              <BellIcon className="h-6 w-6" />
-              
-              {NOTIFICATION_COUNT > 0 && (
-                <span className="h-4 w-2 absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
-                  {NOTIFICATION_COUNT}
-                </span>
-              )}
-            </button>
-          </Tooltip>
+            <Tooltip content="Notifications">
+              <button
+                type="button"
+                onClick={toggleNotificationMenu}
+                className="relative rounded-full p-1 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+              >
+                <span className="sr-only">View notifications</span>
+                <BellIcon className="h-6 w-6" />
 
-          {isNotificationMenuOpen && (
-            <div className="absolute right-12 top-12 mt-2 bg-white border border-gray-200 rounded-md shadow-lg py-1">
-              {notifications.length > 0 ? (
-                notifications.map((notification: any, index: number) => (
-                  <a
-                    key={index}
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    <span className="mr-4 text-xs text-gray-500">[{notification.dateTime}]</span>
-                    {notification.title}: {notification.description}
-                  </a>
-                ))
-              ) : (
-                <p className="block px-4 py-2 text-sm text-gray-700">No notifications available.</p>
-              )}
-            </div>
-          )}
+                {NOTIFICATION_COUNT > 0 && (
+                  <span className="h-4 w-2 absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                    {NOTIFICATION_COUNT}
+                  </span>
+                )}
+              </button>
+            </Tooltip>
+
+            {isNotificationMenuOpen && (
+              <div className="absolute right-12 top-12 mt-2 bg-white border border-gray-200 rounded-md shadow-lg py-1">
+                {notifications.length > 0 ? (
+                  notifications.map((notification: any, index: number) => (
+                    <a
+                      key={index}
+                      href="#"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      <span className="mr-4 text-xs text-gray-500">
+                        [{notification.dateTime}]
+                      </span>
+                      {notification.title}: {notification.description}
+                    </a>
+                  ))
+                ) : (
+                  <p className="block px-4 py-2 text-sm text-gray-700">
+                    No notifications available.
+                  </p>
+                )}
+              </div>
+            )}
             <Menu as="div" className="relative ml-3">
               <div>
                 <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
@@ -249,7 +263,10 @@ function Customernavbar() {
                   {({ active }) => (
                     <a
                       href="/Customer/profile"
-                      className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-900')}
+                      className={classNames(
+                        active ? "bg-gray-100" : "",
+                        "block px-4 py-2 text-sm text-gray-900"
+                      )}
                     >
                       My Profile
                     </a>
