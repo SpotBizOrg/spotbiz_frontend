@@ -248,12 +248,7 @@ const BusinessProfile: React.FC = () => {
                       avgReview={avgReview}
                       reviewCount={reviewCount}
                     />
-                    {/* <FaStar className="text-yellow-500 ml-1" />
-                    <FaStar className="text-yellow-500" />
-                    <FaStar className="text-yellow-500" />
-                    <FaStar className="text-yellow-500" />
-                    <FaStar className="text-gray-400" /> */}
-                    &nbsp; ({reviewCount})
+                    &nbsp; ({reviewCount} ratings)
                   </p>
                 </div>
               </div>
