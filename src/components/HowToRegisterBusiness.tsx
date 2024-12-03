@@ -1,4 +1,3 @@
-import React from 'react';
 import GroupImage from '../assets/1.png';
 import { useNavigate } from 'react-router-dom';
 

@@ -1,11 +1,13 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { BellIcon, PuzzlePieceIcon } from '@heroicons/react/24/outline';
 import Logo from '../assets/logo.png';
-import { useState } from 'react';
+import default_user_icon from '../assets/default_user_icon.png';
+import { useEffect, useState } from 'react';
 import { useAuth } from '../utils/AuthProvider';
 import { useNavigate } from 'react-router-dom';
 import { Tooltip } from 'flowbite-react';
 import { BACKEND_URL, resetNotificationCount, getNotificationCount} from '../../config';
+import axios from 'axios';
 
 function classNames(...classes: string[]): string {
   return classes.filter(Boolean).join(' ');
@@ -18,6 +20,10 @@ function Customernavbar2(){
   const [notifications, setNotifications] = useState([]);
   const [isNotificationMenuOpen, setNotificationMenuOpen] = useState(false);
   const NOTIFICATION_COUNT = getNotificationCount();
+  const storedUserId = localStorage.getItem('user_id');
+  const [profilePic, setProfilePic] = useState<string | null>(null);
+  const [defaultPic, setDefaultPic] = useState<string | null>(null);
+
 
   const handleNotification = async () => {
     if (user_id != null) {
@@ -59,6 +65,39 @@ function Customernavbar2(){
     setNotificationMenuOpen(!isNotificationMenuOpen);
   };
 
+  const getProfilePic = async () => {
+    const url = `${BACKEND_URL}/customer/pics/${storedUserId}`;
+
+    try{
+      const response = await axios.get(url);
+      console.log(response.data);
+      
+      setProfilePic(response.data.imageUrl);
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
+
+  const getAllProfilePics = async () => {
+    const url = `${BACKEND_URL}/customer_pic/all`;
+
+    try{
+      const response = await axios.get(url);
+      
+      const defaultPic = response.data.find((pic: any) => pic.picId === 1).imageUrl;
+      setDefaultPic(defaultPic);
+
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
+
+  useEffect(() => {
+    getProfilePic()
+    getAllProfilePics()
+    
+  }, []);
+
   return(
   <nav className="fixed top-0 z-40 w-full bg-white border-b border-gray-200">
     <div className="px-3 py-3 lg:px-5 lg:pl-3">
@@ -84,7 +123,7 @@ function Customernavbar2(){
               ></path>
             </svg>
           </button>
-          <a href="/" className="flex ms-2 md:me-24">
+          <a href="/home" className="flex ms-2 md:me-24">
             <img src={Logo} className="h-8 me-3" alt="FlowBite Logo" />
           </a>
         </div>
@@ -133,7 +172,7 @@ function Customernavbar2(){
                 <span className="sr-only">Open user menu</span>
                 <img
                   className="h-8 w-8 rounded-full"
-                  src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
+                  src={profilePic || defaultPic ||  default_user_icon}                  // src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
                   alt=""
                 />
               </MenuButton>

@@ -1,12 +1,17 @@
 import React from "react";
 import { Modal, Button } from "flowbite-react";
 
+interface AllAvatar{
+  picId: number;
+  imageUrl: string;
+}
+
 interface AvatarModalProps {
   isOpen: boolean;
   onClose: () => void;
-  avatars: string[];
-  selectedAvatar: string;
-  onSelectAvatar: (avatar: string) => void;
+  avatars: AllAvatar[];
+  selectedAvatar: AllAvatar | null;
+  onSelectAvatar: (avatar: AllAvatar) => void;
   onUpdate: () => void;
 }
 
@@ -40,7 +45,7 @@ const AvatarModal: React.FC<AvatarModalProps> = ({
               onClick={() => onSelectAvatar(avatar)}
             >
               <img
-                src={avatar}
+                src={avatar.imageUrl}
                 alt={`Avatar ${index}`}
                 className={`w-16 h-16 object-cover rounded-full ${
                   avatar === selectedAvatar ? "border-2 border-primary" : ""

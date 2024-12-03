@@ -9,6 +9,7 @@ import AddReviewModal from "../components/AddReviewModal";
 import Customernavbar2 from "../components/Customernavbar2";
 import { useAuth } from "../utils/AuthProvider";
 import { useSearchParams } from "react-router-dom";
+import { BACKEND_URL } from "../../config";
 
 interface Review {
   reviewId: number;
@@ -31,6 +32,7 @@ function Reviews() {
   const { token, user, checkAuthenticated } = useAuth();
   const [searchParams] = useSearchParams();
   const businessEmail = searchParams.get("business") || "";
+  const [businessId, setBusinessId] = useState<number | null>(null);
 
   const starCountOptions = [
     "5 Star Reviews",
@@ -47,7 +49,7 @@ function Reviews() {
   const fetchReviews = async () => {
     console.log(businessEmail);
     try {
-      fetch(`http://localhost:8080/api/v1/review/all/${businessEmail}`, {
+      fetch(`${BACKEND_URL}/review/all/${businessEmail}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -58,6 +60,9 @@ function Reviews() {
         .then((data) => {
           console.log(data);
           setReviews(data);
+          if (data.length > 0 && !businessId) {
+            setBusinessId(data[0].businessId);
+          }
         });
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -77,7 +82,7 @@ function Reviews() {
           <AddReviewModal />
         </div>
         <Plate2>
-          <Rating></Rating>
+          <Rating businessId={businessId || undefined}></Rating>
         </Plate2>
         <div className="md:ml-auto mt-8 space-y-4 md:space-y-0 md:space-x-4 flex flex-wrap md:flex-nowrap justify-end">
           <div className="flex items-center">

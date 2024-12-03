@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import Container from "../components/Container";
 import Businessnavbar from "../components/Businessnavbar";
-import Plate from "../components/Plate";
 import Plate2 from "../components/Plate2";
 import Businesssidebar from "../components/Businesssidebar";
 

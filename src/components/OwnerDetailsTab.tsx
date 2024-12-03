@@ -3,6 +3,7 @@ import { Modal, Button, TextInput, Card } from "flowbite-react";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { useAuth } from "../utils/AuthProvider";
 import { toast } from "react-toastify";
+import { BACKEND_URL } from "../../config";
 
 const OwnerDetailsTab = () => {
   const { token, user } = useAuth();
@@ -28,7 +29,7 @@ const OwnerDetailsTab = () => {
     const fetchOwnerDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v1/business_owner/details/${user?.email}`,
+          `${BACKEND_URL}/business_owner/details/${user?.email}`,
           {
             method: "GET",
             headers: {
@@ -85,7 +86,7 @@ const OwnerDetailsTab = () => {
     }
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/business_owner/update/${user?.email}`,
+        `${BACKEND_URL}/business_owner/update/${user?.email}`,
         {
           method: "PUT",
           headers: {

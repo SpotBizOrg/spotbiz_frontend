@@ -7,6 +7,7 @@ import Rating from "../components/Rating";
 import Review from "../components/Review";
 import SortByDropdown from "../components/SortBy";
 import { useAuth } from "../utils/AuthProvider";
+import { BACKEND_URL } from "../../config";
 
 interface Review {
   reviewId: number;
@@ -27,6 +28,7 @@ function Reviews() {
   const [selectedOption, setSelectedOption] = useState<string>("");
   const { token, user, checkAuthenticated } = useAuth();
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [businessId, setBusinessId] = useState<number | null>(null);
 
   const starCountOptions = [
     "5 Star Reviews",
@@ -42,7 +44,7 @@ function Reviews() {
 
   const fetchReviews = async () => {
     try {
-      fetch(`http://localhost:8080/api/v1/review/all/${user?.email}`, {
+      fetch(`${BACKEND_URL}/review/all/${user?.email}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -53,6 +55,9 @@ function Reviews() {
         .then((data) => {
           console.log(data);
           setReviews(data);
+          if (data.length > 0 && !businessId) {
+            setBusinessId(data[0].businessId);
+          }
         });
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -71,7 +76,7 @@ function Reviews() {
           <h1 className="text-subsubheading text-bluedark">User Reviews</h1>
         </div>
         <Plate2>
-          <Rating></Rating>
+          <Rating businessId={businessId || undefined}></Rating>
         </Plate2>
         <div className="md:ml-auto mt-8 space-y-4 md:space-y-0 md:space-x-4 flex flex-wrap md:flex-nowrap justify-end">
           <div className="flex items-center">
@@ -94,9 +99,9 @@ function Reviews() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-          {reviews.map((review) => (
+          {reviews.map((review, index) => (
             <Review
-              key={""}
+              key={index}
               userType="business"
               reviewerName={review.username}
               reviewDate={new Date(review.date).toLocaleDateString()}

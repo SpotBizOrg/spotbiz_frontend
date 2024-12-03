@@ -103,7 +103,7 @@
 
 
 import React from 'react';
-import { Bar } from 'react-chartjs-2';
+import { Line } from 'react-chartjs-2';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -198,9 +198,9 @@ const SubscriptionChart: React.FC<SubscriptionChartProps> = ({ data, analytics }
     <h3 className="mt-2 text-xl font-bold text-gray-900 text-center">Business Subscribers</h3>
 
     { analytics == true ?
-      (<Bar data={chartData} options={options} />):(
+      (<Line data={chartData} options={options} />):(
         <>
-        <Bar data={chartData} options={options} className='blur-sm' />
+        <Line data={chartData} options={options} className='blur-sm' />
         <p className='text-sm text-gray-500 text-center'>Upgrade the package to see the analytics</p>
         </>
         

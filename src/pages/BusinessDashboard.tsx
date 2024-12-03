@@ -43,7 +43,7 @@ interface BusinessDashboardProps{
     badgeId: number,
     businessId: number,
     businessName: string,
-    issuedDate: Date,
+    issuedDate: string,
     rating: number
   }
 }

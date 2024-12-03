@@ -88,12 +88,12 @@ const AdComponent: React.FC<AdProps> = ({ onClose }) => {
   }, [recommendations]);
 
   return (
-    <div className="ad-container fixed inset-0 flex justify-center items-center z-50">
+    <div className="ad-container fixed bottom-4 right-4 flex justify-end items-end z-50">
       {currentAd ? (
-        <div className="relative p-4 rounded shadow-lg max-w-md w-full">
+        <div className="relative p-4rounded shadow-lg max-w-sm w-full">
           <button
             onClick={onClose}
-            className="absolute top-2 right-2 p-4 text-gray-600 hover:scale-105 z-10"
+            className="absolute top-0 right-1 p-2 text-gray-600 hover:scale-105 z-10"
           >
             &times;
           </button>
@@ -114,10 +114,8 @@ const AdComponent: React.FC<AdProps> = ({ onClose }) => {
           />
         </div>
       ) : (
-        <div className="px-12 sm:ml-64 mt-20">
-          <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-            <HashLoader color="#36d7b7" size={50} />
-          </div>
+        <div className="fixed bottom-4 right-4 flex items-center justify-center bg-black bg-opacity-50 rounded shadow-lg">
+          <HashLoader color="#36d7b7" size={30} />
         </div>
       )}
     </div>

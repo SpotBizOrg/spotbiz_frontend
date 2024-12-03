@@ -5,11 +5,18 @@ import ProfileContent from "../components/ProfileContent";
 import AvatarModal from "../components/AvatarModal";
 import Customernavbar2 from "../components/Customernavbar2";
 import { BACKEND_URL } from "../../config";
+import default_user_icon from '../assets/default_user_icon.png';
+
+
+interface AllAvatar{
+  picId: number;
+  imageUrl: string;
+}
 
 const CustomerProfile: React.FC = () => {
   const [activeTab, setActiveTab] = useState("About Me");
-  const [selectedAvatar, setSelectedAvatar] = useState("");
-  const [tempAvatar, setTempAvatar] = useState("");
+  const [selectedAvatar, setSelectedAvatar] = useState<AllAvatar | null>(null);
+  const [tempAvatar, setTempAvatar] = useState<AllAvatar | null>(null);
   const [showAvatarModal, setShowAvatarModal] = useState(false);
 
   // User data state
@@ -20,7 +27,7 @@ const CustomerProfile: React.FC = () => {
     phoneNo: "",
   });
 
-  const [availableAvatars, setAvailableAvatars] = useState<string[]>([]);
+  const [availableAvatars, setAvailableAvatars] = useState<AllAvatar[]>([]);
 
   useEffect(() => {
     document.title = "SpotBiz | My Profile";
@@ -60,8 +67,12 @@ const CustomerProfile: React.FC = () => {
       const response = await fetch(`${BACKEND_URL}/customer/pics/${userData.userId}`);
       if (response.ok) {
         const data = await response.json();
-        setSelectedAvatar(data.imageUrl);
-        setTempAvatar(data.imageUrl);
+        const transformedData = {
+          picId: data.picId,
+          imageUrl: data.imageUrl,
+        }
+        setSelectedAvatar(transformedData);
+        setTempAvatar(transformedData);
       } else {
         assignDefaultAvatar();
       }
@@ -76,7 +87,7 @@ const CustomerProfile: React.FC = () => {
       const response = await fetch(`${BACKEND_URL}/customer_pic/all`);
       if (response.ok) {
         const avatars = await response.json();
-        const defaultAvatar = avatars.find((avatar: any) => avatar.picId === 1)?.imageUrl;
+        const defaultAvatar = avatars.find((avatar: any) => avatar.picId === 1);
         if (defaultAvatar) {
           setSelectedAvatar(defaultAvatar);
           setTempAvatar(defaultAvatar);
@@ -93,25 +104,26 @@ const CustomerProfile: React.FC = () => {
       const response = await fetch(`${BACKEND_URL}/customer_pic/all`);
       if (response.ok) {
         const avatars = await response.json();
-        setAvailableAvatars(avatars.map((avatar: any) => avatar.imageUrl));
+        // setAvailableAvatars(avatars.map((avatar: any) => avatar.imageUrl));
+        setAvailableAvatars(avatars);
       }
     } catch (error) {
       console.error("Error fetching available avatars:", error);
     }
   };
 
-  const saveUserAvatar = async (avatarUrl: string) => {
+  const saveUserAvatar = async (avatar: AllAvatar | null) => {
     try {
-      console.log("Saving avatar for user:", userData.userId, "with URL:", avatarUrl);
+      // console.log("Saving avatar for user:", userData.userId, "with URL:", avatarUrl);
   
-      const response = await fetch(`${BACKEND_URL}/api/v1/customer/pics`, {
+      const response = await fetch(`${BACKEND_URL}/customer/pics`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
           userId: userData.userId,
-          imageUrl: avatarUrl,
+          picId: avatar?.picId || 1, //updated here
         }),
       });
   
@@ -146,7 +158,7 @@ const CustomerProfile: React.FC = () => {
               <div className="relative mr-6">
                 <img
                   className="h-[160px] w-[160px] bg-white p-1 rounded-full shadow-lg"
-                  src={selectedAvatar || "https://via.placeholder.com/150"}
+                  src={selectedAvatar?.imageUrl || default_user_icon}
                   alt="Profile"
                   style={{ position: "relative", top: "20px" }}
                 />

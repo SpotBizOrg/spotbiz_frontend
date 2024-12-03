@@ -3,6 +3,7 @@ import { useRef, useState } from "react";
 import AuthProvider, { useAuth } from "../utils/AuthProvider";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { BACKEND_URL } from "../../config";
 
 export function AddReviewModal() {
   const [openModal, setOpenModal] = useState(false);
@@ -46,7 +47,7 @@ export function AddReviewModal() {
         };
 
         const response = await fetch(
-          `http://localhost:8080/api/v1/review/create/${user?.email}`,
+          `${BACKEND_URL}/review/create/${user?.email}`,
           {
             method: "POST",
             headers: {
@@ -65,7 +66,7 @@ export function AddReviewModal() {
           const errorText = await response.text();
           try {
             const errorData = JSON.parse(errorText);
-            toast.error(errorData.error || "An error occurred");
+            // toast.error(errorData.error || "An error occurred");
           } catch (e) {
             throw new Error("Invalid error response");
           }

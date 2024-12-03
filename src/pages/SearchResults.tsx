@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Customernavbar from '../components/Customernavbar';
-import { GridLoader } from 'react-spinners';
+import { GridLoader, HashLoader } from 'react-spinners';
 import SortByDropdown from '../components/SortBy';
 import CategoryPills from '../components/CategoryPills';
 import NearMeBtn from '../components/NearMeBtn';
@@ -110,6 +110,8 @@ const ResultCard: React.FC<ResultCardProps> = ({ imageSrc, name, place_location,
     } else {
       updatedStatus = "Closed Now";
     }
+  } else{
+    updatedStatus = "Open Now"
   }
 
   
@@ -262,11 +264,7 @@ const SearchResults: React.FC = () => {
     return (
     
       <div className='flex flex-row justify-center items-center h-screen'>
-         <GridLoader
-          color="#0D3B66"
-          margin={10}
-          size={30}
-        />
+        <HashLoader color="#36d7b7" size={50} />
       </div>
     
    ); 

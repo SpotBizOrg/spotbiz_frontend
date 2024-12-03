@@ -10,6 +10,7 @@ import LocalPoliceIcon from '@mui/icons-material/LocalPolice';
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import WidgetsIcon from '@mui/icons-material/Widgets';
 import PaymentsIcon from '@mui/icons-material/Payments';
+import PaidIcon from '@mui/icons-material/Paid';
 
 interface AdminsidebarProps {
   selectedTile: string;
@@ -65,7 +66,7 @@ const navigation: NavigationItem[] = [
     label:<span className="ms-3">Coupon Reimburse</span>
 
 },
-  { name: 'Transactions', href: '/admin/transactions', current: false, ico:<PaymentsIcon />,
+  { name: 'Transactions', href: '/admin/transactions', current: false, ico:<PaidIcon />,
     label:<span className="ms-3">Transactions</span>
 
 },

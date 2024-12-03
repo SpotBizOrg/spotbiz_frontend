@@ -126,7 +126,7 @@ const FlotingBtnsbusiness: React.FC<FlotingBtnsbusinessProps> = ({ businessMobil
                     <Tooltip content="Chat with seller" placement="left">
                         <button
                             className="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-2 rounded-full shadow-lg"
-                            onClick={() => window.open("https://wa.me/+94702561331", "_blank")}
+                            onClick={() => window.open("https://wa.me/"+businessMobile, "_blank")}
                         >
                             <IoLogoWhatsapp className="text-white text-2xl" />
                         </button>
