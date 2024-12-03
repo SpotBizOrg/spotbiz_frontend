@@ -9,7 +9,6 @@ interface ProfileContentProps {
     phoneNo: string;
   };
 }
-
 const ProfileContent: React.FC<ProfileContentProps> = ({ activeTab, userData }) => {
   if (activeTab === "About Me") {
     return (
