@@ -75,7 +75,9 @@ const GamePage: React.FC = () => {
       clearInterval(smallAdInterval);
     };
   }, [showAd]);
+
   const sendGameStatsToBackend = async (duration: number) => {
+    sendAlreadyPlayedGame();
     if (duration <= 10) {
       console.log("No significant play time.");
       return;
@@ -120,6 +122,38 @@ const GamePage: React.FC = () => {
       if (points > 0) {
         toast.success(`Congratulations🥳 You earned ${points} points!`);
       }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
+
+  const sendAlreadyPlayedGame = async () => {
+    if (!userId || !gameId) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `${BACKEND_URL}/already_played_games/${userId}/${gameId}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Error response:", errorData);
+        throw new Error(
+          `HTTP error! status: ${response.status}, message: ${
+            errorData.message || "Unknown error"
+          }`
+        );
+      }
+      const responseData = await response.json();
+      console.log("Success:", responseData);
     } catch (error) {
       console.error("An error occurred:", error);
     }
