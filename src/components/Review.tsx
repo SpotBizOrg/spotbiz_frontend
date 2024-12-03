@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Card, Avatar, Rating } from "flowbite-react";
+import { toast } from "react-toastify";
+import { BACKEND_URL } from "../../config";
 
 interface ReviewProps {
   userType: "business" | "regular";
@@ -10,6 +12,7 @@ interface ReviewProps {
   reviewerAvatar: string;
   rating: number;
   isReported: string;
+  reviewId: number;
 }
 
 const Review: React.FC<ReviewProps> = ({
@@ -21,13 +24,19 @@ const Review: React.FC<ReviewProps> = ({
   reviewerAvatar,
   rating,
   isReported,
+  reviewId,
 }) => {
   const [isFullReviewShown, setIsFullReviewShown] = useState(false);
+  const [reportStatus, setReportStatus] = useState(isReported);
+
+  useEffect(() => {
+    setReportStatus(isReported);
+  }, [isReported]);
 
   const toggleFullReview = (
     e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) => {
-    e.preventDefault(); // Prevent default anchor behavior
+    e.preventDefault();
     setIsFullReviewShown(!isFullReviewShown);
   };
 
@@ -35,6 +44,30 @@ const Review: React.FC<ReviewProps> = ({
     reviewText.length > 100 && !isFullReviewShown
       ? reviewText.slice(0, 100) + "..."
       : reviewText;
+
+  const handleReport = async () => {
+    try {
+      const response = await fetch(
+        `${BACKEND_URL}/review-report/mark/${reviewId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      if (response.ok) {
+        setReportStatus("REPORTED");
+        toast.success("Review has been successfully reported.");
+      } else {
+        toast.error("Failed to report the review. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error reporting review:", error);
+      toast.error("An error occurred while reporting the review.");
+    }
+  };
 
   return (
     <Card className="w-full">
@@ -76,20 +109,20 @@ const Review: React.FC<ReviewProps> = ({
       {userType === "business" && (
         <aside>
           <div className="flex items-center mt-3">
-            {isReported === "REPORTED" ? (
+            {reportStatus === "REPORTED" ? (
               <button
-                className="px-2 py-1.5 text-xs font-medium text-gray-900 focus:outline-none bg-red-200 rounded-lg border border-red-300 hover:bg-red-300 hover:text-gray-800 focus:z-10 focus:ring-4 focus:ring-red-200 dark:focus:ring-red-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
-                disabled // Optional: Disable the button if reported
+                className="px-2 py-1.5 text-xs font-medium text-gray-900 focus:outline-none bg-gray-200 rounded-lg border border-gray-200   focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 cursor-not-allowed "
+                disabled
               >
                 Reported
               </button>
             ) : (
-              <a
-                href="#"
+              <button
+                onClick={handleReport}
                 className="px-2 py-1.5 text-xs font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700"
               >
                 Report abuse
-              </a>
+              </button>
             )}
           </div>
         </aside>

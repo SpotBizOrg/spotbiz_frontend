@@ -44,7 +44,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
       <p className='font-semibold text-sm text-gray-500 mt-4'>Features</p>
       <ul className="mt-4 space-y-1 text-sm text-gray-700 list-disc list-inside">
         <li className="flex items-center text-left">
-          {adsPerWeek}
+        <span className="text-xl font-bold text-gray-900">{adsPerWeek}</span> {/* Highlighted number */}
           <span className="ml-2 font-semibold">Ads & Promos per week</span>
         </li>
         <li className="flex items-center text-left">
@@ -66,7 +66,7 @@ const PackageCard: React.FC<PackageCardProps> = ({
           <span className="ml-2 font-semibold">Interact with customers</span>
         </li>
         <li className="flex items-center text-left">
-          <CheckIcon className="w-4 h-4 text-blue1" aria-hidden="true" />
+          
           <span className="ml-2 font-semibold">{listing} Listing </span>
         </li>
       </ul>

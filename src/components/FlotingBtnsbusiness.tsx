@@ -99,19 +99,8 @@ const FlotingBtnsbusiness: React.FC<FlotingBtnsbusinessProps> = ({ businessMobil
 
     return (
         <>
+            {/* subscribe button */}
             <div className="fixed bottom-6 right-2">
-                {messaging && clientId !== 0 && (
-                    <Tooltip content="Chat with seller" placement="left">
-                        <button
-                            className="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-2 rounded-full shadow-lg"
-                            onClick={() => window.open("https://wa.me/+94702561331", "_blank")}
-                        >
-                            <IoLogoWhatsapp className="text-white text-2xl" />
-                        </button>
-                    </Tooltip>
-                )}
-            </div>
-            <div className="fixed bottom-20 right-2">
                 {clientId !== 0 && (
                     <Tooltip
                         content={subscribed ? "Unsubscribe" : "Subscribe Now"}
@@ -126,6 +115,20 @@ const FlotingBtnsbusiness: React.FC<FlotingBtnsbusinessProps> = ({ businessMobil
                             }`}
                         >
                             <HiBell className="text-white text-2xl" />
+                        </button>
+                    </Tooltip>
+                )}
+            </div>
+
+            {/* whatsapp button */}
+            <div className="fixed bottom-20 right-2">
+                {messaging && clientId !== 0 && (
+                    <Tooltip content="Chat with seller" placement="left">
+                        <button
+                            className="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-2 rounded-full shadow-lg"
+                            onClick={() => window.open("https://wa.me/"+businessMobile, "_blank")}
+                        >
+                            <IoLogoWhatsapp className="text-white text-2xl" />
                         </button>
                     </Tooltip>
                 )}

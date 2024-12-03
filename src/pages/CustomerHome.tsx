@@ -14,6 +14,8 @@ import Advertisement from "../components/Advertisement";
 import Footer from "../components/Footer";
 import axios from "axios";
 import { useAuth } from "../utils/AuthProvider";
+import { BACKEND_URL } from "../../config";
+import Categories from "../components/Categories";
 
 interface SearchResult {
   name: string;
@@ -48,7 +50,7 @@ const CustomerHome: React.FC = () => {
 
       try {
         const response = await axios.post(
-          "http://localhost:8080/api/v1/search/post",
+          "http://localhost:8080/api/v1/search/post", // not use
           searchQuery,
           {
             params: { page: 0, size: 10 },
@@ -74,12 +76,14 @@ const CustomerHome: React.FC = () => {
   };
 
   const fetchRecommendations = async () => {
-    const userId = 39;
-    const email = "shalini20020109@gmail.com";
+    const userId = localStorage.getItem("user_id");
+    const email = localStorage.getItem("email");
+    // const userId = 39;
+    // const email = "shalini20020109@gmail.com";
 
     try {
       const response = await axios.get(
-        `http://localhost:8080/api/v1/recommendation?userId=${userId}&email=${email}`
+        `${BACKEND_URL}/recommendation?userId=${userId}&email=${email}`
       );
       const data = response.data;
 
@@ -109,7 +113,9 @@ const CustomerHome: React.FC = () => {
     document.title = "SpotBiz | Home";
     fetchRecommendations();
 
-    if (!checkAuthenticated() || user?.role != "CUSTOMER") {
+    console.log();
+
+    if (!checkAuthenticated()) {
       login();
     }
   }, []);
@@ -166,6 +172,14 @@ const CustomerHome: React.FC = () => {
         </div>
       </header>
 
+      <Categories />
+      <div className="text-center my-8">
+        <p className="mt-6 text-gray-500 italic">
+          Discover the latest offers and win vouchers in Sri Lankan shops from
+          the comfort of your home.
+        </p>
+      </div>
+
       {/* Conditional Recommendations Section */}
       {recommendations.length >= 4 && (
         <main className="flex-grow p-8">
@@ -186,6 +200,7 @@ const CustomerHome: React.FC = () => {
                     img={imageUrl}
                     details={adData.details || undefined}
                     description={adData.description || undefined}
+                    businessId={rec.businessId}
                   />
                 );
               })}
@@ -195,6 +210,8 @@ const CustomerHome: React.FC = () => {
               <Link
                 to="/allrecommendations"
                 className="text-slate-600 hover:underline text-lg font-semibold"
+                target="_blank"
+                rel="noopener noreferrer"
               >
                 See More
               </Link>

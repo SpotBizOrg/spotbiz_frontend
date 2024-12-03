@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useLocation, useNavigate, useSearchParams } from 'react-router-dom';
 import Customernavbar from '../components/Customernavbar';
-import { GridLoader } from 'react-spinners';
+import { GridLoader, HashLoader } from 'react-spinners';
 import SortByDropdown from '../components/SortBy';
 import CategoryPills from '../components/CategoryPills';
 import NearMeBtn from '../components/NearMeBtn';
@@ -110,6 +110,8 @@ const ResultCard: React.FC<ResultCardProps> = ({ imageSrc, name, place_location,
     } else {
       updatedStatus = "Closed Now";
     }
+  } else{
+    updatedStatus = "Open Now"
   }
 
   
@@ -157,7 +159,7 @@ const SearchResults: React.FC = () => {
   const [results, setResults] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const [sortedResults, setSortedResults] = useState<any[]>([]);
-  const [locationFilter, setLocationFilter] = useState(false);
+  const [locationFilter, setLocationFilter] = useState(true);
   // const [selectedOption, setSelectedOption] = useState<string | null>(null);
   const [currentPageS, setCurrentPageS] = useState(1);
   const [currentPageC, setCurrentPageC] = useState(1);
@@ -262,17 +264,14 @@ const SearchResults: React.FC = () => {
     return (
     
       <div className='flex flex-row justify-center items-center h-screen'>
-         <GridLoader
-          color="#0D3B66"
-          margin={10}
-          size={30}
-        />
+        <HashLoader color="#36d7b7" size={50} />
       </div>
     
    ); 
   }
 
   const geocodeAddress = async (address: string): Promise<any | null> => {
+    // const api_key = import.meta.env.VITE_OPENCAGE_API_KEY;
     const api_key = '1a8fbbeaffdd467db7e42bd66702aad1'; // Add your OpenCage API key here
     const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(address)}&key=${api_key}`;
   

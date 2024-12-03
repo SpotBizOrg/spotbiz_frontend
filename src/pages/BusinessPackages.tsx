@@ -96,7 +96,7 @@ export default function BusinessPackages() {
           </div>
         </div>
       </div>
-      <Popup isOpen={isPopupOpen} onClose={togglePopup} />
+      <Popup isOpen={isPopupOpen} onClose={togglePopup} boughtPackage={0} businessId={0} />
     </div>
   );
 }

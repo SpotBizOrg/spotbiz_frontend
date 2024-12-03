@@ -4,6 +4,7 @@ import { MdOutlineModeEdit } from "react-icons/md";
 import { toast } from "react-toastify";
 import SocialLinksCard from "./SocialLinksCard";
 import { useAuth } from "../utils/AuthProvider";
+import { BACKEND_URL } from "../../config";
 
 interface BusinessSocialLinks {
   facebook: string;
@@ -47,7 +48,7 @@ const TagsAndSocialLinks: React.FC<TagsAndSocialLinksProps> = ({
     const fetchCategoryName = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v1/category/name/${businessDetails.categoryId}`
+          `${BACKEND_URL}/category/name/${businessDetails.categoryId}`
         );
         if (!response.ok) {
           throw new Error("Category not found");
@@ -83,7 +84,7 @@ const TagsAndSocialLinks: React.FC<TagsAndSocialLinksProps> = ({
   };
 
   const handleUpdateTags = () => {
-    fetch(`http://localhost:8080/api/v1/category/tag/update/${user!.email}`, {
+    fetch(`${BACKEND_URL}/category/tag/update/${user!.email}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

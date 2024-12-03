@@ -5,12 +5,15 @@ import Container from "../components/Container";
 import BadgeImg from "../assets/badge.png";
 import "./custom-datepicker.css";
 
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Button, Card, Modal, Label, TextInput } from "flowbite-react";
 
 import "react-datepicker/dist/react-datepicker.css";
 import YearMonthSelector from "../components/DatePicker";
 import { FaPlus } from "react-icons/fa";
+import { BACKEND_URL } from "../../config";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 interface BadgeDetails {
   month: string;
@@ -21,8 +24,13 @@ interface BadgeDetails {
 }
 
 function Badges() {
+
+
   useEffect(()=>{
     document.title = "SpotBiz | Badges | Admin";
+
+    fetchBadgeData();
+
   },[]);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -34,56 +42,49 @@ function Badges() {
     rating: 0,
     createdAt: new Date(), // Initialize with current date
   });
-  const [pastBadges, setPastBadges] = useState<BadgeDetails[]>([
-    // Sample data for past badges
-    {
-      month: "January",
-      year: "2024",
-      businessName: "Asian Electrical",
-      rating: 4.8,
-      createdAt: new Date("2024-02-01"),
-    },
-    {
-      month: "February",
-      year: "2024",
-      businessName: "Idealz Lanka",
-      rating: 4.4,
-      createdAt: new Date("2024-03-01"),
-    },
-    {
-      month: "March",
-      year: "2024",
-      businessName: "Silvertones Limited",
-      rating: 4.3,
-      createdAt: new Date("2024-04-01"),
-    },
-    {
-      month: "April",
-      year: "2024",
-      businessName: "Abans PLC",
-      rating: 4.2,
-      createdAt: new Date("2024-05-01"),
-    },
-    {
-      month: "May",
-      year: "2024",
-      businessName: "Idealz Lanka",
-      rating: 4.8,
-      createdAt: new Date("2024-06-01"),
-    },
-  ]);
+  const [pastBadges, setPastBadges] = useState<BadgeDetails[]>([]);
 
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
+  const [businessName, setBusinessName] = useState<string>("")
+  const [rating, setRating] = useState<number>(0);
+  const [businessId, setBusinessId] = useState<number>(0);
 
   // Replace these with values fetched from the backend
-  const businessName = "Present Solutions";
-  const rating = 4.5;
+  // let businessName = "Present Solutions";
+  // let rating = 4.5;
+
+  const fetchBadgeData = async () =>{
+    const url = `${BACKEND_URL}/business_badge/all/6`
+
+    try{
+      const response = await axios.get(url);
+      const data = response.data;
+
+      // Transform the fetched data
+      const transformedBadges = data.map((badge: any) => ({
+        month: new Date(badge.issuedDate).toLocaleString("default", { month: "long" }),
+        year: new Date(badge.issuedDate).getFullYear().toString(),
+        businessName: badge.businessName,
+        rating: badge.rating,
+        createdAt: new Date(badge.issuedDate),
+      }));
+
+      // Update the pastBadges state
+      setPastBadges(transformedBadges);
+      
+      
+    }catch (error) {
+      console.error(error);
+    }
+  }
 
   useEffect(() => {
+
     setBadgeDetails((prevDetails) => ({
       ...prevDetails,
       businessName,
       rating,
+      
     }));
   }, [businessName, rating]);
 
@@ -100,15 +101,74 @@ function Badges() {
     setBadgeDetails((prevDetails) => ({ ...prevDetails, month, year }));
   };
 
+  const saveNewBadge = async() =>{
+    const url = `${BACKEND_URL}/business_badge`
+
+    const body = {
+      badgeId: 0,
+      businessId: businessId,
+      businessName: businessName,
+      issuedDate: new Date(),
+      rating: rating
+    }
+
+    console.log(body);
+    
+
+    try{
+      const response = await axios.post(url, body)
+      
+      if (response.status == 200) {
+        toast.success("Badge Issued!")
+      }
+    }catch (error) {
+      toast.error("Error Occured")
+      console.error(error);
+    }
+  }
+
   const handleCreateBadge = () => {
+
+    saveNewBadge()
     const newBadge: BadgeDetails = {
       ...badgeDetails,
-      createdAt: new Date(), // Set creation date to current date
+      createdAt: new Date(),
+      month: new Date().toLocaleString("default", { month: "long" }),
+      year: new Date().getFullYear().toString(), // Set creation date to current date
     };
     setCurrentBadge(newBadge);
     setPastBadges((prevBadges) => [...prevBadges, newBadge]);
     closeModal();
   };
+
+  const fetchAwardedBusiness = async () => {
+    const url = `${BACKEND_URL}/business_badge/new`
+
+    try{
+      const response = await axios.get(url);
+      // console.log(response.data);
+
+      console.log(response.data.businessName);
+      console.log(response.data.businessId);
+
+      setBusinessName(response.data.businessName)
+      setRating(response.data.rating)
+      setBusinessId(response.data.businessId)
+      // businessName = response.data.businessName
+      // rating = response.data.rating
+      
+
+
+    }catch (error) {
+      toast.error("Error occurred!")
+      console.error(error);
+    }
+
+  }
+
+  useEffect(() => {
+      fetchAwardedBusiness()
+  },[isModalOpen==true])
 
   return (
     <Container>

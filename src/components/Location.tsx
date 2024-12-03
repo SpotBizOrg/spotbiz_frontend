@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "axios";
-import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
 
@@ -12,7 +11,10 @@ const BusinessLocation: React.FC<BusinessLocationProps> = ({ location }) => {
   const [coordinates, setCoordinates] = useState<[number, number] | null>(null);
 
   const fetchCoordinates = async (address: string) => {
-    const api_key = '1a8fbbeaffdd467db7e42bd66702aad1'; // Add your OpenCage API key here
+    const api_keys = import.meta.env.VITE_OPENCAGE_API_KEY;
+    console.log(api_keys);
+    
+     const api_key = '1a8fbbeaffdd467db7e42bd66702aad1'; // Add your OpenCage API key here
     const url = `https://api.opencagedata.com/geocode/v1/json?q=${encodeURIComponent(address)}&key=${api_key}`;
     
     try {
@@ -31,21 +33,21 @@ const BusinessLocation: React.FC<BusinessLocationProps> = ({ location }) => {
       console.error(`Error fetching coordinates for address ${address}:`, error);
     }
 
-    try {
-      // Update the query with the full address
-      // const address = '88 Peradeniya Road, Kandy, Sri Lanka';
-      const response = await axios.get(
-        `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1`
-      );
-      if (response.data && response.data.length > 0) {
-        const { lat, lon } = response.data[0];
-        setCoordinates([parseFloat(lat), parseFloat(lon)]);
-        console.log(`Coordinates for ${address}:`, { lat, lon });
+    // try {
+
+    //   // Update the query with the full address
+    //   const response = await axios.get(
+    //     `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(address)}&format=json&limit=1`
+    //   );
+    //   if (response.data && response.data.length > 0) {
+    //     const { lat, lon } = response.data[0];
+    //     setCoordinates([parseFloat(lat), parseFloat(lon)]);
+    //     console.log(`Coordinates for ${address}:`, { lat, lon });
         
-      }
-    } catch (error) {
-      console.error('Error fetching coordinates:', error);
-    }
+    //   }
+    // } catch (error) {
+    //   console.error('Error fetching coordinates:', error);
+    // }
   };
 
   useEffect(() => {

@@ -29,7 +29,7 @@ const AdminTagsReviews: React.FC = () => {
   const [error, setError] = useState("");
 
   useEffect(() => {
-    document.title = "SpotBiz | Business Types & Tags | Admin";
+    document.title = "SpotBiz | Business Categories & Tags | Admin";
     if (newTags.length > 0) {
       console.log("Updated tags array:", newTags);
     }

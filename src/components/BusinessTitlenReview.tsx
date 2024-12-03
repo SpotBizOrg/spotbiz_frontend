@@ -73,6 +73,8 @@ const BusinessTitlenReview: React.FC<BusinessTitlenReviewProps> = ({ businessNam
     } else {
       updatedStatus = "Closed Now";
     }
+  } else {
+    updatedStatus = "Open Now"
   }
 
 
@@ -85,7 +87,7 @@ const BusinessTitlenReview: React.FC<BusinessTitlenReviewProps> = ({ businessNam
           <p>{location}</p>
         </div>
         {
-          weeklySchedule && updatedStatus === "Open Now" ? (
+          updatedStatus === "Open Now" ? (
             <div className="w-40 border border-green-500 text-green-500 font-bold px-4 py-1 rounded-md text-center text-bodysmall mb-2">{updatedStatus}</div>
           ) : (
             <div className="w-40 border border-red-500 text-red-500 font-bold px-4 py-1 rounded-md text-center text-bodysmall mb-2">{updatedStatus}</div>

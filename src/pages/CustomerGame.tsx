@@ -6,6 +6,14 @@ import { toast } from "react-toastify";
 import { BACKEND_URL } from "../../config";
 import { HashLoader } from "react-spinners";
 import { useAuth } from "../utils/AuthProvider";
+import axios from "axios";
+import default_user_icon from "../assets/default_user_icon.png"; // Add this line
+
+interface UserDetails{
+  userId: number;
+  name: string;
+  points: number;
+}
 
 interface Game_display {
   gameId: string;
@@ -30,9 +38,12 @@ interface Leaderboard {
 function CustomerGame() {
   useEffect(() => {
     document.title = "SpotBiz | Games | Customer";
+    fetchUserDetails();
+    fetchProfilePic();
+    getAllProfilePics();
     fetchRegularGames();
     fetchSeasonalGames();
-    // fetchPlayedGames();
+    fetchPlayedGames();
     fetchLeaderboard();
     if (!checkAuthenticated()) {
       login();
@@ -48,6 +59,55 @@ function CustomerGame() {
   const [leaderboard, setLeaderboard] = useState<Leaderboard[]>([]);
   const [isLeaderboardActivated, setIsLeaderboardActivated] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [userDetails, setUserDetails] = useState<UserDetails | null>(null);
+  const [profilePic, setProfilePic] = useState<string | null>(null);
+  const [defaultPic, setDefaultPic] = useState<string | null>(null);
+
+  const getAllProfilePics = async () => {
+    const url = `${BACKEND_URL}/customer_pic/all`;
+
+    try{
+      const response = await axios.get(url);
+      
+      const defaultPic = response.data.find((pic: any) => pic.picId === 1).imageUrl;
+      setDefaultPic(defaultPic);
+
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
+  
+  const fetchProfilePic = async () => {
+    const url = `${BACKEND_URL}/customer/pics/${userId}`;
+
+    try {
+      const response = await axios.get(url);
+      console.log(response.data);
+      setProfilePic(response.data.imageUrl);
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  }
+
+  const fetchUserDetails = async () => {
+    const url = `${BACKEND_URL}/game/details/${userId}`;
+
+    try{
+      const response = await axios.get(url);
+      console.log(response.data);
+
+      const transformedData = {
+        userId: response.data.userId,
+        name: response.data.name,
+        points: response.data.points
+      }
+
+      setUserDetails(transformedData);
+
+    } catch (error) {
+      console.error('An error occurred:', error);
+    }
+  }
 
   const fetchRegularGames = async () => {
     try {
@@ -56,7 +116,6 @@ function CustomerGame() {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       if (!response.ok) {
-        toast.error("An unexpected error occurred");
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
@@ -86,17 +145,27 @@ function CustomerGame() {
   const fetchPlayedGames = async () => {
     try {
       const response = await fetch(
-        `${BACKEND_URL}/game/played_games/${userId}`
+        `${BACKEND_URL}/already_played_games/${userId}`
       );
       if (response.status == 404) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       if (!response.ok) {
-        toast.error("An unexpected error occurred");
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const data = await response.json();
-      setPlayedGames(data);
+      console.log("Played games:", data);
+      const games: Game_display[] = data.map((item: any) => ({
+        gameId: item.game.gameId,
+        imageUrl: item.game.imageUrl || "",
+        gameName: item.game.gameName,
+        gameType: item.game.gameType,
+        developer: item.game.developer,
+        description: item.game.description,
+        gameUrl: item.game.gameUrl || "",
+      }));
+
+      setPlayedGames(games);
     } catch (error) {
       console.error("An error occurred:", error);
     }
@@ -114,7 +183,6 @@ function CustomerGame() {
       if (!response.ok) {
         const errorData = await response.json();
         console.error("Error response:", errorData);
-        toast.error("An unexpected error occurred");
         throw new Error(
           `HTTP error! status: ${response.status}, message: ${
             errorData.message || "Unknown error"
@@ -126,7 +194,6 @@ function CustomerGame() {
       setLeaderboard(responseData);
     } catch (error) {
       console.error("An error occurred:", error);
-      toast.error("An unexpected error occurred");
     }
   };
 
@@ -180,11 +247,11 @@ function CustomerGame() {
         <div className="flex items-center mb-6 ">
           <img
             className="ring-offset-2 ring h-40 w-40 rounded-full"
-            src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
+            src={profilePic || defaultPic ||  default_user_icon}            // src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
           />
           <div>
-            <p className="text-black text-xl ml-4">Shalini</p>
-            <p className="text-gray-400 ml-4">Points: 95</p>
+            <p className="text-black text-xl ml-4">{userDetails?.name || "Nirasha Nelki"}</p>
+            <p className="text-gray-400 ml-4">Points: {userDetails?.points || 95}</p>
           </div>
         </div>
         <div className="flex items-center justify-between w-full mb-5 border-b border-gray-300 mb-8">
@@ -410,6 +477,48 @@ function CustomerGame() {
                 
               </div>
             )}
+          </div>
+
+          <div>
+            {
+              activeTab === "howToPlay" && (
+                <div className="bg-gray-100 p-8 rounded-lg shadow-lg max-w-6xl mx-auto mt-2 border border-gray-300">
+                  <h1 className="text-3xl font-bold text-blue-600 mb-4 text-center">How to Play Games on SpotBiz</h1>
+                  <p className="text-gray-700 mb-4">
+                    SpotBiz offers a variety of exciting games for you to enjoy. These games are divided into two categories: 
+                    <span className="font-semibold text-blue-600"> Seasonal Games</span> and 
+                    <span className="font-semibold text-blue-600"> Regular Games</span>.
+                  </p>
+
+                  <h2 className="text-2xl font-semibold text-blue-500 mt-6 mb-3">🎉 Seasonal Games</h2>
+                  <p className="text-gray-700 mb-4">
+                    Seasonal Games are added during special occasions like Halloween and Christmas, bringing you festive fun and rewards.
+                  </p>
+
+                  <h2 className="text-2xl font-semibold text-blue-500 mt-6 mb-3">🎮 Regular Games</h2>
+                  <p className="text-gray-700 mb-4">
+                    Regular Games are available year-round and designed to keep you entertained every day.
+                  </p>
+
+                  <h2 className="text-2xl font-semibold text-blue-500 mt-6 mb-3">🏆 Earn Points</h2>
+                  <p className="text-gray-700 mb-4">
+                    The longer you play, the more points you earn! Points accumulate based on your playtime, and the frequency of points increases the longer you play.
+                  </p>
+
+                  <h2 className="text-2xl font-semibold text-blue-500 mt-6 mb-3">📋 Leaderboard</h2>
+                  <p className="text-gray-700 mb-4">
+                    Compete with other players and see your rank on the 
+                    <span className="font-semibold text-blue-600"> monthly leaderboard</span>. The top 10 players of the month will be displayed for everyone to admire.
+                  </p>
+
+                  <h2 className="text-2xl font-semibold text-blue-500 mt-6 mb-3">🎁 Rewards</h2>
+                  <p className="text-gray-700">
+                    Players with the highest scores have the chance to win 
+                    <span className="font-semibold text-blue-600"> discount coupons</span> that can be used on purchases from businesses registered on the SpotBiz platform. Play more to increase your chances of winning!
+                  </p>
+                </div>
+              )
+            }
           </div>
         </div>
       </div>

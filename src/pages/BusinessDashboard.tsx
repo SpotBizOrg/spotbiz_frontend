@@ -39,6 +39,13 @@ interface BusinessDashboardProps{
     listing: string,
     isActive: boolean
   };
+  businessBadgeDto: {
+    badgeId: number,
+    businessId: number,
+    businessName: string,
+    issuedDate: string,
+    rating: number
+  }
 }
 
 const Dashboard: React.FC = () => {
@@ -99,8 +106,10 @@ const Dashboard: React.FC = () => {
         <div className="flex items-center justify-center px-12 sm:ml-64">
           <div >
             <DashboardStats 
-            subscriberCount={dashboardData?.subscriberCount || 0} 
-            clicks={dashboardData?.clickCount || 0} />
+              subscriberCount={dashboardData?.subscriberCount || 0}
+              clicks={dashboardData?.clickCount || 0}
+              businessBadge={dashboardData?.businessBadgeDto || null} 
+              analyitcs={dashboardData?.pkg.analytics ||false} />
             <div className="flex flex-row max-w-full">
               <SubscriptionChart data={dashboardData?.subscribeList || null} analytics={dashboardData?.pkg.analytics ||false} />
               {/* <div className='basis-1/4'></div> */}

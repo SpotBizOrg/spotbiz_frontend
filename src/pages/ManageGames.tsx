@@ -341,7 +341,7 @@ function ManageGames() {
 
   const handleDeleteGame = async () => {
     try {
-      // setLoading(true);
+      setLoading(true);
       const response = await fetch(
         `${BACKEND_URL}/game/delete_game/${deleteGameId}`,
         {

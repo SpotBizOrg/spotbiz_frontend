@@ -2,70 +2,172 @@ import React, { useEffect, useState } from "react";
 import { FaCamera } from "react-icons/fa";
 import Tabs from "../components/ProfileTabs";
 import ProfileContent from "../components/ProfileContent";
-import AvatarModal from "../components/AvatarModal"; // Ensure the correct import
+import AvatarModal from "../components/AvatarModal";
 import Customernavbar2 from "../components/Customernavbar2";
-import avatar1 from "../assets/cus_avatar1.jpg";
-import avatar2 from "../assets/cus_avatar2.jpg";
-import avatar3 from "../assets/cus_avatar3.jpg";
-import avatar4 from "../assets/cus_avatar4.jpg";
+import { BACKEND_URL } from "../../config";
+import default_user_icon from '../assets/default_user_icon.png';
+
+
+interface AllAvatar{
+  picId: number;
+  imageUrl: string;
+}
+
 const CustomerProfile: React.FC = () => {
   const [activeTab, setActiveTab] = useState("About Me");
-  const [selectedAvatar, setSelectedAvatar] = useState(
-    "https://flowbite.com/docs/images/people/profile-picture-3.jpg"
-  );
-  const [tempAvatar, setTempAvatar] = useState(selectedAvatar); // State for temp avatar selection
+  const [selectedAvatar, setSelectedAvatar] = useState<AllAvatar | null>(null);
+  const [tempAvatar, setTempAvatar] = useState<AllAvatar | null>(null);
   const [showAvatarModal, setShowAvatarModal] = useState(false);
+
+  // User data state
+  const [userData, setUserData] = useState({
+    userId: 0, // Add userId to the state
+    name: "",
+    email: "",
+    phoneNo: "",
+  });
+
+  const [availableAvatars, setAvailableAvatars] = useState<AllAvatar[]>([]);
 
   useEffect(() => {
     document.title = "SpotBiz | My Profile";
+
+    const email = localStorage.getItem("email");
+    if (email) {
+      fetchUserProfile(email);
+    }
   }, []);
 
+  useEffect(() => {
+    if (userData.userId) {
+      fetchUserAvatar();
+      fetchAvailableAvatars();
+    }
+  }, [userData]);
+
+  const fetchUserProfile = async (email: string) => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/users/${email}`);
+      if (!response.ok) throw new Error("Failed to fetch user data");
+
+      const data = await response.json();
+      setUserData({
+        userId: data.userId, // Ensure userId is fetched
+        name: data.name || "Unknown Name",
+        email: data.email || "Unknown Email",
+        phoneNo: data.phoneNo || "Unknown Phone Number",
+      });
+    } catch (error) {
+      console.error("Error fetching user profile:", error);
+    }
+  };
+
+  const fetchUserAvatar = async () => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/customer/pics/${userData.userId}`);
+      if (response.ok) {
+        const data = await response.json();
+        const transformedData = {
+          picId: data.picId,
+          imageUrl: data.imageUrl,
+        }
+        setSelectedAvatar(transformedData);
+        setTempAvatar(transformedData);
+      } else {
+        assignDefaultAvatar();
+      }
+    } catch (error) {
+      console.error("Error fetching user avatar:", error);
+      assignDefaultAvatar();
+    }
+  };
+
+  const assignDefaultAvatar = async () => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/customer_pic/all`);
+      if (response.ok) {
+        const avatars = await response.json();
+        const defaultAvatar = avatars.find((avatar: any) => avatar.picId === 1);
+        if (defaultAvatar) {
+          setSelectedAvatar(defaultAvatar);
+          setTempAvatar(defaultAvatar);
+          saveUserAvatar(defaultAvatar);
+        }
+      }
+    } catch (error) {
+      console.error("Error assigning default avatar:", error);
+    }
+  };
+
+  const fetchAvailableAvatars = async () => {
+    try {
+      const response = await fetch(`${BACKEND_URL}/customer_pic/all`);
+      if (response.ok) {
+        const avatars = await response.json();
+        // setAvailableAvatars(avatars.map((avatar: any) => avatar.imageUrl));
+        setAvailableAvatars(avatars);
+      }
+    } catch (error) {
+      console.error("Error fetching available avatars:", error);
+    }
+  };
+
+  const saveUserAvatar = async (avatar: AllAvatar | null) => {
+    try {
+      // console.log("Saving avatar for user:", userData.userId, "with URL:", avatarUrl);
   
-  const avatars = [
-    // avatar1,
-    // avatar2,
-    // avatar3,
-    // avatar4,
-    // "https://www.pexels.com/photo/woman-wearing-coat-762020/",
-    "https://flowbite.com/docs/images/people/profile-picture-2.jpg",
-    "https://flowbite.com/docs/images/people/profile-picture-3.jpg",
-    "https://flowbite.com/docs/images/people/profile-picture-4.jpg",
-    "https://flowbite.com/docs/images/people/profile-picture-5.jpg",
-  ];
+      const response = await fetch(`${BACKEND_URL}/customer/pics`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          userId: userData.userId,
+          picId: avatar?.picId || 1, //updated here
+        }),
+      });
+  
+      // Debug the response
+      const responseBody = await response.json();
+      console.log("Save avatar response:", responseBody);
+  
+      if (!response.ok) {
+        throw new Error(`Failed to save avatar. Status: ${response.status}, Response: ${JSON.stringify(responseBody)}`);
+      }
+  
+      console.log("Avatar saved successfully.");
+    } catch (error) {
+      console.error("Error saving avatar:", error);
+    }
+  };
+  
 
   const handleUpdateAvatar = () => {
-    setSelectedAvatar(tempAvatar); // Update the selected avatar
-    setShowAvatarModal(false); // Close the modal
+    setSelectedAvatar(tempAvatar);
+    saveUserAvatar(tempAvatar);
+    setShowAvatarModal(false);
   };
 
   return (
     <div className="bg-gray-100 font-body min-h-screen flex flex-col">
       <Customernavbar2 />
-      <div className="w-11/12 bg-white shadow-lg rounded-lg transform duration-200 ease-in-out mx-auto mt-6">
-        <div
-          className="h-64 relative overflow-hidden rounded-t-lg bg-bluedark"
-          style={{
-            zIndex: 0,
-          }}
-        >
+      <div className="w-11/12 bg-white shadow-lg rounded-lg mx-auto mt-6">
+        <div className="h-64 relative overflow-hidden rounded-t-lg bg-bluedark" style={{ zIndex: 0 }}>
           <div className="absolute top-0 left-64 flex items-end p-4">
             <div className="flex items-center p-4">
               <div className="relative mr-6">
                 <img
                   className="h-[160px] w-[160px] bg-white p-1 rounded-full shadow-lg"
-                  src={selectedAvatar}
+                  src={selectedAvatar?.imageUrl || default_user_icon}
                   alt="Profile"
-                  style={{
-                    position: "relative",
-                    top: "20px", // Adjust this value to move the image down
-                  }}
+                  style={{ position: "relative", top: "20px" }}
                 />
                 <div
                   className="absolute bg-white p-2 rounded-full shadow-lg cursor-pointer hover:bg-gray-100 transition"
                   style={{
-                    bottom: "10px", // Moves the icon vertically
-                    right: "15px", // Moves the icon horizontally to the right of the image
-                    transform: "translate(50%, 50%)", // Centers the icon horizontally
+                    bottom: "10px",
+                    right: "15px",
+                    transform: "translate(50%, 50%)",
                   }}
                   onClick={() => setShowAvatarModal(true)}
                 >
@@ -73,12 +175,9 @@ const CustomerProfile: React.FC = () => {
                 </div>
               </div>
               <div className="ml-6">
-                <h2 className="text-white text-3xl font-bold">Shalini</h2>
-                <a
-                  className="text-gray-400 mt-2 hover:text-primary"
-                  href="mailto:someone@gmail.com"
-                >
-                  shalinimasha2002@gmail.com
+                <h2 className="text-white text-3xl font-bold">{userData.name || "Loading..."}</h2>
+                <a className="text-gray-400 mt-2 hover:text-primary" href={`mailto:${userData.email}`}>
+                  {userData.email || "Loading..."}
                 </a>
               </div>
             </div>
@@ -90,17 +189,15 @@ const CustomerProfile: React.FC = () => {
         </div>
       </div>
       <div className="w-full md:w-2/3 p-6 mx-auto">
-        <ProfileContent activeTab={activeTab} />
+        <ProfileContent activeTab={activeTab} userData={userData} />
       </div>
-
-      {/* Avatar Modal */}
       <AvatarModal
         isOpen={showAvatarModal}
         onClose={() => setShowAvatarModal(false)}
-        avatars={avatars}
-        selectedAvatar={tempAvatar} // Pass the tempAvatar for selection
-        onSelectAvatar={(avatar) => setTempAvatar(avatar)} // Update tempAvatar on select
-        onUpdate={handleUpdateAvatar} // Handle update action
+        avatars={availableAvatars}
+        selectedAvatar={tempAvatar}
+        onSelectAvatar={(avatar) => setTempAvatar(avatar)}
+        onUpdate={handleUpdateAvatar}
       />
     </div>
   );

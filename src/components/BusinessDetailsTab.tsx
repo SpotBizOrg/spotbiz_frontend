@@ -3,6 +3,7 @@ import { MdOutlineModeEdit } from "react-icons/md";
 import { Modal, Button, TextInput, Textarea, Card } from "flowbite-react";
 import { useAuth } from "../utils/AuthProvider";
 import { toast } from "react-toastify";
+import { BACKEND_URL } from "../../config";
 
 interface BusinessDetails {
   name: string;
@@ -51,7 +52,7 @@ const BusinessDetailsTab: React.FC<BusinessDetailsTabProps> = () => {
     const fetchBusinessDetails = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v1/business_owner/business/${user?.email}`,
+          `${BACKEND_URL}/business_owner/business/${user?.email}`,
           {
             method: "GET",
             headers: {
@@ -90,7 +91,7 @@ const BusinessDetailsTab: React.FC<BusinessDetailsTabProps> = () => {
         if (err instanceof Error) {
           toast.error(err.message);
         } else {
-          toast.error("An unexpected error occurred");
+          // toast.error("An unexpected error occurred");
         }
       }
     };
@@ -144,7 +145,7 @@ const BusinessDetailsTab: React.FC<BusinessDetailsTabProps> = () => {
     if (!validateForm()) return;
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/business/update/${user?.email}`,
+        `${BACKEND_URL}/business/update/${user?.email}`,
         {
           method: "PUT",
           headers: {
@@ -228,7 +229,7 @@ const BusinessDetailsTab: React.FC<BusinessDetailsTabProps> = () => {
               <p className="text-black text-sm font-medium">
                 Subscription Package
               </p>
-              <p className="text-gray-800">{"FREE"}</p>
+              <p className="text-gray-800">{"PREMIUM"}</p>
             </div>
           </Card>
         </div>

@@ -1,5 +1,6 @@
 import { Modal } from "flowbite-react";
 import React, { useState, useEffect } from "react";
+import { BACKEND_URL } from "../../config";
 
 interface Tag {
   id: number;
@@ -36,7 +37,7 @@ const BusinessTypesTable: React.FC<BusinessTypesTableProps> = ({
       setLoading(true);
       setError(null);
       try {
-        const response = await fetch("http://localhost:8080/api/v1/admin/business_type/all");
+        const response = await fetch(`${BACKEND_URL}/admin/business_type/all`);
         if (!response.ok) {
           throw new Error(`Failed to fetch business types: ${response.statusText}`);
         }
@@ -54,7 +55,7 @@ const BusinessTypesTable: React.FC<BusinessTypesTableProps> = ({
         setBusinessTypesData(adjustedData);
       } catch (error) {
         console.error("Error fetching business types:", error);
-        setError("Could not load business types. Please try again later.");
+        // setError("Could not load business types. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -64,7 +65,7 @@ const BusinessTypesTable: React.FC<BusinessTypesTableProps> = ({
 
   const handleAddTag = () => {
     if (selectedBusinessTypeId !== null && newTag.trim() !== "") {
-      fetch(`http://localhost:8080/api/v1/admin/business_type/${selectedBusinessTypeId}/tag`, {
+      fetch(`${BACKEND_URL}/admin/business_type/${selectedBusinessTypeId}/tag`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -98,16 +99,16 @@ const BusinessTypesTable: React.FC<BusinessTypesTableProps> = ({
         })
         .catch((error) => {
           console.error("Error adding tag:", error);
-          setError("Failed to add tag. Please try again.");
+          // setError("Failed to add tag. Please try again.");
         });
     } else {
-      setError("Please select a business type and provide a tag name.");
+      // setError("Please select a business type and provide a tag name.");
     }
   };
 
   const handleAddBusinessType = () => {
     if (newBusinessType.trim() !== "" && newTags.length > 0) {
-      fetch("http://localhost:8080/api/v1/admin/business_type", {
+      fetch(`${BACKEND_URL}/admin/business_type`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -133,10 +134,10 @@ const BusinessTypesTable: React.FC<BusinessTypesTableProps> = ({
         })
         .catch((error) => {
           console.error("Error adding business type:", error);
-          setError("Failed to add business type. Please try again.");
+          // setError("Failed to add business type. Please try again.");
         });
     } else {
-      setError("Please provide a business type and at least one tag.");
+      // setError("Please provide a business type and at least one tag.");
     }
   };
 
@@ -151,7 +152,7 @@ const BusinessTypesTable: React.FC<BusinessTypesTableProps> = ({
           <table className="w-full text-sm text-left text-gray-500">
             <thead className="table-header text-xs text-gray-700 uppercase bg-gray-50">
               <tr>
-                <th scope="col" className="px-10 py-6"><center>Business_Type</center></th>
+                <th scope="col" className="px-10 py-6"><center>Category Name</center></th>
                 <th scope="col" className="px-8 py-6"><center>Tags</center></th>
               </tr>
             </thead>

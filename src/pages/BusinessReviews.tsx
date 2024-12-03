@@ -7,19 +7,17 @@ import Rating from "../components/Rating";
 import Review from "../components/Review";
 import SortByDropdown from "../components/SortBy";
 import { useAuth } from "../utils/AuthProvider";
+import { BACKEND_URL } from "../../config";
 
 interface Review {
-  reviewId: Key | null | undefined;
-  user: any;
-  date: string | number | Date;
+  reviewId: number;
   title: string;
   description: string;
+  date: string | number | Date;
+  username: string;
+  businessId: number;
   rating: number;
-  reviewerName: string;
-  reviewDate: string;
-  reviewTitle: string;
-  reviewText: string;
-  reviewerAvatar: string;
+  status: string;
 }
 
 function Reviews() {
@@ -30,6 +28,7 @@ function Reviews() {
   const [selectedOption, setSelectedOption] = useState<string>("");
   const { token, user, checkAuthenticated } = useAuth();
   const [reviews, setReviews] = useState<Review[]>([]);
+  const [businessId, setBusinessId] = useState<number | null>(null);
 
   const starCountOptions = [
     "5 Star Reviews",
@@ -41,12 +40,11 @@ function Reviews() {
   const timeOptions = ["Newest First", "Oldest First"];
   const handleSelectOption = (option: string) => {
     setSelectedOption(option);
-    // Handle whatever logic you need here based on the selected option
   };
 
   const fetchReviews = async () => {
     try {
-      fetch(`http://localhost:8080/api/v1/review/all/${user?.email}`, {
+      fetch(`${BACKEND_URL}/review/all/${user?.email}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -57,6 +55,9 @@ function Reviews() {
         .then((data) => {
           console.log(data);
           setReviews(data);
+          if (data.length > 0 && !businessId) {
+            setBusinessId(data[0].businessId);
+          }
         });
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -75,7 +76,7 @@ function Reviews() {
           <h1 className="text-subsubheading text-bluedark">User Reviews</h1>
         </div>
         <Plate2>
-          <Rating></Rating>
+          <Rating businessId={businessId || undefined}></Rating>
         </Plate2>
         <div className="md:ml-auto mt-8 space-y-4 md:space-y-0 md:space-x-4 flex flex-wrap md:flex-nowrap justify-end">
           <div className="flex items-center">
@@ -98,17 +99,18 @@ function Reviews() {
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mt-8">
-          {reviews.map((review) => (
+          {reviews.map((review, index) => (
             <Review
-              key={review.reviewId}
+              key={index}
               userType="business"
-              reviewerName={review.user.name}
+              reviewerName={review.username}
               reviewDate={new Date(review.date).toLocaleDateString()}
               reviewTitle={review.title}
               rating={review.rating}
               reviewerAvatar={""}
-              isReported={""}
+              isReported={review.status}
               reviewText={review.description}
+              reviewId={review.reviewId}
             />
           ))}
         </div>

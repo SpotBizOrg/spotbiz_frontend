@@ -10,6 +10,7 @@ import {
 import { FaSquareXTwitter } from "react-icons/fa6";
 import { useAuth } from "../utils/AuthProvider";
 import { useEffect, useState } from "react";
+import { BACKEND_URL } from "../../config";
 
 type SocialLinks = {
   facebook?: string;
@@ -45,7 +46,7 @@ const SocialLinksCard: React.FC<SocialLinksCardProps> = ({
     const fetchSocialLinks = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v1/social_links/${user?.email}`
+          `${BACKEND_URL}/social_links/${user?.email}`
         );
         if (!response.ok) {
           throw new Error("Failed to fetch social links");
@@ -167,7 +168,7 @@ const SocialLinksCard: React.FC<SocialLinksCardProps> = ({
 
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/social_links/${user?.email}`,
+        `${BACKEND_URL}/social_links/${user?.email}`,
         {
           method: "PUT",
           headers: {
