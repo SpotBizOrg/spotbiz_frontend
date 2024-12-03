@@ -83,7 +83,7 @@ const AdminCuponReimburse: React.FC = () => {
           amount: item.amount,
           status: item.status,
           id: item.id,
-          businessName: item.business.name,
+          businessName: item.businessName,
           images: item.images,
         })
       );

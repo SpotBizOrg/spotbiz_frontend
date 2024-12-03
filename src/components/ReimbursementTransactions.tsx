@@ -5,7 +5,7 @@ import axios from "axios";
 interface ReimbursementTransactions{
     reimbursementId: number;
     businessName: string;
-    businessEmail: string;
+    // businessEmail: string;
     date: string;
     amount: number;
 }
@@ -24,8 +24,8 @@ const ReimbursementTransactions = () => {
             const tranformedData = response.data.map((item: any) => {
                 return {
                     reimbursementId: item.id,
-                    businessName: item.business.name,
-                    businessEmail: item.business.user.email,
+                    businessName: item.businessName,
+                    // businessEmail: item.business.user.email,
                     date: new Date(item.dateTime).toLocaleDateString(),
                     amount: item.amount
                 }
@@ -66,13 +66,13 @@ const ReimbursementTransactions = () => {
                     >
                     <div className="flex items-center">Business Name</div>
                     </th>
-                    <th
+                    {/* <th
                     scope="col"
                     className="px-4 py-3"
                     style={{ minWidth: "200px" }}
                     >
                     <div className="flex items-center">Business Email</div>
-                    </th>
+                    </th> */}
                     <th
                     scope="col"
                     className="px-4 py-3"
@@ -95,7 +95,7 @@ const ReimbursementTransactions = () => {
                     <tr key={item.reimbursementId}>
                         <td className="px-4 py-4">{item.reimbursementId}</td>
                         <td className="px-4 py-4">{item.businessName}</td>
-                        <td className="px-4 py-4">{item.businessEmail}</td>
+                        {/* <td className="px-4 py-4">{item.businessEmail}</td> */}
                         <td className="px-4 py-4">{item.date}</td>
                         <td className="px-4 py-4">{item.amount}</td>
                     </tr>

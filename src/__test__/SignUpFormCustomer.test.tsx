@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { ToastContainer } from 'react-toastify';
 import { BrowserRouter } from 'react-router-dom';
