@@ -31,6 +31,7 @@ function Reviews() {
   const { token, user, checkAuthenticated } = useAuth();
   const [searchParams] = useSearchParams();
   const businessEmail = searchParams.get("business") || "";
+  const [businessId, setBusinessId] = useState<number | null>(null);
 
   const starCountOptions = [
     "5 Star Reviews",
@@ -58,6 +59,9 @@ function Reviews() {
         .then((data) => {
           console.log(data);
           setReviews(data);
+          if (data.length > 0 && !businessId) {
+            setBusinessId(data[0].businessId);
+          }
         });
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -77,7 +81,7 @@ function Reviews() {
           <AddReviewModal />
         </div>
         <Plate2>
-          <Rating></Rating>
+          <Rating businessId={businessId || undefined}></Rating>
         </Plate2>
         <div className="md:ml-auto mt-8 space-y-4 md:space-y-0 md:space-x-4 flex flex-wrap md:flex-nowrap justify-end">
           <div className="flex items-center">
