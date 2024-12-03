@@ -15,7 +15,7 @@ interface ScannedCouponProps {
   dateTime: Date;
   discount: number;
   status: "PENDING" | "ISSUED" | "USED" | "DELETED";
-  billImage: File | null;
+  billImage: string;
 }
 
 interface BusinessAccountDetails {
@@ -372,9 +372,12 @@ const BusinessCupon: React.FC = () => {
           </h1>
           <div className="flex gap-4">
             <div className="flex space-x-4 z-40">
-              <Button color="dark" onClick={() => setOpenScanCode(true)}>
-                Check and Use Discount Codes
-              </Button>
+              <button
+                onClick={() => setOpenScanCode(true)}
+                className="flex justify-center rounded-md bg-bluedark px-3 py-1 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 mr-5"
+              >
+                Use Discount Codes
+              </button>
             </div>
           </div>
         </div>
@@ -395,14 +398,7 @@ const BusinessCupon: React.FC = () => {
                   className="px-6 py-3"
                   style={{ minWidth: "100px" }}
                 >
-                  Scanned Coupon ID
-                </th>
-                <th
-                  scope="col"
-                  className="px-6 py-3"
-                  style={{ minWidth: "150px" }}
-                >
-                  <div className="flex items-center">Coupon ID</div>
+                  ID
                 </th>
                 <th
                   scope="col"
@@ -417,6 +413,13 @@ const BusinessCupon: React.FC = () => {
                   style={{ minWidth: "100px" }}
                 >
                   <div className="flex items-center">Discount Given</div>
+                </th>
+                <th
+                  scope="col"
+                  className="px-6 py-3"
+                  style={{ minWidth: "100px" }}
+                >
+                  <div className="flex items-center">Bill</div>
                 </th>
               </tr>
             </thead>
@@ -436,9 +439,6 @@ const BusinessCupon: React.FC = () => {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center">{coupon.couponId}</div>
-                  </td>
-                  <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">
                       {coupon.dateTime == null
                         ? new Date().toLocaleString()
@@ -448,17 +448,33 @@ const BusinessCupon: React.FC = () => {
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="flex items-center">{coupon.discount}</div>
                   </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <button
+                      onClick={() => {
+                        if (coupon.billImage) {
+                          window.location.href = coupon.billImage;
+                        } else {
+                          alert("No link available");
+                        }
+                      }}
+                      className="flex justify-center rounded-md bg-bluedark px-3 py-1 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 mr-5"
+                    >
+                      Image
+                    </button>
+                  </td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <div className="flex items-center justify-end">
+
+          {/* Sticky footer */}
+          <div className="fixed bottom-0 left-0 w-full flex items-center justify-end p-4">
             {coupons.length > 0 && (
               <button
                 onClick={reimburseSelected}
-                className="m-2 px-4 py-2 bg-bluedark text-white rounded"
+                className="flex justify-center rounded-md bg-bluedark px-3 py-1 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 mr-5"
               >
-                Request to Reimburse
+                Reimburse
               </button>
             )}
           </div>
