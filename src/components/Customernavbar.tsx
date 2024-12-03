@@ -1,15 +1,19 @@
-import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
-import { BellIcon, PuzzlePieceIcon } from '@heroicons/react/24/outline';
-import Logo from '../assets/logo.png';
-import { ChangeEvent, useEffect, useState } from 'react';
-import { useAuth } from '../utils/AuthProvider';
-import { useNavigate } from 'react-router-dom';
-import { Tooltip } from 'flowbite-react';
-import { BACKEND_URL, resetNotificationCount, getNotificationCount} from '../../config';
-import axios from 'axios';
+import { Menu, MenuButton, MenuItem, MenuItems } from "@headlessui/react";
+import { BellIcon, PuzzlePieceIcon } from "@heroicons/react/24/outline";
+import Logo from "../assets/logo.png";
+import { ChangeEvent, useEffect, useState } from "react";
+import { useAuth } from "../utils/AuthProvider";
+import { useNavigate } from "react-router-dom";
+import { Tooltip } from "flowbite-react";
+import {
+  BACKEND_URL,
+  resetNotificationCount,
+  getNotificationCount,
+} from "../../config";
+import axios from "axios";
 
 function classNames(...classes: string[]): string {
-  return classes.filter(Boolean).join(' ');
+  return classes.filter(Boolean).join(" ");
 }
 
 function Customernavbar() {
@@ -19,29 +23,36 @@ function Customernavbar() {
   const [notifications, setNotifications] = useState([]);
   const [isNotificationMenuOpen, setNotificationMenuOpen] = useState(false);
   const NOTIFICATION_COUNT = getNotificationCount();
-  const storedUserId = localStorage.getItem('user_id');
+  const storedUserId = localStorage.getItem("user_id");
   const [profilePic, setProfilePic] = useState<string | null>(null);
 
   const handleNotification = async () => {
     if (user_id != null) {
       try {
-        const response = await fetch(`${BACKEND_URL}/notification/all/${user_id}`, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
+        const response = await fetch(
+          `${BACKEND_URL}/notification/all/${user_id}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
         if (!response.ok) {
           const errorData = await response.json();
-          console.error('Error response:', errorData);
-          throw new Error(`HTTP error! status: ${response.status}, message: ${errorData.message || 'Unknown error'}`);
+          console.error("Error response:", errorData);
+          throw new Error(
+            `HTTP error! status: ${response.status}, message: ${
+              errorData.message || "Unknown error"
+            }`
+          );
         }
 
         const responseData = await response.json();
-        setNotifications(responseData.slice(0, 10)); 
+        setNotifications(responseData.slice(0, 10));
       } catch (error) {
-        console.error('An error occurred:', error);
+        console.error("An error occurred:", error);
       }
     }
   };
@@ -51,17 +62,17 @@ function Customernavbar() {
   };
 
   function navigateToPage() {
-    navigate('/customer/games');
+    navigate("/customer/games");
   }
 
   const toggleNotificationMenu = () => {
     handleNotification();
     resetNotificationCount();
-    console.log(NOTIFICATION_COUNT)
+    console.log(NOTIFICATION_COUNT);
     setNotificationMenuOpen(!isNotificationMenuOpen);
   };
 
-  const [searchTerm, setSearchTerm] = useState<string>('');
+  const [searchTerm, setSearchTerm] = useState<string>("");
 
   const handleSearchChange = (event: ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
@@ -70,27 +81,26 @@ function Customernavbar() {
   const handleSearch = () => {
     const searchQuery = searchTerm.trim();
     if (searchQuery) {
-      navigate('/customer/search_results?search=' + searchQuery);
+      navigate("/customer/search_results?search=" + searchQuery);
     }
   };
 
   const getProfilePic = async () => {
     const url = `${BACKEND_URL}/customer/pics/${storedUserId}`;
 
-    try{
+    try {
       const response = await axios.get(url);
       setProfilePic(response.data.imageUrl);
     } catch (error) {
-      console.error('An error occurred:', error);
+      console.error("An error occurred:", error);
     }
-  }
+  };
 
   useEffect(() => {
-    getProfilePic()
-    
+    getProfilePic();
   }, []);
 
-    return(
+  return (
     <nav className="fixed top-0 z-40 w-full bg-white border-b border-gray-200">
       <div className="px-3 py-3 lg:px-5 lg:pl-3">
         <div className="flex items-center justify-between">
@@ -115,7 +125,7 @@ function Customernavbar() {
                 ></path>
               </svg>
             </button>
-            <a href="/" className="flex ms-2 md:me-24">
+            <a href="/home" className="flex ms-2 md:me-24">
               <img src={Logo} className="h-8 me-3" alt="SpotBiz Logo" />
             </a>
           </div>
@@ -172,54 +182,64 @@ function Customernavbar() {
             </button>
           </div>
           <div className="absolute z-50 inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-          <Tooltip content="Games">
-            <button onClick={navigateToPage} className="relative rounded-full p-1 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
-              <PuzzlePieceIcon className="h-6 w-6 mr-2" />
-            </button>
-          </Tooltip>
+            <Tooltip content="Games">
+              <button
+                onClick={navigateToPage}
+                className="relative rounded-full p-1 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+              >
+                <PuzzlePieceIcon className="h-6 w-6 mr-2" />
+              </button>
+            </Tooltip>
 
-          <Tooltip content="Notifications">
-            <button
-              type="button"
-              onClick={toggleNotificationMenu}
-              className="relative rounded-full p-1 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
-            >
-              <span className="sr-only">View notifications</span>
-              <BellIcon className="h-6 w-6" />
-              
-              {NOTIFICATION_COUNT > 0 && (
-                <span className="h-4 w-2 absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
-                  {NOTIFICATION_COUNT}
-                </span>
-              )}
-            </button>
-          </Tooltip>
+            <Tooltip content="Notifications">
+              <button
+                type="button"
+                onClick={toggleNotificationMenu}
+                className="relative rounded-full p-1 hover:text-gray-700 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800"
+              >
+                <span className="sr-only">View notifications</span>
+                <BellIcon className="h-6 w-6" />
 
-          {isNotificationMenuOpen && (
-            <div className="absolute right-12 top-12 mt-2 bg-white border border-gray-200 rounded-md shadow-lg py-1">
-              {notifications.length > 0 ? (
-                notifications.map((notification: any, index: number) => (
-                  <a
-                    key={index}
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                  >
-                    <span className="mr-4 text-xs text-gray-500">[{notification.dateTime}]</span>
-                    {notification.title}: {notification.description}
-                  </a>
-                ))
-              ) : (
-                <p className="block px-4 py-2 text-sm text-gray-700">No notifications available.</p>
-              )}
-            </div>
-          )}
+                {NOTIFICATION_COUNT > 0 && (
+                  <span className="h-4 w-2 absolute top-0 right-0 inline-flex items-center justify-center px-2 py-1 text-xs font-bold leading-none text-white bg-red-600 rounded-full">
+                    {NOTIFICATION_COUNT}
+                  </span>
+                )}
+              </button>
+            </Tooltip>
+
+            {isNotificationMenuOpen && (
+              <div className="absolute right-12 top-12 mt-2 bg-white border border-gray-200 rounded-md shadow-lg py-1">
+                {notifications.length > 0 ? (
+                  notifications.map((notification: any, index: number) => (
+                    <a
+                      key={index}
+                      href="#"
+                      className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                    >
+                      <span className="mr-4 text-xs text-gray-500">
+                        [{notification.dateTime}]
+                      </span>
+                      {notification.title}: {notification.description}
+                    </a>
+                  ))
+                ) : (
+                  <p className="block px-4 py-2 text-sm text-gray-700">
+                    No notifications available.
+                  </p>
+                )}
+              </div>
+            )}
             <Menu as="div" className="relative ml-3">
               <div>
                 <MenuButton className="relative flex rounded-full bg-gray-800 text-sm focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800">
                   <span className="sr-only">Open user menu</span>
                   <img
                     className="h-8 w-8 rounded-full"
-                    src={profilePic || "https://flowbite.com/docs/images/people/profile-picture-3.jpg"}
+                    src={
+                      profilePic ||
+                      "https://flowbite.com/docs/images/people/profile-picture-3.jpg"
+                    }
                     // src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"                    alt=""
                   />
                 </MenuButton>
@@ -232,22 +252,28 @@ function Customernavbar() {
                   {({ active }) => (
                     <a
                       href="/Customer/profile"
-                      className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-900')}
+                      className={classNames(
+                        active ? "bg-gray-100" : "",
+                        "block px-4 py-2 text-sm text-gray-900"
+                      )}
                     >
                       My Profile
                     </a>
                   )}
                 </MenuItem>
-              
+
                 <MenuItem>
                   {({ active }) => (
                     <a
                       href="/login"
                       onClick={(e) => {
-                        e.preventDefault(); 
+                        e.preventDefault();
                         handleLogout();
                       }}
-                      className={classNames(active ? 'bg-gray-100' : '', 'block px-4 py-2 text-sm text-gray-900')}
+                      className={classNames(
+                        active ? "bg-gray-100" : "",
+                        "block px-4 py-2 text-sm text-gray-900"
+                      )}
                     >
                       Sign out
                     </a>
@@ -259,7 +285,7 @@ function Customernavbar() {
         </div>
       </div>
     </nav>
-    )
+  );
 }
 
 export default Customernavbar;
