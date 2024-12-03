@@ -126,12 +126,12 @@ function Businessnavbar(){
               </div>
             </div> */}
             <div className="absolute z-50 inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
-            <button 
+            {/* <button 
               onClick={() => navigate('/home')} 
               className="flex justify-center rounded-md bg-bluedark px-3 py-1 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-gray-900 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 mr-5">
             
             Switch to Customer
-            </button>
+            </button> */}
 
             <Menu as="div" className="relative ml-3">
                   <div>

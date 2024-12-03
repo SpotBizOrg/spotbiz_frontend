@@ -123,7 +123,7 @@ function Customernavbar2(){
               ></path>
             </svg>
           </button>
-          <a href="/" className="flex ms-2 md:me-24">
+          <a href="/home" className="flex ms-2 md:me-24">
             <img src={Logo} className="h-8 me-3" alt="FlowBite Logo" />
           </a>
         </div>
