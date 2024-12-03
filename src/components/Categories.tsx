@@ -14,7 +14,7 @@ const Categories = () => {
 
   const fetchCategories = async () => {
     try {
-      const response = await axios.get(`${BACKEND_URL}/admin/business_type/all`);  // Replace with your actual endpoint
+      const response = await axios.get(`${BACKEND_URL}/admin/business_type/all`); 
       setCategories(response.data);
     } catch (error) {
       console.error('Error fetching categories:', error);

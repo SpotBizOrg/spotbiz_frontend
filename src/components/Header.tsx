@@ -28,7 +28,7 @@ const Header = () => {
       try {
         // Sending a POST request to the backend with the search query
         const response = await axios.post(
-          "http://localhost:8080/api/v1/search",
+          "http://localhost:8080/api/v1/search", // no use error
           searchQuery,
           {
             params: { page: 0, size: 10 }, // Optional: Handle pagination if needed

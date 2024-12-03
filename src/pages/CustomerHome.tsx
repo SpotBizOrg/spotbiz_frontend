@@ -50,7 +50,7 @@ const CustomerHome: React.FC = () => {
 
       try {
         const response = await axios.post(
-          "http://localhost:8080/api/v1/search/post",
+          "http://localhost:8080/api/v1/search/post", // not use
           searchQuery,
           {
             params: { page: 0, size: 10 },

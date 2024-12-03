@@ -7,6 +7,7 @@ import Rating from "../components/Rating";
 import Review from "../components/Review";
 import SortByDropdown from "../components/SortBy";
 import { useAuth } from "../utils/AuthProvider";
+import { BACKEND_URL } from "../../config";
 
 interface Review {
   reviewId: number;
@@ -43,7 +44,7 @@ function Reviews() {
 
   const fetchReviews = async () => {
     try {
-      fetch(`http://localhost:8080/api/v1/review/all/${user?.email}`, {
+      fetch(`${BACKEND_URL}/review/all/${user?.email}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

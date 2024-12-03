@@ -36,8 +36,10 @@ const AdComponent: React.FC<AdProps> = ({ onClose }) => {
   const [recommendations, setRecommendations] = useState<Recommendation[]>([]);
 
   const fetchRecommendations = async () => {
-    const userId = 38;
-    const email = "nirashanelki@gmail.com";
+    // const userId = 38;
+    // const email = "nirashanelki@gmail.com";
+    const userId = localStorage.getItem("user_id");
+    const email = localStorage.getItem("email");
 
     try {
       const response = await axios.get(

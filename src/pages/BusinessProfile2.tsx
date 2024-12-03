@@ -12,6 +12,7 @@ import OpeningHoursPage from "../components/OpeningHours";
 import TagsAndSocialLinks from "../components/TagsAndSocialLinks";
 import { toast } from "react-toastify";
 import StarRating from "../components/StarRating";
+import { BACKEND_URL } from "../../config";
 
 const BusinessProfile: React.FC = () => {
   const { token, user, checkAuthenticated } = useAuth();
@@ -43,7 +44,7 @@ const BusinessProfile: React.FC = () => {
   const fetchSubscribeCount = async (businessId: number) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/sub_business/subscribe_count/${businessId}`
+        `${BACKEND_URL}/sub_business/subscribe_count/${businessId}`
       );
 
       if (!response.ok) {
@@ -61,7 +62,7 @@ const BusinessProfile: React.FC = () => {
   const fetchReviewStats = async (businessId: number) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/review/statistics/${businessId}`
+        `${BACKEND_URL}/review/statistics/${businessId}`
       );
 
       if (!response.ok) {
@@ -83,7 +84,7 @@ const BusinessProfile: React.FC = () => {
   const fetchData = async (email: string, token: string) => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/business_owner/business/${email}`,
+        `${BACKEND_URL}/business_owner/business/${email}`,
         {
           method: "GET",
           headers: {
@@ -118,7 +119,7 @@ const BusinessProfile: React.FC = () => {
     const formData = new FormData();
     formData.append("file", file);
 
-    const response = await fetch("http://localhost:8080/api/v1/upload_image", {
+    const response = await fetch(`${BACKEND_URL}/upload_image`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -147,7 +148,7 @@ const BusinessProfile: React.FC = () => {
 
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/business/update/${user.email}`,
+        `${BACKEND_URL}/business/update/${user.email}`,
         {
           method: "PUT",
           headers: {

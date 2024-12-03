@@ -1,5 +1,4 @@
 import React from "react";
-import image from '../assets/promo.lk-44253997837344f08aed5b131f0bd271.jpg';
 import { FaUser, FaMapMarkerAlt, FaPhone, FaFacebookF, FaWhatsapp, FaFileWord } from 'react-icons/fa';
 import { IoLogoWhatsapp } from "react-icons/io";
 import { IoMailSharp } from "react-icons/io5";

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Button, List, Modal } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
+import { BACKEND_URL } from "../../config";
 
 // Utility to get logged-in user's email
 const getLoggedInUserEmail = () => localStorage.getItem("email") || null;
@@ -44,14 +45,14 @@ const SubscribedBusinesses: React.FC = () => {
 
       try {
         // Step 1: Fetch User Details
-        const userResponse = await axios.get(`http://localhost:8080/api/v1/users/${email}`);
+        const userResponse = await axios.get(`${BACKEND_URL}/users/${email}`);
         const userData = userResponse.data;
 
         if (!userData?.userId) throw new Error("Invalid user data.");
         setUser(userData);
 
         const subscriptionsResponse = await axios.get(
-          `http://localhost:8080/api/v1/sub_business/subscribed/email/${userData.userId}`
+          `${BACKEND_URL}/sub_business/subscribed/email/${userData.userId}`
         );
         const subscribedBusinesses = subscriptionsResponse.data;
 
@@ -65,7 +66,7 @@ const SubscribedBusinesses: React.FC = () => {
         setBusinesses(businessDetails);
       } catch (err) {
         console.error("Error fetching subscribed businesses:", err);
-        setError("Failed to fetch subscribed businesses. Please try again later.");
+        // setError("Failed to fetch subscribed businesses. Please try again later.");
       } finally {
         setLoading(false);
       }
@@ -85,7 +86,7 @@ const SubscribedBusinesses: React.FC = () => {
 
     try {
       await axios.delete(
-        `http://localhost:8080/api/v1/sub_business/unsubscribe/${user.userId}/${businessToUnsubscribe.businessId}`
+        `${BACKEND_URL}/sub_business/unsubscribe/${user.userId}/${businessToUnsubscribe.businessId}`
       );
 
       setBusinesses(businesses.filter((b) => b.businessId !== businessToUnsubscribe.businessId));

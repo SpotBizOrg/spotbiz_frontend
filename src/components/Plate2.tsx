@@ -1,5 +1,5 @@
 interface Plate2Props {
-  children: React.ReactNode;
+  children?: React.ReactNode;
 }
 
 function Plate2({ children }: Plate2Props) {

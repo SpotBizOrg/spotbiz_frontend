@@ -3,6 +3,7 @@ import { Modal, TextInput, Label, Button } from "flowbite-react";
 import Select from "react-select";
 import { useAuth } from "../utils/AuthProvider";
 import { toast } from "react-toastify";
+import { BACKEND_URL } from "../../config";
 
 interface Advertisement {
   img: string;
@@ -54,7 +55,7 @@ const AddAdvertisementModal: React.FC<AddAdvertisementModalProps> = ({
   const fetchBusinessId = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/business_owner/business/${user?.email}`,
+        `${BACKEND_URL}/business_owner/business/${user?.email}`,
         {
           method: "GET",
           headers: {
@@ -124,7 +125,7 @@ const AddAdvertisementModal: React.FC<AddAdvertisementModalProps> = ({
     const formData = new FormData();
     formData.append("file", file);
 
-    const response = await fetch("http://localhost:8080/api/v1/upload_image", {
+    const response = await fetch(`${BACKEND_URL}/upload_image`, {
       method: "POST",
       body: formData,
     });
@@ -156,7 +157,7 @@ const AddAdvertisementModal: React.FC<AddAdvertisementModalProps> = ({
       const adData = { ...newAd, img: imageUrl, tags: transformedTags };
 
       const response = await fetch(
-        "http://localhost:8080/api/v1/advertisement/add",
+        `${BACKEND_URL}/advertisement/add`,
         {
           method: "POST",
           headers: {

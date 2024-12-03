@@ -9,6 +9,7 @@ import AddReviewModal from "../components/AddReviewModal";
 import Customernavbar2 from "../components/Customernavbar2";
 import { useAuth } from "../utils/AuthProvider";
 import { useSearchParams } from "react-router-dom";
+import { BACKEND_URL } from "../../config";
 
 interface Review {
   reviewId: number;
@@ -48,7 +49,7 @@ function Reviews() {
   const fetchReviews = async () => {
     console.log(businessEmail);
     try {
-      fetch(`http://localhost:8080/api/v1/review/all/${businessEmail}`, {
+      fetch(`${BACKEND_URL}/review/all/${businessEmail}`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
