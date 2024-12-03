@@ -7,6 +7,7 @@ import Container from "./Container";
 import { FaPlus } from "react-icons/fa";
 import AddAdvertisementModal from "../components/AddBusinessAd";
 import { toast } from "react-toastify";
+import { BACKEND_URL } from "../../config";
 
 interface Advertisement {
   id: number;
@@ -42,7 +43,7 @@ const BusinessAd: React.FC = () => {
     setTags([]);
     setLoading(true);
     console.log(id);
-    fetch(`http://localhost:8080/api/v1/advertisement/getTags/${id}`, {
+    fetch(`${BACKEND_URL}/advertisement/getTags/${id}`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -53,12 +54,12 @@ const BusinessAd: React.FC = () => {
           setTags(data.keywords);
         } else {
           console.error("Unexpected data format:", data);
-          toast.error("Unexpected data format");
+          // toast.error("Unexpected data format");
         }
       })
       .catch((error) => {
         console.error("Failed to fetch tags:", error);
-        toast.error("Failed to fetch tags");
+        // toast.error("Failed to fetch tags");
       })
       .finally(() => {
         setLoading(false);
@@ -73,7 +74,7 @@ const BusinessAd: React.FC = () => {
   };
 
   const openFormPopup = () => {
-    const validationUrl = `http://localhost:8080/api/v1/advertisement/add_validation/${user?.email}`;
+    const validationUrl = `${BACKEND_URL}/advertisement/add_validation/${user?.email}`;
     setLoading(true);
     fetch(validationUrl, {
       method: "GET",
@@ -91,16 +92,16 @@ const BusinessAd: React.FC = () => {
         if (data) {
           setFormPopupOpen(true);
         } else {
-          toast.error(
-            "You have reached the advertisement limit for this week. Please upgrade your package to add more ads."
-          );
+          // toast.error(
+          //   "You have reached the advertisement limit for this week. Please upgrade your package to add more ads."
+          // );
         }
       })
       .catch((error) => {
         console.error("Validation error:", error);
-        toast.error(
-          "An error occurred while validating. Please try again later."
-        );
+        // toast.error(
+        //   "An error occurred while validating. Please try again later."
+        // );
       })
       .finally(() => {
         setLoading(false);
@@ -119,7 +120,7 @@ const BusinessAd: React.FC = () => {
   const handleAddAd = () => {
     try {
       fetch(
-        `http://localhost:8080/api/v1/business_owner/advertisements/${user?.email}`,
+        `${BACKEND_URL}/business_owner/advertisements/${user?.email}`,
         {
           method: "GET",
           headers: {
@@ -147,11 +148,11 @@ const BusinessAd: React.FC = () => {
         })
         .catch((error) => {
           console.error("Failed to fetch advertisements:", error);
-          toast.error("Failed to fetch advertisements");
+          // toast.error("Failed to fetch advertisements");
         });
     } catch (error) {
       console.error("Failed to fetch advertisements:", error);
-      toast.error("Failed to fetch advertisements");
+      // toast.error("Failed to fetch advertisements");
     }
   };
 

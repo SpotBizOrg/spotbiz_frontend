@@ -12,7 +12,7 @@ import Container2 from "../components/Container2";
 import FloatingBtnsbusiness from "../components/FlotingBtnsbusiness";
 import { BACKEND_URL } from "../../config";
 import image from "../assets/promo.lk-44253997837344f08aed5b131f0bd271.jpg";
-import { GridLoader } from "react-spinners";
+import { GridLoader, HashLoader } from "react-spinners";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { messaging } from "../firebase/firebaseConfig";
 import OnlyAddReviewMain from "../components/OnlyAddReviewMain";
@@ -152,7 +152,8 @@ const BusinessPage: React.FC = () => {
   if (loading) {
     return (
       <div className="flex flex-row justify-center items-center h-screen">
-        <GridLoader color="#0D3B66" margin={10} size={30} />
+        {/* <GridLoader color="#0D3B66" margin={10} size={30} /> */}
+        <HashLoader color="#36d7b7" size={50} />
       </div>
     );
   }

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Card, Avatar, Rating } from "flowbite-react";
 import { toast } from "react-toastify";
+import { BACKEND_URL } from "../../config";
 
 interface ReviewProps {
   userType: "business" | "regular";
@@ -47,7 +48,7 @@ const Review: React.FC<ReviewProps> = ({
   const handleReport = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/review-report/mark/${reviewId}`,
+        `${BACKEND_URL}/review-report/mark/${reviewId}`,
         {
           method: "PUT",
           headers: {

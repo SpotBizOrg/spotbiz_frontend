@@ -80,8 +80,8 @@ const OnboardingForm: React.FC = () => {
     const navigate = useNavigate();
 
 
-    const storedEmail = "yuhanga2001@gmail.com" // need to fetch from the local storage
-    // const storedEmail = localStorage.getItem("email")
+    // const storedEmail = "yuhanga2001@gmail.com" // need to fetch from the local storage
+    const storedEmail = localStorage.getItem("email")
     
 
     const handleSetOpeningHours = (openDays: OpenDays) => {
@@ -151,13 +151,14 @@ const OnboardingForm: React.FC = () => {
                 
                 setImagePreview(URL.createObjectURL(file));
 
-                let imageUrl = "https://iili.io/2zgRy8u.jpg"
+                let imageUrl = ""
+                // let imageUrl = "https://iili.io/2zgRy8u.jpg"
 
                 if (file) {
                     console.log("Uploading image...");
                     
                     setImageName(file.name);
-                    // imageUrl = await uploadImage(file);
+                    imageUrl = await uploadImage(file);
                     console.log("Image URL:", imageUrl);
         
                 } else{

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { FaUser, FaEnvelope, FaPhone, FaBriefcase, FaRegIdBadge, FaLock } from "react-icons/fa";
 import Profile from "../assets/profile-picture.png";
 import { toast } from 'react-toastify';
+import { BACKEND_URL } from "../../config";
 
 const SignupFormBusiness: React.FC = () => {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ const SignupFormBusiness: React.FC = () => {
   const performSubmit = async () => {
   
     try {
-      const response = await fetch('http://localhost:8080/api/v1/business_owner/register', {
+      const response = await fetch(`${BACKEND_URL}/business_owner/register`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

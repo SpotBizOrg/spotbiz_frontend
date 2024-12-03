@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa";
 import StarRating from "./StarRating";
+import { BACKEND_URL } from "../../config";
 
 interface RatingProps {
   businessId?: number;
@@ -21,7 +22,7 @@ const Rating: React.FC<RatingProps> = ({ businessId }) => {
     const fetchReviewStats = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v1/review/rating/statistics/${businessId}`
+          `${BACKEND_URL}/review/rating/statistics/${businessId}`
         );
 
         if (!response.ok) {

@@ -18,6 +18,7 @@ function Nousernavbar() {
     };
 
     return (
+
         // <Disclosure as="nav" className="bg-white shadow-bottom fixed top-0 left-0 right-0 z-50">
         //     {({ open }) => (
         //         <>
@@ -90,6 +91,7 @@ function Nousernavbar() {
         //         </>
         //     )}
         // </Disclosure>
+        
         <nav className="fixed top-0 z-40 w-full bg-white border-b border-gray-200">
         <div className="px-3 py-3 lg:px-5 lg:pl-3">
           <div className="flex items-center justify-between">

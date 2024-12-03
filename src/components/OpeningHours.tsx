@@ -4,6 +4,7 @@ import CustomToggleSwitch from "../components/CustomToggleSwitch";
 import { MdOutlineModeEdit } from "react-icons/md";
 import { useAuth } from "../utils/AuthProvider";
 import { toast } from "react-toastify";
+import { BACKEND_URL } from "../../config";
 
 type Day =
   | "Monday"
@@ -50,7 +51,7 @@ const OpeningHoursPage: React.FC = () => {
     const fetchOpeningHours = async () => {
       try {
         const response = await fetch(
-          `http://localhost:8080/api/v1/businessOpening/${user?.email}`
+          `${BACKEND_URL}/businessOpening/${user?.email}`
         );
 
         if (!response.ok) {
@@ -189,7 +190,7 @@ const OpeningHoursPage: React.FC = () => {
     }
     try {
       const response = await fetch(
-        `http://localhost:8080/api/v1/businessOpening/${user?.email}`,
+        `${BACKEND_URL}/businessOpening/${user?.email}`,
         {
           method: "POST",
           headers: {
