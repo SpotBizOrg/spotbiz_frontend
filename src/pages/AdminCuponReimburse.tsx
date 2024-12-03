@@ -16,9 +16,23 @@ const AdminCuponReimburse: React.FC = () =>{
     const data = [
         {
             ticketId:1,
-            requestedDate: '2024-11-20',
-            businessName: 'Nano Tech',
-            amount: 250,
+            requestedDate: '2024-06-22',
+            businessName: 'AT Hardware',
+            amount: 100,
+            status: 'PENDING',
+        },
+        {
+            ticketId:1,
+            requestedDate: '2024-08-04',
+            businessName: 'HCL Fashion',
+            amount: 170,
+            status: 'PENDING',
+        },
+        {
+            ticketId:1,
+            requestedDate: '2024-10-16',
+            businessName: 'Master Foods',
+            amount: 225,
             status: 'PENDING',
         },
         {
@@ -28,27 +42,7 @@ const AdminCuponReimburse: React.FC = () =>{
             amount: 250,
             status: 'PENDING',
         },
-        {
-            ticketId:1,
-            requestedDate: '2024-11-20',
-            businessName: 'Nano Tech',
-            amount: 250,
-            status: 'PENDING',
-        },
-        {
-            ticketId:1,
-            requestedDate: '2024-11-20',
-            businessName: 'Nano Tech',
-            amount: 250,
-            status: 'PENDING',
-        },
-        {
-            ticketId:1,
-            requestedDate: '2024-11-20',
-            businessName: 'Nano Tech',
-            amount: 250,
-            status: 'PENDING',
-        },
+        
 
     ]
 
