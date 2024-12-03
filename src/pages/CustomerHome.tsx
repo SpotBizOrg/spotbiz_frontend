@@ -77,7 +77,7 @@ const CustomerHome: React.FC = () => {
 
   const fetchRecommendations = async () => {
     const userId = localStorage.getItem("user_id");
-    const email = localStorage.getItem('email');
+    const email = localStorage.getItem("email");
     // const userId = 39;
     // const email = "shalini20020109@gmail.com";
 
@@ -114,9 +114,8 @@ const CustomerHome: React.FC = () => {
     fetchRecommendations();
 
     console.log();
-    
 
-    if (!checkAuthenticated() || user?.role != "CUSTOMER") {
+    if (!checkAuthenticated()) {
       login();
     }
   }, []);
@@ -200,22 +199,22 @@ const CustomerHome: React.FC = () => {
                     key={index}
                     img={imageUrl}
                     details={adData.details || undefined}
-                    description={adData.description || undefined} 
-                    businessId={rec.businessId}                  />
+                    description={adData.description || undefined}
+                    businessId={rec.businessId}
+                  />
                 );
               })}
             </div>
             {/* "See More" Link */}
             <div className="mt-8 text-center">
-            <Link
-              to="/allrecommendations"
-              className="text-slate-600 hover:underline text-lg font-semibold"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              See More
-            </Link>
-
+              <Link
+                to="/allrecommendations"
+                className="text-slate-600 hover:underline text-lg font-semibold"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                See More
+              </Link>
             </div>
           </section>
           <Footer />
