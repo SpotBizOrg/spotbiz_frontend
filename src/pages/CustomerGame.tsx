@@ -9,7 +9,7 @@ import { useAuth } from "../utils/AuthProvider";
 import axios from "axios";
 import default_user_icon from "../assets/default_user_icon.png"; // Add this line
 
-interface UserDetails{
+interface UserDetails {
   userId: number;
   name: string;
   points: number;
@@ -66,17 +66,18 @@ function CustomerGame() {
   const getAllProfilePics = async () => {
     const url = `${BACKEND_URL}/customer_pic/all`;
 
-    try{
+    try {
       const response = await axios.get(url);
-      
-      const defaultPic = response.data.find((pic: any) => pic.picId === 1).imageUrl;
-      setDefaultPic(defaultPic);
 
+      const defaultPic = response.data.find(
+        (pic: any) => pic.picId === 1
+      ).imageUrl;
+      setDefaultPic(defaultPic);
     } catch (error) {
-      console.error('An error occurred:', error);
+      console.error("An error occurred:", error);
     }
-  }
-  
+  };
+
   const fetchProfilePic = async () => {
     const url = `${BACKEND_URL}/customer/pics/${userId}`;
 
@@ -87,27 +88,26 @@ function CustomerGame() {
     } catch (error) {
       console.error("An error occurred:", error);
     }
-  }
+  };
 
   const fetchUserDetails = async () => {
     const url = `${BACKEND_URL}/game/details/${userId}`;
 
-    try{
+    try {
       const response = await axios.get(url);
       console.log(response.data);
 
       const transformedData = {
         userId: response.data.userId,
         name: response.data.name,
-        points: response.data.points
-      }
+        points: response.data.points,
+      };
 
       setUserDetails(transformedData);
-
     } catch (error) {
-      console.error('An error occurred:', error);
+      console.error("An error occurred:", error);
     }
-  }
+  };
 
   const fetchRegularGames = async () => {
     try {
@@ -247,11 +247,15 @@ function CustomerGame() {
         <div className="flex items-center mb-6 ">
           <img
             className="ring-offset-2 ring h-40 w-40 rounded-full"
-            src={profilePic || defaultPic ||  default_user_icon}            // src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
+            src={profilePic || defaultPic || default_user_icon} // src="https://flowbite.com/docs/images/people/profile-picture-3.jpg"
           />
           <div>
-            <p className="text-black text-xl ml-4">{userDetails?.name || "Nirasha Nelki"}</p>
-            <p className="text-gray-400 ml-4">Points: {userDetails?.points || 95}</p>
+            <p className="text-black text-xl ml-4">
+              {userDetails?.name || "User Name"}
+            </p>
+            <p className="text-gray-400 ml-4">
+              Points: {userDetails?.points || 0}
+            </p>
           </div>
         </div>
         <div className="flex items-center justify-between w-full mb-5 border-b border-gray-300 mb-8">
@@ -418,8 +422,8 @@ function CustomerGame() {
               </div>
             ) : (
               <div className="relative overflow-x-auto overflow-y-auto sm:rounded-lg border-2 border-black p-8 bg-gradient-to-r from-cyan-500 to-blue5">
-              {/* <div className="relative overflow-x-auto overflow-y-auto sm:rounded-lg border border-black hover:translate-x-1 hover:shadow-md"> */}
-              <table className="w-full font-mono text-md text-left rtl:text-right text-black outline outline-offset-2 outline-indigo-800">
+                {/* <div className="relative overflow-x-auto overflow-y-auto sm:rounded-lg border border-black hover:translate-x-1 hover:shadow-md"> */}
+                <table className="w-full font-mono text-md text-left rtl:text-right text-black outline outline-offset-2 outline-indigo-800">
                   <thead className="table-header text-xs text-white uppercase bg-black">
                     <tr>
                       <th
@@ -446,79 +450,111 @@ function CustomerGame() {
                     </tr>
                   </thead>
                   <tbody>
-                  {leaderboard.map((user, index) => {
-                    // Determine styles based on index (even or odd)
-                    const isEven = index % 2 === 0;
-                    const baseClass = isEven
-                      ? "bg-slate-100 border-indigo-700"
-                      : "bg-slate-300 border-slate-700";
-                    const hoverClass = isEven
-                      ? "hover:bg-blue9 dark:hover:bg-blue-700"
-                      : "hover:bg-purple-200 dark:hover:bg-green-700";
+                    {leaderboard.map((user, index) => {
+                      // Determine styles based on index (even or odd)
+                      const isEven = index % 2 === 0;
+                      const baseClass = isEven
+                        ? "bg-slate-100 border-indigo-700"
+                        : "bg-slate-300 border-slate-700";
+                      const hoverClass = isEven
+                        ? "hover:bg-blue9 dark:hover:bg-blue-700"
+                        : "hover:bg-purple-200 dark:hover:bg-green-700";
                       // const transformClass = "hover:scale-100 hover:shadow-lg";
-                      const transformClass = "hover:translate-x-1 hover:shadow-md";
+                      const transformClass =
+                        "hover:translate-x-1 hover:shadow-md";
 
-
-                    return (
-                      <tr
-                        key={index}
-                        className={`${baseClass} ${hoverClass} ${transformClass} border-b dark:bg-gray-800 dark:border-gray-700 transition duration-300`}                      >
-                        <td className="px-6 py-6">{index + 1}</td>
-                        <td className="px-6 py-6">{user.name}</td>
-                        <td className="px-6 py-6">{user.points}</td>
-                      </tr>
-                    );
-                  })}
-
-
+                      return (
+                        <tr
+                          key={index}
+                          className={`${baseClass} ${hoverClass} ${transformClass} border-b dark:bg-gray-800 dark:border-gray-700 transition duration-300`}
+                        >
+                          <td className="px-6 py-6">{index + 1}</td>
+                          <td className="px-6 py-6">{user.name}</td>
+                          <td className="px-6 py-6">{user.points}</td>
+                        </tr>
+                      );
+                    })}
                   </tbody>
                 </table>
-              {/* </div> */}
-                
+                {/* </div> */}
               </div>
             )}
           </div>
 
           <div>
-            {
-              activeTab === "howToPlay" && (
-                <div className="bg-gray-100 p-8 rounded-lg shadow-lg max-w-6xl mx-auto mt-2 border border-gray-300">
-                  <h1 className="text-3xl font-bold text-blue-600 mb-4 text-center">How to Play Games on SpotBiz</h1>
-                  <p className="text-gray-700 mb-4">
-                    SpotBiz offers a variety of exciting games for you to enjoy. These games are divided into two categories: 
-                    <span className="font-semibold text-blue-600"> Seasonal Games</span> and 
-                    <span className="font-semibold text-blue-600"> Regular Games</span>.
-                  </p>
+            {activeTab === "howToPlay" && (
+              <div className="bg-gray-100 p-8 rounded-lg shadow-lg max-w-6xl mx-auto mt-2 border border-gray-300">
+                <h1 className="text-3xl font-bold text-blue-600 mb-4 text-center">
+                  How to Play Games on SpotBiz
+                </h1>
+                <p className="text-gray-700 mb-4">
+                  SpotBiz offers a variety of exciting games for you to enjoy.
+                  These games are divided into two categories:
+                  <span className="font-semibold text-blue-600">
+                    {" "}
+                    Seasonal Games
+                  </span>{" "}
+                  and
+                  <span className="font-semibold text-blue-600">
+                    {" "}
+                    Regular Games
+                  </span>
+                  .
+                </p>
 
-                  <h2 className="text-2xl font-semibold text-blue-500 mt-6 mb-3">🎉 Seasonal Games</h2>
-                  <p className="text-gray-700 mb-4">
-                    Seasonal Games are added during special occasions like Halloween and Christmas, bringing you festive fun and rewards.
-                  </p>
+                <h2 className="text-2xl font-semibold text-blue-500 mt-6 mb-3">
+                  🎉 Seasonal Games
+                </h2>
+                <p className="text-gray-700 mb-4">
+                  Seasonal Games are added during special occasions like
+                  Halloween and Christmas, bringing you festive fun and rewards.
+                </p>
 
-                  <h2 className="text-2xl font-semibold text-blue-500 mt-6 mb-3">🎮 Regular Games</h2>
-                  <p className="text-gray-700 mb-4">
-                    Regular Games are available year-round and designed to keep you entertained every day.
-                  </p>
+                <h2 className="text-2xl font-semibold text-blue-500 mt-6 mb-3">
+                  🎮 Regular Games
+                </h2>
+                <p className="text-gray-700 mb-4">
+                  Regular Games are available year-round and designed to keep
+                  you entertained every day.
+                </p>
 
-                  <h2 className="text-2xl font-semibold text-blue-500 mt-6 mb-3">🏆 Earn Points</h2>
-                  <p className="text-gray-700 mb-4">
-                    The longer you play, the more points you earn! Points accumulate based on your playtime, and the frequency of points increases the longer you play.
-                  </p>
+                <h2 className="text-2xl font-semibold text-blue-500 mt-6 mb-3">
+                  🏆 Earn Points
+                </h2>
+                <p className="text-gray-700 mb-4">
+                  The longer you play, the more points you earn! Points
+                  accumulate based on your playtime, and the frequency of points
+                  increases the longer you play.
+                </p>
 
-                  <h2 className="text-2xl font-semibold text-blue-500 mt-6 mb-3">📋 Leaderboard</h2>
-                  <p className="text-gray-700 mb-4">
-                    Compete with other players and see your rank on the 
-                    <span className="font-semibold text-blue-600"> monthly leaderboard</span>. The top 10 players of the month will be displayed for everyone to admire.
-                  </p>
+                <h2 className="text-2xl font-semibold text-blue-500 mt-6 mb-3">
+                  📋 Leaderboard
+                </h2>
+                <p className="text-gray-700 mb-4">
+                  Compete with other players and see your rank on the
+                  <span className="font-semibold text-blue-600">
+                    {" "}
+                    monthly leaderboard
+                  </span>
+                  . The top 10 players of the month will be displayed for
+                  everyone to admire.
+                </p>
 
-                  <h2 className="text-2xl font-semibold text-blue-500 mt-6 mb-3">🎁 Rewards</h2>
-                  <p className="text-gray-700">
-                    Players with the highest scores have the chance to win 
-                    <span className="font-semibold text-blue-600"> discount coupons</span> that can be used on purchases from businesses registered on the SpotBiz platform. Play more to increase your chances of winning!
-                  </p>
-                </div>
-              )
-            }
+                <h2 className="text-2xl font-semibold text-blue-500 mt-6 mb-3">
+                  🎁 Rewards
+                </h2>
+                <p className="text-gray-700">
+                  Players with the highest scores have the chance to win
+                  <span className="font-semibold text-blue-600">
+                    {" "}
+                    discount coupons
+                  </span>{" "}
+                  that can be used on purchases from businesses registered on
+                  the SpotBiz platform. Play more to increase your chances of
+                  winning!
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </div>
