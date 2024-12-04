@@ -266,10 +266,10 @@ const BusinessCupon: React.FC = () => {
 
     const success = await fetchBusinessAccountDetails();
 
-    if (!success) {
-      setIsAccDetailsPopUpOpen(true);
-      return;
-    }
+    // if (!success) {
+    //   setIsAccDetailsPopUpOpen(true);
+    //   return;
+    // }
 
     console.log("Selected Coupon IDs:", selectedRows);
     const timeStamp = new Date();
@@ -452,7 +452,7 @@ const BusinessCupon: React.FC = () => {
                     <button
                       onClick={() => {
                         if (coupon.billImage) {
-                          window.location.href = coupon.billImage;
+                          window.open(coupon.billImage, "_blank");
                         } else {
                           alert("No link available");
                         }
