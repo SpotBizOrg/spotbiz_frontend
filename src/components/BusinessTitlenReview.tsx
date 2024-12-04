@@ -49,6 +49,8 @@ const BusinessTitlenReview: React.FC<BusinessTitlenReviewProps> = ({ businessNam
     hour12: false // 24-hour format
   });
   const currentSriLankanTime = getTimeAsDate(currentTime);
+  console.log(currentSriLankanTime);
+  
   
 
   // Initialize the status, defaulting to "Open Now"
@@ -57,6 +59,8 @@ const BusinessTitlenReview: React.FC<BusinessTitlenReviewProps> = ({ businessNam
   // If weeklySchedule exists, use it to determine the status
   if (weeklySchedule) {
     const todaySchedule = weeklySchedule[currentDay as keyof typeof weeklySchedule];
+    console.log(todaySchedule);
+    
     
 
     if (todaySchedule && todaySchedule.isOpen) {
@@ -65,7 +69,7 @@ const BusinessTitlenReview: React.FC<BusinessTitlenReviewProps> = ({ businessNam
       
 
       // Check if current time is within startTime and endTime
-      if (currentSriLankanTime.getTime() >= startTime.getTime() && currentSriLankanTime.getTime() <= endTime.getTime()) {
+      if (currentSriLankanTime.getTime() >= startTime.getTime() && currentSriLankanTime.getTime() <= endTime.getTime()) { 
         updatedStatus = "Open Now";
       } else {
         updatedStatus = "Closed Now";

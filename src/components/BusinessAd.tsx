@@ -92,9 +92,9 @@ const BusinessAd: React.FC = () => {
         if (data) {
           setFormPopupOpen(true);
         } else {
-          // toast.error(
-          //   "You have reached the advertisement limit for this week. Please upgrade your package to add more ads."
-          // );
+          toast.error(
+            "You have reached the advertisement limit for this week. Please upgrade your package to add more ads."
+          );
         }
       })
       .catch((error) => {
