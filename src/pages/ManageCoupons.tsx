@@ -167,7 +167,6 @@ function ManageCoupons() {
       setItems(filteredCoupons);
     } catch (error) {
       console.error("An error occurred:", error);
-      toast.error("An unexpected error occurred");
     }
   };
 
@@ -195,7 +194,6 @@ function ManageCoupons() {
       setLeaderboard(responseData);
     } catch (error) {
       console.error("An error occurred:", error);
-      toast.error("An unexpected error occurred");
     }
   };
 
@@ -268,7 +266,6 @@ function ManageCoupons() {
         setUserId(null);
       } catch (error) {
         console.error("An error occurred:", error);
-        toast.error("An unexpected error occurred");
       } finally {
         setLoading(false);
       }
@@ -312,7 +309,6 @@ function ManageCoupons() {
       setShowForm(false);
     } catch (error) {
       console.error("An error occurred:", error);
-      toast.error("An unexpected error occurred");
     } finally {
       setLoading(false);
     }
@@ -356,7 +352,6 @@ function ManageCoupons() {
       setCurrentCouponId(null);
     } catch (error) {
       console.error("An error occurred:", error);
-      toast.error("An unexpected error occurred");
     } finally {
       setLoading(false);
     }
@@ -419,7 +414,6 @@ function ManageCoupons() {
       }
     } catch (error) {
       console.error("An error occurred:", error);
-      toast.error("An unexpected error occurred");
     } finally {
       setLoading(false);
     }
